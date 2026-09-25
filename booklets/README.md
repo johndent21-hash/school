@@ -1,19 +1,108 @@
-# Year 7 Mathematics booklets
+# Maths lesson booklet builder
 
-Printable A4 lesson booklets for Kingscliff High School, themed with artwork by Marni Tuala.
+This folder builds printable A4 lesson booklets as PDFs, plus a teacher answer key. The booklets use the Kingscliff High School Year 7 layout and artwork by **Marni Tuala**.
 
-## Chapter 10: Analysing data
+The finished example is **Year 7 Chapter 10: Analysing data** (`year7/ch10-analysing-data/`). Open its PDF to see what the builder produces.
 
-`year7/ch10-analysing-data/Year7-Ch10-Analysing-Data.pdf`: 42-page student booklet. It has a cover, a "how to use this booklet" page with contents, and one lesson per exercise (10.01 to 10.08).
-`year7/ch10-analysing-data/Year7-Ch10-Analysing-Data-Answers.pdf`: teacher answer key. Statistics answers are calculated by the build script, not typed.
+---
 
-Print double-sided. Every lesson starts on a right-hand page, and each exit ticket backs onto a blank area of the next page.
+## 1. One-time setup
 
-## Adding another chapter
+You need a computer running Windows, macOS or Linux.
 
-1. Copy `year7/ch10-analysing-data` to a new folder, e.g. `year7/ch11-...`.
-2. Edit `chapter.js` (number, title, goals, syllabus) and write one file per lesson in `lessons/`.
-3. Run `node booklets/build.js year7/ch11-...` (needs Playwright installed globally).
+1. Install **Node.js**, the LTS version, from <https://nodejs.org>.
+2. Unzip this folder somewhere, for example `Documents/booklets`.
+3. Open a terminal in that folder:
+   - Windows: right-click the folder and choose "Open in Terminal".
+   - Mac: right-click, then Services, then "New Terminal at Folder".
+4. Run this once. It downloads the tools used to make PDFs, about 150 MB:
 
-Shared code lives in `lib/`: `layout.js` (pages, WE DO / YOU DO panels, questions, exit tickets), `graphs.js` (graphs and drawing templates), `stats.js` (mean, median, mode, range) and `theme.css`.
-The build warns about any page that overflows, any working box that is too small, and anything that runs into the tear-off area.
+   ```
+   npm run setup
+   ```
+
+## 2. Build a booklet
+
+```
+node build.js year7/ch10-analysing-data
+```
+
+This writes two PDFs into that chapter folder: the student booklet and `...-Answers.pdf`.
+
+The build also checks the layout and prints a warning if:
+- anything overflows a page
+- a working box is too small to write in
+- anything runs into a tear-off exit ticket
+
+Fix the warnings before printing. Usually that means moving or shortening a question.
+
+To try the commented starter lesson, run `npm run example`.
+
+## 3. Make a new chapter
+
+1. Copy `examples/starter-chapter` to a new folder, for example `year7/ch11-algebra`.
+2. Edit `chapter.js`. Set the chapter number, the title, the PDF file name, the "In this chapter you will" goals and the syllabus outcomes. The cover, spine, contents and headers all update from this file.
+3. In `lessons/`, write one file per exercise. Start from `0-01.js`, which explains every part of a lesson. For full lessons to copy from, see `year7/ch10-analysing-data/lessons/`.
+4. List the lesson files, in order, in `chapter.js`.
+5. Run `node build.js year7/ch11-algebra`.
+
+## 4. The lesson format (keep it the same across the series)
+
+Each lesson has these parts, in this order:
+
+1. **Start here:** learning intentions, success criteria, 1–3 key terms (blank lines for the definitions), and a notes box.
+2. **Level 1:** two **WE DO** teacher examples, then two **YOU DO** sets of 10 easy questions.
+3. **Level 2:** two WE DO examples, then one YOU DO set of 10 questions.
+4. **Level 3:** two WE DO examples, then one YOU DO set of 10 questions.
+5. **Extension:** one worked example, then 2–3 extension questions.
+6. **Lesson summary:** a worked example for every level, for students who missed the lesson.
+7. **Show off your skill:** a tear-off exit ticket with a Level 1, 2 and 3 question. Students choose one.
+
+Colour rules. These are what make the booklet easy for students to follow:
+
+| Panel | Colour | Meaning |
+|---|---|---|
+| **WE DO** | Charcoal border, grey background | Copy the teacher's working from the board |
+| **YOU DO** | Blue border, pale blue background | Work on your own |
+| Level banners, summary | Sand (neutral) | Headings only |
+
+Never use charcoal or blue for anything else.
+
+Page rules. The build enforces these:
+- Every lesson has an **even** number of pages (2, 4 or 6), so each lesson starts on a right-hand page when printed double-sided.
+- The exit ticket (`L.exitTicket`) goes at the bottom of the **second-last** page of the lesson.
+- The last page ends with `L.tearBack()`, which leaves the back of the ticket blank.
+- Four pages is the normal length. Use six when students need space to draw graphs, dot plots or stem-and-leaf plots.
+- Working boxes have no lines in them. Students draw on grid paper or on the templates provided.
+
+## 5. Building blocks (in `lib/`)
+
+| File | What it gives you |
+|---|---|
+| `layout.js` | `L.page`, `L.intro`, `L.notes`, `banner(level)`, `weDo(...)`, `youDo(text, ...)`, `q` (question with working box), `qs` (short answer with small box), `qDraw` (question with drawing area), `example`, `worked`, `split` (two columns), `graphCard`, `L.exitTicket`, `L.tearBack`, `L.summaryBanner` |
+| `graphs.js` | Graphs: `pictureGraph`, `columnGraph` (including misleading axes), `lineGraph`, `sectorGraph`, `dividedBar`, `dotPlot`, `stemLeaf`, `backToBack`, `table`. Drawing templates: `gridPaper`, `dotPlotTemplate`, `stemLeafTemplate`, `backToBackTemplate`. |
+| `stats.js` | `mean`, `median`, `modeText`, `range`, `fmt` (rounds to 2 decimal places), `expand` (turns a frequency table into a list of values), `fromStemLeaf`. Use these to work out answers so the answer key is always correct. |
+| `theme.css` | All colours, fonts and spacing. The colours come from the artwork. |
+
+Layout classes you can use in lesson files:
+- `short-grid`: 10 short answers in 2 columns
+- `short-list`: 10 short answers beside a graph
+- `work-grid`: 10 questions with working boxes. Add `r2`, `r3` or `r4` for fewer rows, and `c3` for 3 columns.
+- `stack`: questions in a column
+- `ex-row` / `ex-row tall`: the height of the WE DO example boxes
+- `grow` (on a panel): the panel fills the rest of the page
+
+`{{L1}}`, `{{L2}}` and so on in a lesson's text are replaced with the page number of that lesson's first page, second page, and so on.
+
+## 6. Assets and acknowledgements
+
+- `assets/marni-tuala-artwork.jpg`: artwork by **Marni Tuala**. It is used with permission for this school's booklets. Always keep the credit on the cover, on page 2 and in every page footer. Check with the school before using it anywhere else.
+- `assets/kingscliff-logo.png`: the school logo.
+- `assets/lexend-*.woff2`: the Lexend font, chosen for readability (SIL Open Font License).
+- The Acknowledgement of Country is on the inside cover, in `build.js`. Check the wording with your school.
+
+## 7. Using an AI assistant (optional)
+
+If you use Claude, or a similar assistant that can run code, you can hand it this folder and ask it to make a new chapter. For example:
+
+> Using this booklet builder, make Chapter 11 from the attached exercise list. Follow the lesson format and colour rules in README.md, start from examples/starter-chapter, build it, and fix any warnings.

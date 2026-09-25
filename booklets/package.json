@@ -1,0 +1,14 @@
+{
+  "name": "kingscliff-maths-booklets",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Builds printable Year 7 maths lesson booklets (PDF) themed with artwork by Marni Tuala.",
+  "scripts": {
+    "setup": "npm install && npx playwright install chromium",
+    "build:ch10": "node build.js year7/ch10-analysing-data",
+    "example": "node build.js examples/starter-chapter"
+  },
+  "dependencies": {
+    "playwright": "^1.56.0"
+  }
+}

@@ -115,7 +115,10 @@ fs.writeFileSync(path.join(chapterDir, `${base}-Answers.html`), doc(`${chapter.t
   .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }`));
 
 (async () => {
-  const { chromium } = require(require.resolve('playwright', { paths: [execSync('npm root -g').toString().trim()] }));
+  // Use Playwright from this folder (npm install), falling back to a global install.
+  let pw;
+  try { pw = require('playwright'); } catch { pw = require(require.resolve('playwright', { paths: [execSync('npm root -g').toString().trim()] })); }
+  const { chromium } = pw;
   const browser = await chromium.launch();
   const pg = await browser.newPage({ viewport: { width: 800, height: 1200 }, deviceScaleFactor: 1.4 });
   for (const name of [base, `${base}-Answers`]) {
