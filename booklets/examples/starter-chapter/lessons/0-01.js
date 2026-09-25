@@ -12,7 +12,7 @@
 
 const G = require('../../../lib/graphs');   // graphs and drawing templates
 const S = require('../../../lib/stats');    // mean, median, mode, range (use these for answers)
-const { banner, weDo, youDo, q, qDraw, qs, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
+const { banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
 
 module.exports = (chapter) => {
   // The lesson code and title appear on the lesson badge, page headers and contents page.
@@ -35,10 +35,8 @@ module.exports = (chapter) => {
         graphCard(G.dotPlot({ title: 'A dot plot', min: 3, max: 8, counts: { 3: 1, 4: 1, 5: 1, 6: 1, 7: 2, 8: 1 } })),
         weDo(`<div class="col">${example('Example 1', 'First teacher example.')}${example('Example 2', 'Second teacher example.')}</div>`, 'fill'),
       )}
-      ${youDo('Set A. Short answers go in the box on the right.', `<div class="short-grid">
-        ${['Question one', 'Question two', 'Question three', 'Question four', 'Question five',
-           'Question six', 'Question seven', 'Question eight', 'Question nine', 'Question ten'].map((t, i) => qs(i + 1, t)).join('')}
-      </div>`, 'grow')}
+      ${youDo('Set A. Short answers go in the box on the right.', qsGrid(['Question one', 'Question two', 'Question three', 'Question four', 'Question five',
+        'Question six', 'Question seven', 'Question eight', 'Question nine', 'Question ten']))}
     `, { first: true }),
 
     // ---------- PAGE 2 (last page) ----------
