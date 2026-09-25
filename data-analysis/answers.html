@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-AU"><head><meta charset="utf-8"><title>Data Analysis Answers</title>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Interpreting Graphs Answers</title>
 <style>/* Theme colours taken from Marni Tuala's artwork */
 :root {
   --charcoal: #3d3b3c;
@@ -9,6 +9,8 @@
   --sand-soft: #f3f1ea;
   --line: #d8d4c4;
   --ink: #26292e;
+  --muted: #6b6a64;
+  --tear-h: 68mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
 }
 @font-face { font-family: Lexend; font-weight: 400; src: url(assets/lexend-latin-400-normal.woff2); }
 @font-face { font-family: Lexend; font-weight: 600; src: url(assets/lexend-latin-600-normal.woff2); }
@@ -17,246 +19,184 @@
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 html, body { margin: 0; padding: 0; background: #fff; }
-body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.4; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.5pt; line-height: 1.3; }
 b { font-weight: 600; }
-h2 { font-size: 16pt; margin: 0 0 1mm; color: var(--charcoal); }
-h3 { font-size: 12pt; margin: 0 0 1.5mm; color: var(--charcoal); }
+h1, h2, h3 { margin: 0; color: var(--charcoal); }
+h3 { font-size: 10.5pt; }
 p { margin: 0; }
-ul, ol { margin: 0; padding-left: 5mm; }
-li { margin-bottom: 1mm; }
+ul, ol { margin: 0; padding-left: 4.5mm; }
+li { margin-bottom: 0.6mm; }
 
 /* ---------- page shell ---------- */
-.page {
-  width: 210mm; height: 297mm; position: relative; overflow: hidden;
-  page-break-after: always; break-after: page; background: #fff;
-}
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
 .art-strip {
-  position: absolute; top: 0; left: 0; right: 0; height: 10mm;
+  position: absolute; top: 0; left: 0; right: 0; height: 8mm;
   background: url(assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal);
 }
+.first .art-strip { height: 11mm; }
 .page-head {
-  position: absolute; top: 12.5mm; left: 14mm; right: 14mm;
-  display: flex; justify-content: space-between; align-items: baseline;
-  font-size: 8.5pt; color: #6b6a64; border-bottom: 0.4mm solid var(--sand); padding-bottom: 1.5mm;
+  position: absolute; top: 10mm; left: 12mm; right: 12mm;
+  display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
+  border-bottom: 0.35mm solid var(--sand); padding-bottom: 1mm;
 }
 .page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 .content {
-  position: absolute; top: 22mm; bottom: 15mm; left: 14mm; right: 14mm;
-  display: flex; flex-direction: column; gap: 3.5mm;
+  position: absolute; top: 17mm; bottom: 11mm; left: 12mm; right: 12mm;
+  display: flex; flex-direction: column; gap: 2.4mm;
 }
+.first .content { top: 14mm; }
 .page-foot {
-  position: absolute; bottom: 5mm; left: 14mm; right: 14mm; height: 6mm;
-  display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; color: #8a887f;
+  position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6mm;
+  display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f;
 }
 .page-foot .pn {
-  width: 7mm; height: 7mm; border-radius: 50%; background: var(--charcoal); color: #fff;
-  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 8pt;
-  box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand);
+  width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 7.5pt;
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--sand); margin: 0 4mm;
 }
 .grow { flex: 1 1 0; min-height: 0; }
 
-/* ---------- cover ---------- */
-.cover { background: var(--charcoal); }
-.cover-art { position: absolute; inset: 0; background: url(assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
-.cover-panel {
-  position: absolute; left: 14mm; right: 14mm; top: 82mm; padding: 10mm 12mm 11mm;
-  background: rgba(255, 255, 255, 0.95); border-radius: 5mm;
-  box-shadow: 0 0 0 1.4mm var(--sand);
-}
-.cover .logo { height: 25mm; display: block; margin-bottom: 5mm; }
-.cover-stage { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; color: var(--blue); font-size: 11pt; }
-.cover h1 { font-size: 40pt; line-height: 1.05; margin: 1mm 0 2mm; color: var(--charcoal); }
-.cover-lesson { font-size: 15pt; color: var(--charcoal); margin-bottom: 8mm; }
-.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
-.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
-.cover-fields span { width: 20mm; }
-.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
-.cover-credit {
-  position: absolute; bottom: 8mm; right: 14mm; background: rgba(255,255,255,0.95);
-  padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt;
-}
+/* ---------- page 1 top ---------- */
+.title-row { display: grid; grid-template-columns: 30mm 1fr 64mm; gap: 5mm; align-items: center; }
+.logo { width: 30mm; display: block; }
+.kicker { font-size: 8pt; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+h1 { font-size: 20pt; line-height: 1.1; }
+.name-lines { display: flex; flex-direction: column; gap: 3mm; font-weight: 600; font-size: 9pt; }
+.name-lines > div { display: flex; align-items: flex-end; gap: 2mm; }
+.name-lines span { width: 11mm; }
+.name-lines i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.card { background: var(--sand-soft); border-radius: 2.5mm; padding: 2.5mm 4mm; border-top: 1.2mm solid var(--blue); }
+.card-sub { font-size: 8.5pt; color: var(--muted); margin-bottom: 0.8mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 5mm; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.8mm; width: 2.6mm; height: 2.6mm; border: 0.35mm solid var(--blue); border-radius: 0.6mm; }
+.terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.term { display: flex; flex-direction: column; gap: 0; }
+.term-name { align-self: flex-start; background: var(--charcoal); color: #fff; font-weight: 700; padding: 0.8mm 3mm; border-radius: 1.5mm; }
+.term i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.notes { border: 0.4mm solid var(--sand); border-radius: 2.5mm; position: relative; min-height: 28mm; }
+.notes-label { position: absolute; top: 1.5mm; left: 3mm; font-weight: 600; font-size: 8.5pt; color: var(--muted); }
 
-/* ---------- inside cover ---------- */
-.lead { margin-bottom: 1mm; }
-.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; margin-bottom: 3mm; }
-.howto > div { display: flex; flex-direction: column; gap: 1.5mm; padding: 3mm; background: var(--sand-soft); border-radius: 2.5mm; }
-.howto p { font-size: 9.5pt; }
-.howto-dots { display: flex; gap: 6mm; }
-.syllabus { border-left: 1.5mm solid var(--blue); padding: 1mm 0 1mm 4mm; display: flex; flex-direction: column; gap: 1.5mm; margin-bottom: 2mm; }
-.syl-label { font-size: 8.5pt; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.acknowledge { display: flex; gap: 6mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 6mm; align-items: center; }
-.acknowledge h3 { color: var(--sand); }
-.acknowledge p { margin-bottom: 3mm; }
-.ack-art {
-  width: 45mm; align-self: stretch; flex: none; border-radius: 2mm;
-  background: url(assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat;
-}
-
-/* ---------- tags, banners, level dots ---------- */
-.tag {
-  display: inline-block; align-self: flex-start; padding: 1.2mm 3.5mm; border-radius: 10mm;
-  font-weight: 600; font-size: 9.5pt; color: #fff;
-}
+/* ---------- banners, tags, level dots ---------- */
+.banner { display: flex; align-items: center; gap: 3mm; padding: 1.6mm 4mm; border-radius: 2mm; background: var(--charcoal); color: #fff; flex: none; }
+.banner.summary { background: var(--blue); }
+.banner-title { font-size: 11.5pt; font-weight: 700; }
+.banner-note { margin-left: auto; font-size: 8.5pt; color: var(--sand); }
+.banner.summary .banner-note { color: #fff; }
+.lvl-dots { display: inline-flex; gap: 1mm; vertical-align: middle; }
+.lvl-dots i { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.9mm var(--sand); }
+.banner .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--charcoal), 0 0 0 0.9mm var(--sand); }
+.tag { display: inline-block; align-self: flex-start; padding: 0.7mm 3mm; border-radius: 10mm; font-weight: 600; font-size: 8.5pt; color: #fff; flex: none; }
 .tag.teacher { background: var(--blue); }
 .tag.you { background: var(--charcoal); }
-.tag.summary { background: var(--sand); color: var(--charcoal); }
-.tag.exit { background: #fff; color: var(--charcoal); border: 0.4mm dashed var(--charcoal); }
 
-.lvl-dots { display: inline-flex; gap: 1.2mm; vertical-align: middle; }
-.lvl-dots i {
-  width: 3.4mm; height: 3.4mm; border-radius: 50%; background: var(--blue);
-  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.1mm var(--sand);
-}
-.banner {
-  display: flex; align-items: center; gap: 4mm; padding: 3mm 5mm; border-radius: 3mm;
-  background: var(--charcoal); color: #fff;
-}
-.banner .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
-.banner-title { font-size: 15pt; font-weight: 700; }
-.banner.summary { background: var(--blue); }
-.instruction { color: #55544f; font-size: 10pt; }
+/* ---------- layout helpers ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; flex: none; }
+.col { display: flex; flex-direction: column; gap: 2mm; }
+.graph-card { border: 0.35mm solid var(--line); border-radius: 2mm; padding: 1.5mm; display: flex; align-items: center; }
+.graph { width: 100%; height: auto; display: block; font-family: Lexend, sans-serif; }
 
-/* ---------- questions & working boxes ---------- */
-.q { display: flex; flex-direction: column; gap: 1.5mm; min-height: 0; }
-.q-head { display: flex; gap: 2.5mm; align-items: baseline; }
+/* ---------- questions and boxes (plain boxes, no ruled lines) ---------- */
+.box { border: 0.4mm solid var(--sand); border-radius: 1.8mm; background: #fff; }
+.q { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.q .box { flex: 1 1 0; min-height: 6mm; }
+.q-head { display: flex; gap: 2mm; align-items: baseline; }
 .q-num {
-  flex: none; min-width: 7mm; height: 7mm; padding: 0 1.5mm; border-radius: 3.5mm;
-  background: var(--sand-soft); border: 0.35mm solid var(--sand); color: var(--charcoal);
-  display: inline-flex; align-items: center; justify-content: center; gap: 1.5mm; font-weight: 700; font-size: 9.5pt;
+  flex: none; min-width: 5.5mm; height: 5.5mm; padding: 0 1.2mm; border-radius: 3mm;
+  background: var(--sand-soft); border: 0.3mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2mm; font-weight: 700; font-size: 8pt;
 }
-.q-num.ex { background: var(--blue); border-color: var(--blue); color: #fff; padding: 0 3mm; }
-.q-text { font-size: 11pt; }
-.work {
-  flex: 1 1 0; min-height: 0; border: 0.4mm solid var(--sand); border-radius: 2.5mm;
-  background-color: #fff;
-  /* one ruled line per 8mm tile; "round" stretches the tiles so the last line meets the bottom border */
-  background-image: linear-gradient(to bottom, transparent 0, transparent calc(100% - 0.3mm), var(--line) calc(100% - 0.3mm));
-  background-size: 100% 8mm; background-repeat: round; background-origin: padding-box;
-}
-.work.notes { border-width: 0.5mm; }
-.answer-line { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; font-size: 9.5pt; flex: none; }
-.answer-line i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 5mm; }
+.q-num.ex { background: var(--blue); border-color: var(--blue); color: #fff; padding: 0 2.5mm; }
+.example .box { border-color: var(--blue); }
+.col > .example { flex: 1; }
+.ex-row .example .box { height: 20mm; flex: none; }
 
-.stack { display: flex; flex-direction: column; gap: 6mm; }
-.stack > .q { flex: 1 1 0; }
-.grid10 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); gap: 4mm 6mm; }
-.grid-stack { display: grid; grid-template-rows: repeat(5, 1fr); gap: 4mm; }
-.example .work { border-color: var(--blue); border-width: 0.5mm; }
+.qs { display: grid; grid-template-columns: 6mm 1fr 24mm; gap: 2mm; align-items: center; }
+.qs .box { height: 7mm; }
+.short-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, auto); gap: 1.6mm 6mm; flex: none; }
+.short-list { display: grid; grid-template-rows: repeat(10, 1fr); gap: 1mm; }
+.short-list .qs { grid-template-columns: 6mm 1fr 22mm; }
+.short-list .qs .box { height: 100%; min-height: 6mm; }
 
-/* ---------- start page ---------- */
-.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
-.card { background: var(--sand-soft); border-radius: 3mm; padding: 4mm 5mm; border-top: 1.5mm solid var(--blue); }
-.card-sub { font-size: 9.5pt; color: #6b6a64; margin-bottom: 1.5mm; }
-.ticks { list-style: none; padding-left: 0; }
-.ticks li { position: relative; padding-left: 6mm; }
-.ticks li::before {
-  content: ""; position: absolute; left: 0; top: 1mm; width: 3mm; height: 3mm;
-  border: 0.4mm solid var(--blue); border-radius: 0.8mm;
-}
-.terms { display: flex; flex-direction: column; gap: 4mm; }
-.term { flex: 1; display: flex; border: 0.4mm solid var(--sand); border-radius: 3mm; overflow: hidden; }
-.term-name {
-  width: 36mm; flex: none; background: var(--charcoal); color: #fff; font-weight: 700; font-size: 14pt;
-  display: flex; align-items: center; justify-content: center;
-}
-.term-lines { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; padding: 2mm 6mm; }
-.term-lines i { border-bottom: 0.35mm solid var(--line); height: 6mm; }
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); gap: 2mm 5mm; }
 
 /* ---------- worked examples ---------- */
-.worked { border: 0.5mm solid var(--blue); border-radius: 3mm; padding: 4mm 5mm; background: #fff; flex: none; }
-.worked-head { display: flex; align-items: center; gap: 3mm; color: var(--blue); font-size: 11pt; margin-bottom: 2mm; }
-.worked-q { font-size: 11pt; margin-bottom: 2.5mm; padding: 2.5mm 3mm; background: var(--sand-soft); border-radius: 2mm; }
-.steps { padding-left: 6mm; }
-.steps li { margin-bottom: 2mm; padding-left: 1mm; }
+.worked { border: 0.45mm solid var(--blue); border-radius: 2.5mm; padding: 2.5mm 3mm; display: flex; flex-direction: column; gap: 1.5mm; }
+.worked-head { display: flex; align-items: center; gap: 2mm; color: var(--blue); }
+.worked-q { padding: 1.5mm 2mm; background: var(--sand-soft); border-radius: 1.5mm; }
+.steps { padding-left: 4.5mm; }
 .steps li::marker { color: var(--blue); font-weight: 700; }
-.worked-a { margin-top: 1mm; padding: 2mm 3mm; background: var(--blue-soft); border-radius: 2mm; }
-.stack > .worked { flex: 1 1 0; }
-.tip { padding: 2.5mm 4mm; background: var(--sand-soft); border-left: 1.5mm solid var(--sand); border-radius: 1mm; }
+.worked-a { padding: 1.2mm 2mm; background: var(--blue-soft); border-radius: 1.5mm; margin-top: auto; }
+.ext .worked { font-size: 9.5pt; }
+.ext-qs .q { flex: 1; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; font-size: 8.5pt; flex: none; }
+.summary-grid .worked { padding: 2mm 2.5mm; }
+.steps-card { grid-column: 1 / -1; background: var(--sand-soft); border-radius: 2.5mm; padding: 2mm 4mm; display: flex; gap: 4mm; align-items: baseline; font-size: 9pt; }
+.steps-card ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5mm 6mm; flex: 1; }
 
-.key-ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
-.idea { background: var(--sand-soft); border-radius: 3mm; padding: 4mm; border-top: 1.5mm solid var(--charcoal); display: flex; flex-direction: column; gap: 2mm; }
-.idea h3 { color: var(--blue); font-size: 14pt; margin: 0; }
-.formula { font-size: 9.5pt; background: #fff; border-radius: 2mm; padding: 2mm 2.5mm; margin-top: auto; }
-.checklist { border-top-color: var(--charcoal); }
-.checklist li { margin-bottom: 2mm; }
-
-/* ---------- exit ticket ---------- */
-/* The tear line sits at the same height on the exit ticket page and its back page. */
-.tear-zone { position: absolute; left: -14mm; right: -14mm; top: 88mm; bottom: -15mm; padding: 0 14mm 15mm; display: flex; flex-direction: column; }
-.cut-line {
-  border-top: 0.6mm dashed var(--charcoal); text-align: center; margin-bottom: 4mm; height: 0;
-}
-.cut-line span { position: relative; top: -3mm; background: #fff; padding: 0 3mm; font-size: 8.5pt; color: #55544f; }
-.exit { flex: 1; display: flex; flex-direction: column; gap: 4mm; }
-.exit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6mm; }
-.exit-head h2 { font-size: 18pt; color: var(--blue); }
-.exit-name { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; width: 88mm; padding-top: 2mm; }
-.exit-name i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
-.exit-name i.short { flex: 0 0 18mm; }
-.exit-cols { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
-.exit-q { border: 0.5mm solid var(--charcoal); border-radius: 3mm; padding: 3mm; }
-.exit-q .q-head { flex-direction: column; gap: 2mm; min-height: 24mm; }
-.exit-q .q-num { background: var(--charcoal); color: #fff; border-color: var(--charcoal); padding: 0 3mm; height: 7.5mm; }
-.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
-.selfcheck table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-.selfcheck th { text-align: center; font-weight: 600; padding: 1.5mm; color: var(--charcoal); font-size: 9pt; }
-.selfcheck th:first-child { text-align: left; }
-.selfcheck td { padding: 2mm 1.5mm; border-top: 0.3mm solid var(--line); }
-.selfcheck td:not(:first-child) { text-align: center; width: 18mm; }
-.tick { display: inline-block; width: 5mm; height: 5mm; border: 0.4mm solid var(--blue); border-radius: 1mm; background: #fff; }
-.reflect { height: 50mm; flex: none; }
-.tear-zone.back .blank-note {
-  flex: 1; display: flex; align-items: center; justify-content: center; text-align: center;
-  color: #b3b0a3; font-size: 10pt;
-}
+/* ---------- tear-off exit ticket ---------- */
+.tear-space { flex: none; height: var(--tear-h); }
+.tear-zone { position: absolute; left: 0; right: 0; bottom: 0; height: var(--tear-h); display: flex; flex-direction: column; gap: 2mm; }
+.cut-line { border-top: 0.55mm dashed var(--charcoal); text-align: center; height: 0; margin: 1.5mm -12mm 2mm; }
+.cut-line span { position: relative; top: -2.6mm; background: #fff; padding: 0 3mm; font-size: 8pt; color: var(--muted); }
+.exit-head { display: flex; align-items: center; gap: 5mm; }
+.exit-head h2 { font-size: 14pt; color: var(--blue); }
+.exit-head p { font-size: 9pt; }
+.name-lines.inline { flex-direction: row; margin-left: auto; width: 78mm; gap: 3mm; }
+.name-lines.inline > div { flex: 1; }
+.name-lines.inline > .short { flex: 0 0 24mm; }
+.exit-body { flex: 1; display: grid; grid-template-columns: 56mm repeat(3, 1fr); gap: 3mm; min-height: 0; }
+.exit-q { border: 0.45mm solid var(--charcoal); border-radius: 2.5mm; padding: 2mm; }
+.exit-q .q-head { flex-direction: column; gap: 1.2mm; min-height: 17mm; }
+.exit-q .q-num { background: var(--charcoal); color: #fff; border-color: var(--charcoal); padding: 0 2.5mm; height: 6mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--charcoal), 0 0 0 0.9mm var(--sand); }
+.exit-q .q-text { font-size: 9pt; }
+.tear-zone.back .blank-note { flex: 1; display: flex; align-items: center; justify-content: center; color: #b3b0a3; font-size: 9pt; }
 
 /* ---------- answers ---------- */
 .answers { columns: 2; column-gap: 8mm; }
-.ans-block { break-inside: avoid; margin-bottom: 4mm; }
-.ans-block h3 { color: var(--blue); font-size: 11pt; }
-.ans-block li { font-size: 9.5pt; }
+.ans-block { break-inside: avoid; margin-bottom: 3mm; }
+.ans-block h3 { color: var(--blue); font-size: 10.5pt; margin-bottom: 1mm; }
+.ans-block li { font-size: 9pt; }
 
-/* ---------- summary extras ---------- */
-.stack > .worked { display: flex; flex-direction: column; }
-.stack > .worked .steps { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
-.stack > .card { flex: none; }
-.median-trick { border-top-color: var(--charcoal); display: flex; flex-direction: column; gap: 3mm; }
-.trick-row { display: flex; align-items: center; gap: 5mm; background: #fff; border-radius: 2mm; padding: 3mm 4mm; }
-.trick-label { width: 38mm; font-size: 9.5pt; }
-.trick-label span { color: #6b6a64; }
-.chips { display: flex; gap: 2mm; }
-.chip {
-  width: 10mm; height: 10mm; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 700; border: 0.5mm solid var(--sand); position: relative;
-}
-.chip.out { color: #9a978b; }
-.chip.out::after { content: ""; position: absolute; left: 1mm; right: 1mm; top: 50%; border-top: 0.5mm solid #9a978b; transform: rotate(-35deg); }
-.chip.mid { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand); }
-.trick-result { margin-left: auto; font-size: 10.5pt; }
-.which table { width: 100%; border-collapse: collapse; }
-.which td { padding: 2.5mm 2mm; border-top: 0.3mm solid var(--line); vertical-align: top; }
-.which td:first-child { width: 22mm; color: var(--blue); }
-.which { border-top-color: var(--charcoal); }
-.which { display: flex; flex-direction: column; }
-.which table { flex: 1; }
-.which td { vertical-align: middle; }
-.exit-q .q-head { min-height: 29mm; }
-.which .eg { display: block; margin-top: 1.5mm; font-size: 9.5pt; color: #6b6a64; }
+/* ---------- tuning for the condensed layout ---------- */
+:root { --tear-h: 64mm; }
+.title-row { grid-template-columns: 30mm 1fr 52mm; }
+h1 { font-size: 18pt; white-space: nowrap; }
+.ack { font-size: 7.5pt; color: var(--muted); margin-top: -1mm; }
+.short-grid .qs, .short-list .qs { font-size: 9pt; }
+.short-grid .qs { grid-template-columns: 6mm 1fr 20mm; }
+.short-list .qs { grid-template-columns: 6mm 1fr 20mm; }
+.ex-row .example .box { height: 16mm; }
+.exit-head h2 { white-space: nowrap; }
+.ext { grid-template-rows: 1fr; min-height: 0; }
+.ext .worked { justify-content: flex-start; }
+.ext-qs { min-height: 0; }
+.ext-qs .q .box { min-height: 10mm; }
+.sym { width: 3.4mm; height: 3.4mm; vertical-align: -0.6mm; }
+.short-list { gap: 0.6mm; }
+.short-list .qs .box { min-height: 5.6mm; }
+.work-grid .q-text { font-size: 9pt; }
+.split.grow { flex: 1 1 0; min-height: 0; }
+.ext-qs .q .box { flex: 1 1 0; }
+.diagram { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.diagram .graph { width: auto; height: 100%; max-height: 42mm; }
 </style></head><body>
-<section class="page ">
+<section class="page">
   <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Teacher answers</span></header>
+  <header class="page-head"><span>Data Analysis · 10.01 Interpreting graphs</span><span class="sec">Teacher answers</span></header>
   <div class="content">
   <h2>Answers (teacher copy)</h2>
   <div class="answers">
-  <div class="ans-block"><h3>Level 1 · Set A (mean)</h3><ol><li>4</li><li>7</li><li>4</li><li>20</li><li>5</li><li>6</li><li>5</li><li>15</li><li>6</li><li>10</li></ol></div>
-  <div class="ans-block"><h3>Level 1 · Set B (median, mode)</h3><ol><li>3, 3</li><li>4, 4</li><li>5, 2</li><li>6, 6</li><li>11, 10</li><li>7, 9</li><li>14, 13</li><li>3, 3</li><li>22, 25</li><li>7, 7</li></ol></div>
-  <div class="ans-block"><h3>Level 2 · Set C</h3><ol><li>5.5</li><li>14.5</li><li>5.5</li><li>4</li><li>2 and 6</li><li>151 cm</li><li>mean 22, median 22, modes 21 and 24</li><li>mean 2, median 2, mode 2</li><li>10.4</li><li>mean $20, median $20, mode $20</li></ol></div>
-  <div class="ans-block"><h3>Level 3 · Set D</h3><ol><li>24 − 19 = 5</li><li>360 − 293 = 67</li><li>e.g. 4, 4, 5, 8, 9 (many answers possible)</li><li>mean 12, median 6. The median is better because 40 is an outlier that pulls the mean up.</li><li>mean goes from 7 to about 9.17 (up by about 2.17); median goes from 7 to 7.5</li><li>40 − 30 = 10</li><li>30 − 5 − 9 = 16</li><li>90 − 70 = 20</li><li>Mode (size 8). It shows which size sells most often.</li><li>Both have a mean of 16. Class B has a higher median (16 vs 15).</li></ol></div>
-  <div class="ans-block"><h3>Extension</h3><ol><li>Total 650 → 665, new mean 66.5</li><li>2, 7, 8, 9, 9 &nbsp;·&nbsp; 3, 6, 8, 9, 9 &nbsp;·&nbsp; 4, 5, 8, 9, 9 (the two smallest must be different, less than 8 and add to 9)</li><li>(a) 16, 17, 18 &nbsp;(b) n − 1, n, n + 1 add to 3n, and 3n ÷ 3 = n, the middle number</li></ol></div>
-  <div class="ans-block"><h3>Teacher examples</h3><ol><li>Ex 1: 6</li><li>Ex 2: median 5, mode 4</li><li>Ex 3: 7.5</li><li>Ex 4: mean 13, median 12.5, no mode</li><li>Ex 5: 40 − 30 = 10</li><li>Ex 6: mean ≈ 17.3, median 12. The median is better (44 is an outlier).</li></ol></div>
-  <div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 8</li><li>Level 2: median 6.5, mode 3</li><li>Level 3: 36 − 24 = 12</li></ol></div></div></div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">1</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
+  <div class="ans-block"><h3>Level 1 · Teacher examples</h3><ol><li>Ex 1: 4½ symbols = 18 books</li><li>Ex 2: 20 − 8 = 12 more books</li></ol></div>
+  <div class="ans-block"><h3>Level 1 · Set A</h3><ol><li>4 books</li><li>2 books</li><li>12</li><li>8</li><li>14</li><li>Thursday</li><li>Wednesday</li><li>2</li><li>12 + 18 = 30</li><li>4 symbols</li></ol></div>
+  <div class="ans-block"><h3>Level 1 · Set B</h3><ol><li>6</li><li>2</li><li>Swimming</li><li>Fishing</li><li>Beach cricket</li><li>3</li><li>8 − 2 = 6</li><li>6 + 2 = 8</li><li>28</li><li>1 student</li></ol></div>
+  <div class="ans-block"><h3>Level 2 · Teacher examples</h3><ol><li>Ex 3: ½, so 40 students</li><li>Ex 4: July (9 °C); June is 19 − 11 = 8 °C colder than March</li></ol></div>
+  <div class="ans-block"><h3>Level 2 · Set C</h3><ol><li>Bus</li><li>About 20 (a quarter)</li><li>About 10 (an eighth)</li><li>True (6)</li><li>80 − 40 = 40</li><li>January and February, 20 °C</li><li>Jan and Feb (20 °C) or Mar and Dec (19 °C); also May and Sep (12 °C)</li><li>October</li><li>October to November (+3 °C)</li><li>April to May (−4 °C)</li></ol></div>
+  <div class="ans-block"><h3>Level 3 · Teacher examples</h3><ol><li>Ex 5: 24% + 28% = 52%; 52% of 5000 = 2600</li><li>Ex 6: 55%. 20 years ago: little or no streaming; CDs, radio and downloads much bigger</li></ol></div>
+  <div class="ans-block"><h3>Level 3 · Set D</h3><ol><li>28%</li><li>18% + 10% = 28%</li><li>18% of 5000 = 900</li><li>7½ symbols</li><li>e.g. retirees move to the coast; young people leave for work or uni</li><li>Streaming and radio (55% + 20%)</li><li>20% = ⅕</li><li>10% of 400 = 40</li><li>35% of 400 = 140</li><li>e.g. more streaming, fewer CDs and less radio</li></ol></div>
+  <div class="ans-block"><h3>Extension</h3><ol><li>60/360 = ⅙; ⅙ of 240 = 40</li><li>45/180 = ¼; ¼ of 360° = 90°</li><li>3¾ × 8 = 30 students; 20 ÷ 8 = 2½ symbols</li></ol></div>
+  <div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 6</li><li>Level 2: 9/25</li><li>Level 3: 5/25 = 20%; 20% of 200 = 40</li></ol></div></div></div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">1</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
 </section></body></html>

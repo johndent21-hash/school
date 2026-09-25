@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-AU"><head><meta charset="utf-8"><title>Data Analysis Booklet</title>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Interpreting Graphs Booklet</title>
 <style>/* Theme colours taken from Marni Tuala's artwork */
 :root {
   --charcoal: #3d3b3c;
@@ -9,6 +9,8 @@
   --sand-soft: #f3f1ea;
   --line: #d8d4c4;
   --ink: #26292e;
+  --muted: #6b6a64;
+  --tear-h: 68mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
 }
 @font-face { font-family: Lexend; font-weight: 400; src: url(assets/lexend-latin-400-normal.woff2); }
 @font-face { font-family: Lexend; font-weight: 600; src: url(assets/lexend-latin-600-normal.woff2); }
@@ -17,984 +19,382 @@
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 html, body { margin: 0; padding: 0; background: #fff; }
-body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.4; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.5pt; line-height: 1.3; }
 b { font-weight: 600; }
-h2 { font-size: 16pt; margin: 0 0 1mm; color: var(--charcoal); }
-h3 { font-size: 12pt; margin: 0 0 1.5mm; color: var(--charcoal); }
+h1, h2, h3 { margin: 0; color: var(--charcoal); }
+h3 { font-size: 10.5pt; }
 p { margin: 0; }
-ul, ol { margin: 0; padding-left: 5mm; }
-li { margin-bottom: 1mm; }
+ul, ol { margin: 0; padding-left: 4.5mm; }
+li { margin-bottom: 0.6mm; }
 
 /* ---------- page shell ---------- */
-.page {
-  width: 210mm; height: 297mm; position: relative; overflow: hidden;
-  page-break-after: always; break-after: page; background: #fff;
-}
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
 .art-strip {
-  position: absolute; top: 0; left: 0; right: 0; height: 10mm;
+  position: absolute; top: 0; left: 0; right: 0; height: 8mm;
   background: url(assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal);
 }
+.first .art-strip { height: 11mm; }
 .page-head {
-  position: absolute; top: 12.5mm; left: 14mm; right: 14mm;
-  display: flex; justify-content: space-between; align-items: baseline;
-  font-size: 8.5pt; color: #6b6a64; border-bottom: 0.4mm solid var(--sand); padding-bottom: 1.5mm;
+  position: absolute; top: 10mm; left: 12mm; right: 12mm;
+  display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
+  border-bottom: 0.35mm solid var(--sand); padding-bottom: 1mm;
 }
 .page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 .content {
-  position: absolute; top: 22mm; bottom: 15mm; left: 14mm; right: 14mm;
-  display: flex; flex-direction: column; gap: 3.5mm;
+  position: absolute; top: 17mm; bottom: 11mm; left: 12mm; right: 12mm;
+  display: flex; flex-direction: column; gap: 2.4mm;
 }
+.first .content { top: 14mm; }
 .page-foot {
-  position: absolute; bottom: 5mm; left: 14mm; right: 14mm; height: 6mm;
-  display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; color: #8a887f;
+  position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6mm;
+  display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f;
 }
 .page-foot .pn {
-  width: 7mm; height: 7mm; border-radius: 50%; background: var(--charcoal); color: #fff;
-  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 8pt;
-  box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand);
+  width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 7.5pt;
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--sand); margin: 0 4mm;
 }
 .grow { flex: 1 1 0; min-height: 0; }
 
-/* ---------- cover ---------- */
-.cover { background: var(--charcoal); }
-.cover-art { position: absolute; inset: 0; background: url(assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
-.cover-panel {
-  position: absolute; left: 14mm; right: 14mm; top: 82mm; padding: 10mm 12mm 11mm;
-  background: rgba(255, 255, 255, 0.95); border-radius: 5mm;
-  box-shadow: 0 0 0 1.4mm var(--sand);
-}
-.cover .logo { height: 25mm; display: block; margin-bottom: 5mm; }
-.cover-stage { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; color: var(--blue); font-size: 11pt; }
-.cover h1 { font-size: 40pt; line-height: 1.05; margin: 1mm 0 2mm; color: var(--charcoal); }
-.cover-lesson { font-size: 15pt; color: var(--charcoal); margin-bottom: 8mm; }
-.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
-.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
-.cover-fields span { width: 20mm; }
-.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
-.cover-credit {
-  position: absolute; bottom: 8mm; right: 14mm; background: rgba(255,255,255,0.95);
-  padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt;
-}
+/* ---------- page 1 top ---------- */
+.title-row { display: grid; grid-template-columns: 30mm 1fr 64mm; gap: 5mm; align-items: center; }
+.logo { width: 30mm; display: block; }
+.kicker { font-size: 8pt; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+h1 { font-size: 20pt; line-height: 1.1; }
+.name-lines { display: flex; flex-direction: column; gap: 3mm; font-weight: 600; font-size: 9pt; }
+.name-lines > div { display: flex; align-items: flex-end; gap: 2mm; }
+.name-lines span { width: 11mm; }
+.name-lines i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.card { background: var(--sand-soft); border-radius: 2.5mm; padding: 2.5mm 4mm; border-top: 1.2mm solid var(--blue); }
+.card-sub { font-size: 8.5pt; color: var(--muted); margin-bottom: 0.8mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 5mm; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.8mm; width: 2.6mm; height: 2.6mm; border: 0.35mm solid var(--blue); border-radius: 0.6mm; }
+.terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.term { display: flex; flex-direction: column; gap: 0; }
+.term-name { align-self: flex-start; background: var(--charcoal); color: #fff; font-weight: 700; padding: 0.8mm 3mm; border-radius: 1.5mm; }
+.term i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.notes { border: 0.4mm solid var(--sand); border-radius: 2.5mm; position: relative; min-height: 28mm; }
+.notes-label { position: absolute; top: 1.5mm; left: 3mm; font-weight: 600; font-size: 8.5pt; color: var(--muted); }
 
-/* ---------- inside cover ---------- */
-.lead { margin-bottom: 1mm; }
-.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; margin-bottom: 3mm; }
-.howto > div { display: flex; flex-direction: column; gap: 1.5mm; padding: 3mm; background: var(--sand-soft); border-radius: 2.5mm; }
-.howto p { font-size: 9.5pt; }
-.howto-dots { display: flex; gap: 6mm; }
-.syllabus { border-left: 1.5mm solid var(--blue); padding: 1mm 0 1mm 4mm; display: flex; flex-direction: column; gap: 1.5mm; margin-bottom: 2mm; }
-.syl-label { font-size: 8.5pt; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.acknowledge { display: flex; gap: 6mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 6mm; align-items: center; }
-.acknowledge h3 { color: var(--sand); }
-.acknowledge p { margin-bottom: 3mm; }
-.ack-art {
-  width: 45mm; align-self: stretch; flex: none; border-radius: 2mm;
-  background: url(assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat;
-}
-
-/* ---------- tags, banners, level dots ---------- */
-.tag {
-  display: inline-block; align-self: flex-start; padding: 1.2mm 3.5mm; border-radius: 10mm;
-  font-weight: 600; font-size: 9.5pt; color: #fff;
-}
+/* ---------- banners, tags, level dots ---------- */
+.banner { display: flex; align-items: center; gap: 3mm; padding: 1.6mm 4mm; border-radius: 2mm; background: var(--charcoal); color: #fff; flex: none; }
+.banner.summary { background: var(--blue); }
+.banner-title { font-size: 11.5pt; font-weight: 700; }
+.banner-note { margin-left: auto; font-size: 8.5pt; color: var(--sand); }
+.banner.summary .banner-note { color: #fff; }
+.lvl-dots { display: inline-flex; gap: 1mm; vertical-align: middle; }
+.lvl-dots i { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.9mm var(--sand); }
+.banner .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--charcoal), 0 0 0 0.9mm var(--sand); }
+.tag { display: inline-block; align-self: flex-start; padding: 0.7mm 3mm; border-radius: 10mm; font-weight: 600; font-size: 8.5pt; color: #fff; flex: none; }
 .tag.teacher { background: var(--blue); }
 .tag.you { background: var(--charcoal); }
-.tag.summary { background: var(--sand); color: var(--charcoal); }
-.tag.exit { background: #fff; color: var(--charcoal); border: 0.4mm dashed var(--charcoal); }
 
-.lvl-dots { display: inline-flex; gap: 1.2mm; vertical-align: middle; }
-.lvl-dots i {
-  width: 3.4mm; height: 3.4mm; border-radius: 50%; background: var(--blue);
-  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.1mm var(--sand);
-}
-.banner {
-  display: flex; align-items: center; gap: 4mm; padding: 3mm 5mm; border-radius: 3mm;
-  background: var(--charcoal); color: #fff;
-}
-.banner .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
-.banner-title { font-size: 15pt; font-weight: 700; }
-.banner.summary { background: var(--blue); }
-.instruction { color: #55544f; font-size: 10pt; }
+/* ---------- layout helpers ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; flex: none; }
+.col { display: flex; flex-direction: column; gap: 2mm; }
+.graph-card { border: 0.35mm solid var(--line); border-radius: 2mm; padding: 1.5mm; display: flex; align-items: center; }
+.graph { width: 100%; height: auto; display: block; font-family: Lexend, sans-serif; }
 
-/* ---------- questions & working boxes ---------- */
-.q { display: flex; flex-direction: column; gap: 1.5mm; min-height: 0; }
-.q-head { display: flex; gap: 2.5mm; align-items: baseline; }
+/* ---------- questions and boxes (plain boxes, no ruled lines) ---------- */
+.box { border: 0.4mm solid var(--sand); border-radius: 1.8mm; background: #fff; }
+.q { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.q .box { flex: 1 1 0; min-height: 6mm; }
+.q-head { display: flex; gap: 2mm; align-items: baseline; }
 .q-num {
-  flex: none; min-width: 7mm; height: 7mm; padding: 0 1.5mm; border-radius: 3.5mm;
-  background: var(--sand-soft); border: 0.35mm solid var(--sand); color: var(--charcoal);
-  display: inline-flex; align-items: center; justify-content: center; gap: 1.5mm; font-weight: 700; font-size: 9.5pt;
+  flex: none; min-width: 5.5mm; height: 5.5mm; padding: 0 1.2mm; border-radius: 3mm;
+  background: var(--sand-soft); border: 0.3mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2mm; font-weight: 700; font-size: 8pt;
 }
-.q-num.ex { background: var(--blue); border-color: var(--blue); color: #fff; padding: 0 3mm; }
-.q-text { font-size: 11pt; }
-.work {
-  flex: 1 1 0; min-height: 0; border: 0.4mm solid var(--sand); border-radius: 2.5mm;
-  background-color: #fff;
-  /* one ruled line per 8mm tile; "round" stretches the tiles so the last line meets the bottom border */
-  background-image: linear-gradient(to bottom, transparent 0, transparent calc(100% - 0.3mm), var(--line) calc(100% - 0.3mm));
-  background-size: 100% 8mm; background-repeat: round; background-origin: padding-box;
-}
-.work.notes { border-width: 0.5mm; }
-.answer-line { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; font-size: 9.5pt; flex: none; }
-.answer-line i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 5mm; }
+.q-num.ex { background: var(--blue); border-color: var(--blue); color: #fff; padding: 0 2.5mm; }
+.example .box { border-color: var(--blue); }
+.col > .example { flex: 1; }
+.ex-row .example .box { height: 20mm; flex: none; }
 
-.stack { display: flex; flex-direction: column; gap: 6mm; }
-.stack > .q { flex: 1 1 0; }
-.grid10 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); gap: 4mm 6mm; }
-.grid-stack { display: grid; grid-template-rows: repeat(5, 1fr); gap: 4mm; }
-.example .work { border-color: var(--blue); border-width: 0.5mm; }
+.qs { display: grid; grid-template-columns: 6mm 1fr 24mm; gap: 2mm; align-items: center; }
+.qs .box { height: 7mm; }
+.short-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, auto); gap: 1.6mm 6mm; flex: none; }
+.short-list { display: grid; grid-template-rows: repeat(10, 1fr); gap: 1mm; }
+.short-list .qs { grid-template-columns: 6mm 1fr 22mm; }
+.short-list .qs .box { height: 100%; min-height: 6mm; }
 
-/* ---------- start page ---------- */
-.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
-.card { background: var(--sand-soft); border-radius: 3mm; padding: 4mm 5mm; border-top: 1.5mm solid var(--blue); }
-.card-sub { font-size: 9.5pt; color: #6b6a64; margin-bottom: 1.5mm; }
-.ticks { list-style: none; padding-left: 0; }
-.ticks li { position: relative; padding-left: 6mm; }
-.ticks li::before {
-  content: ""; position: absolute; left: 0; top: 1mm; width: 3mm; height: 3mm;
-  border: 0.4mm solid var(--blue); border-radius: 0.8mm;
-}
-.terms { display: flex; flex-direction: column; gap: 4mm; }
-.term { flex: 1; display: flex; border: 0.4mm solid var(--sand); border-radius: 3mm; overflow: hidden; }
-.term-name {
-  width: 36mm; flex: none; background: var(--charcoal); color: #fff; font-weight: 700; font-size: 14pt;
-  display: flex; align-items: center; justify-content: center;
-}
-.term-lines { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; padding: 2mm 6mm; }
-.term-lines i { border-bottom: 0.35mm solid var(--line); height: 6mm; }
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); gap: 2mm 5mm; }
 
 /* ---------- worked examples ---------- */
-.worked { border: 0.5mm solid var(--blue); border-radius: 3mm; padding: 4mm 5mm; background: #fff; flex: none; }
-.worked-head { display: flex; align-items: center; gap: 3mm; color: var(--blue); font-size: 11pt; margin-bottom: 2mm; }
-.worked-q { font-size: 11pt; margin-bottom: 2.5mm; padding: 2.5mm 3mm; background: var(--sand-soft); border-radius: 2mm; }
-.steps { padding-left: 6mm; }
-.steps li { margin-bottom: 2mm; padding-left: 1mm; }
+.worked { border: 0.45mm solid var(--blue); border-radius: 2.5mm; padding: 2.5mm 3mm; display: flex; flex-direction: column; gap: 1.5mm; }
+.worked-head { display: flex; align-items: center; gap: 2mm; color: var(--blue); }
+.worked-q { padding: 1.5mm 2mm; background: var(--sand-soft); border-radius: 1.5mm; }
+.steps { padding-left: 4.5mm; }
 .steps li::marker { color: var(--blue); font-weight: 700; }
-.worked-a { margin-top: 1mm; padding: 2mm 3mm; background: var(--blue-soft); border-radius: 2mm; }
-.stack > .worked { flex: 1 1 0; }
-.tip { padding: 2.5mm 4mm; background: var(--sand-soft); border-left: 1.5mm solid var(--sand); border-radius: 1mm; }
+.worked-a { padding: 1.2mm 2mm; background: var(--blue-soft); border-radius: 1.5mm; margin-top: auto; }
+.ext .worked { font-size: 9.5pt; }
+.ext-qs .q { flex: 1; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; font-size: 8.5pt; flex: none; }
+.summary-grid .worked { padding: 2mm 2.5mm; }
+.steps-card { grid-column: 1 / -1; background: var(--sand-soft); border-radius: 2.5mm; padding: 2mm 4mm; display: flex; gap: 4mm; align-items: baseline; font-size: 9pt; }
+.steps-card ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5mm 6mm; flex: 1; }
 
-.key-ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
-.idea { background: var(--sand-soft); border-radius: 3mm; padding: 4mm; border-top: 1.5mm solid var(--charcoal); display: flex; flex-direction: column; gap: 2mm; }
-.idea h3 { color: var(--blue); font-size: 14pt; margin: 0; }
-.formula { font-size: 9.5pt; background: #fff; border-radius: 2mm; padding: 2mm 2.5mm; margin-top: auto; }
-.checklist { border-top-color: var(--charcoal); }
-.checklist li { margin-bottom: 2mm; }
-
-/* ---------- exit ticket ---------- */
-/* The tear line sits at the same height on the exit ticket page and its back page. */
-.tear-zone { position: absolute; left: -14mm; right: -14mm; top: 88mm; bottom: -15mm; padding: 0 14mm 15mm; display: flex; flex-direction: column; }
-.cut-line {
-  border-top: 0.6mm dashed var(--charcoal); text-align: center; margin-bottom: 4mm; height: 0;
-}
-.cut-line span { position: relative; top: -3mm; background: #fff; padding: 0 3mm; font-size: 8.5pt; color: #55544f; }
-.exit { flex: 1; display: flex; flex-direction: column; gap: 4mm; }
-.exit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6mm; }
-.exit-head h2 { font-size: 18pt; color: var(--blue); }
-.exit-name { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; width: 88mm; padding-top: 2mm; }
-.exit-name i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
-.exit-name i.short { flex: 0 0 18mm; }
-.exit-cols { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
-.exit-q { border: 0.5mm solid var(--charcoal); border-radius: 3mm; padding: 3mm; }
-.exit-q .q-head { flex-direction: column; gap: 2mm; min-height: 24mm; }
-.exit-q .q-num { background: var(--charcoal); color: #fff; border-color: var(--charcoal); padding: 0 3mm; height: 7.5mm; }
-.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
-.selfcheck table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-.selfcheck th { text-align: center; font-weight: 600; padding: 1.5mm; color: var(--charcoal); font-size: 9pt; }
-.selfcheck th:first-child { text-align: left; }
-.selfcheck td { padding: 2mm 1.5mm; border-top: 0.3mm solid var(--line); }
-.selfcheck td:not(:first-child) { text-align: center; width: 18mm; }
-.tick { display: inline-block; width: 5mm; height: 5mm; border: 0.4mm solid var(--blue); border-radius: 1mm; background: #fff; }
-.reflect { height: 50mm; flex: none; }
-.tear-zone.back .blank-note {
-  flex: 1; display: flex; align-items: center; justify-content: center; text-align: center;
-  color: #b3b0a3; font-size: 10pt;
-}
+/* ---------- tear-off exit ticket ---------- */
+.tear-space { flex: none; height: var(--tear-h); }
+.tear-zone { position: absolute; left: 0; right: 0; bottom: 0; height: var(--tear-h); display: flex; flex-direction: column; gap: 2mm; }
+.cut-line { border-top: 0.55mm dashed var(--charcoal); text-align: center; height: 0; margin: 1.5mm -12mm 2mm; }
+.cut-line span { position: relative; top: -2.6mm; background: #fff; padding: 0 3mm; font-size: 8pt; color: var(--muted); }
+.exit-head { display: flex; align-items: center; gap: 5mm; }
+.exit-head h2 { font-size: 14pt; color: var(--blue); }
+.exit-head p { font-size: 9pt; }
+.name-lines.inline { flex-direction: row; margin-left: auto; width: 78mm; gap: 3mm; }
+.name-lines.inline > div { flex: 1; }
+.name-lines.inline > .short { flex: 0 0 24mm; }
+.exit-body { flex: 1; display: grid; grid-template-columns: 56mm repeat(3, 1fr); gap: 3mm; min-height: 0; }
+.exit-q { border: 0.45mm solid var(--charcoal); border-radius: 2.5mm; padding: 2mm; }
+.exit-q .q-head { flex-direction: column; gap: 1.2mm; min-height: 17mm; }
+.exit-q .q-num { background: var(--charcoal); color: #fff; border-color: var(--charcoal); padding: 0 2.5mm; height: 6mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--charcoal), 0 0 0 0.9mm var(--sand); }
+.exit-q .q-text { font-size: 9pt; }
+.tear-zone.back .blank-note { flex: 1; display: flex; align-items: center; justify-content: center; color: #b3b0a3; font-size: 9pt; }
 
 /* ---------- answers ---------- */
 .answers { columns: 2; column-gap: 8mm; }
-.ans-block { break-inside: avoid; margin-bottom: 4mm; }
-.ans-block h3 { color: var(--blue); font-size: 11pt; }
-.ans-block li { font-size: 9.5pt; }
+.ans-block { break-inside: avoid; margin-bottom: 3mm; }
+.ans-block h3 { color: var(--blue); font-size: 10.5pt; margin-bottom: 1mm; }
+.ans-block li { font-size: 9pt; }
 
-/* ---------- summary extras ---------- */
-.stack > .worked { display: flex; flex-direction: column; }
-.stack > .worked .steps { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
-.stack > .card { flex: none; }
-.median-trick { border-top-color: var(--charcoal); display: flex; flex-direction: column; gap: 3mm; }
-.trick-row { display: flex; align-items: center; gap: 5mm; background: #fff; border-radius: 2mm; padding: 3mm 4mm; }
-.trick-label { width: 38mm; font-size: 9.5pt; }
-.trick-label span { color: #6b6a64; }
-.chips { display: flex; gap: 2mm; }
-.chip {
-  width: 10mm; height: 10mm; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 700; border: 0.5mm solid var(--sand); position: relative;
-}
-.chip.out { color: #9a978b; }
-.chip.out::after { content: ""; position: absolute; left: 1mm; right: 1mm; top: 50%; border-top: 0.5mm solid #9a978b; transform: rotate(-35deg); }
-.chip.mid { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand); }
-.trick-result { margin-left: auto; font-size: 10.5pt; }
-.which table { width: 100%; border-collapse: collapse; }
-.which td { padding: 2.5mm 2mm; border-top: 0.3mm solid var(--line); vertical-align: top; }
-.which td:first-child { width: 22mm; color: var(--blue); }
-.which { border-top-color: var(--charcoal); }
-.which { display: flex; flex-direction: column; }
-.which table { flex: 1; }
-.which td { vertical-align: middle; }
-.exit-q .q-head { min-height: 29mm; }
-.which .eg { display: block; margin-top: 1.5mm; font-size: 9.5pt; color: #6b6a64; }
+/* ---------- tuning for the condensed layout ---------- */
+:root { --tear-h: 64mm; }
+.title-row { grid-template-columns: 30mm 1fr 52mm; }
+h1 { font-size: 18pt; white-space: nowrap; }
+.ack { font-size: 7.5pt; color: var(--muted); margin-top: -1mm; }
+.short-grid .qs, .short-list .qs { font-size: 9pt; }
+.short-grid .qs { grid-template-columns: 6mm 1fr 20mm; }
+.short-list .qs { grid-template-columns: 6mm 1fr 20mm; }
+.ex-row .example .box { height: 16mm; }
+.exit-head h2 { white-space: nowrap; }
+.ext { grid-template-rows: 1fr; min-height: 0; }
+.ext .worked { justify-content: flex-start; }
+.ext-qs { min-height: 0; }
+.ext-qs .q .box { min-height: 10mm; }
+.sym { width: 3.4mm; height: 3.4mm; vertical-align: -0.6mm; }
+.short-list { gap: 0.6mm; }
+.short-list .qs .box { min-height: 5.6mm; }
+.work-grid .q-text { font-size: 9pt; }
+.split.grow { flex: 1 1 0; min-height: 0; }
+.ext-qs .q .box { flex: 1 1 0; }
+.diagram { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.diagram .graph { width: auto; height: 100%; max-height: 42mm; }
 </style></head><body>
-<section class="page cover">
-  <div class="cover-art"></div>
-  <div class="cover-panel">
+<section class="page first">
+  <div class="art-strip"></div>
+  
+  <div class="content">
+  <div class="title-row">
     <img class="logo" src="assets/kingscliff-logo.png" alt="Kingscliff High School">
-    <p class="cover-stage">Stage 4 · Year 7 Mathematics</p>
-    <h1>Data Analysis</h1>
-    <p class="cover-lesson">Lesson 1 · Mean, median and mode</p>
-    <div class="cover-fields">
-      <div><span>Name</span><i></i></div>
-      <div><span>Class</span><i></i></div>
-      <div><span>Teacher</span><i></i></div>
+    <div class="title-text">
+      <p class="kicker">Stage 4 · Year 7 · Data Analysis</p>
+      <h1>10.01 Interpreting graphs</h1>
     </div>
+    <div class="name-lines"><div><span>Name</span><i></i></div><div><span>Class</span><i></i></div></div>
   </div>
-  <p class="cover-credit">Cover and theme artwork by <b>Marni Tuala</b></p>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">About this booklet</span></header>
-  <div class="content">
-  <h2>How to use this booklet</h2>
-  <p class="lead">Each lesson follows the same steps. Work through them in order and write everything in this booklet.</p>
-  <div class="howto">
-    <div><span class="tag teacher">Teacher example</span><p>Your teacher works through the question on the board. Copy the working into the box.</p></div>
-    <div><span class="tag you">Your turn</span><p>Answer the questions yourself. Show your working in the box and write your final answer on the line.</p></div>
-    <div><span class="howto-dots"><span class="lvl-dots"><i></i></span><span class="lvl-dots"><i></i><i></i></span><span class="lvl-dots"><i></i><i></i><i></i></span></span><p>The dots show the level. One dot is getting started, two is building up and three is a challenge.</p></div>
-    <div><span class="howto-dots"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span></span><p>Extension questions stretch your thinking further. Read the worked example first.</p></div>
-    <div><span class="tag summary">Summary</span><p>Missed a lesson? The summary pages have a fully worked example for every level.</p></div>
-    <div><span class="tag exit">Exit ticket</span><p>Choose one question to show off your skill, then tear it off and hand it to your teacher.</p></div>
-  </div>
-
-  <h2>What we are learning</h2>
-  <div class="syllabus">
-    <p class="syl-label">NSW Mathematics K–10 Syllabus (2022) · Stage 4 · Statistics · Data analysis</p>
-    <p><b>MA4-DAT-C-02</b>: analyses simple datasets using measures of centre, range and shape of the data</p>
-    <p class="syl-label">Content focus for this lesson</p>
-    <ul>
-      <li>Calculate the mean, median and mode for sets of data and interpret them in the context of the data</li>
-      <li>Investigate the effect of individual data values, including outliers, on the mean and median</li>
-    </ul>
-  </div>
-
-  <div class="acknowledge grow">
-    <div class="ack-art"></div>
-    <div>
-      <h3>Acknowledgement of artwork</h3>
-      <p>The artwork used throughout this booklet was created by <b>Marni Tuala</b>. We thank Marni for sharing this artwork with our school community.</p>
-      <h3>Acknowledgement of Country</h3>
-      <p>We acknowledge the Bundjalung people, the Traditional Custodians of the land on which Kingscliff High School stands, and pay our respects to Elders past and present.</p>
-    </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">2</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Start here</span></header>
-  <div class="content">
+  <p class="ack">Artwork by <b>Marni Tuala</b> · We acknowledge the Bundjalung people, the Traditional Custodians of the land on which we learn.</p>
   <div class="li-sc">
-    <div class="card">
-      <h3>Learning intentions</h3>
-      <p class="card-sub">Today we are learning to:</p>
-      <ul>
-        <li>understand what a <b>measure of centre</b> is and why we use one</li>
-        <li>calculate the <b>mean</b>, <b>median</b> and <b>mode</b> of a set of data</li>
-        <li>use these measures to solve problems about real data</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Success criteria</h3>
-      <p class="card-sub">I can:</p>
-      <ul class="ticks">
-        <li>find the <b>mean</b> by adding the values and dividing by how many there are</li>
-        <li>find the <b>median</b> by ordering the data and finding the middle value</li>
-        <li>find the <b>mode</b>, and tell when there is no mode or more than one</li>
-        <li>work backwards from the mean to find a missing value</li>
-      </ul>
-    </div>
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul>
+      <li>read and interpret picture graphs, column graphs, sector graphs and line graphs</li>
+      <li>explain what a graph tells us about real data</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks">
+      <li>use a <b>key</b> and a <b>scale</b> to read values from a graph</li>
+      <li>estimate amounts from a <b>sector graph</b> using fractions of a circle</li>
+      <li>compare values and give reasons for patterns in a graph</li></ul></div>
   </div>
+  <div class="terms">
+    <div class="term"><span class="term-name">Key</span><i></i><i></i></div><div class="term"><span class="term-name">Scale</span><i></i><i></i></div><div class="term"><span class="term-name">Sector graph</span><i></i><i></i></div>
+  </div>
+  <div class="notes grow"><span class="notes-label">Notes</span></div>
+  <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+  <div class="split">
+    <div class="graph-card"><svg class="graph" viewBox="0 0 88 48" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/48"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Books borrowed from the library</text><text x="2" y="12" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">Monday</text><circle cx="25" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="25.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="25.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="31" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="31.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="31.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="37" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="37.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="37.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="9.28" r="0.5" fill="#c2bea8"/><text x="2" y="18.2" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">Tuesday</text><circle cx="25" cy="17.3" r="1.4" fill="#3f63be"/><circle cx="25.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="25.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="31" cy="17.3" r="1.4" fill="#3f63be"/><circle cx="31.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="31.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="37" cy="17.3" r="1.4" fill="#3f63be"/><circle cx="37.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="37.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="43" cy="17.3" r="1.4" fill="#3f63be"/><circle cx="43.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="44.32" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="45.14" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="45.14" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="44.32" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="43.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="41.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="40.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="40.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="41.68" cy="15.48" r="0.5" fill="#c2bea8"/><path d="M49,15.9 A1.4,1.4 0 0 0 49,18.7 Z" fill="#3f63be"/><circle cx="49.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="49.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="47.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="46.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="46.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="47.68" cy="15.48" r="0.5" fill="#c2bea8"/><text x="2" y="24.4" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">Wednesday</text><circle cx="25" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="25.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="25.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="31" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="31.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="31.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="21.68" r="0.5" fill="#c2bea8"/><text x="2" y="30.6" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">Thursday</text><circle cx="25" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="25.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="25.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="31" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="31.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="31.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="37" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="37.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="37.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="43" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="43.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="44.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="45.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="45.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="44.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="43.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="41.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="40.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="40.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="41.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="49" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="49.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="50.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="51.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="51.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="50.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="49.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="47.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="46.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="46.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="47.68" cy="27.88" r="0.5" fill="#c2bea8"/><text x="2" y="36.8" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">Friday</text><circle cx="25" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="25.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="27.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="26.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="25.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="22.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="23.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="31" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="31.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="33.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="32.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="31.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="28.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="29.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="37" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="37.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="39.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="38.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="37.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="34.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="35.68" cy="34.08" r="0.5" fill="#c2bea8"/><path d="M43,34.5 A1.4,1.4 0 0 0 43,37.3 Z" fill="#3f63be"/><circle cx="43.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="43.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="41.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="40.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="40.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="41.68" cy="34.08" r="0.5" fill="#c2bea8"/><rect x="48" y="39.9" width="38" height="7" rx="1.2" fill="none" stroke="#c2bea8" stroke-width="0.3"/><circle cx="52" cy="43.4" r="1.4" fill="#3f63be"/><circle cx="52.00" cy="41.15" r="0.5" fill="#c2bea8"/><circle cx="53.32" cy="41.58" r="0.5" fill="#c2bea8"/><circle cx="54.14" cy="42.70" r="0.5" fill="#c2bea8"/><circle cx="54.14" cy="44.10" r="0.5" fill="#c2bea8"/><circle cx="53.32" cy="45.22" r="0.5" fill="#c2bea8"/><circle cx="52.00" cy="45.65" r="0.5" fill="#c2bea8"/><circle cx="50.68" cy="45.22" r="0.5" fill="#c2bea8"/><circle cx="49.86" cy="44.10" r="0.5" fill="#c2bea8"/><circle cx="49.86" cy="42.70" r="0.5" fill="#c2bea8"/><circle cx="50.68" cy="41.58" r="0.5" fill="#c2bea8"/><text x="55.5" y="44.4" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">= 4 books</text></svg></div>
+    <div class="col"><span class="tag teacher">Teacher examples: copy your teacher’s working</span>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">How many books were borrowed on Tuesday?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">How many more books were borrowed on Thursday than on Wednesday?</span></div><div class="box"></div></div></div>
+  </div>
+  <span class="tag you">Your turn: Set A. Use the library picture graph above. Write your answer in the box.</span>
+  <div class="short-grid">
+  <div class="qs"><span class="q-num">1</span><span class="q-text">What does 1 symbol stand for?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">2</span><span class="q-text">What does ½ a symbol stand for?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">3</span><span class="q-text">How many books on Monday?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">4</span><span class="q-text">How many books on Wednesday?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">5</span><span class="q-text">How many books on Friday?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">6</span><span class="q-text">Which day had the most books?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">7</span><span class="q-text">Which day had the fewest books?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">8</span><span class="q-text">How many more on Friday than Monday?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">9</span><span class="q-text">How many on Monday and Tuesday?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">10</span><span class="q-text">How many symbols show 16 books?</span><span class="box"></span></div></div>
+</div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">1</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
 
-  <h2>Key terms</h2>
-  <p class="instruction">Write the definition as your teacher explains it.</p>
-  <div class="terms grow">
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · 10.01 Interpreting graphs</span><span class="sec">Level 1 and Level 2</span></header>
+  <div class="content">
+  <span class="tag you">Your turn: Set B. Use the column graph. Write your answer in the box.</span>
+  <div class="split">
+    <div class="graph-card"><svg class="graph" viewBox="0 0 88 50" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/50"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Favourite beach activity of 7K</text><line x1="13" x2="86" y1="40" y2="40" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="40.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13" x2="86" y1="36.8" y2="36.8" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="33.6" y2="33.6" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="34.5" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">2</text><line x1="13" x2="86" y1="30.4" y2="30.4" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="27.2" y2="27.2" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="28.099999999999998" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">4</text><line x1="13" x2="86" y1="24" y2="24" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="20.8" y2="20.8" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="21.7" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">6</text><line x1="13" x2="86" y1="17.6" y2="17.6" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="14.399999999999999" y2="14.399999999999999" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="15.299999999999999" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">8</text><line x1="13" x2="86" y1="11.2" y2="11.2" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="8" y2="8" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">10</text><rect x="15.19" y="14.399999999999999" width="7.786666666666666" height="25.6" fill="#3f63be"/><text x="19.083333333333332" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Swimming</text><rect x="27.356666666666666" y="20.8" width="7.786666666666666" height="19.2" fill="#3f63be"/><text x="31.249999999999996" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Surfing</text><rect x="39.523333333333326" y="33.6" width="7.786666666666666" height="6.399999999999999" fill="#3f63be"/><text x="43.416666666666664" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Fishing</text><rect x="51.69" y="24" width="7.786666666666666" height="16" fill="#3f63be"/><text x="55.583333333333336" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Beach</text><text x="55.583333333333336" y="45.845" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">cricket</text><rect x="63.85666666666666" y="30.4" width="7.786666666666666" height="9.600000000000001" fill="#3f63be"/><text x="67.75" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Snorkel-</text><text x="67.75" y="45.845" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">ling</text><rect x="76.02333333333333" y="27.2" width="7.786666666666666" height="12.8" fill="#3f63be"/><text x="79.91666666666666" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Sand-</text><text x="79.91666666666666" y="45.845" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">castles</text><line x1="13" x2="13" y1="7" y2="40" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13" x2="86" y1="40" y2="40" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="24" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 24)">Number of students</text></svg></div>
+    <div class="short-list">
+  <div class="qs"><span class="q-num">1</span><span class="q-text">How many chose surfing?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">2</span><span class="q-text">How many chose fishing?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">3</span><span class="q-text">Which was the most popular?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">4</span><span class="q-text">Which was the least popular?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">5</span><span class="q-text">Which activity had 5 votes?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">6</span><span class="q-text">How many chose snorkelling?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">7</span><span class="q-text">How many more swam than fished?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">8</span><span class="q-text">How many chose surfing or fishing?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">9</span><span class="q-text">How many students are in 7K?</span><span class="box"></span></div>
+  <div class="qs"><span class="q-num">10</span><span class="q-text">What does 1 gridline stand for?</span><span class="box"></span></div></div>
+  </div>
+  <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+  <div class="split"><div class="graph-card"><svg class="graph" viewBox="0 0 88 48" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/48"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">How 80 Year 7 students travel to school</text><path d="M48,28.5 L48.00,12.00 A16.5,16.5 0 0 1 48.00,45.00 Z" fill="#3f63be" stroke="#fff" stroke-width="0.4"/><text x="57.075" y="29.5" font-size="2.8" text-anchor="middle" font-weight="600" fill="#fff">Bus</text><path d="M48,28.5 L48.00,45.00 A16.5,16.5 0 0 1 31.50,28.50 Z" fill="#3d3b3c" stroke="#fff" stroke-width="0.4"/><text x="41.58300596073208" y="35.91699403926792" font-size="2.8" text-anchor="middle" font-weight="600" fill="#fff">Car</text><path d="M48,28.5 L31.50,28.50 A16.5,16.5 0 0 1 36.33,16.83 Z" fill="#c2bea8" stroke="#fff" stroke-width="0.4"/><polyline points="35.04,23.13 29.98,21.04 27.98,21.04" fill="none" stroke="#3d3b3c" stroke-width="0.2"/><text x="27.38434911602991" y="21.93767306888074" font-size="2.6" text-anchor="end" font-weight="400" fill="#26292e">Walk</text><path d="M48,28.5 L36.33,16.83 A16.5,16.5 0 0 1 42.90,12.81 Z" fill="#9fb3e6" stroke="#fff" stroke-width="0.4"/><polyline points="40.67,16.54 37.81,11.87 35.81,11.87" fill="none" stroke="#3d3b3c" stroke-width="0.2"/><text x="35.211277988039" y="12.7735167950952" font-size="2.6" text-anchor="end" font-weight="400" fill="#26292e">Bike</text><path d="M48,28.5 L42.90,12.81 A16.5,16.5 0 0 1 48.00,12.00 Z" fill="#7d7a70" stroke="#fff" stroke-width="0.4"/><polyline points="45.81,14.65 44.95,9.24 42.95,9.24" fill="none" stroke="#3d3b3c" stroke-width="0.2"/><text x="42.34952793171549" y="10.140077358394818" font-size="2.6" text-anchor="end" font-weight="400" fill="#26292e">Scooter</text></svg></div><div class="graph-card"><svg class="graph" viewBox="0 0 88 48" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/48"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Mean minimum temperature, Kingscliff</text><line x1="13" x2="85" y1="38" y2="38" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="38.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13" x2="85" y1="36.63636363636363" y2="36.63636363636363" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="35.27272727272727" y2="35.27272727272727" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="33.90909090909091" y2="33.90909090909091" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="32.54545454545455" y2="32.54545454545455" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="31.18181818181818" y2="31.18181818181818" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="32.08181818181818" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">5</text><line x1="13" x2="85" y1="29.81818181818182" y2="29.81818181818182" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="28.454545454545453" y2="28.454545454545453" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="27.09090909090909" y2="27.09090909090909" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="25.727272727272727" y2="25.727272727272727" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="24.363636363636363" y2="24.363636363636363" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="25.263636363636362" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">10</text><line x1="13" x2="85" y1="23" y2="23" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="21.636363636363637" y2="21.636363636363637" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="20.272727272727273" y2="20.272727272727273" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="18.90909090909091" y2="18.90909090909091" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="17.545454545454547" y2="17.545454545454547" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="18.445454545454545" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">15</text><line x1="13" x2="85" y1="16.18181818181818" y2="16.18181818181818" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="14.81818181818182" y2="14.81818181818182" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="13.454545454545453" y2="13.454545454545453" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="12.09090909090909" y2="12.09090909090909" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="10.727272727272727" y2="10.727272727272727" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="11.627272727272727" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">20</text><line x1="13" x2="85" y1="9.363636363636363" y2="9.363636363636363" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13" x2="85" y1="8" y2="8" stroke="#e2dfd3" stroke-width="0.15"/><line x1="16" x2="16" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="16" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Jan</text><line x1="22" x2="22" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="22" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Feb</text><line x1="28" x2="28" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="28" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Mar</text><line x1="34" x2="34" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="34" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Apr</text><line x1="40" x2="40" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="40" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">May</text><line x1="46" x2="46" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="46" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Jun</text><line x1="52" x2="52" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="52" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Jul</text><line x1="58" x2="58" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="58" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Aug</text><line x1="64" x2="64" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="64" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Sep</text><line x1="70" x2="70" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="70" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Oct</text><line x1="76" x2="76" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="76" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Nov</text><line x1="82" x2="82" y1="8" y2="38" stroke="#e2dfd3" stroke-width="0.15"/><text x="82" y="41.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">Dec</text><polyline points="16,10.727272727272727 22,10.727272727272727 28,12.09090909090909 34,16.18181818181818 40,21.636363636363637 46,23 52,25.727272727272727 58,24.363636363636363 64,21.636363636363637 70,18.90909090909091 76,14.81818181818182 82,12.09090909090909" fill="none" stroke="#3f63be" stroke-width="0.6"/><circle cx="16" cy="10.727272727272727" r="0.75" fill="#3f63be"/><circle cx="22" cy="10.727272727272727" r="0.75" fill="#3f63be"/><circle cx="28" cy="12.09090909090909" r="0.75" fill="#3f63be"/><circle cx="34" cy="16.18181818181818" r="0.75" fill="#3f63be"/><circle cx="40" cy="21.636363636363637" r="0.75" fill="#3f63be"/><circle cx="46" cy="23" r="0.75" fill="#3f63be"/><circle cx="52" cy="25.727272727272727" r="0.75" fill="#3f63be"/><circle cx="58" cy="24.363636363636363" r="0.75" fill="#3f63be"/><circle cx="64" cy="21.636363636363637" r="0.75" fill="#3f63be"/><circle cx="70" cy="18.90909090909091" r="0.75" fill="#3f63be"/><circle cx="76" cy="14.81818181818182" r="0.75" fill="#3f63be"/><circle cx="82" cy="12.09090909090909" r="0.75" fill="#3f63be"/><line x1="13" x2="13" y1="7" y2="38" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13" x2="85" y1="38" y2="38" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="23" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 23)">Temperature (°C)</text><text x="49" y="46.2" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e">Month</text></svg></div></div>
+  <span class="tag teacher">Teacher examples: copy your teacher’s working</span>
+  <div class="split ex-row">
     
-      <div class="term">
-        <div class="term-name">Mean</div>
-        <div class="term-lines"><i></i><i></i><i></i></div>
-      </div>
-      <div class="term">
-        <div class="term-name">Median</div>
-        <div class="term-lines"><i></i><i></i><i></i></div>
-      </div>
-      <div class="term">
-        <div class="term-name">Mode</div>
-        <div class="term-lines"><i></i><i></i><i></i></div>
-      </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">3</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Notes</span></header>
-  <div class="content">
-  <h2>My notes</h2>
-  <p class="instruction">Write notes, diagrams and reminders from the lesson here.</p>
-  <div class="work notes grow"></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">4</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 1</span></header>
-  <div class="content">
-  
-  <div class="banner lvl1">
-    <span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span>
-  </div>
-  
-  <span class="tag teacher">Teacher example: copy the working as your teacher shows you</span>
-  <div class="stack grow">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">What fraction of the students catch the bus? How many students is that?</span></div><div class="box"></div></div>
     
-  <div class="q example">
-    <div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Find the <b>mean</b> of these numbers:&nbsp; 4, 7, 5, 8, 6</span></div>
-    <div class="work"></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Which month is coldest? How much colder is June than March?</span></div><div class="box"></div></div>
   </div>
+  <span class="tag you">Your turn: Set C. Questions 1–5 use the sector graph and 6–10 use the line graph.</span>
+  <div class="work-grid grow">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Which way of travel is the most common?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Estimate how many students travel by car.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Estimate how many students walk.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">True or false: fewer than 10 ride a bike.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">How many students do <b>not</b> catch the bus?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">Which 2 months are warmest? What is their mean minimum?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">7</span><span class="q-text">Name 2 months with the same mean minimum.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">8</span><span class="q-text">Which month has a mean minimum of 14&nbsp;°C?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">9</span><span class="q-text">Which 2 months in a row have the biggest rise?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">10</span><span class="q-text">Which 2 months in a row have the biggest drop?</span></div><div class="box"></div></div></div>
+</div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">2</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · 10.01 Interpreting graphs</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+  <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on page 4.</span></div>
+  <div class="split"><div class="graph-card"><svg class="graph" viewBox="0 0 88 48" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/48"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Ages of people in a coastal town</text><text x="2" y="12" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">0–14 years</text><circle cx="23" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="23.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="23.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="29" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="29.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="29.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="35" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="35.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="35.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="41" cy="11.1" r="1.4" fill="#3f63be"/><circle cx="41.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="9.28" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="41.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="9.28" r="0.5" fill="#c2bea8"/><path d="M47,9.7 A1.4,1.4 0 0 0 47,12.5 Z" fill="#3f63be"/><circle cx="47.00" cy="8.85" r="0.5" fill="#c2bea8"/><circle cx="47.00" cy="13.35" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="12.92" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="11.80" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="10.40" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="9.28" r="0.5" fill="#c2bea8"/><text x="2" y="18.2" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">15–24 years</text><circle cx="23" cy="17.3" r="1.4" fill="#3f63be"/><circle cx="23.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="23.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="29" cy="17.3" r="1.4" fill="#3f63be"/><circle cx="29.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="15.48" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="29.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="15.48" r="0.5" fill="#c2bea8"/><path d="M35,15.9 A1.4,1.4 0 0 0 35,18.7 Z" fill="#3f63be"/><circle cx="35.00" cy="15.05" r="0.5" fill="#c2bea8"/><circle cx="35.00" cy="19.55" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="19.12" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="18.00" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="16.60" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="15.48" r="0.5" fill="#c2bea8"/><text x="2" y="24.4" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">25–44 years</text><circle cx="23" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="23.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="23.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="29" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="29.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="29.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="35" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="35.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="35.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="41" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="41.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="41.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="47" cy="23.5" r="1.4" fill="#3f63be"/><circle cx="47.00" cy="21.25" r="0.5" fill="#c2bea8"/><circle cx="48.32" cy="21.68" r="0.5" fill="#c2bea8"/><circle cx="49.14" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="49.14" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="48.32" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="47.00" cy="25.75" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="25.32" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="24.20" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="22.80" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="21.68" r="0.5" fill="#c2bea8"/><text x="2" y="30.6" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">45–64 years</text><circle cx="23" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="23.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="23.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="29" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="29.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="29.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="35" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="35.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="35.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="41" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="41.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="41.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="47" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="47.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="48.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="49.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="49.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="48.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="47.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="53" cy="29.700000000000003" r="1.4" fill="#3f63be"/><circle cx="53.00" cy="27.45" r="0.5" fill="#c2bea8"/><circle cx="54.32" cy="27.88" r="0.5" fill="#c2bea8"/><circle cx="55.14" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="55.14" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="54.32" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="53.00" cy="31.95" r="0.5" fill="#c2bea8"/><circle cx="51.68" cy="31.52" r="0.5" fill="#c2bea8"/><circle cx="50.86" cy="30.40" r="0.5" fill="#c2bea8"/><circle cx="50.86" cy="29.00" r="0.5" fill="#c2bea8"/><circle cx="51.68" cy="27.88" r="0.5" fill="#c2bea8"/><text x="2" y="36.8" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">65+ years</text><circle cx="23" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="23.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="25.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="24.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="23.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="20.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="21.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="29" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="29.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="31.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="30.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="29.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="26.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="27.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="35" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="35.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="37.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="36.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="35.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="32.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="33.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="41" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="41.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="43.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="42.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="41.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="38.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="39.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="47" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="47.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="48.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="49.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="49.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="48.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="47.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="44.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="45.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="53" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="53.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="54.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="55.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="55.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="54.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="53.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="51.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="50.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="50.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="51.68" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="59" cy="35.9" r="1.4" fill="#3f63be"/><circle cx="59.00" cy="33.65" r="0.5" fill="#c2bea8"/><circle cx="60.32" cy="34.08" r="0.5" fill="#c2bea8"/><circle cx="61.14" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="61.14" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="60.32" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="59.00" cy="38.15" r="0.5" fill="#c2bea8"/><circle cx="57.68" cy="37.72" r="0.5" fill="#c2bea8"/><circle cx="56.86" cy="36.60" r="0.5" fill="#c2bea8"/><circle cx="56.86" cy="35.20" r="0.5" fill="#c2bea8"/><circle cx="57.68" cy="34.08" r="0.5" fill="#c2bea8"/><rect x="48" y="39.9" width="38" height="7" rx="1.2" fill="none" stroke="#c2bea8" stroke-width="0.3"/><circle cx="52" cy="43.4" r="1.4" fill="#3f63be"/><circle cx="52.00" cy="41.15" r="0.5" fill="#c2bea8"/><circle cx="53.32" cy="41.58" r="0.5" fill="#c2bea8"/><circle cx="54.14" cy="42.70" r="0.5" fill="#c2bea8"/><circle cx="54.14" cy="44.10" r="0.5" fill="#c2bea8"/><circle cx="53.32" cy="45.22" r="0.5" fill="#c2bea8"/><circle cx="52.00" cy="45.65" r="0.5" fill="#c2bea8"/><circle cx="50.68" cy="45.22" r="0.5" fill="#c2bea8"/><circle cx="49.86" cy="44.10" r="0.5" fill="#c2bea8"/><circle cx="49.86" cy="42.70" r="0.5" fill="#c2bea8"/><circle cx="50.68" cy="41.58" r="0.5" fill="#c2bea8"/><text x="55.5" y="44.4" font-size="2.6" text-anchor="start" font-weight="400" fill="#26292e">= 4% of people</text></svg></div><div class="graph-card"><svg class="graph" viewBox="0 0 88 47" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/47"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">How Australians listen to music</text><line x1="13" x2="86" y1="37" y2="37" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="37.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13" x2="86" y1="34.583333333333336" y2="34.583333333333336" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="32.166666666666664" y2="32.166666666666664" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="33.06666666666666" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">10</text><line x1="13" x2="86" y1="29.75" y2="29.75" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="27.333333333333336" y2="27.333333333333336" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="28.233333333333334" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">20</text><line x1="13" x2="86" y1="24.916666666666664" y2="24.916666666666664" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="22.5" y2="22.5" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="23.4" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">30</text><line x1="13" x2="86" y1="20.083333333333332" y2="20.083333333333332" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="17.666666666666668" y2="17.666666666666668" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="18.566666666666666" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">40</text><line x1="13" x2="86" y1="15.25" y2="15.25" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="12.833333333333332" y2="12.833333333333332" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="13.733333333333333" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">50</text><line x1="13" x2="86" y1="10.416666666666668" y2="10.416666666666668" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="86" y1="8" y2="8" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">60</text><rect x="15.19" y="10.416666666666668" width="7.786666666666666" height="26.583333333333332" fill="#3f63be"/><text x="19.083333333333332" y="40.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Stream-</text><text x="19.083333333333332" y="42.845" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">ing</text><rect x="27.356666666666666" y="27.333333333333336" width="7.786666666666666" height="9.666666666666664" fill="#3f63be"/><text x="31.249999999999996" y="40.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Radio</text><rect x="39.523333333333326" y="32.166666666666664" width="7.786666666666666" height="4.833333333333336" fill="#3f63be"/><text x="43.416666666666664" y="40.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Down-</text><text x="43.416666666666664" y="42.845" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">loads</text><rect x="51.69" y="34.583333333333336" width="7.786666666666666" height="2.4166666666666643" fill="#3f63be"/><text x="55.583333333333336" y="40.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">CDs</text><rect x="63.85666666666666" y="34.583333333333336" width="7.786666666666666" height="2.4166666666666643" fill="#3f63be"/><text x="67.75" y="40.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Vinyl</text><rect x="76.02333333333333" y="34.583333333333336" width="7.786666666666666" height="2.4166666666666643" fill="#3f63be"/><text x="79.91666666666666" y="40.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Other</text><line x1="13" x2="13" y1="7" y2="37" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13" x2="86" y1="37" y2="37" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22.5" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22.5)">Percentage (%)</text></svg></div></div>
+  <span class="tag teacher">Teacher examples: copy your teacher’s working</span>
+  <div class="split ex-row">
     
-  <div class="q example">
-    <div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Find the <b>median</b> and the <b>mode</b> of these numbers:&nbsp; 3, 9, 4, 7, 4, 8, 5</span></div>
-    <div class="work"></div>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">5</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 1 · Set A</span></header>
-  <div class="content">
-  
-  <div class="banner lvl1">
-    <span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span>
-  </div>
-  
-  <span class="tag you">Your turn: Set A. Find the <b>mean</b> of each set of numbers.</span>
-  <div class="grid10 grow">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">1</span><span class="q-text">2, 4, 6</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">2</span><span class="q-text">5, 7, 9</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">3</span><span class="q-text">1, 3, 5, 7</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">4</span><span class="q-text">10, 20, 30</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">5</span><span class="q-text">3, 5, 4, 8</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">6</span><span class="q-text">6, 6, 9, 3</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">7</span><span class="q-text">2, 8, 5, 7, 3</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">8</span><span class="q-text">12, 15, 18</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">9</span><span class="q-text">4, 9, 2, 5, 10</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">10</span><span class="q-text">7, 11, 9, 13</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">6</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 1 · Set B</span></header>
-  <div class="content">
-  
-  <div class="banner lvl1">
-    <span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span>
-  </div>
-  
-  <span class="tag you">Your turn: Set B. Find the <b>median</b> and the <b>mode</b> of each set. Order the numbers first!</span>
-  <div class="grid10 grow">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">1</span><span class="q-text">2, 3, 3, 5, 8</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">2</span><span class="q-text">1, 4, 4, 6, 9</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">3</span><span class="q-text">7, 2, 5, 2, 9</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">4</span><span class="q-text">6, 1, 8, 6, 3</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">5</span><span class="q-text">10, 12, 11, 10, 15</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">6</span><span class="q-text">4, 9, 7, 9, 2, 5, 9</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">7</span><span class="q-text">15, 13, 14, 13, 18</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">8</span><span class="q-text">8, 3, 6, 3, 1, 5, 3</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">9</span><span class="q-text">20, 25, 22, 25, 21</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">10</span><span class="q-text">5, 7, 6, 7, 9, 4, 8</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">7</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2</span></header>
-  <div class="content">
-  
-  <div class="banner lvl2">
-    <span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span>
-  </div>
-  
-  <span class="tag teacher">Teacher example: copy the working as your teacher shows you</span>
-  <div class="stack grow">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">What percentage of the town is 45+? How many is that out of 5000?</span></div><div class="box"></div></div>
     
-  <div class="q example">
-    <div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Find the <b>median</b> of:&nbsp; 8, 3, 10, 5, 7, 12</span></div>
-    <div class="work"></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">What % stream music? How might this look different 20 years ago?</span></div><div class="box"></div></div>
   </div>
-    
-  <div class="q example">
-    <div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">A basketball player scored 12, 15, 9, 18, 11 and 13 points in six games. Find the <b>mean</b>, <b>median</b> and <b>mode</b> of her scores.</span></div>
-    <div class="work"></div>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">8</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2 · Set C</span></header>
-  <div class="content">
-  
-  <div class="banner lvl2">
-    <span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span>
-  </div>
-  
-  <span class="tag you">Your turn: Set C. Show your working in each box.</span>
-  <div class="grid-stack grow" style="grid-template-rows: repeat(4, 1fr)">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">1</span><span class="q-text">Find the <b>median</b> of:&nbsp; 4, 9, 2, 7</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">2</span><span class="q-text">Find the <b>median</b> of:&nbsp; 11, 15, 12, 18, 14, 20</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">3</span><span class="q-text">Find the <b>mean</b> of:&nbsp; 3, 8, 5, 6</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">4</span><span class="q-text">Find the <b>mean</b> of:&nbsp; 2.5, 3.5, 4, 6</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">9</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2 · Set C</span></header>
-  <div class="content">
-  
-  <span class="tag you">Your turn: Set C continued.</span>
-  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">5</span><span class="q-text">Find the <b>mode</b> of:&nbsp; 6, 2, 8, 2, 6, 5</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">6</span><span class="q-text">The heights of six students (in cm) are 150, 145, 160, 155, 148 and 152. Find the <b>median</b> height.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">7</span><span class="q-text">The maximum temperatures (°C) for a week were 21, 24, 19, 24, 22, 23, 21. Find the <b>mean</b>, <b>median</b> and <b>mode</b>.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">10</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2 · Set C</span></header>
-  <div class="content">
-  
-  <span class="tag you">Your turn: Set C continued.</span>
-  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">8</span><span class="q-text">A soccer team scored 2, 0, 3, 1, 2, 4, 2, 2 goals in eight games. Find the <b>mean</b>, <b>median</b> and <b>mode</b>.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">9</span><span class="q-text">Find the <b>mean</b> of:&nbsp; 7, 9, 10, 12, 14</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">10</span><span class="q-text">Six friends get $15, $20, $10, $25, $20 and $30 pocket money each week. Find the <b>mean</b>, <b>median</b> and <b>mode</b>.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">11</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3</span></header>
-  <div class="content">
-  
-  <div class="banner lvl3">
-    <span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span>
-  </div>
-  
-  <span class="tag teacher">Teacher example: copy the working as your teacher shows you</span>
-  <div class="stack grow">
-    
-  <div class="q example">
-    <div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">The mean of five numbers is 8. Four of the numbers are 6, 9, 5 and 10. Find the <b>fifth number</b>.</span></div>
-    <div class="work"></div>
-  </div>
-    
-  <div class="q example">
-    <div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">The ages of six people at a party are 11, 12, 12, 13, 12 and 44. Find the <b>mean</b> and <b>median</b> age. Which one better describes a typical age at the party? Explain why.</span></div>
-    <div class="work"></div>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">12</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3 · Set D</span></header>
-  <div class="content">
-  
-  <div class="banner lvl3">
-    <span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span>
-  </div>
-  
-  <span class="tag you">Your turn: Set D. Show your working in each box.</span>
-  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">1</span><span class="q-text">The mean of four numbers is 6. Three of the numbers are 4, 7 and 8. Find the fourth number.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">2</span><span class="q-text">The mean of five test scores is 72. Four of the scores are 68, 75, 70 and 80. Find the fifth score.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">3</span><span class="q-text">Write a set of five numbers that has a mean of 6, a median of 5 and a mode of 4.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">13</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3 · Set D</span></header>
-  <div class="content">
-  
-  <span class="tag you">Your turn: Set D continued.</span>
-  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">4</span><span class="q-text">For the data 3, 5, 6, 6, 40, find the mean and the median. Which is the better measure of centre? Explain why.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">5</span><span class="q-text">The number 20 is added to the data set 4, 6, 7, 8, 10. How do the mean and the median change?</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">6</span><span class="q-text">Mia scored 7, 8, 6 and 9 on four quizzes. What does she need to score on her fifth quiz to have a mean of 8?</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">14</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3 · Set D</span></header>
-  <div class="content">
-  
-  <span class="tag you">Your turn: Set D continued.</span>
-  <div class="grid-stack grow" style="grid-template-rows: repeat(4, 1fr)">
-  <div class="q ">
-    <div class="q-head"><span class="q-num">7</span><span class="q-text">Three whole numbers have a mean of 10 and a median of 9. The smallest number is 5. Find the largest number.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">8</span><span class="q-text">The mean of six numbers is 15. When one number is removed, the mean of the other five is 14. Which number was removed?</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">9</span><span class="q-text">A shoe shop sold these sizes today: 7, 8, 8, 9, 10, 8, 11. The owner wants to know which size to order the most of. Should she use the mean, median or mode? Explain.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  <div class="q ">
-    <div class="q-head"><span class="q-num">10</span><span class="q-text">Class A scored 12, 15, 15, 18, 20 and Class B scored 10, 14, 16, 19, 21 on a quiz. Compare the two classes using the mean and the median.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div></div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">15</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Extension</span></header>
-  <div class="content">
-  
-  <div class="banner lvl4">
-    <span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span>
-  </div>
-  <p class="instruction">Read the worked example carefully, then try the extension questions.</p>
-  
-  <div class="worked lvl4">
-    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
-    <p class="worked-q">The mean age of four friends is 13. When a fifth friend joins the group, the mean age becomes 14. How old is the fifth friend?</p>
-    <ol class="steps"><li>Find the total of the four ages: &nbsp;4 × 13 = 52</li><li>Find the total of all five ages: &nbsp;5 × 14 = 70</li><li>The difference is the new friend’s age: &nbsp;70 − 52 = 18</li><li>Check: &nbsp;(52 + 18) ÷ 5 = 70 ÷ 5 = 14 ✓</li></ol>
-    <p class="worked-a"><b>Answer:</b> the fifth friend is 18 years old.</p>
-  </div>
-  <p class="tip"><b>Key idea:</b> mean × number of values = total. Working with totals makes “missing value” questions much easier.</p>
-  <div class="stack grow">
-    
-  <div class="q ">
-    <div class="q-head"><span class="q-num">E1</span><span class="q-text">The mean mark of 10 students on a test is 65. The teacher re-marks one test and adds 15 marks to it. What is the new mean?</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">16</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Extension</span></header>
-  <div class="content">
-  <span class="tag you">Your turn: Extension continued.</span>
-  <div class="stack grow">
-    
-  <div class="q ">
-    <div class="q-head"><span class="q-num">E2</span><span class="q-text">A list of five positive whole numbers has a mean of 7, a median of 8 and only one mode, which is 9. Find <b>all</b> the possible lists.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-    
-  <div class="q ">
-    <div class="q-head"><span class="q-num">E3</span><span class="q-text">The mean of three consecutive whole numbers is 17. (a)&nbsp;What are the numbers? (b)&nbsp;Explain why the mean of any three consecutive whole numbers is always the middle number.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">17</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Summary</span></header>
-  <div class="content">
-  <div class="banner summary"><span class="banner-title">Lesson summary</span></div>
-  <p class="instruction">Missed the lesson? Start here. These pages show you everything you need, step by step.</p>
-  <div class="key-ideas">
-    <div class="idea">
-      <h3>Mean</h3>
-      <p>The <b>average</b>. Add up all the values, then divide by how many values there are.</p>
-      <p class="formula">mean = total of the values ÷ number of values</p>
-    </div>
-    <div class="idea">
-      <h3>Median</h3>
-      <p>The <b>middle value</b> when the data is written in order from smallest to largest.</p>
-      <p class="formula">Two middle values? The median is halfway between them.</p>
-    </div>
-    <div class="idea">
-      <h3>Mode</h3>
-      <p>The value that appears <b>most often</b>.</p>
-      <p class="formula">There can be no mode, or more than one mode.</p>
-    </div>
-  </div>
-  <div class="card median-trick">
-    <h3>Finding the median: cross off from both ends</h3>
-    <p class="card-sub">Put the data in order, then cross off one value from each end until you reach the middle.</p>
-    <div class="trick-row">
-      <div class="trick-label"><b>Odd</b> number of values<br><span>one middle value</span></div>
-      <span class="chips"><span class="chip out">3</span><span class="chip out">5</span><span class="chip mid">5</span><span class="chip out">7</span><span class="chip out">10</span></span>
-      <div class="trick-result">median = <b>5</b></div>
-    </div>
-    <div class="trick-row">
-      <div class="trick-label"><b>Even</b> number of values<br><span>two middle values</span></div>
-      <span class="chips"><span class="chip out">4</span><span class="chip out">6</span><span class="chip mid">7</span><span class="chip mid">9</span><span class="chip out">10</span><span class="chip out">12</span></span>
-      <div class="trick-result">median = (7 + 9) ÷ 2 = <b>8</b></div>
-    </div>
-  </div>
-  <div class="card which grow">
-    <h3>Which measure should I use?</h3>
-    <table>
-      <tr><td><b>Mean</b></td><td>Uses every value. Best when there are no unusually large or small values.<span class="eg">e.g. quiz scores 6, 7, 8, 9: mean = 7.5</span></td></tr>
-      <tr><td><b>Median</b></td><td>Not pulled around by an <b>outlier</b> (a value much bigger or smaller than the rest). Best when the data has an outlier.<span class="eg">e.g. ages 11, 12, 12, 13, 44: median = 12, but the mean is 18.4</span></td></tr>
-      <tr><td><b>Mode</b></td><td>Shows the most common value. Best for finding the most popular choice, like a shoe size or favourite colour.<span class="eg">e.g. shoe sizes sold 7, 8, 8, 9, 8: mode = size 8</span></td></tr>
-    </table>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">18</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Summary</span></header>
-  <div class="content">
-  <div class="stack grow">
-  
-  <div class="worked lvl1">
-    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1 worked example</b></div>
-    <p class="worked-q">Find the mean, median and mode of:&nbsp; 3, 5, 7, 5, 10</p>
-    <ol class="steps"><li><b>Mean:</b> add up the values: &nbsp;3 + 5 + 7 + 5 + 10 = 30</li><li>Count the values: there are <b>5</b> values</li><li>Divide the total by the count: &nbsp;30 ÷ 5 = <b>6</b></li><li><b>Median:</b> write the values in order: &nbsp;3, 5, 5, 7, 10</li><li>Cross off from both ends. The middle (3rd) value is <b>5</b></li><li><b>Mode:</b> 5 appears twice. Every other value appears once, so the mode is <b>5</b></li></ol>
-    <p class="worked-a"><b>Answer:</b> mean = 6, median = 5, mode = 5</p>
-  </div>
-  
-  <div class="worked lvl2">
-    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2 worked example</b></div>
-    <p class="worked-q">Find the mean, median and mode of:&nbsp; 9, 4, 12, 6, 10, 7</p>
-    <ol class="steps"><li><b>Mean:</b> add up the values: &nbsp;9 + 4 + 12 + 6 + 10 + 7 = 48</li><li>There are 6 values, so the mean is &nbsp;48 ÷ 6 = <b>8</b></li><li><b>Median:</b> write the values in order: &nbsp;4, 6, 7, 9, 10, 12</li><li>There are 6 values (an even number), so there are <b>two</b> middle values: 7 and 9</li><li>Find halfway between them: &nbsp;(7 + 9) ÷ 2 = 16 ÷ 2 = <b>8</b></li><li><b>Mode:</b> every value appears only once, so there is <b>no mode</b></li></ol>
-    <p class="worked-a"><b>Answer:</b> mean = 8, median = 8, no mode</p>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">19</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Summary</span></header>
-  <div class="content">
-  <div class="stack grow">
-  
-  <div class="worked lvl3">
-    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3 worked example</b></div>
-    <p class="worked-q">The mean of four test scores is 15. Three of the scores are 12, 18 and 14. Find the fourth score.</p>
-    <ol class="steps"><li><b>Total of all four scores:</b> mean × number of scores = 15 × 4 = 60</li><li><b>Total of the three known scores:</b> 12 + 18 + 14 = 44</li><li><b>Missing score:</b> 60 − 44 = 16</li><li><b>Check:</b> (12 + 18 + 14 + 16) ÷ 4 = 60 ÷ 4 = 15 ✓</li></ol>
-    <p class="worked-a"><b>Answer:</b> the fourth score is 16</p>
-  </div>
-  
-  <div class="worked lvl4">
-    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension worked example</b></div>
-    <p class="worked-q">The mean of five numbers is 10. A sixth number is added and the mean becomes 12. What number was added?</p>
-    <ol class="steps"><li><b>Total of the five numbers:</b> 5 × 10 = 50</li><li><b>Total of the six numbers:</b> 6 × 12 = 72</li><li><b>Number added:</b> 72 − 50 = 22</li><li><b>Check:</b> 72 ÷ 6 = 12 ✓</li></ol>
-    <p class="worked-a"><b>Answer:</b> the number added was 22</p>
-  </div>
-  <div class="card checklist">
-    <h3>Common mistakes to avoid</h3>
-    <ul>
-      <li>Forgetting to <b>put the data in order</b> before finding the median.</li>
-      <li>Dividing by the wrong number when finding the mean. <b>Count the values carefully.</b></li>
-      <li>Giving the <b>position</b> of the median (e.g. “the 3rd value”) instead of the value itself.</li>
-      <li>Thinking there must always be one mode. There can be <b>none</b>, or <b>more than one</b>.</li>
-      <li>An <b>outlier</b> pulls the mean towards it. The median is not affected as much.</li>
-    </ul>
-  </div>
-  </div>
-</div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">20</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
-</section>
-
-<section class="page ">
-  <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Exit ticket</span></header>
-  <div class="content">
-  <div class="card selfcheck">
-    <h3>Before you go: how did you go today?</h3>
-    <p class="card-sub">Tick one box for each success criterion.</p>
-    <table>
-      <tr><th>I can…</th><th>Not yet</th><th>Nearly</th><th>Got it!</th></tr>
-      <tr><td>find the mean of a data set</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr><tr><td>find the median, including when there are two middle values</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr><tr><td>find the mode, and tell when there is no mode or more than one</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr><tr><td>work backwards from the mean to find a missing value</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr>
-    </table>
-  </div>
+  <span class="tag you">Your turn: Set D. Questions 1–5 use the picture graph and 6–10 use the column graph.</span>
+  <div class="work-grid tall grow">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">What percentage of people are aged 65+?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">What percentage of people are under 25?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">The town has 5000 people. How many are aged 0–14?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">How many symbols would show 30% of the town?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">Why might 65+ be the biggest group in this town?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">Which 2 ways of listening add up to 75% of people?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">7</span><span class="q-text">What fraction of people listen to the radio?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">8</span><span class="q-text">In a survey of 400 people, how many use downloads?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">9</span><span class="q-text">Out of 400 people, how many more stream than use radio?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">10</span><span class="q-text">How might this graph change in 10 years? Why?</span></div><div class="box"></div></div></div>
+  <div class="tear-space"></div>
   <div class="tear-zone">
-    <div class="cut-line"><span>✂ Tear or cut along this line and hand the bottom part to your teacher ✂</span></div>
-    <div class="exit">
-      <div class="exit-head">
-        <div><h2>Show off your skill</h2><p>Choose <b>ONE</b> question and circle the level you chose. Show your working.</p></div>
-        <div class="exit-name"><span>Name</span><i></i><span>Class</span><i class="short"></i></div>
-      </div>
-      <div class="exit-cols">
-        
-  <div class="q exit-q">
-    <div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Find the <b>mean</b> of:<br>4, 6, 8, 10, 12</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-        
-  <div class="q exit-q">
-    <div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Find the <b>median</b> and <b>mode</b> of:<br>9, 3, 7, 3, 11, 6</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-        
-  <div class="q exit-q">
-    <div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">The mean of four numbers is 9. Three of them are 7, 12 and 5. Find the <b>fourth number</b>.</span></div>
-    <div class="work"></div>
-    <div class="answer-line"><span>Answer:</span><i></i></div>
-  </div>
-      </div>
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body">
+      <div class="graph-card"><svg class="graph" viewBox="0 0 60 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:60/46"><text x="30" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Pets owned by 7B</text><line x1="13" x2="58" y1="36" y2="36" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="36.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13" x2="58" y1="33.2" y2="33.2" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="58" y1="30.4" y2="30.4" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="31.299999999999997" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">2</text><line x1="13" x2="58" y1="27.6" y2="27.6" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="58" y1="24.799999999999997" y2="24.799999999999997" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="25.699999999999996" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">4</text><line x1="13" x2="58" y1="22" y2="22" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="58" y1="19.2" y2="19.2" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="20.099999999999998" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">6</text><line x1="13" x2="58" y1="16.400000000000002" y2="16.400000000000002" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="58" y1="13.599999999999998" y2="13.599999999999998" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="14.499999999999998" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">8</text><line x1="13" x2="58" y1="10.8" y2="10.8" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13" x2="58" y1="8" y2="8" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">10</text><rect x="14.62" y="10.8" width="5.76" height="25.2" fill="#3f63be"/><text x="17.5" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Dog</text><rect x="23.62" y="19.2" width="5.76" height="16.8" fill="#3f63be"/><text x="26.5" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Cat</text><rect x="32.62" y="27.6" width="5.76" height="8.399999999999999" fill="#3f63be"/><text x="35.5" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Fish</text><rect x="41.62" y="30.4" width="5.76" height="5.600000000000001" fill="#3f63be"/><text x="44.5" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Bird</text><rect x="50.62" y="22" width="5.76" height="14" fill="#3f63be"/><text x="53.5" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">No pet</text><line x1="13" x2="13" y1="7" y2="36" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13" x2="58" y1="36" y2="36" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22)">Number of students</text></svg></div>
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">How many students in 7B own a cat?</span></div><div class="box"></div></div>
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">What fraction of the class owns a dog?</span></div><div class="box"></div></div>
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">What percentage of 7B has no pet? Out of 200 Year 7s, how many would you expect to have no pet?</span></div><div class="box"></div></div>
     </div>
   </div>
 </div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">21</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">3</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
 </section>
 
-<section class="page ">
+<section class="page">
   <div class="art-strip"></div>
-  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Reflection</span></header>
+  <header class="page-head"><span>Data Analysis · 10.01 Interpreting graphs</span><span class="sec">Extension · Summary</span></header>
   <div class="content">
-  <h2>Questions I still have</h2>
-  <p class="instruction">Write anything you are still unsure about. Ask your teacher about it next lesson.</p>
-  <div class="work notes reflect"></div>
+  <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+  <div class="split ext grow">
+    
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <p class="worked-q">In a survey of 72 students, the <b>Soccer</b> sector of a sector graph has an angle of 90°. How many students chose soccer?</p>
+    <ol class="steps"><li>A full circle is 360°, so 90° is 90/360 = ¼ of the circle</li><li>¼ of 72 = 72 ÷ 4 = 18</li></ol>
+    <div class="diagram"><svg class="graph" viewBox="0 0 74 40" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:74/40">
+        <circle cx="20" cy="20" r="16" fill="#c2bea8" opacity="0.45" stroke="#3d3b3c" stroke-width="0.3"/>
+        <path d="M20,20 L20,4 A16,16 0 0 1 36,20 Z" fill="#3f63be" stroke="#3d3b3c" stroke-width="0.3"/>
+        <path d="M20,17 L23,17 L23,20" fill="none" stroke="#fff" stroke-width="0.4"/>
+        <text x="27" y="14" font-size="3.2" text-anchor="middle" font-weight="600" fill="#fff">90°</text>
+        <text x="14" y="28" font-size="3" text-anchor="middle" font-weight="400" fill="#26292e">270°</text>
+        <text x="40" y="16" font-size="2.8" text-anchor="start" font-weight="400" fill="#26292e">90° out of 360°</text>
+        <text x="40" y="21" font-size="2.8" text-anchor="start" font-weight="600" fill="#26292e">= ¼ of the circle</text>
+        <text x="40" y="26" font-size="2.8" text-anchor="start" font-weight="400" fill="#26292e">= ¼ of the students</text></svg></div>
+    <p class="worked-a"><b>Answer:</b> 18 students chose soccer</p>
+  </div>
+    <div class="col ext-qs">
+      
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">A survey of 240 people has a <b>Tennis</b> sector of 60°. How many chose tennis?</span></div><div class="box"></div></div>
+      
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">In a survey of 180 people, 45 chose pizza. What angle should the pizza sector be?</span></div><div class="box"></div></div>
+      
+  <div class="q "><div class="q-head"><span class="q-num">E3</span><span class="q-text">In a picture graph, one symbol = 8 students. How many students do 3¾ symbols show? How would you show 20 students?</span></div><div class="box"></div></div>
+    </div>
+  </div>
+  <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+  <div class="summary-grid">
+    <div class="steps-card"><b>Reading any graph</b><ol><li>Read the <b>title</b>: what is the graph about?</li><li>Check the <b>key</b> or the <b>scale</b> on each axis.</li><li>Use a ruler to line up bars and points with the scale.</li><li>Answer with the right <b>units</b> (students, °C, %).</li></ol></div>
+    
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <p class="worked-q">In a picture graph, <svg class="sym" viewBox="-2.9 -2.9 5.8 5.8"><circle cx="0" cy="0" r="1.4" fill="#3f63be"/><circle cx="0.00" cy="-2.25" r="0.5" fill="#c2bea8"/><circle cx="1.32" cy="-1.82" r="0.5" fill="#c2bea8"/><circle cx="2.14" cy="-0.70" r="0.5" fill="#c2bea8"/><circle cx="2.14" cy="0.70" r="0.5" fill="#c2bea8"/><circle cx="1.32" cy="1.82" r="0.5" fill="#c2bea8"/><circle cx="0.00" cy="2.25" r="0.5" fill="#c2bea8"/><circle cx="-1.32" cy="1.82" r="0.5" fill="#c2bea8"/><circle cx="-2.14" cy="0.70" r="0.5" fill="#c2bea8"/><circle cx="-2.14" cy="-0.70" r="0.5" fill="#c2bea8"/><circle cx="-1.32" cy="-1.82" r="0.5" fill="#c2bea8"/></svg> = 10 students. A row shows 3½ symbols. How many students is that?</p>
+    <ol class="steps"><li>3 full symbols = 3 × 10 = 30</li><li>Half a symbol = 10 ÷ 2 = 5</li><li>30 + 5 = 35</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 35 students</p>
+  </div>
+    
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <p class="worked-q">A sector graph shows 80 people. The <b>Surfing</b> sector is a quarter of the circle. How many chose surfing?</p>
+    <ol class="steps"><li>A quarter means divide by 4</li><li>80 ÷ 4 = 20</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 20 people</p>
+  </div>
+    
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <p class="worked-q">A graph shows 45% of 400 students catch the bus. How many students is that?</p>
+    <ol class="steps"><li>45% means 45 out of every 100</li><li>400 has 4 hundreds, so 45 × 4 = 180</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 180 students</p>
+  </div>
+    
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <p class="worked-q">A 120° sector shows the results for 90 people. How many people is that?</p>
+    <ol class="steps"><li>120/360 = ⅓ of the circle</li><li>⅓ of 90 = 90 ÷ 3 = 30</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 30 people</p>
+  </div>
+  </div>
+  <div class="tear-space"></div>
   <div class="tear-zone back">
     <div class="cut-line"><span>✂</span></div>
-    <div class="blank-note">This space is left blank on purpose.<br>It is the back of your exit ticket.</div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
   </div>
 </div>
-  <footer class="page-foot">
-    <span>Artwork © Marni Tuala</span><span class="pn">22</span><span>Kingscliff High School · Year 7 Mathematics</span>
-  </footer>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">4</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
 </section></body></html>
