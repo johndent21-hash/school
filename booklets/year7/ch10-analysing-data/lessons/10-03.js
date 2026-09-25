@@ -1,7 +1,7 @@
 // 10.03 Dot plots: reading dot plots, drawing them from data, mode, outliers and clusters.
 const G = require('../../../lib/graphs');
 const S = require('../../../lib/stats');
-const { banner, weDo, youDo, q, qDraw, qs, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
+const { banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
 
 module.exports = (chapter) => {
   const L = makeLesson({ chapter, code: '10.03', title: 'Dot plots' });
@@ -35,14 +35,8 @@ module.exports = (chapter) => {
     'What percentage sent exactly 6 texts?', 'Describe where the data clusters.', 'If the outlier is removed, does the mode change? Explain.',
     'Why is a dot plot a good choice for this data?', 'Write one sentence that sums up what the dot plot shows.'];
 
-  const ext = split(worked(4, 'Worked example', 'Make up 8 values whose dot plot has a mode of 5, a cluster from 4 to 6, and an outlier at 12.',
-    ['Put the most dots at 5: 5, 5, 5', 'Add values close by for the cluster: 4, 4, 6, 6', 'Add one value far away for the outlier: 12'],
-    '<b>Answer:</b> 4, 4, 5, 5, 5, 6, 6, 12',
-    `<div class="diagram">${G.dotPlot({ min: 3, max: 12, counts: { 4: 2, 5: 3, 6: 2, 12: 1 }, w: 80 })}</div>`),
-    youDo('read the worked example, then try these.', `<div class="stack">
-      ${qDraw('E1', 'Make up 10 values with a mode of 3 and one outlier. Draw the dot plot.', `<div class="template-card">${G.dotPlotTemplate({ ticks: 12, labels: false, w: 88, h: 17 })}</div>`)}
-      ${q('E2', 'Of 30 values, ⅓ are 7s. There are twice as many 7s as 8s. How many 8s?')}
-      ${q('E3', 'Why would a dot plot <b>not</b> suit the heights of 200 students?')}</div>`, 'fill'), 'ext grow');
+  const tpl = (opts) => `<div class="template-card">${G.dotPlotTemplate({ w: 176, h: 30, ...opts })}</div>`;
+  const tplHalf = (opts) => `<div class="template-card">${G.dotPlotTemplate({ w: 88, h: 30, ...opts })}</div>`;
 
   const pages = [
     L.page('Start here · Level 1', `
@@ -54,58 +48,72 @@ module.exports = (chapter) => {
       ${L.notes()}
       ${banner(1)}
       ${split(graphCard(g.pets), weDo(`<div class="col">${example('Example 1', 'How many students have 2 pets? How many students were surveyed?')}${example('Example 2', 'What is the mode? Which value is an outlier?')}</div>`, 'fill'))}
-      ${youDo('Set A. Use the sleep dot plot.', split(graphCard(g.sleep), `<div class="short-list">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>`))}
     `, { first: true }),
 
-    L.page('Level 1 · Level 2', `
+    L.page('Level 1', `
+      ${youDo('Set A. Use the sleep dot plot.', split(graphCard(g.sleep), `<div class="short-list">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>`))}
       ${youDo('Set B. Shoe sizes of 16 students.', `
         <p class="given"><b>Data:</b> ${shoes.join(', ')}</p>
-        ${split(
-          qDraw(1, 'Complete the frequency table.', G.table(['Size', '6', '7', '8', '9', '10'], [['Tally', '', '', '', '', ''], ['Frequency', '', '', '', '', '']], 'blank')),
-          qDraw(2, 'Draw a dot plot of the shoe sizes.', `<div class="template-card">${G.dotPlotTemplate({ min: 5, max: 11, w: 88, h: 25, xTitle: 'Shoe size' })}</div>`))}
-        <div class="short-grid" style="grid-template-rows: repeat(4, auto)">${setBShort.map((t, i) => qs(i + 3, t)).join('')}</div>`)}
-      ${banner(2)}
-      ${weDo(split(
-        example('Example 3', 'Draw a dot plot for: 12, 14, 13, 12, 15, 12, 14, 20', `<div class="template-card">${G.dotPlotTemplate({ min: 11, max: 21, w: 88, h: 22 })}</div>`),
-        example('Example 4', 'Describe the dot plot in Example 3. Where is the cluster? Is there an outlier?'), 'ex-row'))}
-      ${youDo('Set C. Use the temperature dot plot.', `${graphCard(g.temps)}<div class="short-grid fill">${setC.map((t, i) => `<div class="qs wide-box"><span class="q-num">${i + 1}</span><span class="q-text">${t}</span><span class="box"></span></div>`).join('')}</div>`, 'grow')}
+        ${qDraw(1, 'Complete the frequency table.', G.table(['Size', '6', '7', '8', '9', '10'], [['Tally', '', '', '', '', ''], ['Frequency', '', '', '', '', '']], 'blank'))}
+        ${qDraw(2, 'Draw a dot plot of the shoe sizes.', tpl({ min: 5, max: 11, h: 34, xTitle: 'Shoe size' }))}
+        ${qsGrid(setBShort, { start: 3 })}`, 'grow')}
     `),
 
-    L.page('Level 3 · Exit ticket', `
-      ${banner(3, 'Finished Set D? Try the extension on the next page.')}
+    L.page('Level 2', `
+      ${banner(2)}
+      ${weDo(`${example('Example 3', 'Draw a dot plot for: 12, 14, 13, 12, 15, 12, 14, 20', tpl({ min: 11, max: 21 }))}
+        <div class="ex-row tall">${example('Example 4', 'Describe the dot plot in Example 3. What is the mode? Where is the cluster? Is there an outlier?')}</div>`)}
+      ${youDo('Set C. Use the temperature dot plot.', `${graphCard(g.temps)}${qsGrid(setC, { wide: true })}`, 'grow')}
+    `),
+
+    L.page('Level 3', `
+      ${banner(3)}
       ${weDo(`
         <p class="given"><b>Test scores out of 10:</b> 5, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 10, 2, 6, 7, 8, 9, 7, 8</p>
-        ${split(example('Example 5', 'Draw a dot plot of the test scores. Choose your own scale and label it.', `<div class="template-card">${G.dotPlotTemplate({ ticks: 11, labels: false, w: 88, h: 24 })}</div>`),
-          example('Example 6', 'Describe the shape of the data. What does it tell the teacher about the class?'), 'ex-row tall')}`)}
-      ${youDo('Set D. Text messages sent in one day by 25 students.', `
-        <p class="given"><b>Data:</b> ${texts.join(', ')}</p>
-        ${qDraw(1, 'Draw a dot plot of the data. Choose a scale that fits every value, and label the axis.', `<div class="template-card">${G.dotPlotTemplate({ ticks: 30, labels: false, w: 176, h: 26 })}</div>`)}
-        <div class="work-grid c3 r3">${setD.map((t, i) => q(i + 2, t)).join('')}</div>`, 'grow')}
-      ${L.exitTicket({ graph: g.exit, questions: ['What is the mode?', 'What fraction of the games had 3 goals or fewer? Simplify.', 'Which value is the outlier? Describe where the other values cluster.'] })}
+        ${example('Example 5', 'Draw a dot plot of the test scores. Choose your own scale and label it.', tpl({ ticks: 11, labels: false, h: 36 }))}
+        <div class="ex-row grow-ex">${example('Example 6', 'Describe the shape of the data. What does the dot plot tell the teacher about the class?')}</div>`, 'grow')}
     `),
 
-    L.page('Extension · Summary', `
-      ${banner(4)}
-      ${ext}
-      ${L.summaryBanner}
-      <div class="summary-grid">
-        <div class="steps-card"><b>Drawing a dot plot</b><ol><li>Find the smallest and largest values.</li><li>Draw a number line with an <b>even scale</b>.</li><li>Put one dot per value above the line. Stack neatly.</li><li>Add a <b>title</b> and label the axis.</li></ol></div>
-        ${worked(1, 'Level 1', 'How many students have 2 siblings? What is the mode?', ['Count the dots above 2: 4', 'Tallest stack is above 1'], '<b>Answer:</b> 4; mode 1',
-          `<div class="diagram">${G.dotPlot({ min: 0, max: 4, counts: { 0: 2, 1: 5, 2: 4, 3: 1, 4: 1 }, w: 44, dotR: 1.1 })}</div>`)}
-        ${worked(2, 'Level 2', 'Draw a dot plot for: 3, 5, 4, 5, 6, 5, 4', ['Line from 3 to 6', 'One dot for each value'], '<b>Answer:</b> mode 5',
-          `<div class="diagram">${G.dotPlot({ min: 3, max: 6, counts: { 3: 1, 4: 2, 5: 3, 6: 1 }, w: 40, dotR: 1.1 })}</div>`)}
-        ${worked(3, 'Level 3', 'What fraction of these 20 days were warmer than 25&nbsp;°C?', ['Dots above 26 and 27: 5 + 3 = 8', '8/20 = 2/5'], '<b>Answer:</b> 2/5 (40%)',
-          `<div class="diagram">${G.dotPlot({ min: 22, max: 27, counts: { 22: 1, 23: 2, 24: 4, 25: 5, 26: 5, 27: 3 }, w: 44, dotR: 1.1 })}</div>`)}
-        ${worked(4, 'Extension', 'Describe the dot plot using a cluster and an outlier.', ['Values bunch from 4 to 6', '12 is far away'], '<b>Answer:</b> cluster 4–6, outlier 12',
-          `<div class="diagram">${G.dotPlot({ min: 3, max: 12, counts: { 4: 2, 5: 3, 6: 2, 12: 1 }, w: 50, dotR: 1.1 })}</div>`)}
-      </div>
+    L.page('Level 3', `
+      ${youDo('Set D. Text messages sent in one day by 25 students.', `
+        <p class="given"><b>Data:</b> ${texts.join(', ')}</p>
+        ${qDraw(1, 'Draw a dot plot of the data. Choose a scale that fits every value, and label the axis.', tpl({ ticks: 30, labels: false, h: 40 }))}
+        ${qGrid(setD.slice(0, 4), { start: 2 })}`, 'grow')}
+    `),
+
+    L.page('Level 3', `
+      ${youDo('Set D continued. Use your dot plot from the previous page.', qGrid(setD.slice(4), { start: 6, cols: 1 }), 'grow')}
+    `),
+
+    L.page('Extension · Exit ticket', `
+      ${extension(worked(4, 'Worked example', 'Make up 8 values whose dot plot has a mode of 5, a cluster from 4 to 6, and an outlier at 12.',
+        ['Put the most dots at 5: 5, 5, 5', 'Add values close by for the cluster: 4, 4, 6, 6', 'Add one value far away for the outlier: 12'],
+        '<b>Answer:</b> 4, 4, 5, 5, 5, 6, 6, 12',
+        `<div class="diagram">${G.dotPlot({ min: 3, max: 12, counts: { 4: 2, 5: 3, 6: 2, 12: 1 }, w: 80 })}</div>`),
+        `${qDraw('E1', 'Make up 10 values with a mode of 3 and one outlier. Draw the dot plot.', tplHalf({ ticks: 12, labels: false }))}
+         ${q('E2', 'Of 30 values, ⅓ are 7s. There are twice as many 7s as 8s. How many 8s?')}
+         ${q('E3', 'Why would a dot plot <b>not</b> suit the heights of 200 students?')}`)}
+      ${L.exitTicket({ graph: g.exit, questions: ['What is the mode?', 'What fraction of the games had 3 goals or fewer? Simplify.', 'Which value is the outlier? Where do the other values cluster?'] })}
+    `),
+
+    L.page('Summary', `
+      ${L.summary('Drawing a dot plot', ['Find the smallest and largest values.', 'Draw a number line with an <b>even scale</b>.', 'Put one dot per value above the line. Stack neatly.', 'Add a <b>title</b> and label the axis.'], [
+        worked(1, 'Level 1', 'How many students have 2 siblings? What is the mode?', ['Count the dots above 2: there are 4', 'The tallest stack is above 1'], '<b>Answer:</b> 4 students; mode 1',
+          `<div class="diagram">${G.dotPlot({ min: 0, max: 4, counts: { 0: 2, 1: 5, 2: 4, 3: 1, 4: 1 }, w: 60 })}</div>`),
+        worked(2, 'Level 2', 'Draw a dot plot for: 3, 5, 4, 5, 6, 5, 4', ['Smallest 3, largest 6: draw a line from 3 to 6', 'Put one dot above the line for each value'], '<b>Answer:</b> the dot plot below (mode 5)',
+          `<div class="diagram">${G.dotPlot({ min: 3, max: 6, counts: { 3: 1, 4: 2, 5: 3, 6: 1 }, w: 50 })}</div>`),
+        worked(3, 'Level 3', 'What fraction of these 20 days were warmer than 25&nbsp;°C?', ['Count the dots above 26 and 27: 5 + 3 = 8', 'Fraction = 8/20 = 2/5'], '<b>Answer:</b> 2/5 of the days (40%)',
+          `<div class="diagram">${G.dotPlot({ min: 22, max: 27, counts: { 22: 1, 23: 2, 24: 4, 25: 5, 26: 5, 27: 3 }, w: 60 })}</div>`),
+        worked(4, 'Extension', 'Describe the dot plot using a cluster and an outlier.', ['Most values bunch together from 4 to 6', '12 is far away from the rest'], '<b>Answer:</b> cluster from 4 to 6, outlier 12',
+          `<div class="diagram">${G.dotPlot({ min: 3, max: 12, counts: { 4: 2, 5: 3, 6: 2, 12: 1 }, w: 64 })}</div>`),
+      ])}
       ${L.tearBack()}
     `),
   ];
 
   const shoeCounts = [6, 7, 8, 9, 10].map((v) => count(shoes, (x) => x === v));
   const answers = [
-    ['WE DO examples', ['Ex 1: 5 students have 2 pets; 20 students surveyed', 'Ex 2: mode 1; outlier 7', 'Ex 3: dots at 12 (3), 13 (1), 14 (2), 15 (1), 20 (1)', 'Ex 4: cluster from 12 to 15; outlier 20',
+    ['WE DO examples', ['Ex 1: 5 students have 2 pets; 20 students surveyed', 'Ex 2: mode 1; outlier 7', 'Ex 3: dots at 12 (3), 13 (1), 14 (2), 15 (1), 20 (1)', 'Ex 4: mode 12; cluster from 12 to 15; outlier 20',
       'Ex 5: scale 0 to 10; dots at 2 (1), 5 (1), 6 (3), 7 (6), 8 (5), 9 (3), 10 (1)', 'Ex 6: most scores cluster from 6 to 9 (mode 7); 2 is an outlier, so one student may need help']],
     ['Set A', ['20', '6', '4', '8 hours', '6 hours', '12 hours', '12', '10', '4', '3']],
     ['Set B', [`Frequencies: size 6: ${shoeCounts[0]}, 7: ${shoeCounts[1]}, 8: ${shoeCounts[2]}, 9: ${shoeCounts[3]}, 10: ${shoeCounts[4]}`, 'Dot plot matching the table', '8', '3', '4', '6', '6', 'No', '6/16 = 3/8', '10']],

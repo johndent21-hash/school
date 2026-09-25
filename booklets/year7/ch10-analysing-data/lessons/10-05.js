@@ -1,7 +1,7 @@
 // 10.05 The mean and mode: calculating from lists, frequency tables and dot plots; missing values; effect of outliers.
 const G = require('../../../lib/graphs');
 const S = require('../../../lib/stats');
-const { banner, weDo, youDo, q, qs, example, worked, split, makeLesson } = require('../../../lib/layout');
+const { banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
 
 module.exports = (chapter) => {
   const L = makeLesson({ chapter, code: '10.05', title: 'The mean and mode' });
@@ -24,6 +24,19 @@ module.exports = (chapter) => {
   const cText = ([label, xs]) => (label.includes('times') || label.includes('twice') ? label : `${label}${list(xs)}`);
   const exitMM = [3, 7, 7, 2, 9, 5];
 
+  const setD = [
+          'The mean of four numbers is 6. Three of them are 4, 7 and 8. Find the fourth.',
+          'The mean of five test scores is 72. Four are 68, 75, 70 and 80. Find the fifth.',
+          'Write a set of five numbers with a mean of 6 and a mode of 4.',
+          'For 3, 5, 6, 6, 40, find the mean and mode. Which is the better measure? Why?',
+          'The number 20 is added to 4, 6, 7, 8, 10. How does the mean change?',
+          'Mia scored 7, 8, 6 and 9 on four quizzes. What must she score next to have a mean of 8?',
+          'The mean of six numbers is 15. One is removed and the mean of the other five is 14. Which number was removed?',
+          'Shoe sizes sold: 7, 8, 8, 9, 10, 8, 11. Should the shop use the mean or the mode to decide what to order? Why?',
+          'The mean of three whole numbers in a row (like 4, 5, 6) is 17. What are the numbers?',
+          'Class A: 12, 15, 15, 18, 20. Class B: 10, 14, 16, 19, 21. Compare their means and modes.',
+  ];
+
   const pages = [
     L.page('Start here · Level 1', `
       ${L.intro({
@@ -31,57 +44,53 @@ module.exports = (chapter) => {
         sc: ['find the <b>mean</b> by adding the values and dividing by how many there are', 'find the <b>mode</b>, and tell when there is no mode or more than one', 'work backwards from the mean to find a missing value'],
         terms: ['Mean', 'Mode'],
       })}
-      ${L.notes('fixed')}
+      ${L.notes()}
       ${banner(1)}
-      ${weDo(split(example('Example 1', 'Find the <b>mean</b> of: 4, 7, 5, 8, 6'), example('Example 2', 'Find the <b>mode</b> of: 3, 9, 4, 7, 4, 8, 5'), 'ex-row tall'))}
-      ${youDo('Set A. Find the <b>mean</b> of each set of numbers.', `<div class="work-grid">${setA.map((xs, i) => q(i + 1, list(xs))).join('')}</div>`, 'grow')}
+      ${weDo(split(example('Example 1', 'Find the <b>mean</b> of: 4, 7, 5, 8, 6'), example('Example 2', 'Find the <b>mode</b> of: 3, 9, 4, 7, 4, 8, 5'), 'ex-row grow-row'), 'grow')}
     `, { first: true }),
 
+    L.page('Level 1', `
+      ${youDo('Set A. Find the <b>mean</b> of each set of numbers.', qGrid(setA.map((xs) => list(xs))), 'grow')}
+    `),
+
     L.page('Level 1 · Level 2', `
-      ${youDo('Set B. Find the <b>mode</b>. Write “no mode” if there isn’t one.', `<div class="short-grid">${setB.map((xs, i) => qs(i + 1, xs ? list(xs) : 'red, blue, red, green, blue, red')).join('')}</div>`)}
+      ${youDo('Set B. Find the <b>mode</b>. Write “no mode” if there isn’t one.', qsGrid(setB.map((xs) => xs ? list(xs) : 'red, blue, red, green, blue, red'), { wide: true }))}
       ${banner(2)}
       ${weDo(split(
         example('Example 3', 'Find the mean and mode of: 5, 9, 8, 6, 9, 7. Round the mean to 2 decimal places.'),
-        example('Example 4', `Find the mean and mode of the scores in this table.<br>${G.table(['Score', '1', '2', '3', '4'], [['Frequency', '2', '5', '4', '1']])}`), 'ex-row tall'))}
-      ${youDo('Set C. Find the <b>mean</b> and the <b>mode</b>. Round the mean to 2 decimal places where needed.', `<div class="work-grid">${setC.map((c, i) => q(i + 1, cText(c))).join('')}</div>`, 'grow')}
+        example('Example 4', `Find the mean and mode of the scores in this table.<br>${G.table(['Score', '1', '2', '3', '4'], [['Frequency', '2', '5', '4', '1']])}`), 'ex-row grow-row'), 'grow')}
     `),
 
-    L.page('Level 3 · Exit ticket', `
-      ${banner(3, 'Finished Set D? Try the extension on the next page.')}
+    L.page('Level 2', `
+      ${youDo('Set C. Find the <b>mean</b> and the <b>mode</b>. Round the mean to 2 decimal places where needed.', qGrid(setC.map((c) => cText(c))), 'grow')}
+    `),
+
+    L.page('Level 3', `
+      ${banner(3)}
       ${weDo(split(
         example('Example 5', 'The mean of five numbers is 8. Four of them are 6, 9, 5 and 10. Find the fifth number.'),
         example('Example 6', 'Ages at a party: 11, 12, 12, 13, 12, 44. Find the mean and mode. Which better describes a typical age?'), 'ex-row tall'))}
-      ${youDo('Set D. Show your working.', `<div class="work-grid">
-        ${q(1, 'The mean of four numbers is 6. Three of them are 4, 7 and 8. Find the fourth.')}
-        ${q(2, 'The mean of five test scores is 72. Four are 68, 75, 70 and 80. Find the fifth.')}
-        ${q(3, 'Write a set of five numbers with a mean of 6 and a mode of 4.')}
-        ${q(4, 'For 3, 5, 6, 6, 40, find the mean and mode. Which is the better measure? Why?')}
-        ${q(5, 'The number 20 is added to 4, 6, 7, 8, 10. How does the mean change?')}
-        ${q(6, 'Mia scored 7, 8, 6 and 9 on four quizzes. What must she score next to have a mean of 8?')}
-        ${q(7, 'The mean of six numbers is 15. One is removed and the mean of the other five is 14. Which number was removed?')}
-        ${q(8, 'Shoe sizes sold: 7, 8, 8, 9, 10, 8, 11. Should the shop use the mean or the mode to decide what to order? Why?')}
-        ${q(9, 'The mean of three whole numbers in a row (like 4, 5, 6) is 17. What are the numbers?')}
-        ${q(10, 'Class A: 12, 15, 15, 18, 20. Class B: 10, 14, 16, 19, 21. Compare their means and modes.')}</div>`, 'grow')}
+      ${youDo('Set D. Show your working.', qGrid(setD.slice(0, 4)), 'grow')}
+    `),
+
+    L.page('Level 3', `
+      ${youDo('Set D continued. Show your working.', qGrid(setD.slice(4), { start: 5 }), 'grow')}
+    `),
+
+    L.page('Extension · Exit ticket', `
+      ${extension(worked(4, 'Worked example', 'The mean age of four friends is 13. A fifth friend joins and the mean age becomes 14. How old is the new friend?',
+        ['Total of four ages: 4 × 13 = 52', 'Total of five ages: 5 × 14 = 70', 'New friend: 70 − 52 = 18', 'Check: 70 ÷ 5 = 14 ✓'], '<b>Answer:</b> 18 years old',
+        '<p class="tip"><b>Key idea:</b> mean × number of values = total.</p>'), `${q('E1', 'The mean mark of 10 students is 65. One test is re-marked and gains 15 marks. What is the new mean?')}${q('E2', 'The mean of 8 numbers is 12. The numbers 5 and 9 are removed. What is the mean of the rest?')}${q('E3', 'Can the mean be a number that is not in the data? Give an example.')}`)}
       ${L.exitTicket({ questions: ['Find the mean of: 4, 6, 8, 10, 12', `Find the mean and mode of: ${list(exitMM)}`, 'The mean of four numbers is 9. Three of them are 7, 12 and 5. Find the fourth number.'] })}
     `),
 
-    L.page('Extension · Summary', `
-      ${banner(4)}
-      ${split(worked(4, 'Worked example', 'The mean age of four friends is 13. A fifth friend joins and the mean age becomes 14. How old is the new friend?',
-        ['Total of four ages: 4 × 13 = 52', 'Total of five ages: 5 × 14 = 70', 'New friend: 70 − 52 = 18', 'Check: 70 ÷ 5 = 14 ✓'], '<b>Answer:</b> 18 years old',
-        '<p class="tip"><b>Key idea:</b> mean × number of values = total.</p>'),
-        youDo('read the worked example, then try these.', `<div class="stack">
-          ${q('E1', 'The mean mark of 10 students is 65. One test is re-marked and gains 15 marks. What is the new mean?')}
-          ${q('E2', 'The mean of 8 numbers is 12. The numbers 5 and 9 are removed. What is the mean of the rest?')}
-          ${q('E3', 'Can the mean be a number that is not in the data? Give an example.')}</div>`, 'fill'), 'ext grow')}
-      ${L.summaryBanner}
-      <div class="summary-grid">
-        <div class="steps-card"><b>Remember</b><ol><li><b>Mean</b> = total of the values ÷ number of values.</li><li><b>Mode</b> = the value that appears most often.</li><li>There can be <b>no mode</b> or <b>more than one</b> mode.</li><li>An <b>outlier</b> pulls the mean towards it; the mode is not affected.</li></ol></div>
-        ${worked(1, 'Level 1', 'Find the mean and mode of 3, 5, 7, 5, 10', ['Total: 3 + 5 + 7 + 5 + 10 = 30', '5 values, so 30 ÷ 5 = 6', '5 appears most'], '<b>Answer:</b> mean 6, mode 5')}
-        ${worked(2, 'Level 2', 'Find the mean and mode of 7, 8, 6, 9, 9, 5, 8', ['Total = 52, 7 values', '52 ÷ 7 = 7.428… ≈ 7.43', '8 and 9 both appear twice'], '<b>Answer:</b> mean 7.43, modes 8 and 9')}
-        ${worked(3, 'Level 3', 'The mean of 4 scores is 15. Three are 12, 18, 14. Find the fourth.', ['Total needed: 4 × 15 = 60', 'Known total: 44', '60 − 44 = 16'], '<b>Answer:</b> 16')}
-        ${worked(4, 'Extension', '5 numbers have a mean of 10. A sixth is added and the mean is 12. What was added?', ['5 × 10 = 50', '6 × 12 = 72', '72 − 50 = 22'], '<b>Answer:</b> 22')}
-      </div>
+    L.page('Summary', `
+      ${L.summary('Remember', ['<b>Mean</b> = total of the values ÷ number of values.', '<b>Mode</b> = the value that appears most often.', 'There can be <b>no mode</b> or <b>more than one</b> mode.', 'An <b>outlier</b> pulls the mean towards it; the mode is not affected.'], [
+        worked(1, 'Level 1', 'Find the mean and mode of 3, 5, 7, 5, 10', ['Total: 3 + 5 + 7 + 5 + 10 = 30', '5 values, so 30 ÷ 5 = 6', '5 appears most'], '<b>Answer:</b> mean 6, mode 5'),
+        worked(2, 'Level 2', 'Find the mean and mode of 7, 8, 6, 9, 9, 5, 8', ['Total = 52, 7 values', '52 ÷ 7 = 7.428… ≈ 7.43', '8 and 9 both appear twice'], '<b>Answer:</b> mean 7.43, modes 8 and 9'),
+        worked(3, 'Level 3', 'The mean of 4 scores is 15. Three are 12, 18, 14. Find the fourth.', ['Total needed: 4 × 15 = 60', 'Known total: 44', '60 − 44 = 16'], '<b>Answer:</b> 16'),
+        worked(4, 'Extension', '5 numbers have a mean of 10. A sixth is added and the mean is 12. What was added?', ['5 × 10 = 50', '6 × 12 = 72', '72 − 50 = 22'], '<b>Answer:</b> 22'),
+      ])}
       ${L.tearBack()}
     `),
   ];

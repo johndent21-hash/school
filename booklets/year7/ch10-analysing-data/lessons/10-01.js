@@ -1,6 +1,6 @@
 // 10.01 Interpreting graphs: picture, column, sector, line and divided bar graphs.
 const G = require('../../../lib/graphs');
-const { banner, weDo, youDo, q, qs, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
+const { banner, weDo, youDo, q, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
 
 module.exports = (chapter) => {
   const L = makeLesson({ chapter, code: '10.01', title: 'Interpreting graphs' });
@@ -63,28 +63,41 @@ module.exports = (chapter) => {
       ${L.notes()}
       ${banner(1)}
       ${split(graphCard(g.library), weDo(`<div class="col">${example('Example 1', 'How many books were borrowed on Tuesday?')}${example('Example 2', 'How many more books on Thursday than Wednesday?')}</div>`, 'fill'))}
-      ${youDo('Set A. Use the library picture graph above.', `<div class="short-grid">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>`)}
     `, { first: true }),
 
-    L.page('Level 1 · Level 2', `
+    L.page('Level 1', `
+      ${youDo('Set A. Use the library picture graph.', split(graphCard(g.library), `<div class="short-list">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>`))}
       ${youDo('Set B. Use the column graph.', split(graphCard(g.beach), `<div class="short-list">${setB.map((t, i) => qs(i + 1, t)).join('')}</div>`))}
+    `),
+
+    L.page('Level 2', `
       ${banner(2)}
       ${split(graphCard(g.travel), graphCard(g.temp))}
-      ${weDo(split(example('Example 3', 'What fraction of the students catch the bus? How many students is that?'), example('Example 4', 'Which month is coldest? How much colder is June than March?'), 'ex-row'))}
-      ${youDo('Set C. Questions 1–5 use the sector graph and 6–10 use the line graph.', `<div class="short-grid fill">${setC.map((t, i) => `<div class="qs wide-box"><span class="q-num">${i + 1}</span><span class="q-text">${t}</span><span class="box"></span></div>`).join('')}</div>`, 'grow')}
+      ${weDo(split(example('Example 3', 'What fraction of the students catch the bus? How many students is that?'), example('Example 4', 'Which month is coldest? How much colder is June than March?'), 'ex-row tall'))}
+      ${youDo('Set C. Questions 1–4 use the sector graph above.', qGrid(setC.slice(0, 4)), 'grow')}
     `),
 
-    L.page('Level 3 · Exit ticket', `
-      ${banner(3, 'Finished Set D? Try the extension on the next page.')}
+    L.page('Level 2', `
+      ${youDo('Set C continued. Question 5 uses the sector graph and 6–10 use the line graph.', `
+        ${split(graphCard(g.travel), graphCard(g.temp))}
+        ${qGrid(setC.slice(4), { start: 5 })}`, 'grow')}
+    `),
+
+    L.page('Level 3', `
+      ${banner(3)}
       ${split(graphCard(g.ages), graphCard(g.music))}
-      ${weDo(split(example('Example 5', 'What percentage of the town is 45+? How many is that out of 5000?'), example('Example 6', 'What % stream music? How might this look different 20 years ago?'), 'ex-row'))}
-      ${youDo('Set D. Questions 1–5 use the picture graph and 6–10 use the divided bar graph.', `<div class="work-grid">${setD.map((t, i) => q(i + 1, t)).join('')}</div>`, 'grow')}
-      ${L.exitTicket({ graph: g.pets, questions: ['How many students in 7B own a cat?', 'What fraction of the class owns a dog?', 'What percentage of 7B has no pet? Out of 200 Year 7s, how many would you expect to have no pet?'] })}
+      ${weDo(split(example('Example 5', 'What percentage of the town is 45+? How many is that out of 5000?'), example('Example 6', 'What % stream music? How might this look different 20 years ago?'), 'ex-row tall'))}
+      ${youDo('Set D. Use the picture graph above.', qGrid(setD.slice(0, 4), { cols: 2 }), 'grow')}
     `),
 
-    L.page('Extension · Summary', `
-      ${banner(4)}
-      ${split(worked(4, 'Worked example',
+    L.page('Level 3', `
+      ${youDo('Set D continued. Question 5 uses the picture graph and 6–10 use the divided bar graph.', `
+        ${split(graphCard(g.ages), graphCard(g.music))}
+        ${qGrid(setD.slice(4), { start: 5, cols: 2 })}`, 'grow')}
+    `),
+
+    L.page('Extension · Exit ticket', `
+      ${extension(worked(4, 'Worked example',
         'In a survey of 72 students, the <b>Soccer</b> sector of a sector graph has an angle of 90°. How many students chose soccer?',
         ['A full circle is 360°, so 90° is 90/360 = ¼ of the circle', '¼ of 72 = 72 ÷ 4 = 18'],
         '<b>Answer:</b> 18 students chose soccer',
@@ -96,18 +109,23 @@ module.exports = (chapter) => {
           ${G.text(40, 16, '90° out of 360°', { size: 2.8 })}
           ${G.text(40, 21, '= ¼ of the circle', { size: 2.8, weight: 600 })}
           ${G.text(40, 26, '= ¼ of the students', { size: 2.8 })}`)}</div>`),
-        youDo('read the worked example, then try these.', `<div class="stack">
-          ${q('E1', 'A survey of 240 people has a <b>Tennis</b> sector of 60°. How many chose tennis?')}
-          ${q('E2', 'In a survey of 180 people, 45 chose pizza. What angle should the pizza sector be?')}
-          ${q('E3', 'In a picture graph, one symbol = 8 students. How many students do 3¾ symbols show? How would you show 20 students?')}</div>`, 'fill'), 'ext grow')}
-      ${L.summaryBanner}
-      <div class="summary-grid">
-        <div class="steps-card"><b>Reading any graph</b><ol><li>Read the <b>title</b>: what is the graph about?</li><li>Check the <b>key</b> or the <b>scale</b>.</li><li>Use a ruler to line up bars and points with the scale.</li><li>Answer with the right <b>units</b> (students, °C, %).</li></ol></div>
-        ${worked(1, 'Level 1', `In a picture graph, ${G.inlineSymbol} = 10 students. A row shows 3½ symbols. How many students is that?`, ['3 full symbols = 3 × 10 = 30', 'Half a symbol = 10 ÷ 2 = 5', '30 + 5 = 35'], '<b>Answer:</b> 35 students')}
-        ${worked(2, 'Level 2', 'A sector graph shows 80 people. The <b>Surfing</b> sector is a quarter of the circle. How many chose surfing?', ['A quarter means divide by 4', '80 ÷ 4 = 20'], '<b>Answer:</b> 20 people')}
-        ${worked(3, 'Level 3', 'A divided bar graph shows 45% of 400 students catch the bus. How many students is that?', ['45% means 45 out of every 100', '400 has 4 hundreds, so 45 × 4 = 180'], '<b>Answer:</b> 180 students')}
-        ${worked(4, 'Extension', 'A 120° sector shows the results for 90 people. How many people is that?', ['120/360 = ⅓ of the circle', '⅓ of 90 = 90 ÷ 3 = 30'], '<b>Answer:</b> 30 people')}
-      </div>
+        `${q('E1', 'A survey of 240 people has a <b>Tennis</b> sector of 60°. How many chose tennis?')}
+         ${q('E2', 'In a survey of 180 people, 45 chose pizza. What angle should the pizza sector be?')}
+         ${q('E3', 'One symbol = 8 students. How many students do 3¾ symbols show? How would you show 20 students?')}`)}
+      ${L.exitTicket({ graph: g.pets, questions: ['How many students in 7B own a cat?', 'What fraction of the class owns a dog?', 'What % of 7B has no pet? How many of 200 Year 7s would you expect to have no pet?'] })}
+    `),
+
+    L.page('Summary', `
+      ${L.summary('Reading any graph', ['Read the <b>title</b>: what is the graph about?', 'Check the <b>key</b> or the <b>scale</b>.', 'Use a ruler to line up bars and points with the scale.', 'Answer with the right <b>units</b> (students, °C, %).'], [
+        worked(1, 'Level 1', `In a picture graph, ${G.inlineSymbol} = 10 students. A row shows 3½ symbols. How many students is that?`, ['3 full symbols = 3 × 10 = 30', 'Half a symbol = 10 ÷ 2 = 5', '30 + 5 = 35'], '<b>Answer:</b> 35 students',
+          `<div class="diagram">${G.pictureGraph({ title: '', rows: [['Row', 3.5]], key: '10 students', w: 70, labelW: 12 })}</div>`),
+        worked(2, 'Level 2', 'A sector graph shows 80 people. The <b>Surfing</b> sector is a quarter of the circle. How many chose surfing?', ['A quarter means divide by 4', '80 ÷ 4 = 20'], '<b>Answer:</b> 20 people',
+          `<div class="diagram">${G.sectorGraph({ title: '', slices: [['Surfing', 20, C.blue, true], ['Other', 60, C.sand]] })}</div>`),
+        worked(3, 'Level 3', 'A divided bar graph shows 45% of 400 students catch the bus. How many students is that?', ['45% means 45 out of every 100', '400 has 4 hundreds, so 45 × 4 = 180'], '<b>Answer:</b> 180 students',
+          `<div class="diagram">${G.dividedBar({ title: '', parts: [['Bus 45%', 45, C.blue], ['Car 35%', 35, C.charcoal], ['Walk 20%', 20, C.sand, true]] })}</div>`),
+        worked(4, 'Extension', 'A 120° sector shows the results for 90 people. How many people is that?', ['120/360 = ⅓ of the circle', '⅓ of 90 = 90 ÷ 3 = 30'], '<b>Answer:</b> 30 people',
+          `<div class="diagram">${G.sectorGraph({ title: '', slices: [['120°', 1, C.blue, true], ['240°', 2, C.sand]] })}</div>`),
+      ])}
       ${L.tearBack()}
     `),
   ];

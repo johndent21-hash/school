@@ -288,7 +288,7 @@ li { margin-bottom: 0.6mm; }
 .answers-flow .page { height: auto; min-height: 297mm; overflow: visible; }
 
 /* ---------- shared tweaks ---------- */
-.zone.grow > .ex-row, .zone.grow > .split { flex: 1 1 0; min-height: 0; }
+.zone.grow > .ex-row, .zone.grow > .split.grow { flex: 1 1 0; min-height: 0; }
 .zone.grow > .ex-row .example .box { height: auto; flex: 1 1 0; }
 .exit-q .q-num .lvl-dots i { background: #fff; }
 .q.draw .draw-area .grid-paper { min-height: 30mm; }
@@ -330,3 +330,50 @@ li { margin-bottom: 0.6mm; }
 .zone.fill .example .box { min-height: 10mm; }
 .stack > .q { min-height: 18mm; }
 .qs.wide-box { grid-template-columns: 6mm 1fr 38mm; }
+
+/* ================= roomier layout rules (override earlier values) ================= */
+/* WE DO panels next to a graph grow with their content instead of being squeezed to the graph's height */
+.zone.fill { height: auto; }
+.zone.fill .example { flex: 1 1 auto; }
+.zone.fill .example .box, .col > .example .box { min-height: 22mm; flex: 1 1 auto; }
+.ex-row .example .box { height: 24mm; }
+.ex-row.tall .example .box { height: 34mm; }
+/* short answers: fixed, comfortable rows */
+.qs { gap: 2.5mm; }
+.qs .box, .short-list .qs .box { height: 8.5mm; min-height: 8.5mm; }
+.short-list { grid-template-rows: none; grid-auto-rows: auto; gap: 1.8mm; align-content: start; }
+.short-grid { gap: 2.2mm 6mm; }
+/* full-working questions: never smaller than 16 mm */
+.q .box { min-height: 16mm; }
+.work-grid { gap: 3mm 5mm; }
+.grid-paper { min-height: 45mm; }
+.notes { min-height: 30mm; }
+.summary-page { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3mm; font-size: 9.5pt; }
+.summary-page .worked { min-height: 0; }
+.summary-page .diagram .graph { max-height: 38mm; }
+.content > .steps-card { flex: none; }
+.work-grid { flex: 1 1 auto; }
+.zone.grow > .work-grid { flex: 1 1 0; }
+
+/* short-answer lists beside a graph: spread the rows over the height of the graph */
+.split > .short-list { align-content: space-between; }
+/* a question is never shorter than its text plus its minimum box; drawing questions fill spare space */
+.q { min-height: auto; }
+.zone.grow > .q.draw, .col > .q.draw.grow { flex: 1 1 0; }
+.zone.grow > .q.draw .grid-paper { flex: 1 1 0; }
+.graph-card.wide-graph { flex: 1 1 0; min-height: 0; }
+.graph-card.wide-graph .graph { height: 100%; width: auto; max-width: 100%; }
+.zone.grow > .short-grid { flex: none; }
+.graph-card.wide-graph { flex: none; }
+.graph-card.wide-graph .graph { width: 118mm; height: auto; }
+.zone.grow > .short-grid { flex: 1 1 0; align-items: center; }
+.ex-row.grow-ex { flex: 1 1 0; display: flex; flex-direction: column; min-height: 0; }
+.ex-row.grow-ex .example { flex: 1 1 0; }
+.ex-row.grow-ex .example .box { height: auto; flex: 1 1 0; }
+/* only grid paper grows to fill space; tables and number lines keep their natural size */
+.zone.grow > .q.draw:not(:has(.grid-paper)) { flex: none; }
+.q.draw:not(:has(.grid-paper)) .draw-area { flex: none; }
+.draw-area .template-card { flex: none; }
+.split.grow-row { flex: 1 1 0; min-height: 0; }
+.split.grow-row .example .box { height: auto; flex: 1 1 0; }
+.zone.grow > .split.grow-row { flex: 1 1 0; }

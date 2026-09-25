@@ -22,6 +22,17 @@ const qDraw = (label, txt, drawing, cls = '') => `
 // A short-answer question: text on the left, a small answer box on the right.
 const qs = (label, txt) => `
   <div class="qs"><span class="q-num">${label}</span><span class="q-text">${txt}</span><span class="box"></span></div>`;
+// A grid of short-answer questions (two columns, reading down). wide = bigger answer boxes.
+const qsGrid = (items, { start = 1, wide = false } = {}) => `
+  <div class="short-grid" style="grid-template-rows: repeat(${Math.ceil(items.length / 2)}, minmax(min-content, 1fr))">${items.map((t, i) =>
+    `<div class="qs${wide ? ' wide-box' : ''}"><span class="q-num">${i + start}</span><span class="q-text">${t}</span><span class="box"></span></div>`).join('')}</div>`;
+// A grid of full-working questions. rows = rows per column (default: half the questions).
+const qGrid = (items, { start = 1, cols = 2, rows } = {}) => `
+  <div class="work-grid" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows || Math.ceil(items.length / cols)}, minmax(0, 1fr))">${items.map((t, i) => (t.startsWith('<') ? t : q(i + start, t))).join('')}</div>`;
+// The extension block: a worked example on the left, 2-3 YOU DO questions on the right.
+const extension = (workedHtml, questionsHtml) => `
+  ${banner(4, 'Finished Level 3? Stretch yourself here.')}
+  <div class="split ext grow">${workedHtml}${youDo('read the worked example, then try these.', `<div class="stack">${questionsHtml}</div>`, 'fill')}</div>`;
 const example = (label, txt, drawing = '') => `
   <div class="q example"><div class="q-head"><span class="q-num ex">${label}</span><span class="q-text">${txt}</span></div>${drawing ? `<div class="draw-area">${drawing}</div>` : '<div class="box"></div>'}</div>`;
 
@@ -88,9 +99,15 @@ const makeLesson = ({ chapter, code, title }) => {
     <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
   </div>`;
 
+  // Full summary page: key steps across the top, then a 2 x 2 grid of worked examples (one per level).
+  const summary = (stepsTitle, steps, workedList) => `
+  <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+  <div class="steps-card"><b>${stepsTitle}</b><ol>${steps.map((x) => `<li>${x}</li>`).join('')}</ol></div>
+  <div class="summary-page">${workedList.join('')}</div>`;
+
   const summaryBanner = `<div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>`;
 
-  return { page, intro, notes, exitTicket, tearBack, summaryBanner };
+  return { page, intro, notes, exitTicket, tearBack, summaryBanner, summary };
 };
 
-module.exports = { dots, banner, weDo, youDo, q, qDraw, qs, example, worked, graphCard, split, makeLesson };
+module.exports = { dots, banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson };

@@ -125,25 +125,8 @@ fs.writeFileSync(path.join(chapterDir, `${base}-Answers.html`), doc(`${chapter.t
     await pg.goto('file://' + path.join(chapterDir, `${name}.html`));
     await pg.evaluate(() => document.fonts.ready);
     if (name === base) {
-      const problems = await pg.evaluate(() => [...document.querySelectorAll('.page')].flatMap((p, i) => {
-        const out = [];
-        const c = p.querySelector('.content');
-        if (!c) return out;
-        const cb = c.getBoundingClientRect().bottom;
-        c.querySelectorAll('.worked, .q, .zone').forEach((el) => { if (el.getBoundingClientRect().bottom > cb + 1) out.push(`page ${i + 1}: a box runs off the page`); });
-        if (c && c.scrollHeight > c.clientHeight + 1) out.push(`page ${i + 1}: content overflows by ${Math.round((c.scrollHeight - c.clientHeight) / 3.78)} mm`);
-        p.querySelectorAll('.q .box').forEach((b) => { if (b.getBoundingClientRect().height < 26) out.push(`page ${i + 1}: a working box is under 7 mm tall (${(b.closest('.q').querySelector('.q-text') || {}).textContent})`); });
-        p.querySelectorAll('.grid-paper').forEach((b) => { if (b.getBoundingClientRect().height < 110) out.push(`page ${i + 1}: grid paper under 30 mm tall`); });
-        // anything that runs into the tear-off zone
-        const tz = p.querySelector('.tear-zone');
-        if (tz) {
-          const top = tz.getBoundingClientRect().top;
-          [...c.querySelectorAll('.zone, .worked, .q, .graph-card, .banner, .summary-grid, .notes')].filter((el) => !el.closest('.tear-zone'))
-            .forEach((el) => { if (el.getBoundingClientRect().bottom > top + 1) out.push(`page ${i + 1}: content runs into the tear-off zone`); });
-        }
-        return out;
-      }));
-      if (problems.length) console.warn([...new Set(problems)].join('\n'));
+      const problems = await pg.evaluate(`(${require('./lib/check').toString()})()`);
+      if (problems.length) console.warn(`${problems.length} layout problem(s):\n` + problems.join('\n')); else console.log('Layout check: no problems found');
       if (shotsDir) {
         fs.mkdirSync(shotsDir, { recursive: true });
         const pages = await pg.$$('.page');

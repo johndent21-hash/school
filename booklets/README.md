@@ -29,9 +29,10 @@ node build.js year7/ch10-analysing-data
 
 This writes two PDFs into that chapter folder: the student booklet and `...-Answers.pdf`.
 
-The build also checks the layout and prints a warning if:
-- anything overflows a page
-- a working box is too small to write in
+The build also checks the layout (`lib/check.js`) and prints a warning if:
+- anything overflows a page, or spills out of the panel or box it sits in
+- two blocks overlap, or text is cut off or runs into its answer box
+- a working box, answer box, grid or template is too small to write in
 - anything runs into a tear-off exit ticket
 
 Fix the warnings before printing. Usually that means moving or shortening a question.
@@ -69,17 +70,17 @@ Colour rules. These are what make the booklet easy for students to follow:
 Never use charcoal or blue for anything else.
 
 Page rules. The build enforces these:
-- Every lesson has an **even** number of pages (2, 4 or 6), so each lesson starts on a right-hand page when printed double-sided.
+- Every lesson has an **even** number of pages (usually 8), so each lesson starts on a right-hand page when printed double-sided.
 - The exit ticket (`L.exitTicket`) goes at the bottom of the **second-last** page of the lesson.
 - The last page ends with `L.tearBack()`, which leaves the back of the ticket blank.
-- Four pages is the normal length. Use six when students need space to draw graphs, dot plots or stem-and-leaf plots.
+- Give each question enough room. The usual lesson is 8 pages: start page, Level 1 sets, Level 2 examples, Level 2 set, Level 3 examples, Level 3 set, extension and exit ticket, summary. Add pages rather than squeeze boxes.
 - Working boxes have no lines in them. Students draw on grid paper or on the templates provided.
 
 ## 5. Building blocks (in `lib/`)
 
 | File | What it gives you |
 |---|---|
-| `layout.js` | `L.page`, `L.intro`, `L.notes`, `banner(level)`, `weDo(...)`, `youDo(text, ...)`, `q` (question with working box), `qs` (short answer with small box), `qDraw` (question with drawing area), `example`, `worked`, `split` (two columns), `graphCard`, `L.exitTicket`, `L.tearBack`, `L.summaryBanner` |
+| `layout.js` | `qsGrid` (short answers), `qGrid` (questions with working boxes), `extension`, `L.summary`, `L.page`, `L.intro`, `L.notes`, `banner(level)`, `weDo(...)`, `youDo(text, ...)`, `q` (question with working box), `qs` (short answer with small box), `qDraw` (question with drawing area), `example`, `worked`, `split` (two columns), `graphCard`, `L.exitTicket`, `L.tearBack`, `L.summaryBanner` |
 | `graphs.js` | Graphs: `pictureGraph`, `columnGraph` (including misleading axes), `lineGraph`, `sectorGraph`, `dividedBar`, `dotPlot`, `stemLeaf`, `backToBack`, `table`. Drawing templates: `gridPaper`, `dotPlotTemplate`, `stemLeafTemplate`, `backToBackTemplate`. |
 | `stats.js` | `mean`, `median`, `modeText`, `range`, `fmt` (rounds to 2 decimal places), `expand` (turns a frequency table into a list of values), `fromStemLeaf`. Use these to work out answers so the answer key is always correct. |
 | `theme.css` | All colours, fonts and spacing. The colours come from the artwork. |

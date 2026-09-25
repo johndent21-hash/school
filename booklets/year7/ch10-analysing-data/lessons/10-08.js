@@ -1,7 +1,7 @@
 // 10.08 Comparing data sets: back-to-back stem-and-leaf plots, comparing centre and spread, outliers, primary and secondary data.
 const G = require('../../../lib/graphs');
 const S = require('../../../lib/stats');
-const { banner, weDo, youDo, q, qDraw, qs, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
+const { banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson } = require('../../../lib/layout');
 
 // Back-to-back rows: left leaves read outward from the stem (largest nearest the edge), right leaves in order.
 const b2bRows = (left, right, stems) => stems.map((s) => [
@@ -51,14 +51,17 @@ module.exports = (chapter) => {
       ${weDo(split(example('Example 1', 'Find the mode and the range of each class.'), example('Example 2', 'Find the median of each class. Which class did better? Which was more consistent?'), 'ex-row tall'))}
     `, { first: true }),
 
-    L.page('Level 1 · Level 2', `
+    L.page('Level 1', `
       ${youDo('Set A. Ages of people at two gyms.', split(graphCard(G.backToBack({ left: 'Gym A', right: 'Gym B', rows: b2bRows(gymA, gymB, [1, 2, 3, 4, 5, 6]), key: '3 | 5 = 35 years' })),
         `<div class="short-list">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>`))}
-      ${youDo('Set B. Is each one <b>primary</b> data (you collect it yourself) or <b>secondary</b> data (someone else collected it)? Write P or S.', `<div class="short-grid">${setB.map((t, i) => `<div class="qs"><span class="q-num">${i + 1}</span><span class="q-text">${t}</span><span class="box"></span></div>`).join('')}</div>`)}
+      ${youDo('Set B. Is each one <b>primary</b> data (you collect it yourself) or <b>secondary</b> data (someone else collected it)? Write P or S.', qsGrid(setB), 'grow')}
+    `),
+
+    L.page('Level 2', `
       ${banner(2)}
       ${weDo(`<p class="given"><b>Spelling scores.</b> Class P: ${classP.join(', ')} &nbsp;&nbsp; Class Q: ${classQ.join(', ')}</p>
         ${split(example('Example 3', 'Draw a back-to-back stem-and-leaf plot of the scores.', G.backToBackTemplate({ left: 'Class P', right: 'Class Q', stems: [2, 3, 4, 5] })),
-          example('Example 4', 'Find the median and range of each class. Compare the two classes.'))}`, 'grow')}
+          example('Example 4', 'Find the median and range of each class. Compare the two classes.'), 'grow-row')}`, 'grow')}
     `),
 
     L.page('Level 2', `
@@ -88,8 +91,8 @@ module.exports = (chapter) => {
           `<div class="col">${q(3, 'Find the mean, median, mode and range of 7R.')}${q(4, 'Find the mean, median, mode and range of 7T.')}</div>`, 'grow')}`, 'grow')}
     `),
 
-    L.page('Level 3 · Exit ticket', `
-      ${youDo('Set D continued. Use your plot and statistics from the previous page.', `<div class="work-grid r3">
+    L.page('Level 3', `
+      ${youDo('Set D continued. Use your plot and statistics from the previous page.', `<div class="work-grid" style="grid-template-rows: repeat(3, minmax(0, 1fr))">
         ${q(5, 'Which class did better overall? Use the mean or median to explain.')}
         ${q(6, 'Which class was more consistent? Use the range to explain.')}
         ${q(7, 'Which mark in 7T could be called an outlier? Why?')}
@@ -97,26 +100,26 @@ module.exports = (chapter) => {
         ${q(9, 'The teacher got the marks from her own mark book. Is this primary or secondary data? Explain.')}
         ${q(10, 'Write a conclusion comparing 7R and 7T using at least two statistics.')}
       </div>`, 'grow')}
+    `),
+
+    L.page('Extension · Exit ticket', `
+      ${extension(worked(4, 'Worked example: combining groups', 'Class A has 10 students with a mean of 70. Class B has 15 students with a mean of 80. What is the mean of all 25 students?',
+        ['Total for A: 10 × 70 = 700', 'Total for B: 15 × 80 = 1200', 'Total for everyone: 700 + 1200 = 1900', 'Mean: 1900 ÷ 25 = 76'], '<b>Answer:</b> 76 (not 75, because Class B is bigger)'),
+        `${q('E1', 'A group of 8 has a mean of 12 and a group of 12 has a mean of 17. Find the mean of all 20.')}
+         ${q('E2', 'Why is the combined mean not always halfway between the two means?')}
+         ${q('E3', 'Make up two sets of 5 values with the same mean but different ranges.')}`)}
       ${L.exitTicket({ graph: G.backToBack({ left: 'Team A', right: 'Team B', rows: b2bRows(teamA, teamB, [1, 2, 3]), key: '2 | 4 = 24' }),
         questions: ['What is the highest score? Which team scored it?', 'Find the median of each team.', 'Which team was more consistent? Explain using the range.'] })}
     `),
 
-    L.page('Extension · Summary', `
-      ${banner(4)}
-      ${split(worked(4, 'Worked example: combining groups', 'Class A has 10 students with a mean of 70. Class B has 15 students with a mean of 80. What is the mean of all 25 students?',
-        ['Total for A: 10 × 70 = 700', 'Total for B: 15 × 80 = 1200', 'Total for everyone: 700 + 1200 = 1900', 'Mean: 1900 ÷ 25 = 76'], '<b>Answer:</b> 76 (not 75, because Class B is bigger)'),
-        youDo('read the worked example, then try these.', `<div class="stack">
-          ${q('E1', 'A group of 8 has a mean of 12 and a group of 12 has a mean of 17. Find the mean of all 20.')}
-          ${q('E2', 'Why is the combined mean not always halfway between the two means?')}
-          ${q('E3', 'Make up two sets of 5 values with the same mean but different ranges.')}</div>`, 'fill'), 'ext grow')}
-      ${L.summaryBanner}
-      <div class="summary-grid">
-        <div class="steps-card"><b>Comparing data sets</b><ol><li><b>Centre</b> (mean or median): which group is higher?</li><li><b>Spread</b> (range): smaller range = more consistent.</li><li>Look for <b>outliers</b> that change the mean.</li><li><b>Primary</b> data you collect; <b>secondary</b> data someone else collected.</li></ol></div>
-        ${worked(1, 'Level 1', 'In a back-to-back plot, what does the left leaf 3 on stem 2 stand for?', ['Left leaves belong to the left group', 'Stem 2, leaf 3'], '<b>Answer:</b> 23 in the left group')}
-        ${worked(2, 'Level 2', 'Medians: Class X 64, Class Y 71. Ranges: X 20, Y 45. Compare.', ['Y has the higher median, so Y did better', 'X has the smaller range, so X is more consistent'], '<b>Answer:</b> Y higher, X more consistent')}
-        ${worked(3, 'Level 3', 'Amy: mean 13.3, range 3. Beth: mean 14, range 17. Who is more reliable?', ['Means are close', 'Amy’s range is much smaller'], '<b>Answer:</b> Amy is more reliable')}
-        ${worked(4, 'Extension', '4 values with mean 5 and 6 values with mean 10. Combined mean?', ['4 × 5 = 20 and 6 × 10 = 60', '80 ÷ 10 = 8'], '<b>Answer:</b> 8')}
-      </div>
+    L.page('Summary', `
+      ${L.summary('Comparing data sets', ['<b>Centre</b> (mean or median): which group is higher?', '<b>Spread</b> (range): smaller range = more consistent.', 'Look for <b>outliers</b> that change the mean.', '<b>Primary</b> data you collect; <b>secondary</b> data someone else collected.'], [
+        worked(1, 'Level 1', 'In this back-to-back plot, what does the left leaf 3 on stem 2 stand for?', ['Left leaves belong to the left group (Team A)', 'Stem 2 and leaf 3 make 23'], '<b>Answer:</b> a score of 23 for Team A',
+          `<div class="diagram">${G.backToBack({ left: 'Team A', right: 'Team B', rows: [[[7, 3], 2, [1, 5]], [[4], 3, [0, 2, 6]]], key: '2 | 3 = 23' })}</div>`),
+        worked(2, 'Level 2', 'Medians: Class X 64, Class Y 71. Ranges: X 20, Y 45. Compare the classes.', ['Y has the higher median, so Y did better on average', 'X has the smaller range, so X is more consistent'], '<b>Answer:</b> Y scored higher; X was more consistent'),
+        worked(3, 'Level 3', 'Amy: mean 13.3, range 3. Beth: mean 14, range 17. Who is more reliable?', ['The means are close', 'Amy’s range is much smaller, so her scores are more alike'], '<b>Answer:</b> Amy is more reliable'),
+        worked(4, 'Extension', '4 values have a mean of 5 and 6 values have a mean of 10. What is the combined mean?', ['Totals: 4 × 5 = 20 and 6 × 10 = 60', 'Combined: 80 ÷ 10 = 8'], '<b>Answer:</b> 8 (not 7.5, because the second group is bigger)'),
+      ])}
       ${L.tearBack()}
     `),
   ];
