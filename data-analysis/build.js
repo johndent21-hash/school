@@ -158,8 +158,12 @@ const sym = `<svg class="sym" viewBox="-2.9 -2.9 5.8 5.8">${symbol(0, 0)}</svg>`
 const dots = (n) => '<span class="lvl-dots">' + '<i></i>'.repeat(n) + '</span>';
 const LEVELS = { 1: 'Level 1 · Getting started', 2: 'Level 2 · Building up', 3: 'Level 3 · Challenge', 4: 'Extension · Stretch yourself' };
 const banner = (lvl, note = '') => `<div class="banner">${dots(lvl)}<span class="banner-title">${LEVELS[lvl]}</span>${note ? `<span class="banner-note">${note}</span>` : ''}</div>`;
-const teacherTag = `<span class="tag teacher">Teacher examples: copy your teacher’s working</span>`;
-const yourTurn = (txt) => `<span class="tag you">Your turn: ${txt}</span>`;
+// WE DO (charcoal): students copy the teacher's working from the board.
+// YOU DO (blue): students work on their own.
+const weDo = (body, cls = '') => `
+  <div class="zone we ${cls}"><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div>${body}</div>`;
+const youDo = (txt, body, cls = '') => `
+  <div class="zone you ${cls}"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: ${txt}</span></div>${body}</div>`;
 
 // A question whose blank working box fills the space its grid cell gives it.
 const q = (label, txt, cls = '') => `
@@ -230,7 +234,7 @@ const setC = [
 const setD = [
   'What percentage of people are aged 65+?',
   'What percentage of people are under 25?',
-  'The town has 5000 people. How many are aged 0–14?',
+  'The town has 5000 people. How many are aged 0&#8209;14?',
   'How many symbols would show 30% of the town?',
   'Why might 65+ be the biggest group in this town?',
   'Which 2 ways of listening add up to 75% of people?',
@@ -263,6 +267,10 @@ pages.push(page('', `
       <li>estimate amounts from a <b>sector graph</b> using fractions of a circle</li>
       <li>compare values and give reasons for patterns in a graph</li></ul></div>
   </div>
+  <div class="legend">
+    <div class="legend-item we"><span class="zone-pill">WE DO</span><span>Grey boxes: work <b>with your teacher</b>. Copy the working from the board.</span></div>
+    <div class="legend-item you"><span class="zone-pill">YOU DO</span><span>Blue boxes: work <b>on your own</b>. Show your working in the box.</span></div>
+  </div>
   <div class="terms">
     ${['Key', 'Scale', 'Sector graph'].map((t) => `<div class="term"><span class="term-name">${t}</span><i></i><i></i></div>`).join('')}
   </div>
@@ -270,45 +278,40 @@ pages.push(page('', `
   ${banner(1)}
   <div class="split">
     <div class="graph-card">${G.library}</div>
-    <div class="col">${teacherTag}${example('Example 1', 'How many books were borrowed on Tuesday?')}${example('Example 2', 'How many more books were borrowed on Thursday than on Wednesday?')}</div>
+    ${weDo(`<div class="col">${example('Example 1', 'How many books were borrowed on Tuesday?')}${example('Example 2', 'How many more books on Thursday than Wednesday?')}</div>`, 'fill')}
   </div>
-  ${yourTurn('Set A. Use the library picture graph above. Write your answer in the box.')}
-  <div class="short-grid">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>
+  ${youDo('Set A. Use the library picture graph above.', `<div class="short-grid">${setA.map((t, i) => qs(i + 1, t)).join('')}</div>`)}
 `, { first: true }));
 
 // Page 2: Set B, Level 2 examples and Set C
 pages.push(page('Level 1 and Level 2', `
-  ${yourTurn('Set B. Use the column graph. Write your answer in the box.')}
-  <div class="split">
+  ${youDo('Set B. Use the column graph.', `<div class="split">
     <div class="graph-card">${G.beach}</div>
     <div class="short-list">${setB.map((t, i) => qs(i + 1, t)).join('')}</div>
-  </div>
+  </div>`)}
   ${banner(2)}
   <div class="split"><div class="graph-card">${G.travel}</div><div class="graph-card">${G.temp}</div></div>
-  ${teacherTag}
-  <div class="split ex-row">
+  ${weDo(`<div class="split ex-row">
     ${example('Example 3', 'What fraction of the students catch the bus? How many students is that?')}
     ${example('Example 4', 'Which month is coldest? How much colder is June than March?')}
-  </div>
-  ${yourTurn('Set C. Questions 1–5 use the sector graph and 6–10 use the line graph.')}
-  <div class="work-grid grow">${setC.map((t, i) => q(i + 1, t)).join('')}</div>
+  </div>`)}
+  ${youDo('Set C. Questions 1–5 use the sector graph and 6–10 use the line graph.', `<div class="work-grid grow">${setC.map((t, i) => q(i + 1, t)).join('')}</div>`, 'grow')}
 `));
 
 // Page 3: Level 3 examples, Set D, and the tear-off exit ticket (odd page, so its back is page 4)
 pages.push(page('Level 3 · Exit ticket', `
   ${banner(3, 'Finished Set D? Try the extension on page 4.')}
   <div class="split"><div class="graph-card">${G.ages}</div><div class="graph-card">${G.music}</div></div>
-  ${teacherTag}
-  <div class="split ex-row">
+  ${weDo(`<div class="split ex-row">
     ${example('Example 5', 'What percentage of the town is 45+? How many is that out of 5000?')}
     ${example('Example 6', 'What % stream music? How might this look different 20 years ago?')}
-  </div>
-  ${yourTurn('Set D. Questions 1–5 use the picture graph and 6–10 use the column graph.')}
-  <div class="work-grid tall grow">${setD.map((t, i) => q(i + 1, t)).join('')}</div>
+  </div>`)}
+  ${youDo('Set D. Questions 1–5 use the picture graph and 6–10 use the column graph.', `<div class="work-grid tall grow">${setD.map((t, i) => q(i + 1, t)).join('')}</div>`, 'grow')}
   <div class="tear-space"></div>
   <div class="tear-zone">
     <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
     <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
       <h2>Show off your skill</h2>
       <p>Choose <b>ONE</b> question. Show your working.</p>
       <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
@@ -339,11 +342,11 @@ pages.push(page('Extension · Summary', `
         ${text(40, 16, '90° out of 360°', { size: 2.8 })}
         ${text(40, 21, '= ¼ of the circle', { size: 2.8, weight: 600 })}
         ${text(40, 26, '= ¼ of the students', { size: 2.8 })}`)}</div>`)}
-    <div class="col ext-qs">
+    ${youDo('read the worked example, then try these.', `<div class="col ext-qs">
       ${q('E1', 'A survey of 240 people has a <b>Tennis</b> sector of 60°. How many chose tennis?')}
       ${q('E2', 'In a survey of 180 people, 45 chose pizza. What angle should the pizza sector be?')}
       ${q('E3', 'In a picture graph, one symbol = 8 students. How many students do 3¾ symbols show? How would you show 20 students?')}
-    </div>
+    </div>`, 'fill')}
   </div>
   <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
   <div class="summary-grid">
