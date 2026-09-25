@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Data Analysis Answers</title>
+<style>/* Theme colours taken from Marni Tuala's artwork */
+:root {
+  --charcoal: #3d3b3c;
+  --blue: #3f63be;
+  --blue-soft: #e6ecf8;
+  --sand: #c2bea8;
+  --sand-soft: #f3f1ea;
+  --line: #d8d4c4;
+  --ink: #26292e;
+}
+@font-face { font-family: Lexend; font-weight: 400; src: url(assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(assets/lexend-latin-700-normal.woff2); }
+
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.4; }
+b { font-weight: 600; }
+h2 { font-size: 16pt; margin: 0 0 1mm; color: var(--charcoal); }
+h3 { font-size: 12pt; margin: 0 0 1.5mm; color: var(--charcoal); }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 5mm; }
+li { margin-bottom: 1mm; }
+
+/* ---------- page shell ---------- */
+.page {
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  page-break-after: always; break-after: page; background: #fff;
+}
+.art-strip {
+  position: absolute; top: 0; left: 0; right: 0; height: 10mm;
+  background: url(assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal);
+}
+.page-head {
+  position: absolute; top: 12.5mm; left: 14mm; right: 14mm;
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 8.5pt; color: #6b6a64; border-bottom: 0.4mm solid var(--sand); padding-bottom: 1.5mm;
+}
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.content {
+  position: absolute; top: 22mm; bottom: 15mm; left: 14mm; right: 14mm;
+  display: flex; flex-direction: column; gap: 3.5mm;
+}
+.page-foot {
+  position: absolute; bottom: 5mm; left: 14mm; right: 14mm; height: 6mm;
+  display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; color: #8a887f;
+}
+.page-foot .pn {
+  width: 7mm; height: 7mm; border-radius: 50%; background: var(--charcoal); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 8pt;
+  box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand);
+}
+.grow { flex: 1 1 0; min-height: 0; }
+
+/* ---------- cover ---------- */
+.cover { background: var(--charcoal); }
+.cover-art { position: absolute; inset: 0; background: url(assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-panel {
+  position: absolute; left: 14mm; right: 14mm; top: 82mm; padding: 10mm 12mm 11mm;
+  background: rgba(255, 255, 255, 0.95); border-radius: 5mm;
+  box-shadow: 0 0 0 1.4mm var(--sand);
+}
+.cover .logo { height: 25mm; display: block; margin-bottom: 5mm; }
+.cover-stage { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; color: var(--blue); font-size: 11pt; }
+.cover h1 { font-size: 40pt; line-height: 1.05; margin: 1mm 0 2mm; color: var(--charcoal); }
+.cover-lesson { font-size: 15pt; color: var(--charcoal); margin-bottom: 8mm; }
+.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
+.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
+.cover-fields span { width: 20mm; }
+.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.cover-credit {
+  position: absolute; bottom: 8mm; right: 14mm; background: rgba(255,255,255,0.95);
+  padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt;
+}
+
+/* ---------- inside cover ---------- */
+.lead { margin-bottom: 1mm; }
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; margin-bottom: 3mm; }
+.howto > div { display: flex; flex-direction: column; gap: 1.5mm; padding: 3mm; background: var(--sand-soft); border-radius: 2.5mm; }
+.howto p { font-size: 9.5pt; }
+.howto-dots { display: flex; gap: 6mm; }
+.syllabus { border-left: 1.5mm solid var(--blue); padding: 1mm 0 1mm 4mm; display: flex; flex-direction: column; gap: 1.5mm; margin-bottom: 2mm; }
+.syl-label { font-size: 8.5pt; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.acknowledge { display: flex; gap: 6mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 6mm; align-items: center; }
+.acknowledge h3 { color: var(--sand); }
+.acknowledge p { margin-bottom: 3mm; }
+.ack-art {
+  width: 45mm; align-self: stretch; flex: none; border-radius: 2mm;
+  background: url(assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat;
+}
+
+/* ---------- tags, banners, level dots ---------- */
+.tag {
+  display: inline-block; align-self: flex-start; padding: 1.2mm 3.5mm; border-radius: 10mm;
+  font-weight: 600; font-size: 9.5pt; color: #fff;
+}
+.tag.teacher { background: var(--blue); }
+.tag.you { background: var(--charcoal); }
+.tag.summary { background: var(--sand); color: var(--charcoal); }
+.tag.exit { background: #fff; color: var(--charcoal); border: 0.4mm dashed var(--charcoal); }
+
+.lvl-dots { display: inline-flex; gap: 1.2mm; vertical-align: middle; }
+.lvl-dots i {
+  width: 3.4mm; height: 3.4mm; border-radius: 50%; background: var(--blue);
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.1mm var(--sand);
+}
+.banner {
+  display: flex; align-items: center; gap: 4mm; padding: 3mm 5mm; border-radius: 3mm;
+  background: var(--charcoal); color: #fff;
+}
+.banner .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
+.banner-title { font-size: 15pt; font-weight: 700; }
+.banner.summary { background: var(--blue); }
+.instruction { color: #55544f; font-size: 10pt; }
+
+/* ---------- questions & working boxes ---------- */
+.q { display: flex; flex-direction: column; gap: 1.5mm; min-height: 0; }
+.q-head { display: flex; gap: 2.5mm; align-items: baseline; }
+.q-num {
+  flex: none; min-width: 7mm; height: 7mm; padding: 0 1.5mm; border-radius: 3.5mm;
+  background: var(--sand-soft); border: 0.35mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.5mm; font-weight: 700; font-size: 9.5pt;
+}
+.q-num.ex { background: var(--blue); border-color: var(--blue); color: #fff; padding: 0 3mm; }
+.q-text { font-size: 11pt; }
+.work {
+  flex: 1 1 0; min-height: 0; border: 0.4mm solid var(--sand); border-radius: 2.5mm;
+  background-color: #fff;
+  /* one ruled line per 8mm tile; "round" stretches the tiles so the last line meets the bottom border */
+  background-image: linear-gradient(to bottom, transparent 0, transparent calc(100% - 0.3mm), var(--line) calc(100% - 0.3mm));
+  background-size: 100% 8mm; background-repeat: round; background-origin: padding-box;
+}
+.work.notes { border-width: 0.5mm; }
+.answer-line { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; font-size: 9.5pt; flex: none; }
+.answer-line i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 5mm; }
+
+.stack { display: flex; flex-direction: column; gap: 6mm; }
+.stack > .q { flex: 1 1 0; }
+.grid10 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); gap: 4mm 6mm; }
+.grid-stack { display: grid; grid-template-rows: repeat(5, 1fr); gap: 4mm; }
+.example .work { border-color: var(--blue); border-width: 0.5mm; }
+
+/* ---------- start page ---------- */
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.card { background: var(--sand-soft); border-radius: 3mm; padding: 4mm 5mm; border-top: 1.5mm solid var(--blue); }
+.card-sub { font-size: 9.5pt; color: #6b6a64; margin-bottom: 1.5mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 6mm; }
+.ticks li::before {
+  content: ""; position: absolute; left: 0; top: 1mm; width: 3mm; height: 3mm;
+  border: 0.4mm solid var(--blue); border-radius: 0.8mm;
+}
+.terms { display: flex; flex-direction: column; gap: 4mm; }
+.term { flex: 1; display: flex; border: 0.4mm solid var(--sand); border-radius: 3mm; overflow: hidden; }
+.term-name {
+  width: 36mm; flex: none; background: var(--charcoal); color: #fff; font-weight: 700; font-size: 14pt;
+  display: flex; align-items: center; justify-content: center;
+}
+.term-lines { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; padding: 2mm 6mm; }
+.term-lines i { border-bottom: 0.35mm solid var(--line); height: 6mm; }
+
+/* ---------- worked examples ---------- */
+.worked { border: 0.5mm solid var(--blue); border-radius: 3mm; padding: 4mm 5mm; background: #fff; flex: none; }
+.worked-head { display: flex; align-items: center; gap: 3mm; color: var(--blue); font-size: 11pt; margin-bottom: 2mm; }
+.worked-q { font-size: 11pt; margin-bottom: 2.5mm; padding: 2.5mm 3mm; background: var(--sand-soft); border-radius: 2mm; }
+.steps { padding-left: 6mm; }
+.steps li { margin-bottom: 2mm; padding-left: 1mm; }
+.steps li::marker { color: var(--blue); font-weight: 700; }
+.worked-a { margin-top: 1mm; padding: 2mm 3mm; background: var(--blue-soft); border-radius: 2mm; }
+.stack > .worked { flex: 1 1 0; }
+.tip { padding: 2.5mm 4mm; background: var(--sand-soft); border-left: 1.5mm solid var(--sand); border-radius: 1mm; }
+
+.key-ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.idea { background: var(--sand-soft); border-radius: 3mm; padding: 4mm; border-top: 1.5mm solid var(--charcoal); display: flex; flex-direction: column; gap: 2mm; }
+.idea h3 { color: var(--blue); font-size: 14pt; margin: 0; }
+.formula { font-size: 9.5pt; background: #fff; border-radius: 2mm; padding: 2mm 2.5mm; margin-top: auto; }
+.checklist { border-top-color: var(--charcoal); }
+.checklist li { margin-bottom: 2mm; }
+
+/* ---------- exit ticket ---------- */
+/* The tear line sits at the same height on the exit ticket page and its back page. */
+.tear-zone { position: absolute; left: -14mm; right: -14mm; top: 88mm; bottom: -15mm; padding: 0 14mm 15mm; display: flex; flex-direction: column; }
+.cut-line {
+  border-top: 0.6mm dashed var(--charcoal); text-align: center; margin-bottom: 4mm; height: 0;
+}
+.cut-line span { position: relative; top: -3mm; background: #fff; padding: 0 3mm; font-size: 8.5pt; color: #55544f; }
+.exit { flex: 1; display: flex; flex-direction: column; gap: 4mm; }
+.exit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6mm; }
+.exit-head h2 { font-size: 18pt; color: var(--blue); }
+.exit-name { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; width: 88mm; padding-top: 2mm; }
+.exit-name i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.exit-name i.short { flex: 0 0 18mm; }
+.exit-cols { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+.exit-q { border: 0.5mm solid var(--charcoal); border-radius: 3mm; padding: 3mm; }
+.exit-q .q-head { flex-direction: column; gap: 2mm; min-height: 24mm; }
+.exit-q .q-num { background: var(--charcoal); color: #fff; border-color: var(--charcoal); padding: 0 3mm; height: 7.5mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
+.selfcheck table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.selfcheck th { text-align: center; font-weight: 600; padding: 1.5mm; color: var(--charcoal); font-size: 9pt; }
+.selfcheck th:first-child { text-align: left; }
+.selfcheck td { padding: 2mm 1.5mm; border-top: 0.3mm solid var(--line); }
+.selfcheck td:not(:first-child) { text-align: center; width: 18mm; }
+.tick { display: inline-block; width: 5mm; height: 5mm; border: 0.4mm solid var(--blue); border-radius: 1mm; background: #fff; }
+.reflect { height: 50mm; flex: none; }
+.tear-zone.back .blank-note {
+  flex: 1; display: flex; align-items: center; justify-content: center; text-align: center;
+  color: #b3b0a3; font-size: 10pt;
+}
+
+/* ---------- answers ---------- */
+.answers { columns: 2; column-gap: 8mm; }
+.ans-block { break-inside: avoid; margin-bottom: 4mm; }
+.ans-block h3 { color: var(--blue); font-size: 11pt; }
+.ans-block li { font-size: 9.5pt; }
+
+/* ---------- summary extras ---------- */
+.stack > .worked { display: flex; flex-direction: column; }
+.stack > .worked .steps { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+.stack > .card { flex: none; }
+.median-trick { border-top-color: var(--charcoal); display: flex; flex-direction: column; gap: 3mm; }
+.trick-row { display: flex; align-items: center; gap: 5mm; background: #fff; border-radius: 2mm; padding: 3mm 4mm; }
+.trick-label { width: 38mm; font-size: 9.5pt; }
+.trick-label span { color: #6b6a64; }
+.chips { display: flex; gap: 2mm; }
+.chip {
+  width: 10mm; height: 10mm; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; border: 0.5mm solid var(--sand); position: relative;
+}
+.chip.out { color: #9a978b; }
+.chip.out::after { content: ""; position: absolute; left: 1mm; right: 1mm; top: 50%; border-top: 0.5mm solid #9a978b; transform: rotate(-35deg); }
+.chip.mid { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand); }
+.trick-result { margin-left: auto; font-size: 10.5pt; }
+.which table { width: 100%; border-collapse: collapse; }
+.which td { padding: 2.5mm 2mm; border-top: 0.3mm solid var(--line); vertical-align: top; }
+.which td:first-child { width: 22mm; color: var(--blue); }
+.which { border-top-color: var(--charcoal); }
+.which { display: flex; flex-direction: column; }
+.which table { flex: 1; }
+.which td { vertical-align: middle; }
+.exit-q .q-head { min-height: 29mm; }
+.which .eg { display: block; margin-top: 1.5mm; font-size: 9.5pt; color: #6b6a64; }
+</style></head><body>
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Teacher answers</span></header>
+  <div class="content">
+  <h2>Answers (teacher copy)</h2>
+  <div class="answers">
+  <div class="ans-block"><h3>Level 1 · Set A (mean)</h3><ol><li>4</li><li>7</li><li>4</li><li>20</li><li>5</li><li>6</li><li>5</li><li>15</li><li>6</li><li>10</li></ol></div>
+  <div class="ans-block"><h3>Level 1 · Set B (median, mode)</h3><ol><li>3, 3</li><li>4, 4</li><li>5, 2</li><li>6, 6</li><li>11, 10</li><li>7, 9</li><li>14, 13</li><li>3, 3</li><li>22, 25</li><li>7, 7</li></ol></div>
+  <div class="ans-block"><h3>Level 2 · Set C</h3><ol><li>5.5</li><li>14.5</li><li>5.5</li><li>4</li><li>2 and 6</li><li>151 cm</li><li>mean 22, median 22, modes 21 and 24</li><li>mean 2, median 2, mode 2</li><li>10.4</li><li>mean $20, median $20, mode $20</li></ol></div>
+  <div class="ans-block"><h3>Level 3 · Set D</h3><ol><li>24 − 19 = 5</li><li>360 − 293 = 67</li><li>e.g. 4, 4, 5, 8, 9 (many answers possible)</li><li>mean 12, median 6. The median is better because 40 is an outlier that pulls the mean up.</li><li>mean goes from 7 to about 9.17 (up by about 2.17); median goes from 7 to 7.5</li><li>40 − 30 = 10</li><li>30 − 5 − 9 = 16</li><li>90 − 70 = 20</li><li>Mode (size 8). It shows which size sells most often.</li><li>Both have a mean of 16. Class B has a higher median (16 vs 15).</li></ol></div>
+  <div class="ans-block"><h3>Extension</h3><ol><li>Total 650 → 665, new mean 66.5</li><li>2, 7, 8, 9, 9 &nbsp;·&nbsp; 3, 6, 8, 9, 9 &nbsp;·&nbsp; 4, 5, 8, 9, 9 (the two smallest must be different, less than 8 and add to 9)</li><li>(a) 16, 17, 18 &nbsp;(b) n − 1, n, n + 1 add to 3n, and 3n ÷ 3 = n, the middle number</li></ol></div>
+  <div class="ans-block"><h3>Teacher examples</h3><ol><li>Ex 1: 6</li><li>Ex 2: median 5, mode 4</li><li>Ex 3: 7.5</li><li>Ex 4: mean 13, median 12.5, no mode</li><li>Ex 5: 40 − 30 = 10</li><li>Ex 6: mean ≈ 17.3, median 12. The median is better (44 is an outlier).</li></ol></div>
+  <div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 8</li><li>Level 2: median 6.5, mode 3</li><li>Level 3: 36 − 24 = 12</li></ol></div></div></div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">1</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section></body></html>

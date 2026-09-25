@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Data Analysis Booklet</title>
+<style>/* Theme colours taken from Marni Tuala's artwork */
+:root {
+  --charcoal: #3d3b3c;
+  --blue: #3f63be;
+  --blue-soft: #e6ecf8;
+  --sand: #c2bea8;
+  --sand-soft: #f3f1ea;
+  --line: #d8d4c4;
+  --ink: #26292e;
+}
+@font-face { font-family: Lexend; font-weight: 400; src: url(assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(assets/lexend-latin-700-normal.woff2); }
+
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.4; }
+b { font-weight: 600; }
+h2 { font-size: 16pt; margin: 0 0 1mm; color: var(--charcoal); }
+h3 { font-size: 12pt; margin: 0 0 1.5mm; color: var(--charcoal); }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 5mm; }
+li { margin-bottom: 1mm; }
+
+/* ---------- page shell ---------- */
+.page {
+  width: 210mm; height: 297mm; position: relative; overflow: hidden;
+  page-break-after: always; break-after: page; background: #fff;
+}
+.art-strip {
+  position: absolute; top: 0; left: 0; right: 0; height: 10mm;
+  background: url(assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal);
+}
+.page-head {
+  position: absolute; top: 12.5mm; left: 14mm; right: 14mm;
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 8.5pt; color: #6b6a64; border-bottom: 0.4mm solid var(--sand); padding-bottom: 1.5mm;
+}
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.content {
+  position: absolute; top: 22mm; bottom: 15mm; left: 14mm; right: 14mm;
+  display: flex; flex-direction: column; gap: 3.5mm;
+}
+.page-foot {
+  position: absolute; bottom: 5mm; left: 14mm; right: 14mm; height: 6mm;
+  display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; color: #8a887f;
+}
+.page-foot .pn {
+  width: 7mm; height: 7mm; border-radius: 50%; background: var(--charcoal); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 8pt;
+  box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand);
+}
+.grow { flex: 1 1 0; min-height: 0; }
+
+/* ---------- cover ---------- */
+.cover { background: var(--charcoal); }
+.cover-art { position: absolute; inset: 0; background: url(assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-panel {
+  position: absolute; left: 14mm; right: 14mm; top: 82mm; padding: 10mm 12mm 11mm;
+  background: rgba(255, 255, 255, 0.95); border-radius: 5mm;
+  box-shadow: 0 0 0 1.4mm var(--sand);
+}
+.cover .logo { height: 25mm; display: block; margin-bottom: 5mm; }
+.cover-stage { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; color: var(--blue); font-size: 11pt; }
+.cover h1 { font-size: 40pt; line-height: 1.05; margin: 1mm 0 2mm; color: var(--charcoal); }
+.cover-lesson { font-size: 15pt; color: var(--charcoal); margin-bottom: 8mm; }
+.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
+.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
+.cover-fields span { width: 20mm; }
+.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.cover-credit {
+  position: absolute; bottom: 8mm; right: 14mm; background: rgba(255,255,255,0.95);
+  padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt;
+}
+
+/* ---------- inside cover ---------- */
+.lead { margin-bottom: 1mm; }
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; margin-bottom: 3mm; }
+.howto > div { display: flex; flex-direction: column; gap: 1.5mm; padding: 3mm; background: var(--sand-soft); border-radius: 2.5mm; }
+.howto p { font-size: 9.5pt; }
+.howto-dots { display: flex; gap: 6mm; }
+.syllabus { border-left: 1.5mm solid var(--blue); padding: 1mm 0 1mm 4mm; display: flex; flex-direction: column; gap: 1.5mm; margin-bottom: 2mm; }
+.syl-label { font-size: 8.5pt; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.acknowledge { display: flex; gap: 6mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 6mm; align-items: center; }
+.acknowledge h3 { color: var(--sand); }
+.acknowledge p { margin-bottom: 3mm; }
+.ack-art {
+  width: 45mm; align-self: stretch; flex: none; border-radius: 2mm;
+  background: url(assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat;
+}
+
+/* ---------- tags, banners, level dots ---------- */
+.tag {
+  display: inline-block; align-self: flex-start; padding: 1.2mm 3.5mm; border-radius: 10mm;
+  font-weight: 600; font-size: 9.5pt; color: #fff;
+}
+.tag.teacher { background: var(--blue); }
+.tag.you { background: var(--charcoal); }
+.tag.summary { background: var(--sand); color: var(--charcoal); }
+.tag.exit { background: #fff; color: var(--charcoal); border: 0.4mm dashed var(--charcoal); }
+
+.lvl-dots { display: inline-flex; gap: 1.2mm; vertical-align: middle; }
+.lvl-dots i {
+  width: 3.4mm; height: 3.4mm; border-radius: 50%; background: var(--blue);
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.1mm var(--sand);
+}
+.banner {
+  display: flex; align-items: center; gap: 4mm; padding: 3mm 5mm; border-radius: 3mm;
+  background: var(--charcoal); color: #fff;
+}
+.banner .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
+.banner-title { font-size: 15pt; font-weight: 700; }
+.banner.summary { background: var(--blue); }
+.instruction { color: #55544f; font-size: 10pt; }
+
+/* ---------- questions & working boxes ---------- */
+.q { display: flex; flex-direction: column; gap: 1.5mm; min-height: 0; }
+.q-head { display: flex; gap: 2.5mm; align-items: baseline; }
+.q-num {
+  flex: none; min-width: 7mm; height: 7mm; padding: 0 1.5mm; border-radius: 3.5mm;
+  background: var(--sand-soft); border: 0.35mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.5mm; font-weight: 700; font-size: 9.5pt;
+}
+.q-num.ex { background: var(--blue); border-color: var(--blue); color: #fff; padding: 0 3mm; }
+.q-text { font-size: 11pt; }
+.work {
+  flex: 1 1 0; min-height: 0; border: 0.4mm solid var(--sand); border-radius: 2.5mm;
+  background-color: #fff;
+  /* one ruled line per 8mm tile; "round" stretches the tiles so the last line meets the bottom border */
+  background-image: linear-gradient(to bottom, transparent 0, transparent calc(100% - 0.3mm), var(--line) calc(100% - 0.3mm));
+  background-size: 100% 8mm; background-repeat: round; background-origin: padding-box;
+}
+.work.notes { border-width: 0.5mm; }
+.answer-line { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; font-size: 9.5pt; flex: none; }
+.answer-line i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 5mm; }
+
+.stack { display: flex; flex-direction: column; gap: 6mm; }
+.stack > .q { flex: 1 1 0; }
+.grid10 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 1fr); gap: 4mm 6mm; }
+.grid-stack { display: grid; grid-template-rows: repeat(5, 1fr); gap: 4mm; }
+.example .work { border-color: var(--blue); border-width: 0.5mm; }
+
+/* ---------- start page ---------- */
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.card { background: var(--sand-soft); border-radius: 3mm; padding: 4mm 5mm; border-top: 1.5mm solid var(--blue); }
+.card-sub { font-size: 9.5pt; color: #6b6a64; margin-bottom: 1.5mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 6mm; }
+.ticks li::before {
+  content: ""; position: absolute; left: 0; top: 1mm; width: 3mm; height: 3mm;
+  border: 0.4mm solid var(--blue); border-radius: 0.8mm;
+}
+.terms { display: flex; flex-direction: column; gap: 4mm; }
+.term { flex: 1; display: flex; border: 0.4mm solid var(--sand); border-radius: 3mm; overflow: hidden; }
+.term-name {
+  width: 36mm; flex: none; background: var(--charcoal); color: #fff; font-weight: 700; font-size: 14pt;
+  display: flex; align-items: center; justify-content: center;
+}
+.term-lines { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; padding: 2mm 6mm; }
+.term-lines i { border-bottom: 0.35mm solid var(--line); height: 6mm; }
+
+/* ---------- worked examples ---------- */
+.worked { border: 0.5mm solid var(--blue); border-radius: 3mm; padding: 4mm 5mm; background: #fff; flex: none; }
+.worked-head { display: flex; align-items: center; gap: 3mm; color: var(--blue); font-size: 11pt; margin-bottom: 2mm; }
+.worked-q { font-size: 11pt; margin-bottom: 2.5mm; padding: 2.5mm 3mm; background: var(--sand-soft); border-radius: 2mm; }
+.steps { padding-left: 6mm; }
+.steps li { margin-bottom: 2mm; padding-left: 1mm; }
+.steps li::marker { color: var(--blue); font-weight: 700; }
+.worked-a { margin-top: 1mm; padding: 2mm 3mm; background: var(--blue-soft); border-radius: 2mm; }
+.stack > .worked { flex: 1 1 0; }
+.tip { padding: 2.5mm 4mm; background: var(--sand-soft); border-left: 1.5mm solid var(--sand); border-radius: 1mm; }
+
+.key-ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+.idea { background: var(--sand-soft); border-radius: 3mm; padding: 4mm; border-top: 1.5mm solid var(--charcoal); display: flex; flex-direction: column; gap: 2mm; }
+.idea h3 { color: var(--blue); font-size: 14pt; margin: 0; }
+.formula { font-size: 9.5pt; background: #fff; border-radius: 2mm; padding: 2mm 2.5mm; margin-top: auto; }
+.checklist { border-top-color: var(--charcoal); }
+.checklist li { margin-bottom: 2mm; }
+
+/* ---------- exit ticket ---------- */
+/* The tear line sits at the same height on the exit ticket page and its back page. */
+.tear-zone { position: absolute; left: -14mm; right: -14mm; top: 88mm; bottom: -15mm; padding: 0 14mm 15mm; display: flex; flex-direction: column; }
+.cut-line {
+  border-top: 0.6mm dashed var(--charcoal); text-align: center; margin-bottom: 4mm; height: 0;
+}
+.cut-line span { position: relative; top: -3mm; background: #fff; padding: 0 3mm; font-size: 8.5pt; color: #55544f; }
+.exit { flex: 1; display: flex; flex-direction: column; gap: 4mm; }
+.exit-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6mm; }
+.exit-head h2 { font-size: 18pt; color: var(--blue); }
+.exit-name { display: flex; align-items: flex-end; gap: 2mm; font-weight: 600; width: 88mm; padding-top: 2mm; }
+.exit-name i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.exit-name i.short { flex: 0 0 18mm; }
+.exit-cols { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+.exit-q { border: 0.5mm solid var(--charcoal); border-radius: 3mm; padding: 3mm; }
+.exit-q .q-head { flex-direction: column; gap: 2mm; min-height: 24mm; }
+.exit-q .q-num { background: var(--charcoal); color: #fff; border-color: var(--charcoal); padding: 0 3mm; height: 7.5mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.6mm var(--charcoal), 0 0 0 1.1mm var(--sand); }
+.selfcheck table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.selfcheck th { text-align: center; font-weight: 600; padding: 1.5mm; color: var(--charcoal); font-size: 9pt; }
+.selfcheck th:first-child { text-align: left; }
+.selfcheck td { padding: 2mm 1.5mm; border-top: 0.3mm solid var(--line); }
+.selfcheck td:not(:first-child) { text-align: center; width: 18mm; }
+.tick { display: inline-block; width: 5mm; height: 5mm; border: 0.4mm solid var(--blue); border-radius: 1mm; background: #fff; }
+.reflect { height: 50mm; flex: none; }
+.tear-zone.back .blank-note {
+  flex: 1; display: flex; align-items: center; justify-content: center; text-align: center;
+  color: #b3b0a3; font-size: 10pt;
+}
+
+/* ---------- answers ---------- */
+.answers { columns: 2; column-gap: 8mm; }
+.ans-block { break-inside: avoid; margin-bottom: 4mm; }
+.ans-block h3 { color: var(--blue); font-size: 11pt; }
+.ans-block li { font-size: 9.5pt; }
+
+/* ---------- summary extras ---------- */
+.stack > .worked { display: flex; flex-direction: column; }
+.stack > .worked .steps { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+.stack > .card { flex: none; }
+.median-trick { border-top-color: var(--charcoal); display: flex; flex-direction: column; gap: 3mm; }
+.trick-row { display: flex; align-items: center; gap: 5mm; background: #fff; border-radius: 2mm; padding: 3mm 4mm; }
+.trick-label { width: 38mm; font-size: 9.5pt; }
+.trick-label span { color: #6b6a64; }
+.chips { display: flex; gap: 2mm; }
+.chip {
+  width: 10mm; height: 10mm; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; border: 0.5mm solid var(--sand); position: relative;
+}
+.chip.out { color: #9a978b; }
+.chip.out::after { content: ""; position: absolute; left: 1mm; right: 1mm; top: 50%; border-top: 0.5mm solid #9a978b; transform: rotate(-35deg); }
+.chip.mid { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 0 0 0.7mm #fff, 0 0 0 1.2mm var(--sand); }
+.trick-result { margin-left: auto; font-size: 10.5pt; }
+.which table { width: 100%; border-collapse: collapse; }
+.which td { padding: 2.5mm 2mm; border-top: 0.3mm solid var(--line); vertical-align: top; }
+.which td:first-child { width: 22mm; color: var(--blue); }
+.which { border-top-color: var(--charcoal); }
+.which { display: flex; flex-direction: column; }
+.which table { flex: 1; }
+.which td { vertical-align: middle; }
+.exit-q .q-head { min-height: 29mm; }
+.which .eg { display: block; margin-top: 1.5mm; font-size: 9.5pt; color: #6b6a64; }
+</style></head><body>
+<section class="page cover">
+  <div class="cover-art"></div>
+  <div class="cover-panel">
+    <img class="logo" src="assets/kingscliff-logo.png" alt="Kingscliff High School">
+    <p class="cover-stage">Stage 4 · Year 7 Mathematics</p>
+    <h1>Data Analysis</h1>
+    <p class="cover-lesson">Lesson 1 · Mean, median and mode</p>
+    <div class="cover-fields">
+      <div><span>Name</span><i></i></div>
+      <div><span>Class</span><i></i></div>
+      <div><span>Teacher</span><i></i></div>
+    </div>
+  </div>
+  <p class="cover-credit">Cover and theme artwork by <b>Marni Tuala</b></p>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">About this booklet</span></header>
+  <div class="content">
+  <h2>How to use this booklet</h2>
+  <p class="lead">Each lesson follows the same steps. Work through them in order and write everything in this booklet.</p>
+  <div class="howto">
+    <div><span class="tag teacher">Teacher example</span><p>Your teacher works through the question on the board. Copy the working into the box.</p></div>
+    <div><span class="tag you">Your turn</span><p>Answer the questions yourself. Show your working in the box and write your final answer on the line.</p></div>
+    <div><span class="howto-dots"><span class="lvl-dots"><i></i></span><span class="lvl-dots"><i></i><i></i></span><span class="lvl-dots"><i></i><i></i><i></i></span></span><p>The dots show the level. One dot is getting started, two is building up and three is a challenge.</p></div>
+    <div><span class="howto-dots"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span></span><p>Extension questions stretch your thinking further. Read the worked example first.</p></div>
+    <div><span class="tag summary">Summary</span><p>Missed a lesson? The summary pages have a fully worked example for every level.</p></div>
+    <div><span class="tag exit">Exit ticket</span><p>Choose one question to show off your skill, then tear it off and hand it to your teacher.</p></div>
+  </div>
+
+  <h2>What we are learning</h2>
+  <div class="syllabus">
+    <p class="syl-label">NSW Mathematics K–10 Syllabus (2022) · Stage 4 · Statistics · Data analysis</p>
+    <p><b>MA4-DAT-C-02</b>: analyses simple datasets using measures of centre, range and shape of the data</p>
+    <p class="syl-label">Content focus for this lesson</p>
+    <ul>
+      <li>Calculate the mean, median and mode for sets of data and interpret them in the context of the data</li>
+      <li>Investigate the effect of individual data values, including outliers, on the mean and median</li>
+    </ul>
+  </div>
+
+  <div class="acknowledge grow">
+    <div class="ack-art"></div>
+    <div>
+      <h3>Acknowledgement of artwork</h3>
+      <p>The artwork used throughout this booklet was created by <b>Marni Tuala</b>. We thank Marni for sharing this artwork with our school community.</p>
+      <h3>Acknowledgement of Country</h3>
+      <p>We acknowledge the Bundjalung people, the Traditional Custodians of the land on which Kingscliff High School stands, and pay our respects to Elders past and present.</p>
+    </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">2</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Start here</span></header>
+  <div class="content">
+  <div class="li-sc">
+    <div class="card">
+      <h3>Learning intentions</h3>
+      <p class="card-sub">Today we are learning to:</p>
+      <ul>
+        <li>understand what a <b>measure of centre</b> is and why we use one</li>
+        <li>calculate the <b>mean</b>, <b>median</b> and <b>mode</b> of a set of data</li>
+        <li>use these measures to solve problems about real data</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Success criteria</h3>
+      <p class="card-sub">I can:</p>
+      <ul class="ticks">
+        <li>find the <b>mean</b> by adding the values and dividing by how many there are</li>
+        <li>find the <b>median</b> by ordering the data and finding the middle value</li>
+        <li>find the <b>mode</b>, and tell when there is no mode or more than one</li>
+        <li>work backwards from the mean to find a missing value</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Key terms</h2>
+  <p class="instruction">Write the definition as your teacher explains it.</p>
+  <div class="terms grow">
+    
+      <div class="term">
+        <div class="term-name">Mean</div>
+        <div class="term-lines"><i></i><i></i><i></i></div>
+      </div>
+      <div class="term">
+        <div class="term-name">Median</div>
+        <div class="term-lines"><i></i><i></i><i></i></div>
+      </div>
+      <div class="term">
+        <div class="term-name">Mode</div>
+        <div class="term-lines"><i></i><i></i><i></i></div>
+      </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">3</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Notes</span></header>
+  <div class="content">
+  <h2>My notes</h2>
+  <p class="instruction">Write notes, diagrams and reminders from the lesson here.</p>
+  <div class="work notes grow"></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">4</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 1</span></header>
+  <div class="content">
+  
+  <div class="banner lvl1">
+    <span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span>
+  </div>
+  
+  <span class="tag teacher">Teacher example: copy the working as your teacher shows you</span>
+  <div class="stack grow">
+    
+  <div class="q example">
+    <div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Find the <b>mean</b> of these numbers:&nbsp; 4, 7, 5, 8, 6</span></div>
+    <div class="work"></div>
+  </div>
+    
+  <div class="q example">
+    <div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Find the <b>median</b> and the <b>mode</b> of these numbers:&nbsp; 3, 9, 4, 7, 4, 8, 5</span></div>
+    <div class="work"></div>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">5</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 1 · Set A</span></header>
+  <div class="content">
+  
+  <div class="banner lvl1">
+    <span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span>
+  </div>
+  
+  <span class="tag you">Your turn: Set A. Find the <b>mean</b> of each set of numbers.</span>
+  <div class="grid10 grow">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">1</span><span class="q-text">2, 4, 6</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">2</span><span class="q-text">5, 7, 9</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">3</span><span class="q-text">1, 3, 5, 7</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">4</span><span class="q-text">10, 20, 30</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">5</span><span class="q-text">3, 5, 4, 8</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">6</span><span class="q-text">6, 6, 9, 3</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">7</span><span class="q-text">2, 8, 5, 7, 3</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">8</span><span class="q-text">12, 15, 18</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">9</span><span class="q-text">4, 9, 2, 5, 10</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">10</span><span class="q-text">7, 11, 9, 13</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">6</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 1 · Set B</span></header>
+  <div class="content">
+  
+  <div class="banner lvl1">
+    <span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span>
+  </div>
+  
+  <span class="tag you">Your turn: Set B. Find the <b>median</b> and the <b>mode</b> of each set. Order the numbers first!</span>
+  <div class="grid10 grow">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">1</span><span class="q-text">2, 3, 3, 5, 8</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">2</span><span class="q-text">1, 4, 4, 6, 9</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">3</span><span class="q-text">7, 2, 5, 2, 9</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">4</span><span class="q-text">6, 1, 8, 6, 3</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">5</span><span class="q-text">10, 12, 11, 10, 15</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">6</span><span class="q-text">4, 9, 7, 9, 2, 5, 9</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">7</span><span class="q-text">15, 13, 14, 13, 18</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">8</span><span class="q-text">8, 3, 6, 3, 1, 5, 3</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">9</span><span class="q-text">20, 25, 22, 25, 21</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">10</span><span class="q-text">5, 7, 6, 7, 9, 4, 8</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Median:</span><i></i><span>Mode:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">7</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2</span></header>
+  <div class="content">
+  
+  <div class="banner lvl2">
+    <span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span>
+  </div>
+  
+  <span class="tag teacher">Teacher example: copy the working as your teacher shows you</span>
+  <div class="stack grow">
+    
+  <div class="q example">
+    <div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Find the <b>median</b> of:&nbsp; 8, 3, 10, 5, 7, 12</span></div>
+    <div class="work"></div>
+  </div>
+    
+  <div class="q example">
+    <div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">A basketball player scored 12, 15, 9, 18, 11 and 13 points in six games. Find the <b>mean</b>, <b>median</b> and <b>mode</b> of her scores.</span></div>
+    <div class="work"></div>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">8</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2 · Set C</span></header>
+  <div class="content">
+  
+  <div class="banner lvl2">
+    <span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span>
+  </div>
+  
+  <span class="tag you">Your turn: Set C. Show your working in each box.</span>
+  <div class="grid-stack grow" style="grid-template-rows: repeat(4, 1fr)">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">1</span><span class="q-text">Find the <b>median</b> of:&nbsp; 4, 9, 2, 7</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">2</span><span class="q-text">Find the <b>median</b> of:&nbsp; 11, 15, 12, 18, 14, 20</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">3</span><span class="q-text">Find the <b>mean</b> of:&nbsp; 3, 8, 5, 6</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">4</span><span class="q-text">Find the <b>mean</b> of:&nbsp; 2.5, 3.5, 4, 6</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">9</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2 · Set C</span></header>
+  <div class="content">
+  
+  <span class="tag you">Your turn: Set C continued.</span>
+  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">5</span><span class="q-text">Find the <b>mode</b> of:&nbsp; 6, 2, 8, 2, 6, 5</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">6</span><span class="q-text">The heights of six students (in cm) are 150, 145, 160, 155, 148 and 152. Find the <b>median</b> height.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">7</span><span class="q-text">The maximum temperatures (°C) for a week were 21, 24, 19, 24, 22, 23, 21. Find the <b>mean</b>, <b>median</b> and <b>mode</b>.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">10</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 2 · Set C</span></header>
+  <div class="content">
+  
+  <span class="tag you">Your turn: Set C continued.</span>
+  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">8</span><span class="q-text">A soccer team scored 2, 0, 3, 1, 2, 4, 2, 2 goals in eight games. Find the <b>mean</b>, <b>median</b> and <b>mode</b>.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">9</span><span class="q-text">Find the <b>mean</b> of:&nbsp; 7, 9, 10, 12, 14</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">10</span><span class="q-text">Six friends get $15, $20, $10, $25, $20 and $30 pocket money each week. Find the <b>mean</b>, <b>median</b> and <b>mode</b>.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">11</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3</span></header>
+  <div class="content">
+  
+  <div class="banner lvl3">
+    <span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span>
+  </div>
+  
+  <span class="tag teacher">Teacher example: copy the working as your teacher shows you</span>
+  <div class="stack grow">
+    
+  <div class="q example">
+    <div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">The mean of five numbers is 8. Four of the numbers are 6, 9, 5 and 10. Find the <b>fifth number</b>.</span></div>
+    <div class="work"></div>
+  </div>
+    
+  <div class="q example">
+    <div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">The ages of six people at a party are 11, 12, 12, 13, 12 and 44. Find the <b>mean</b> and <b>median</b> age. Which one better describes a typical age at the party? Explain why.</span></div>
+    <div class="work"></div>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">12</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3 · Set D</span></header>
+  <div class="content">
+  
+  <div class="banner lvl3">
+    <span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span>
+  </div>
+  
+  <span class="tag you">Your turn: Set D. Show your working in each box.</span>
+  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">1</span><span class="q-text">The mean of four numbers is 6. Three of the numbers are 4, 7 and 8. Find the fourth number.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">2</span><span class="q-text">The mean of five test scores is 72. Four of the scores are 68, 75, 70 and 80. Find the fifth score.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">3</span><span class="q-text">Write a set of five numbers that has a mean of 6, a median of 5 and a mode of 4.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">13</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3 · Set D</span></header>
+  <div class="content">
+  
+  <span class="tag you">Your turn: Set D continued.</span>
+  <div class="grid-stack grow" style="grid-template-rows: repeat(3, 1fr)">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">4</span><span class="q-text">For the data 3, 5, 6, 6, 40, find the mean and the median. Which is the better measure of centre? Explain why.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">5</span><span class="q-text">The number 20 is added to the data set 4, 6, 7, 8, 10. How do the mean and the median change?</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">6</span><span class="q-text">Mia scored 7, 8, 6 and 9 on four quizzes. What does she need to score on her fifth quiz to have a mean of 8?</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">14</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Level 3 · Set D</span></header>
+  <div class="content">
+  
+  <span class="tag you">Your turn: Set D continued.</span>
+  <div class="grid-stack grow" style="grid-template-rows: repeat(4, 1fr)">
+  <div class="q ">
+    <div class="q-head"><span class="q-num">7</span><span class="q-text">Three whole numbers have a mean of 10 and a median of 9. The smallest number is 5. Find the largest number.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">8</span><span class="q-text">The mean of six numbers is 15. When one number is removed, the mean of the other five is 14. Which number was removed?</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">9</span><span class="q-text">A shoe shop sold these sizes today: 7, 8, 8, 9, 10, 8, 11. The owner wants to know which size to order the most of. Should she use the mean, median or mode? Explain.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  <div class="q ">
+    <div class="q-head"><span class="q-num">10</span><span class="q-text">Class A scored 12, 15, 15, 18, 20 and Class B scored 10, 14, 16, 19, 21 on a quiz. Compare the two classes using the mean and the median.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div></div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">15</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Extension</span></header>
+  <div class="content">
+  
+  <div class="banner lvl4">
+    <span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span>
+  </div>
+  <p class="instruction">Read the worked example carefully, then try the extension questions.</p>
+  
+  <div class="worked lvl4">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <p class="worked-q">The mean age of four friends is 13. When a fifth friend joins the group, the mean age becomes 14. How old is the fifth friend?</p>
+    <ol class="steps"><li>Find the total of the four ages: &nbsp;4 × 13 = 52</li><li>Find the total of all five ages: &nbsp;5 × 14 = 70</li><li>The difference is the new friend’s age: &nbsp;70 − 52 = 18</li><li>Check: &nbsp;(52 + 18) ÷ 5 = 70 ÷ 5 = 14 ✓</li></ol>
+    <p class="worked-a"><b>Answer:</b> the fifth friend is 18 years old.</p>
+  </div>
+  <p class="tip"><b>Key idea:</b> mean × number of values = total. Working with totals makes “missing value” questions much easier.</p>
+  <div class="stack grow">
+    
+  <div class="q ">
+    <div class="q-head"><span class="q-num">E1</span><span class="q-text">The mean mark of 10 students on a test is 65. The teacher re-marks one test and adds 15 marks to it. What is the new mean?</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">16</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Extension</span></header>
+  <div class="content">
+  <span class="tag you">Your turn: Extension continued.</span>
+  <div class="stack grow">
+    
+  <div class="q ">
+    <div class="q-head"><span class="q-num">E2</span><span class="q-text">A list of five positive whole numbers has a mean of 7, a median of 8 and only one mode, which is 9. Find <b>all</b> the possible lists.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+    
+  <div class="q ">
+    <div class="q-head"><span class="q-num">E3</span><span class="q-text">The mean of three consecutive whole numbers is 17. (a)&nbsp;What are the numbers? (b)&nbsp;Explain why the mean of any three consecutive whole numbers is always the middle number.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">17</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Summary</span></header>
+  <div class="content">
+  <div class="banner summary"><span class="banner-title">Lesson summary</span></div>
+  <p class="instruction">Missed the lesson? Start here. These pages show you everything you need, step by step.</p>
+  <div class="key-ideas">
+    <div class="idea">
+      <h3>Mean</h3>
+      <p>The <b>average</b>. Add up all the values, then divide by how many values there are.</p>
+      <p class="formula">mean = total of the values ÷ number of values</p>
+    </div>
+    <div class="idea">
+      <h3>Median</h3>
+      <p>The <b>middle value</b> when the data is written in order from smallest to largest.</p>
+      <p class="formula">Two middle values? The median is halfway between them.</p>
+    </div>
+    <div class="idea">
+      <h3>Mode</h3>
+      <p>The value that appears <b>most often</b>.</p>
+      <p class="formula">There can be no mode, or more than one mode.</p>
+    </div>
+  </div>
+  <div class="card median-trick">
+    <h3>Finding the median: cross off from both ends</h3>
+    <p class="card-sub">Put the data in order, then cross off one value from each end until you reach the middle.</p>
+    <div class="trick-row">
+      <div class="trick-label"><b>Odd</b> number of values<br><span>one middle value</span></div>
+      <span class="chips"><span class="chip out">3</span><span class="chip out">5</span><span class="chip mid">5</span><span class="chip out">7</span><span class="chip out">10</span></span>
+      <div class="trick-result">median = <b>5</b></div>
+    </div>
+    <div class="trick-row">
+      <div class="trick-label"><b>Even</b> number of values<br><span>two middle values</span></div>
+      <span class="chips"><span class="chip out">4</span><span class="chip out">6</span><span class="chip mid">7</span><span class="chip mid">9</span><span class="chip out">10</span><span class="chip out">12</span></span>
+      <div class="trick-result">median = (7 + 9) ÷ 2 = <b>8</b></div>
+    </div>
+  </div>
+  <div class="card which grow">
+    <h3>Which measure should I use?</h3>
+    <table>
+      <tr><td><b>Mean</b></td><td>Uses every value. Best when there are no unusually large or small values.<span class="eg">e.g. quiz scores 6, 7, 8, 9: mean = 7.5</span></td></tr>
+      <tr><td><b>Median</b></td><td>Not pulled around by an <b>outlier</b> (a value much bigger or smaller than the rest). Best when the data has an outlier.<span class="eg">e.g. ages 11, 12, 12, 13, 44: median = 12, but the mean is 18.4</span></td></tr>
+      <tr><td><b>Mode</b></td><td>Shows the most common value. Best for finding the most popular choice, like a shoe size or favourite colour.<span class="eg">e.g. shoe sizes sold 7, 8, 8, 9, 8: mode = size 8</span></td></tr>
+    </table>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">18</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Summary</span></header>
+  <div class="content">
+  <div class="stack grow">
+  
+  <div class="worked lvl1">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1 worked example</b></div>
+    <p class="worked-q">Find the mean, median and mode of:&nbsp; 3, 5, 7, 5, 10</p>
+    <ol class="steps"><li><b>Mean:</b> add up the values: &nbsp;3 + 5 + 7 + 5 + 10 = 30</li><li>Count the values: there are <b>5</b> values</li><li>Divide the total by the count: &nbsp;30 ÷ 5 = <b>6</b></li><li><b>Median:</b> write the values in order: &nbsp;3, 5, 5, 7, 10</li><li>Cross off from both ends. The middle (3rd) value is <b>5</b></li><li><b>Mode:</b> 5 appears twice. Every other value appears once, so the mode is <b>5</b></li></ol>
+    <p class="worked-a"><b>Answer:</b> mean = 6, median = 5, mode = 5</p>
+  </div>
+  
+  <div class="worked lvl2">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2 worked example</b></div>
+    <p class="worked-q">Find the mean, median and mode of:&nbsp; 9, 4, 12, 6, 10, 7</p>
+    <ol class="steps"><li><b>Mean:</b> add up the values: &nbsp;9 + 4 + 12 + 6 + 10 + 7 = 48</li><li>There are 6 values, so the mean is &nbsp;48 ÷ 6 = <b>8</b></li><li><b>Median:</b> write the values in order: &nbsp;4, 6, 7, 9, 10, 12</li><li>There are 6 values (an even number), so there are <b>two</b> middle values: 7 and 9</li><li>Find halfway between them: &nbsp;(7 + 9) ÷ 2 = 16 ÷ 2 = <b>8</b></li><li><b>Mode:</b> every value appears only once, so there is <b>no mode</b></li></ol>
+    <p class="worked-a"><b>Answer:</b> mean = 8, median = 8, no mode</p>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">19</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Summary</span></header>
+  <div class="content">
+  <div class="stack grow">
+  
+  <div class="worked lvl3">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3 worked example</b></div>
+    <p class="worked-q">The mean of four test scores is 15. Three of the scores are 12, 18 and 14. Find the fourth score.</p>
+    <ol class="steps"><li><b>Total of all four scores:</b> mean × number of scores = 15 × 4 = 60</li><li><b>Total of the three known scores:</b> 12 + 18 + 14 = 44</li><li><b>Missing score:</b> 60 − 44 = 16</li><li><b>Check:</b> (12 + 18 + 14 + 16) ÷ 4 = 60 ÷ 4 = 15 ✓</li></ol>
+    <p class="worked-a"><b>Answer:</b> the fourth score is 16</p>
+  </div>
+  
+  <div class="worked lvl4">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension worked example</b></div>
+    <p class="worked-q">The mean of five numbers is 10. A sixth number is added and the mean becomes 12. What number was added?</p>
+    <ol class="steps"><li><b>Total of the five numbers:</b> 5 × 10 = 50</li><li><b>Total of the six numbers:</b> 6 × 12 = 72</li><li><b>Number added:</b> 72 − 50 = 22</li><li><b>Check:</b> 72 ÷ 6 = 12 ✓</li></ol>
+    <p class="worked-a"><b>Answer:</b> the number added was 22</p>
+  </div>
+  <div class="card checklist">
+    <h3>Common mistakes to avoid</h3>
+    <ul>
+      <li>Forgetting to <b>put the data in order</b> before finding the median.</li>
+      <li>Dividing by the wrong number when finding the mean. <b>Count the values carefully.</b></li>
+      <li>Giving the <b>position</b> of the median (e.g. “the 3rd value”) instead of the value itself.</li>
+      <li>Thinking there must always be one mode. There can be <b>none</b>, or <b>more than one</b>.</li>
+      <li>An <b>outlier</b> pulls the mean towards it. The median is not affected as much.</li>
+    </ul>
+  </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">20</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Exit ticket</span></header>
+  <div class="content">
+  <div class="card selfcheck">
+    <h3>Before you go: how did you go today?</h3>
+    <p class="card-sub">Tick one box for each success criterion.</p>
+    <table>
+      <tr><th>I can…</th><th>Not yet</th><th>Nearly</th><th>Got it!</th></tr>
+      <tr><td>find the mean of a data set</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr><tr><td>find the median, including when there are two middle values</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr><tr><td>find the mode, and tell when there is no mode or more than one</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr><tr><td>work backwards from the mean to find a missing value</td><td><i class="tick"></i></td><td><i class="tick"></i></td><td><i class="tick"></i></td></tr>
+    </table>
+  </div>
+  <div class="tear-zone">
+    <div class="cut-line"><span>✂ Tear or cut along this line and hand the bottom part to your teacher ✂</span></div>
+    <div class="exit">
+      <div class="exit-head">
+        <div><h2>Show off your skill</h2><p>Choose <b>ONE</b> question and circle the level you chose. Show your working.</p></div>
+        <div class="exit-name"><span>Name</span><i></i><span>Class</span><i class="short"></i></div>
+      </div>
+      <div class="exit-cols">
+        
+  <div class="q exit-q">
+    <div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Find the <b>mean</b> of:<br>4, 6, 8, 10, 12</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+        
+  <div class="q exit-q">
+    <div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Find the <b>median</b> and <b>mode</b> of:<br>9, 3, 7, 3, 11, 6</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+        
+  <div class="q exit-q">
+    <div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">The mean of four numbers is 9. Three of them are 7, 12 and 5. Find the <b>fourth number</b>.</span></div>
+    <div class="work"></div>
+    <div class="answer-line"><span>Answer:</span><i></i></div>
+  </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">21</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section>
+
+<section class="page ">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Data Analysis · Lesson 1 · Mean, median and mode</span><span class="sec">Reflection</span></header>
+  <div class="content">
+  <h2>Questions I still have</h2>
+  <p class="instruction">Write anything you are still unsure about. Ask your teacher about it next lesson.</p>
+  <div class="work notes reflect"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose.<br>It is the back of your exit ticket.</div>
+  </div>
+</div>
+  <footer class="page-foot">
+    <span>Artwork © Marni Tuala</span><span class="pn">22</span><span>Kingscliff High School · Year 7 Mathematics</span>
+  </footer>
+</section></body></html>
