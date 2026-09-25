@@ -48,6 +48,9 @@ const worked = (lvl, title, question, steps, answer, extra = '') => `
 const graphCard = (g, cls = '') => `<div class="graph-card ${cls}">${g}</div>`;
 const split = (a, b, cls = '') => `<div class="split ${cls}">${a}${b}</div>`;
 
+// Learning intentions, success criteria and key terms of each lesson, recorded when its intro is built.
+const lessonMeta = {};
+
 const makeLesson = ({ chapter, code, title }) => {
   const head = `Year ${chapter.year} · Chapter ${chapter.number} · ${code} ${title}`;
   const page = (section, body, { first = false } = {}) => `
@@ -58,7 +61,7 @@ const makeLesson = ({ chapter, code, title }) => {
   <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">{{PN}}</span><span>Kingscliff High School · Year ${chapter.year} Mathematics</span></footer>
 </section>`;
 
-  const intro = ({ li, sc, terms }) => `
+  const intro = ({ li, sc, terms }) => (lessonMeta[code] = { li, sc, terms }) && `
   <div class="lesson-title">
     <div class="lesson-badge"><span>Lesson</span><b>${code}</b></div>
     <h1>${title}</h1>
@@ -110,4 +113,4 @@ const makeLesson = ({ chapter, code, title }) => {
   return { page, intro, notes, exitTicket, tearBack, summaryBanner, summary };
 };
 
-module.exports = { dots, banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson };
+module.exports = { lessonMeta, dots, banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson };

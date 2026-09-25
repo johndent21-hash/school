@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>10.02 Misleading graphs</title>
+<style>/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
+:root {
+  --charcoal: #3d3b3c;
+  --blue: #3f63be;
+  --blue-soft: #e6ecf8;
+  --sand: #c2bea8;
+  --sand-soft: #f3f1ea;
+  --we-soft: #f1f1f1;
+  --line: #d8d4c4;
+  --ink: #26292e;
+  --muted: #6b6a64;
+  --tear-h: 64mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
+}
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../../assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../../assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../../assets/lexend-latin-700-normal.woff2); }
+
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.5pt; line-height: 1.3; }
+b { font-weight: 600; }
+h1, h2, h3 { margin: 0; color: var(--charcoal); }
+h3 { font-size: 10.5pt; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 4.5mm; }
+li { margin-bottom: 0.6mm; }
+
+/* ---------- page shell ---------- */
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
+.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url(../../../assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
+.page-head {
+  position: absolute; top: 10mm; left: 12mm; right: 12mm;
+  display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
+  border-bottom: 0.35mm solid var(--sand); padding-bottom: 1mm;
+}
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.content { position: absolute; top: 17mm; bottom: 11mm; left: 12mm; right: 12mm; display: flex; flex-direction: column; gap: 2.4mm; }
+.page-foot { position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6mm; display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f; }
+.page-foot .pn {
+  width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 7.5pt;
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--sand); margin: 0 4mm;
+}
+.grow { flex: 1 1 0; min-height: 0; }
+
+/* ---------- lesson opening ---------- */
+.lesson-title { display: flex; align-items: center; gap: 4mm; flex: none; }
+.lesson-badge {
+  flex: none; width: 17mm; height: 17mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 0.8mm #fff, 0 0 0 1.6mm var(--sand);
+}
+.lesson-badge span { font-size: 6pt; text-transform: uppercase; letter-spacing: 0.08em; }
+.lesson-badge b { font-size: 11pt; font-weight: 700; margin-top: 0.6mm; }
+.lesson-title h1 { font-size: 19pt; line-height: 1.1; flex: 1; }
+.date-line { display: flex; align-items: flex-end; gap: 2mm; width: 45mm; font-weight: 600; font-size: 9pt; }
+.date-line i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; }
+.card { background: var(--sand-soft); border-radius: 2.5mm; padding: 2.5mm 4mm; border-top: 1.2mm solid var(--sand); }
+.card-sub { font-size: 8.5pt; color: var(--muted); margin-bottom: 0.8mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 5mm; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.8mm; width: 2.6mm; height: 2.6mm; border: 0.35mm solid var(--charcoal); border-radius: 0.6mm; }
+.terms-head { display: flex; gap: 3mm; align-items: baseline; flex: none; margin-bottom: -1mm; }
+.terms-head span { font-size: 8.5pt; color: var(--muted); }
+.terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.terms.n2 { grid-template-columns: repeat(2, 1fr); }
+.terms.n1 { grid-template-columns: 1fr; }
+.term { display: flex; flex-direction: column; }
+.term-name { align-self: flex-start; background: var(--sand); color: var(--charcoal); font-weight: 700; padding: 0.6mm 3mm; border-radius: 1.5mm; }
+.term i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.notes { border: 0.4mm solid var(--sand); border-radius: 2.5mm; position: relative; min-height: 22mm; }
+.notes-label { position: absolute; top: 1.5mm; left: 3mm; font-weight: 600; font-size: 8.5pt; color: var(--muted); }
+
+/* ---------- banners and level dots (neutral colours: charcoal means WE DO, blue means YOU DO) ---------- */
+.banner { display: flex; align-items: center; gap: 3mm; padding: 1.6mm 4mm; border-radius: 2mm; background: var(--sand); color: var(--charcoal); flex: none; }
+.banner.summary { background: var(--sand-soft); border: 0.35mm solid var(--sand); }
+.banner-title { font-size: 11.5pt; font-weight: 700; }
+.banner-note { margin-left: auto; font-size: 8.5pt; color: var(--charcoal); }
+.lvl-dots { display: inline-flex; gap: 1mm; vertical-align: middle; }
+.lvl-dots i { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.9mm var(--sand); }
+.banner .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--sand), 0 0 0 0.9mm #fff; }
+
+/* ---------- WE DO (charcoal) and YOU DO (blue) zones ---------- */
+.zone { border: 0.8mm solid; border-radius: 3mm; padding: 1.8mm 2.5mm 2.5mm; display: flex; flex-direction: column; gap: 1.8mm; flex: none; min-height: 0; }
+.zone.grow { flex: 1 1 0; }
+.zone.fill { height: 100%; }
+.zone.fill > .col { flex: 1; }
+.zone.we { border-color: var(--charcoal); background: var(--we-soft); }
+.zone.you { border-color: var(--blue); background: var(--blue-soft); }
+.zone-head { display: flex; align-items: center; gap: 2.5mm; flex: none; }
+.zone-pill { flex: none; font-weight: 700; font-size: 9pt; letter-spacing: 0.08em; color: #fff; padding: 0.8mm 3mm; border-radius: 1.5mm; }
+.zone.we .zone-pill, .legend-item.we .zone-pill { background: var(--charcoal); }
+.zone.you .zone-pill, .legend-item.you .zone-pill, .you-pill { background: var(--blue); }
+.zone-text { font-size: 8.5pt; font-weight: 600; }
+.zone.we .zone-text { color: var(--charcoal); }
+.zone.you .zone-text { color: var(--blue); }
+.zone.we .box, .zone.we .grid-paper, .zone.we .sl.template table { border-color: var(--charcoal); }
+.zone.you .box, .zone.you .grid-paper, .zone.you .sl.template table { border-color: var(--blue); }
+.zone.we .q-num.ex { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
+.zone.you .q-num { background: #fff; border-color: var(--blue); color: var(--blue); }
+.zone .graph-card { background: #fff; }
+
+/* ---------- layout helpers ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; min-height: 0; }
+.split.grow { flex: 1 1 0; }
+.split.wide-left { grid-template-columns: 1.4fr 1fr; }
+.split.wide-right { grid-template-columns: 1fr 1.4fr; }
+.split3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.col { display: flex; flex-direction: column; gap: 2mm; min-height: 0; }
+.graph-card { border: 0.35mm solid var(--line); border-radius: 2mm; padding: 1.5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; }
+.graph { width: 100%; height: auto; display: block; font-family: Lexend, sans-serif; }
+.graph-card.narrow .graph { width: 80%; }
+.sym { width: 3.4mm; height: 3.4mm; vertical-align: -0.6mm; }
+.given { background: #fff; border: 0.3mm solid var(--line); border-radius: 1.5mm; padding: 1.5mm 3mm; font-size: 9.5pt; flex: none; }
+.given b { color: var(--charcoal); }
+
+/* ---------- questions and boxes (plain boxes, no ruled lines) ---------- */
+.box { border: 0.45mm solid var(--sand); border-radius: 1.8mm; background: #fff; }
+.q { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.q .box { flex: 1 1 0; min-height: 6mm; }
+.q-head { display: flex; gap: 2mm; align-items: baseline; }
+.q-num {
+  flex: none; min-width: 5.5mm; height: 5.5mm; padding: 0 1.2mm; border-radius: 3mm;
+  background: var(--sand-soft); border: 0.3mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2mm; font-weight: 700; font-size: 8pt;
+}
+.q-num.ex { padding: 0 2.5mm; }
+.q-text { font-size: 9.5pt; }
+.col > .example, .col > .q { flex: 1 1 0; }
+.ex-row .example .box { height: 14mm; flex: none; }
+.ex-row.tall .example .box { height: 22mm; }
+.draw-area { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.draw-area > .graph, .draw-area > .graph-card { flex: none; }
+.draw-area .template { background: #fff; border-radius: 1.8mm; }
+
+.qs { display: grid; grid-template-columns: 6mm 1fr 20mm; gap: 2mm; align-items: center; font-size: 9pt; }
+.qs .box { height: 7mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 34mm; }
+.short-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, auto); gap: 1.6mm 6mm; flex: none; }
+.short-grid.fill { flex: 1 1 0; grid-template-rows: repeat(5, 1fr); align-items: center; }
+.short-list { display: grid; grid-template-rows: repeat(10, 1fr); gap: 0.6mm; }
+.short-list .qs .box { height: 100%; min-height: 5.6mm; }
+.short-grid .qs .q-text, .short-list .qs .q-text { font-size: 9pt; }
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); gap: 2mm 5mm; flex: 1 1 0; min-height: 0; }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.work-grid.r4 { grid-template-rows: repeat(4, 1fr); }
+.work-grid.r2 { grid-template-rows: repeat(2, 1fr); }
+.work-grid .q-text { font-size: 9pt; }
+.stack { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 0; min-height: 0; }
+.stack > .q { flex: 1 1 0; }
+
+/* ---------- drawing templates ---------- */
+.grid-paper {
+  flex: 1 1 0; min-height: 30mm; position: relative; border: 0.45mm solid var(--sand); border-radius: 1.8mm;
+  background-color: #fff;
+  background-image: linear-gradient(to right, #dcd9cc 0.2mm, transparent 0.2mm), linear-gradient(to bottom, #dcd9cc 0.2mm, transparent 0.2mm);
+  background-size: 5mm 5mm; background-position: -0.1mm -0.1mm;
+}
+.grid-label { position: absolute; top: 1mm; right: 2mm; font-size: 7.5pt; color: var(--muted); background: #fff; padding: 0 1mm; }
+.sl { display: flex; flex-direction: column; gap: 0.8mm; }
+.sl-title { font-weight: 600; font-size: 9pt; text-align: center; }
+.sl table { border-collapse: collapse; font-size: 10pt; }
+.sl th { font-size: 8pt; color: var(--muted); font-weight: 600; padding: 0.6mm 2.5mm; text-align: left; border-bottom: 0.3mm solid var(--line); }
+.sl td { padding: 0.8mm 2.5mm; letter-spacing: 0.05em; }
+.sl td.stem { text-align: right; border-right: 0.5mm solid var(--charcoal); font-weight: 600; width: 10mm; }
+.sl th:first-child { text-align: right; border-right: 0.5mm solid var(--charcoal); }
+.sl-key { font-size: 8pt; color: var(--muted); }
+.sl.b2b td.leaf.l, .sl.b2b th.l { text-align: right; }
+.sl.b2b td.stem, .sl.b2b th:nth-child(2) { border-left: 0.5mm solid var(--charcoal); text-align: center; }
+.sl.b2b th:first-child { border-right: none; }
+.sl.template { flex: 1 1 0; min-height: 0; }
+.sl.template table { flex: 1 1 0; width: 100%; border: 0.45mm solid var(--sand); border-radius: 1.8mm; border-collapse: separate; border-spacing: 0; background: #fff; }
+.sl.template td { border-bottom: 0.25mm dotted var(--line); }
+.sl.template td.stem { width: 16mm; }
+.sl.b2b.template td.stem { width: 16mm; }
+.data-table { border-collapse: collapse; font-size: 9pt; background: #fff; }
+.data-table th, .data-table td { border: 0.3mm solid var(--line); padding: 1mm 2.5mm; text-align: center; }
+.data-table th { background: var(--sand-soft); font-weight: 600; }
+.data-table.blank td { height: 7mm; min-width: 11mm; }
+
+/* ---------- worked examples ---------- */
+.worked { border: 0.45mm solid var(--sand); border-radius: 2.5mm; padding: 2.5mm 3mm; display: flex; flex-direction: column; gap: 1.5mm; background: #fff; }
+.worked-head { display: flex; align-items: center; gap: 2mm; color: var(--charcoal); }
+.worked-q { padding: 1.5mm 2mm; background: var(--sand-soft); border-radius: 1.5mm; }
+.steps { padding-left: 4.5mm; }
+.steps li::marker { color: var(--charcoal); font-weight: 700; }
+.worked-a { padding: 1.2mm 2mm; background: var(--sand-soft); border: 0.3mm solid var(--sand); border-radius: 1.5mm; margin-top: auto; }
+.worked .graph-card { border: none; padding: 0; }
+.ext { min-height: 0; }
+.ext .worked { font-size: 9.5pt; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; font-size: 8.5pt; flex: none; }
+.summary-grid.g2 { grid-template-columns: repeat(2, 1fr); flex: 1 1 0; min-height: 0; font-size: 9pt; }
+.summary-grid .worked { padding: 2mm 2.5mm; }
+.steps-card { grid-column: 1 / -1; background: var(--sand-soft); border-radius: 2.5mm; padding: 2mm 4mm; display: flex; gap: 4mm; align-items: baseline; font-size: 9pt; }
+.steps-card ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5mm 6mm; flex: 1; }
+.diagram { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.diagram .graph { width: auto; height: 100%; max-height: 42mm; }
+
+/* ---------- tear-off exit ticket ---------- */
+.tear-space { flex: none; height: var(--tear-h); }
+.tear-zone { position: absolute; left: 0; right: 0; bottom: 0; height: var(--tear-h); display: flex; flex-direction: column; gap: 2mm; }
+.cut-line { border-top: 0.55mm dashed var(--charcoal); text-align: center; height: 0; margin: 1.5mm -12mm 2mm; }
+.cut-line span { position: relative; top: -2.6mm; background: #fff; padding: 0 3mm; font-size: 8pt; color: var(--muted); }
+.exit-head { display: flex; align-items: center; gap: 4mm; }
+.exit-head h2 { font-size: 14pt; color: var(--blue); white-space: nowrap; }
+.exit-head p { font-size: 9pt; }
+.name-lines { display: flex; gap: 3mm; font-weight: 600; font-size: 9pt; margin-left: auto; width: 74mm; }
+.name-lines > div { display: flex; align-items: flex-end; gap: 2mm; flex: 1; }
+.name-lines > .short { flex: 0 0 24mm; }
+.name-lines i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.exit-body { flex: 1; display: grid; grid-template-columns: 56mm repeat(3, 1fr); gap: 3mm; min-height: 0; }
+.exit-body.no-graph { grid-template-columns: repeat(3, 1fr); }
+.exit-graph { justify-content: center; }
+.exit-graph .sl table { font-size: 9pt; }
+.exit-q { border: 0.45mm solid var(--blue); background: var(--blue-soft); border-radius: 2.5mm; padding: 2mm; }
+.exit-q .q-head { flex-direction: column; gap: 1.2mm; min-height: 17mm; }
+.exit-q .q-num { background: var(--blue); color: #fff; border-color: var(--blue); padding: 0 2.5mm; height: 6mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--blue), 0 0 0 0.9mm #fff; }
+.exit-q .q-text { font-size: 9pt; }
+.exit-q .box { border-color: var(--blue); }
+.tear-zone.back .blank-note { flex: 1; display: flex; align-items: center; justify-content: center; color: #b3b0a3; font-size: 9pt; }
+
+/* ---------- cover ---------- */
+.cover { background: var(--charcoal); }
+.cover-art { position: absolute; inset: 0; background: url(../../../assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-spine {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 15mm; background: var(--blue);
+  display: flex; align-items: center; justify-content: center; box-shadow: 0.8mm 0 0 var(--sand);
+}
+.cover-spine span { transform: rotate(-90deg); white-space: nowrap; color: #fff; font-weight: 700; letter-spacing: 0.2em; font-size: 11pt; }
+.cover-series { position: absolute; top: 12mm; left: 24mm; right: 12mm; display: flex; justify-content: space-between; align-items: center; }
+.cover-series span { background: rgba(255,255,255,0.95); color: var(--charcoal); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 10pt; padding: 2mm 4mm; border-radius: 2mm; }
+.cover-panel {
+  position: absolute; left: 24mm; right: 12mm; top: 70mm; padding: 9mm 11mm 10mm;
+  background: rgba(255,255,255,0.96); border-radius: 5mm; box-shadow: 0 0 0 1.4mm var(--sand);
+}
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cover .logo { height: 22mm; display: block; }
+.chapter-badge {
+  width: 34mm; height: 34mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--blue);
+}
+.chapter-badge span { font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; }
+.chapter-badge b { font-size: 30pt; font-weight: 700; margin-top: 1mm; }
+.cover-kicker { margin-top: 3mm; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--blue); font-size: 12pt; }
+.cover h1 { font-size: 38pt; line-height: 1.05; margin: 1mm 0 3mm; color: var(--charcoal); }
+.cover-lessons { display: grid; grid-template-columns: 1fr 1fr; gap: 1mm 6mm; font-size: 9pt; margin-bottom: 7mm; padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; }
+.cover-lessons b { color: var(--blue); margin-right: 1.5mm; }
+.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
+.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
+.cover-fields span { width: 20mm; }
+.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.cover-credit { position: absolute; bottom: 8mm; right: 12mm; background: rgba(255,255,255,0.95); padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt; }
+
+/* ---------- inside cover ---------- */
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 4mm; flex: none; }
+.howto > div { display: flex; gap: 3mm; align-items: flex-start; padding: 2.5mm 3mm; border-radius: 2.5mm; background: var(--sand-soft); font-size: 9pt; }
+.howto .step { flex: none; width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 8.5pt; }
+.howto > div.we { background: var(--we-soft); border: 0.8mm solid var(--charcoal); }
+.howto > div.you { background: var(--blue-soft); border: 0.8mm solid var(--blue); }
+.howto .zone-pill { align-self: flex-start; }
+.howto > div.we .zone-pill { background: var(--charcoal); }
+.howto > div.you .zone-pill { background: var(--blue); }
+.contents { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.contents th { text-align: left; font-size: 8.5pt; color: var(--muted); font-weight: 600; padding: 1mm 2mm; border-bottom: 0.35mm solid var(--sand); }
+.contents td { padding: 1.6mm 2mm; border-bottom: 0.25mm solid var(--line); }
+.contents td.code { font-weight: 700; color: var(--blue); width: 14mm; }
+.contents td.pg { text-align: right; width: 14mm; font-weight: 600; }
+.contents td.tick { width: 16mm; text-align: center; }
+.contents td.tick i { display: inline-block; width: 4mm; height: 4mm; border: 0.35mm solid var(--charcoal); border-radius: 0.8mm; }
+.goals { columns: 2; column-gap: 8mm; font-size: 9pt; }
+.ack-box { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
+.ack-box h3 { color: var(--sand); font-size: 10pt; margin-bottom: 1mm; }
+.ack-box p { font-size: 8.5pt; margin-bottom: 2mm; }
+.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url(../../../assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
+.section-title { font-size: 13pt; color: var(--charcoal); font-weight: 700; flex: none; }
+
+/* ---------- answers ---------- */
+.answers { columns: 2; column-gap: 8mm; }
+.ans-lesson { break-inside: avoid-column; }
+.ans-lesson h2 { font-size: 12pt; color: var(--blue); margin: 2mm 0 1mm; break-after: avoid; }
+.ans-block { break-inside: avoid; margin-bottom: 2mm; }
+.ans-block h3 { font-size: 9.5pt; margin-bottom: 0.6mm; }
+.ans-block li { font-size: 8.5pt; margin-bottom: 0.2mm; }
+.answers-flow .page { height: auto; min-height: 297mm; overflow: visible; }
+
+/* ---------- shared tweaks ---------- */
+.zone.grow > .ex-row, .zone.grow > .split.grow { flex: 1 1 0; min-height: 0; }
+.zone.grow > .ex-row .example .box { height: auto; flex: 1 1 0; }
+.exit-q .q-num .lvl-dots i { background: #fff; }
+.q.draw .draw-area .grid-paper { min-height: 30mm; }
+.zone .col > .graph-card { flex: none; }
+.summary-grid.g2 .worked { font-size: 9.5pt; }
+.summary-grid.g2 .diagram .graph { max-height: 40mm; width: auto; }
+.summary-grid .diagram { min-height: 0; }
+.template-card { background: #fff; border: 0.45mm solid var(--sand); border-radius: 1.8mm; padding: 1mm 1.5mm; flex: 1 1 auto; display: flex; align-items: flex-end; }
+.zone.you .template-card { border-color: var(--blue); }
+.zone.we .template-card { border-color: var(--charcoal); }
+.template-card .graph { width: 100%; }
+.work-grid.c3 { grid-template-columns: repeat(3, 1fr); }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.q.draw .data-table { width: 100%; }
+.draw-area { flex: 1 1 auto; }
+.summary-grid.g2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.summary-grid.g2 .worked { min-height: 0; overflow: hidden; }
+.worked .diagram { flex: 1 1 0; min-height: 0; }
+.worked .diagram .graph { height: 100%; width: auto; max-width: 100%; max-height: 44mm; }
+.stack > .q.draw { flex: none; }
+.summary-grid:not(.g2) .diagram { flex: 1 0 16mm; }
+.summary-grid:not(.g2) .diagram .graph { max-height: 22mm; }
+.sl.template td { height: 6.5mm; }
+.graph-card .sl { align-self: center; }
+.worked .sl table { font-size: 9pt; }
+/* stem-and-leaf templates: fixed row heights, never stretched */
+.sl.template { flex: none; }
+.sl.template table { flex: none; height: auto; }
+.sl.template th { height: 5.5mm; }
+.sl.template td { height: 7.5mm; }
+.col > .q.draw { flex: none; }
+.tip { padding: 2mm 3mm; background: var(--sand-soft); border-left: 1.2mm solid var(--sand); border-radius: 1mm; }
+.q-text .data-table { margin-top: 1mm; }
+.lesson-title h1 { font-size: 17pt; }
+.notes { min-height: 18mm; }
+.sl.b2b.template td.leaf { width: 45%; }
+.terms .term-name { white-space: nowrap; }
+.notes.fixed { flex: none; height: 26mm; }
+.zone.fill .example .box { min-height: 10mm; }
+.stack > .q { min-height: 18mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 38mm; }
+
+/* ================= roomier layout rules (override earlier values) ================= */
+/* WE DO panels next to a graph grow with their content instead of being squeezed to the graph's height */
+.zone.fill { height: auto; }
+.zone.fill .example { flex: 1 1 auto; }
+.zone.fill .example .box, .col > .example .box { min-height: 22mm; flex: 1 1 auto; }
+.ex-row .example .box { height: 24mm; }
+.ex-row.tall .example .box { height: 34mm; }
+/* short answers: fixed, comfortable rows */
+.qs { gap: 2.5mm; }
+.qs .box, .short-list .qs .box { height: 8.5mm; min-height: 8.5mm; }
+.short-list { grid-template-rows: none; grid-auto-rows: auto; gap: 1.8mm; align-content: start; }
+.short-grid { gap: 2.2mm 6mm; }
+/* full-working questions: never smaller than 16 mm */
+.q .box { min-height: 16mm; }
+.work-grid { gap: 3mm 5mm; }
+.grid-paper { min-height: 45mm; }
+.notes { min-height: 30mm; }
+.summary-page { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3mm; font-size: 9.5pt; }
+.summary-page .worked { min-height: 0; }
+.summary-page .diagram .graph { max-height: 38mm; }
+.content > .steps-card { flex: none; }
+.work-grid { flex: 1 1 auto; }
+.zone.grow > .work-grid { flex: 1 1 0; }
+
+/* short-answer lists beside a graph: spread the rows over the height of the graph */
+.split > .short-list { align-content: space-between; }
+/* a question is never shorter than its text plus its minimum box; drawing questions fill spare space */
+.q { min-height: auto; }
+.zone.grow > .q.draw, .col > .q.draw.grow { flex: 1 1 0; }
+.zone.grow > .q.draw .grid-paper { flex: 1 1 0; }
+.graph-card.wide-graph { flex: 1 1 0; min-height: 0; }
+.graph-card.wide-graph .graph { height: 100%; width: auto; max-width: 100%; }
+.zone.grow > .short-grid { flex: none; }
+.graph-card.wide-graph { flex: none; }
+.graph-card.wide-graph .graph { width: 118mm; height: auto; }
+.zone.grow > .short-grid { flex: 1 1 0; align-items: center; }
+.ex-row.grow-ex { flex: 1 1 0; display: flex; flex-direction: column; min-height: 0; }
+.ex-row.grow-ex .example { flex: 1 1 0; }
+.ex-row.grow-ex .example .box { height: auto; flex: 1 1 0; }
+/* only grid paper grows to fill space; tables and number lines keep their natural size */
+.zone.grow > .q.draw:not(:has(.grid-paper)) { flex: none; }
+.q.draw:not(:has(.grid-paper)) .draw-area { flex: none; }
+.draw-area .template-card { flex: none; }
+.split.grow-row { flex: 1 1 0; min-height: 0; }
+.split.grow-row .example .box { height: auto; flex: 1 1 0; }
+.zone.grow > .split.grow-row { flex: 1 1 0; }
+
+/* ---------- standalone lesson booklets ---------- */
+.chapter-badge.lesson b { font-size: 21pt; }
+.cover-progress { display: flex; align-items: center; gap: 2mm; margin: -1mm 0 5mm; font-size: 9pt; font-weight: 600; color: var(--muted); }
+.cover-progress span { margin-right: 2mm; }
+.cover-progress i { width: 4mm; height: 4mm; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0.5mm var(--sand); }
+.cover-progress i.done { background: var(--sand); }
+.cover-progress i.on { background: var(--blue); box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.2mm var(--blue); }
+.cover-learn { padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; margin-bottom: 7mm; font-size: 10pt; }
+.cover-learn ul { margin-top: 1.5mm; }
+.bys-top { display: flex; align-items: center; gap: 6mm; flex: none; }
+.need { display: flex; align-items: center; gap: 2mm; flex: none; }
+.need b { margin-right: 1mm; }
+.need span { padding: 1mm 3mm; border-radius: 10mm; background: var(--sand-soft); border: 0.35mm solid var(--sand); font-size: 9pt; font-weight: 600; }
+.outcome { font-size: 8.5pt; color: var(--muted); }
+.ack-box:not(.grow) .ack-art { height: 30mm; }
+.map-we, .map-you { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: 0.06em; color: #fff; padding: 0.2mm 1.6mm; border-radius: 1mm; margin-right: 0.8mm; vertical-align: 0.3mm; }
+.map-we { background: var(--charcoal); }
+.map-you { background: var(--blue); }
+</style></head><body>
+<section class="page cover">
+  <div class="cover-art"></div>
+  <div class="cover-spine"><span>YEAR 7 · CHAPTER 10 · LESSON 10.02 · MISLEADING GRAPHS</span></div>
+  <div class="cover-series"><span>Year 7 Mathematics</span><span>Chapter 10 · Analysing data</span></div>
+  <div class="cover-panel">
+    <div class="cover-top">
+      <img class="logo" src="../../../assets/kingscliff-logo.png" alt="Kingscliff High School">
+      <div class="chapter-badge lesson"><span>Lesson</span><b>10.02</b></div>
+    </div>
+    <p class="cover-kicker">Year 7 Mathematics · Chapter 10</p>
+    <h1>Misleading graphs</h1>
+    <div class="cover-progress"><span>Lesson 2 of 8</span><i class="done"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+    <div class="cover-learn"><b>In this lesson you will learn to:</b><ul><li>spot features that make a graph misleading</li><li>explain the false impression a misleading graph gives</li><li>redraw a misleading graph so it is fair</li></ul></div>
+    <div class="cover-fields">
+      <div><span>Name</span><i></i></div>
+      <div><span>Class</span><i></i></div>
+      <div><span>Teacher</span><i></i></div>
+    </div>
+  </div>
+  <p class="cover-credit">Cover and theme artwork by <b>Marni Tuala</b></p>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Before you start</span></header>
+  <div class="content">
+    <p class="section-title">Before you start</p>
+    <div class="bys-top">
+      <div class="need"><b>You will need</b><span>Pencil</span><span>Ruler</span></div>
+      <p class="outcome"><b>Syllabus:</b> MA4-DAT-C-01: classifies and displays data using a variety of graphical representations</p>
+    </div>
+    <div class="howto">
+      <div class="we"><span class="zone-pill">WE DO</span><span><b>Grey boxes.</b> Work with your teacher. Copy what they write on the board.</span></div>
+      <div class="you"><span class="zone-pill">YOU DO</span><span><b>Blue boxes.</b> Work on your own. Show your working in the box.</span></div>
+      <div><span class="step">1</span><span>Work through <b>Level 1</b>, then <b>Level 2</b>, then <b>Level 3</b>. Try the <b>extension</b> if you finish early.</span></div>
+      <div><span class="step">2</span><span>At the end, <b>show off your skill</b>: answer one exit ticket question, tear it off and hand it in.</span></div>
+    </div>
+    <p class="section-title">Lesson map</p>
+    <table class="contents">
+      <tr><th>Page</th><th>What is on it</th><th style="text-align:center">Done</th></tr>
+      <tr><td class="code">3</td><td>Learning intentions, key terms, notes and Level 1 teacher examples</td><td class="tick"><i></i></td></tr><tr><td class="code">4</td><td>Level 1: <span class="map-you">YOU DO</span> practice questions</td><td class="tick"><i></i></td></tr><tr><td class="code">5</td><td>Level 2: <span class="map-we">WE DO</span> teacher examples and <span class="map-you">YOU DO</span> practice questions</td><td class="tick"><i></i></td></tr><tr><td class="code">6</td><td>Level 2 and 3: <span class="map-we">WE DO</span> teacher examples and <span class="map-you">YOU DO</span> practice questions</td><td class="tick"><i></i></td></tr><tr><td class="code">7</td><td>Level 3: <span class="map-you">YOU DO</span> practice questions</td><td class="tick"><i></i></td></tr><tr><td class="code">8</td><td>Level 3: <span class="map-you">YOU DO</span> practice questions</td><td class="tick"><i></i></td></tr><tr><td class="code">9</td><td>Extension questions and the tear-off exit ticket</td><td class="tick"><i></i></td></tr><tr><td class="code">10</td><td>Lesson summary: a worked example for every level</td><td class="tick"><i></i></td></tr>
+    </table>
+    
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Warm-up. These skills will help you in this lesson. Show your working.</span></div>
+  <div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">64 − 58</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">6 ÷ 2</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">2 × 2</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">What should every graph have at the top?</span></div><div class="box"></div></div></div></div>
+    <div class="ack-box">
+      <div class="ack-art"></div>
+      <div>
+        <h3>Acknowledgement of artwork</h3>
+        <p>The artwork used throughout this booklet series was created by <b>Marni Tuala</b>. We thank Marni for sharing this artwork with our school community.</p>
+        <h3>Acknowledgement of Country</h3>
+        <p>We acknowledge the Bundjalung people, the Traditional Custodians of the land on which Kingscliff High School stands, and pay our respects to Elders past and present.</p>
+      </div>
+    </div>
+  </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">2</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>10.02</b></div>
+    <h1>Misleading graphs</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>spot features that make a graph misleading</li><li>explain the false impression a misleading graph gives</li><li>redraw a misleading graph so it is fair</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>check whether the vertical axis starts at 0 and has an even scale</li><li>explain how a graph makes a difference look bigger or smaller than it really is</li><li>redraw a graph with a fair scale, title and labels</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n3">
+    <div class="term"><span class="term-name">Misleading graph</span><i></i><i></i></div><div class="term"><span class="term-name">Scale</span><i></i><i></i></div><div class="term"><span class="term-name">Axis</span><i></i><i></i></div>
+  </div>
+      <div class="notes grow"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      <div class="split "><div class="graph-card "><svg class="graph" viewBox="0 0 88 50" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/50"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Votes for class captain</text><line x1="13.00" y1="40.00" x2="86.00" y2="40.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="40.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">46</text><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="32.00" x2="86.00" y2="32.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="32.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">48</text><line x1="13.00" y1="28.00" x2="86.00" y2="28.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="24.00" x2="86.00" y2="24.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="24.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">50</text><line x1="13.00" y1="20.00" x2="86.00" y2="20.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="16.00" x2="86.00" y2="16.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="16.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">52</text><line x1="13.00" y1="12.00" x2="86.00" y2="12.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="8.00" x2="86.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">54</text><rect x="19.57" y="16.00" width="23.36" height="24.00" fill="#3f63be"/><text x="31.25" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Ava</text><rect x="56.07" y="32.00" width="23.36" height="8.00" fill="#3f63be"/><text x="67.75" y="43.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Ben</text><line x1="13.00" y1="7.00" x2="13.00" y2="40.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="40.00" x2="86.00" y2="40.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="24" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 24)">Votes</text></svg></div>
+  <div class="zone we fill"><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="col">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">What is misleading about this graph?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Ava’s bar looks 3 times as tall as Ben’s. How many more votes did Ava really get?</span></div><div class="box"></div></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">3</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Level 1</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Is each feature <b>fair</b> or <b>misleading</b>? Write F or M.</span></div>
+  <div class="short-grid" style="grid-template-rows: repeat(5, minmax(min-content, 1fr))"><div class="qs"><span class="q-num">1</span><span class="q-text">The vertical axis starts at 0.</span><span class="box"></span></div><div class="qs"><span class="q-num">2</span><span class="q-text">The vertical axis starts at 90, not 0.</span><span class="box"></span></div><div class="qs"><span class="q-num">3</span><span class="q-text">The scale goes 0, 10, 20, 50, 100 with equal gaps.</span><span class="box"></span></div><div class="qs"><span class="q-num">4</span><span class="q-text">Both axes are labelled with units.</span><span class="box"></span></div><div class="qs"><span class="q-num">5</span><span class="q-text">One bar is drawn wider than the others.</span><span class="box"></span></div><div class="qs"><span class="q-num">6</span><span class="q-text">The graph has a clear title.</span><span class="box"></span></div><div class="qs"><span class="q-num">7</span><span class="q-text">Some years are left out of a line graph.</span><span class="box"></span></div><div class="qs"><span class="q-num">8</span><span class="q-text">A tilted 3D pie makes the front sector look bigger.</span><span class="box"></span></div><div class="qs"><span class="q-num">9</span><span class="q-text">The gridlines are evenly spaced.</span><span class="box"></span></div><div class="qs"><span class="q-num">10</span><span class="q-text">A picture is drawn taller <b>and</b> wider to show a bigger value.</span><span class="box"></span></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Use the canteen sales line graph.</span></div><div class="graph-card wide-graph"><svg class="graph" viewBox="0 0 88 50" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/50"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Canteen sales</text><line x1="13.00" y1="40.00" x2="85.00" y2="40.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="40.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">39</text><line x1="13.00" y1="36.00" x2="85.00" y2="36.00" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="32.00" x2="85.00" y2="32.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="32.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">41</text><line x1="13.00" y1="28.00" x2="85.00" y2="28.00" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="24.00" x2="85.00" y2="24.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="24.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">43</text><line x1="13.00" y1="20.00" x2="85.00" y2="20.00" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="16.00" x2="85.00" y2="16.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="16.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">45</text><line x1="13.00" y1="12.00" x2="85.00" y2="12.00" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="8.00" x2="85.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">47</text><line x1="16.00" y1="8.00" x2="16.00" y2="40.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="16" y="43.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2019</text><line x1="29.20" y1="8.00" x2="29.20" y2="40.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="29.2" y="43.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2020</text><line x1="42.40" y1="8.00" x2="42.40" y2="40.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="42.4" y="43.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2021</text><line x1="55.60" y1="8.00" x2="55.60" y2="40.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="55.599999999999994" y="43.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2022</text><line x1="68.80" y1="8.00" x2="68.80" y2="40.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="68.8" y="43.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2023</text><line x1="82.00" y1="8.00" x2="82.00" y2="40.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="82" y="43.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2024</text><polyline points="16.00,32.00 29.20,36.00 42.40,24.00 55.60,20.00 68.80,16.00 82.00,12.00" fill="none" stroke="#3f63be" stroke-width="0.6"/><circle cx="16.00" cy="32.00" r="0.75" fill="#3f63be"/><circle cx="29.20" cy="36.00" r="0.75" fill="#3f63be"/><circle cx="42.40" cy="24.00" r="0.75" fill="#3f63be"/><circle cx="55.60" cy="20.00" r="0.75" fill="#3f63be"/><circle cx="68.80" cy="16.00" r="0.75" fill="#3f63be"/><circle cx="82.00" cy="12.00" r="0.75" fill="#3f63be"/><line x1="13.00" y1="7.00" x2="13.00" y2="40.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="40.00" x2="85.00" y2="40.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="24" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 24)">Sales ($ thousands)</text><text x="49" y="48.2" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e">Year</text></svg></div>
+  <div class="short-grid" style="grid-template-rows: repeat(5, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">What were sales in 2019?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">In which year were sales lowest?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">What does the vertical axis start at?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">Should it start at 0? (yes/no)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">How much did sales rise from 2020 to 2024?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">On the graph, 2024 looks how many times higher than 2020?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">7</span><span class="q-text">True or false: sales more than doubled.</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">8</span><span class="q-text">Which year had the biggest rise?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">9</span><span class="q-text">Are the axes labelled? (yes/no)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">10</span><span class="q-text">Name one thing that makes it misleading.</span><span class="box"></span></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">4</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Level 2</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      <p class="given">Graphs P and Q show <b>the same data</b>: 120 students bought lunch in Term 1 and 130 in Term 2.</p>
+      <div class="split "><div class="graph-card "><svg class="graph" viewBox="0 0 88 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/46"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Graph P: students buying lunch</text><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="36.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">115</text><line x1="13.00" y1="29.00" x2="86.00" y2="29.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="29.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">120</text><line x1="13.00" y1="22.00" x2="86.00" y2="22.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="22.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">125</text><line x1="13.00" y1="15.00" x2="86.00" y2="15.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="15.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">130</text><line x1="13.00" y1="8.00" x2="86.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">135</text><rect x="19.57" y="29.00" width="23.36" height="7.00" fill="#3f63be"/><text x="31.25" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Term 1</text><rect x="56.07" y="15.00" width="23.36" height="21.00" fill="#3f63be"/><text x="67.75" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Term 2</text><line x1="13.00" y1="7.00" x2="13.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22)">Students</text></svg></div><div class="graph-card "><svg class="graph" viewBox="0 0 88 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/46"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Graph Q: students buying lunch</text><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="36.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13.00" y1="34.00" x2="86.00" y2="34.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="32.00" x2="86.00" y2="32.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="32.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">20</text><line x1="13.00" y1="30.00" x2="86.00" y2="30.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="28.00" x2="86.00" y2="28.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="28.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">40</text><line x1="13.00" y1="26.00" x2="86.00" y2="26.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="24.00" x2="86.00" y2="24.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="24.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">60</text><line x1="13.00" y1="22.00" x2="86.00" y2="22.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="20.00" x2="86.00" y2="20.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="20.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">80</text><line x1="13.00" y1="18.00" x2="86.00" y2="18.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="16.00" x2="86.00" y2="16.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="16.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">100</text><line x1="13.00" y1="14.00" x2="86.00" y2="14.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="12.00" x2="86.00" y2="12.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="12.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">120</text><line x1="13.00" y1="10.00" x2="86.00" y2="10.00" stroke="#e2dfd3" stroke-width="0.18"/><line x1="13.00" y1="8.00" x2="86.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">140</text><rect x="19.57" y="12.00" width="23.36" height="24.00" fill="#3f63be"/><text x="31.25" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Term 1</text><rect x="56.07" y="10.00" width="23.36" height="26.00" fill="#3f63be"/><text x="67.75" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Term 2</text><line x1="13.00" y1="7.00" x2="13.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22)">Students</text></svg></div></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row tall">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Which graph makes the increase look bigger? Explain why.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">In Graph P, Term 2’s bar looks 3 times as tall. Is that true? How many more students were there?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Questions 1–5 use Graphs P and Q above.</span></div>
+  <div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(0, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Graph P: what does the vertical axis start at?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Graph Q: what does the vertical axis start at?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">How many more students bought lunch in Term 2?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">In Graph P, Term 2’s bar looks how many times as tall as Term 1’s?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">Which graph would the canteen use to show a big jump? Why?</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">5</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Level 2 · Level 3</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C continued. Questions 6–7 use the sector graph and 8–10 use the line graph.</span></div>
+        <div class="split "><div class="graph-card "><svg class="graph" viewBox="0 0 88 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/46"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Favourite sport of Year 7</text><path d="M48,28.5 L48.00,12.00 A16.5,16.5 0 0 1 56.92,42.38 Z" fill="#3f63be" stroke="#fff" stroke-width="0.4"/><text x="56.707398735551564" y="26.943277046664026" font-size="2.6" text-anchor="middle" font-weight="600" fill="#fff">Soccer</text><text x="56.707398735551564" y="29.933277046664024" font-size="2.6" text-anchor="middle" font-weight="600" fill="#fff">45%</text><path d="M48,28.5 L56.92,42.38 A16.5,16.5 0 0 1 32.99,35.35 Z" fill="#3d3b3c" stroke="#fff" stroke-width="0.4"/><text x="45.44327704666402" y="38.207398735551564" font-size="2.6" text-anchor="middle" font-weight="600" fill="#fff">Netball</text><text x="45.44327704666402" y="41.197398735551566" font-size="2.6" text-anchor="middle" font-weight="600" fill="#fff">30%</text><path d="M48,28.5 L32.99,35.35 A16.5,16.5 0 0 1 35.53,17.69 Z" fill="#c2bea8" stroke="#fff" stroke-width="0.4"/><polyline points="34.12,26.50 28.70,25.72 26.70,25.72" fill="none" stroke="#3d3b3c" stroke-width="0.2"/><text x="26.09848188332181" y="26.624860653670925" font-size="2.6" text-anchor="end" font-weight="400" fill="#26292e">Cricket 20%</text><path d="M48,28.5 L35.53,17.69 A16.5,16.5 0 0 1 48.00,12.00 Z" fill="#9fb3e6" stroke="#fff" stroke-width="0.4"/><polyline points="42.17,15.74 39.90,10.76 37.90,10.76" fill="none" stroke="#3d3b3c" stroke-width="0.2"/><text x="37.29940724646321" y="11.662176090586891" font-size="2.6" text-anchor="end" font-weight="400" fill="#26292e">Other 15%</text></svg></div><div class="graph-card "><svg class="graph" viewBox="0 0 88 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/46"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Visitors to the town museum</text><line x1="13.00" y1="36.00" x2="85.00" y2="36.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="36.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13.00" y1="34.60" x2="85.00" y2="34.60" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="33.20" x2="85.00" y2="33.20" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="31.80" x2="85.00" y2="31.80" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="30.40" x2="85.00" y2="30.40" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="29.00" x2="85.00" y2="29.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="29.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">10</text><line x1="13.00" y1="27.60" x2="85.00" y2="27.60" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="26.20" x2="85.00" y2="26.20" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="24.80" x2="85.00" y2="24.80" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="23.40" x2="85.00" y2="23.40" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="22.00" x2="85.00" y2="22.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="22.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">20</text><line x1="13.00" y1="20.60" x2="85.00" y2="20.60" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="19.20" x2="85.00" y2="19.20" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="17.80" x2="85.00" y2="17.80" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="16.40" x2="85.00" y2="16.40" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="15.00" x2="85.00" y2="15.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="15.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">30</text><line x1="13.00" y1="13.60" x2="85.00" y2="13.60" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="12.20" x2="85.00" y2="12.20" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="10.80" x2="85.00" y2="10.80" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="9.40" x2="85.00" y2="9.40" stroke="#e2dfd3" stroke-width="0.15"/><line x1="13.00" y1="8.00" x2="85.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">40</text><line x1="16.00" y1="8.00" x2="16.00" y2="36.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="16" y="39.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2000</text><line x1="32.50" y1="8.00" x2="32.50" y2="36.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="32.5" y="39.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2010</text><line x1="49.00" y1="8.00" x2="49.00" y2="36.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="49" y="39.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2020</text><line x1="65.50" y1="8.00" x2="65.50" y2="36.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="65.5" y="39.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2022</text><line x1="82.00" y1="8.00" x2="82.00" y2="36.00" stroke="#e2dfd3" stroke-width="0.15"/><text x="82" y="39.2" font-size="2.2" text-anchor="middle" font-weight="400" fill="#26292e">2024</text><polyline points="16.00,29.00 32.50,22.00 49.00,15.00 65.50,13.60 82.00,12.20" fill="none" stroke="#3f63be" stroke-width="0.6"/><circle cx="16.00" cy="29.00" r="0.75" fill="#3f63be"/><circle cx="32.50" cy="22.00" r="0.75" fill="#3f63be"/><circle cx="49.00" cy="15.00" r="0.75" fill="#3f63be"/><circle cx="65.50" cy="13.60" r="0.75" fill="#3f63be"/><circle cx="82.00" cy="12.20" r="0.75" fill="#3f63be"/><line x1="13.00" y1="7.00" x2="13.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="36.00" x2="85.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22)">Visitors (thousands)</text><text x="49" y="44.2" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e">Year</text></svg></div></div>
+        
+  <div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">Sector graph: add the percentages. What is the total?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">7</span><span class="q-text">Why is the sector graph misleading?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">8</span><span class="q-text">Line graph: how many years are between 2000 and 2010?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">9</span><span class="q-text">Line graph: how many years are between 2020 and 2022?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">10</span><span class="q-text">Why is the line graph’s horizontal axis misleading?</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span></div>
+      
+  <div class="zone we grow"><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split wide-left grow"><div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Redraw the class captain graph (page 3) fairly: Ava 52 votes, Ben 48 votes.</span></div><div class="draw-area"><div class="grid-paper"></div></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Who might want to use the misleading class captain graph, and why?</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">6</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Level 3</span></header>
+  <div class="content">
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Questions 1–3 use the phone sales graph.</span></div>
+        <div class="split "><div class="graph-card "><svg class="graph" viewBox="0 0 88 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:88/46"><text x="44" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Phone sales by brand</text><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="36.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">195</text><line x1="13.00" y1="29.00" x2="86.00" y2="29.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="29.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">200</text><line x1="13.00" y1="22.00" x2="86.00" y2="22.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="22.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">205</text><line x1="13.00" y1="15.00" x2="86.00" y2="15.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="15.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">210</text><line x1="13.00" y1="8.00" x2="86.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">215</text><rect x="17.38" y="22.00" width="15.57" height="14.00" fill="#3f63be"/><text x="25.166666666666664" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Brand A</text><rect x="41.71" y="29.00" width="15.57" height="7.00" fill="#3f63be"/><text x="49.49999999999999" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Brand B</text><rect x="66.05" y="15.00" width="15.57" height="21.00" fill="#3f63be"/><text x="73.83333333333333" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Brand C</text><line x1="13.00" y1="7.00" x2="13.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="36.00" x2="86.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22)">Sales (thousands)</text></svg></div><div class="col">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">What does the graph suggest about Brand C compared with Brand B?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">What are the real sales of Brands B and C? What is the difference?</span></div><div class="box"></div></div></div></div>
+        
+  <div class="q draw "><div class="q-head"><span class="q-num">3</span><span class="q-text">Redraw the phone sales graph fairly. Start the vertical axis at 0, add a title and label both axes.</span></div><div class="draw-area"><div class="grid-paper"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">7</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Level 3</span></header>
+  <div class="content">
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D continued.</span></div>
+        <div class="split grow">
+  <div class="q draw "><div class="q-head"><span class="q-num">4</span><span class="q-text">Redraw the canteen sales graph (Set B) with the vertical axis starting at 0. Sales ($ thousands) for 2019 to 2024: 41, 40, 43, 44, 45, 46.</span></div><div class="draw-area"><div class="grid-paper"></div></div></div><div class="col">
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">How does your new canteen graph change the impression?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">A headline says “Crime has doubled!” The graph’s axis starts at 50 and crimes rose from 52 to 54. Is the headline true? Explain.</span></div><div class="box"></div></div></div></div>
+        
+  <div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(0, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">7</span><span class="q-text">A house is drawn twice as tall <b>and</b> twice as wide to show prices doubling. Why is this misleading?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">8</span><span class="q-text">Give two reasons someone might make a misleading graph on purpose.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">9</span><span class="q-text">List three things every fair graph should have.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">10</span><span class="q-text">A graph shows only the months when sales went up. Why is leaving data out misleading?</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">8</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Extension · Exit ticket</span></header>
+  <div class="content">
+      
+  <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span><span class="banner-note">Finished Level 3? Stretch yourself here.</span></div>
+  <div class="split ext grow">
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">A shop’s sales doubled. On a poster, this year’s circle has <b>twice the width and twice the height</b> of last year’s. How many times bigger does it look?</div>
+    <ol class="steps"><li>Width × 2 and height × 2</li><li>The area (how big it looks) is 2 × 2 = 4 times as big</li><li>Sales only doubled, so the picture exaggerates</li></ol>
+    <div class="diagram"><svg class="graph" viewBox="0 0 74 36" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:74/36"><circle cx="14" cy="20" r="1.4" fill="#3f63be"/><circle cx="14.00" cy="17.75" r="0.5" fill="#c2bea8"/><circle cx="15.32" cy="18.18" r="0.5" fill="#c2bea8"/><circle cx="16.14" cy="19.30" r="0.5" fill="#c2bea8"/><circle cx="16.14" cy="20.70" r="0.5" fill="#c2bea8"/><circle cx="15.32" cy="21.82" r="0.5" fill="#c2bea8"/><circle cx="14.00" cy="22.25" r="0.5" fill="#c2bea8"/><circle cx="12.68" cy="21.82" r="0.5" fill="#c2bea8"/><circle cx="11.86" cy="20.70" r="0.5" fill="#c2bea8"/><circle cx="11.86" cy="19.30" r="0.5" fill="#c2bea8"/><circle cx="12.68" cy="18.18" r="0.5" fill="#c2bea8"/>
+          <g transform="translate(46 18) scale(2.6)"><circle cx="0" cy="0" r="1.4" fill="#3f63be"/><circle cx="0.00" cy="-2.25" r="0.5" fill="#c2bea8"/><circle cx="1.32" cy="-1.82" r="0.5" fill="#c2bea8"/><circle cx="2.14" cy="-0.70" r="0.5" fill="#c2bea8"/><circle cx="2.14" cy="0.70" r="0.5" fill="#c2bea8"/><circle cx="1.32" cy="1.82" r="0.5" fill="#c2bea8"/><circle cx="0.00" cy="2.25" r="0.5" fill="#c2bea8"/><circle cx="-1.32" cy="1.82" r="0.5" fill="#c2bea8"/><circle cx="-2.14" cy="0.70" r="0.5" fill="#c2bea8"/><circle cx="-2.14" cy="-0.70" r="0.5" fill="#c2bea8"/><circle cx="-1.32" cy="-1.82" r="0.5" fill="#c2bea8"/></g>
+          <text x="14" y="32" font-size="2.8" text-anchor="middle" font-weight="400" fill="#26292e">last year</text><text x="46" y="35" font-size="2.8" text-anchor="middle" font-weight="400" fill="#26292e">this year</text></svg></div>
+    <p class="worked-a"><b>Answer:</b> it looks 4 times bigger</p>
+  </div>
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">A picture is made 3 times as wide and 3 times as tall. How many times bigger does it look?</span></div><div class="box"></div></div>
+         
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Sales went from 100 to 150. A bag is drawn 1.5 times as tall and 1.5 times as wide. How many times bigger does it look? How should it be drawn fairly?</span></div><div class="box"></div></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body">
+      <div class="graph-card exit-graph"><svg class="graph" viewBox="0 0 60 46" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:60/46"><text x="30" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Points scored</text><line x1="13.00" y1="36.00" x2="58.00" y2="36.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="36.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">80</text><line x1="13.00" y1="30.40" x2="58.00" y2="30.40" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="31.299999999999997" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">82</text><line x1="13.00" y1="24.80" x2="58.00" y2="24.80" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="25.699999999999996" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">84</text><line x1="13.00" y1="19.20" x2="58.00" y2="19.20" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="20.099999999999998" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">86</text><line x1="13.00" y1="13.60" x2="58.00" y2="13.60" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="14.499999999999998" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">88</text><line x1="13.00" y1="8.00" x2="58.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">90</text><rect x="17.05" y="24.80" width="14.40" height="11.20" fill="#3f63be"/><text x="24.25" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Team A</text><rect x="39.55" y="13.60" width="14.40" height="22.40" fill="#3f63be"/><text x="46.75" y="39.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Team B</text><line x1="13.00" y1="7.00" x2="13.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="36.00" x2="58.00" y2="36.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="22" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 22)">Points</text></svg></div>
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">What number does the vertical axis start at?</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Team B’s bar looks twice as tall. How many more points did B really score?</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Why is this graph misleading? How would you fix it?</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">9</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span>Year 7 · Chapter 10 · 10.02 Misleading graphs</span><span class="sec">Summary</span></header>
+  <div class="content">
+      
+  <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+  <div class="steps-card"><b>Is this graph fair?</b><ol><li>Does the vertical axis start at <b>0</b> (or show a break)?</li><li>Is the <b>scale even</b> (equal gaps = equal amounts)?</li><li>Are the <b>title and axis labels</b> there?</li><li>Is <b>all the data</b> shown, with bars the same width?</li></ol></div>
+  <div class="summary-page">
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">A column graph’s vertical axis starts at 90. What is the problem?</div>
+    <ol class="steps"><li>Bar heights are measured from 90, not from 0</li><li>So small differences look huge</li></ol>
+    <div class="diagram"><svg class="graph" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:60/40"><text x="30" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Test scores</text><line x1="13.00" y1="30.00" x2="58.00" y2="30.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="30.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">90</text><line x1="13.00" y1="24.50" x2="58.00" y2="24.50" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="25.4" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">92</text><line x1="13.00" y1="19.00" x2="58.00" y2="19.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="19.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">94</text><line x1="13.00" y1="13.50" x2="58.00" y2="13.50" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="14.4" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">96</text><line x1="13.00" y1="8.00" x2="58.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">98</text><rect x="17.05" y="24.50" width="14.40" height="5.50" fill="#3f63be"/><text x="24.25" y="33.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Mia</text><rect x="39.55" y="13.50" width="14.40" height="16.50" fill="#3f63be"/><text x="46.75" y="33.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">Tom</text><line x1="13.00" y1="7.00" x2="13.00" y2="30.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="30.00" x2="58.00" y2="30.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="19" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 19)">Score</text></svg></div>
+    <p class="worked-a"><b>Answer:</b> it is misleading. Start the axis at 0.</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">Scores of 60 and 64 on an axis starting at 58. How many times as tall does the 64 bar look? What is the real difference?</div>
+    <ol class="steps"><li>Heights on the graph: 60 − 58 = 2 and 64 − 58 = 6</li><li>6 ÷ 2 = 3, so it looks 3 times as tall</li><li>Real difference: 64 − 60 = 4</li></ol>
+    <div class="diagram"><svg class="graph" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:60/40"><text x="30" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Misleading</text><line x1="13.00" y1="30.00" x2="58.00" y2="30.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="30.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">58</text><line x1="13.00" y1="24.50" x2="58.00" y2="24.50" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="25.4" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">60</text><line x1="13.00" y1="19.00" x2="58.00" y2="19.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="19.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">62</text><line x1="13.00" y1="13.50" x2="58.00" y2="13.50" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="14.4" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">64</text><line x1="13.00" y1="8.00" x2="58.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">66</text><rect x="17.05" y="24.50" width="14.40" height="5.50" fill="#3f63be"/><text x="24.25" y="33.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">A</text><rect x="39.55" y="13.50" width="14.40" height="16.50" fill="#3f63be"/><text x="46.75" y="33.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">B</text><line x1="13.00" y1="7.00" x2="13.00" y2="30.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="30.00" x2="58.00" y2="30.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="19" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 19)">Score</text></svg></div>
+    <p class="worked-a"><b>Answer:</b> looks 3 times as tall; really only 4 more</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">Redraw the Level 2 graph fairly.</div>
+    <ol class="steps"><li>Start the vertical axis at 0 with an even scale</li><li>Plot the same values: 60 and 64</li><li>Add a title and label both axes</li></ol>
+    <div class="diagram"><svg class="graph" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:60/40"><text x="30" y="4.5" font-size="3" text-anchor="middle" font-weight="600" fill="#26292e">Fair</text><line x1="13.00" y1="30.00" x2="58.00" y2="30.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="30.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">0</text><line x1="13.00" y1="26.86" x2="58.00" y2="26.86" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="27.757142857142856" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">10</text><line x1="13.00" y1="23.71" x2="58.00" y2="23.71" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="24.614285714285714" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">20</text><line x1="13.00" y1="20.57" x2="58.00" y2="20.57" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="21.471428571428568" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">30</text><line x1="13.00" y1="17.43" x2="58.00" y2="17.43" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="18.32857142857143" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">40</text><line x1="13.00" y1="14.29" x2="58.00" y2="14.29" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="15.185714285714285" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">50</text><line x1="13.00" y1="11.14" x2="58.00" y2="11.14" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="12.042857142857143" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">60</text><line x1="13.00" y1="8.00" x2="58.00" y2="8.00" stroke="#c9c5b4" stroke-width="0.25"/><text x="11.8" y="8.9" font-size="2.4" text-anchor="end" font-weight="400" fill="#26292e">70</text><rect x="17.05" y="11.14" width="14.40" height="18.86" fill="#3f63be"/><text x="24.25" y="33.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">A</text><rect x="39.55" y="9.89" width="14.40" height="20.11" fill="#3f63be"/><text x="46.75" y="33.2" font-size="2.3" text-anchor="middle" font-weight="400" fill="#26292e">B</text><line x1="13.00" y1="7.00" x2="13.00" y2="30.00" stroke="#3d3b3c" stroke-width="0.35"/><line x1="13.00" y1="30.00" x2="58.00" y2="30.00" stroke="#3d3b3c" stroke-width="0.35"/><text x="3" y="19" font-size="2.4" text-anchor="middle" font-weight="400" fill="#26292e" transform="rotate(-90 3 19)">Score</text></svg></div>
+    <p class="worked-a"><b>Answer:</b> the bars now look almost the same, which is the truth</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">A picture is drawn twice as wide and twice as tall. How many times bigger does it look?</div>
+    <ol class="steps"><li>Area grows by width × height</li><li>2 × 2 = 4</li></ol>
+    <div class="diagram"><svg class="graph" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:60/30"><circle cx="12" cy="16" r="1.4" fill="#3f63be"/><circle cx="12.00" cy="13.75" r="0.5" fill="#c2bea8"/><circle cx="13.32" cy="14.18" r="0.5" fill="#c2bea8"/><circle cx="14.14" cy="15.30" r="0.5" fill="#c2bea8"/><circle cx="14.14" cy="16.70" r="0.5" fill="#c2bea8"/><circle cx="13.32" cy="17.82" r="0.5" fill="#c2bea8"/><circle cx="12.00" cy="18.25" r="0.5" fill="#c2bea8"/><circle cx="10.68" cy="17.82" r="0.5" fill="#c2bea8"/><circle cx="9.86" cy="16.70" r="0.5" fill="#c2bea8"/><circle cx="9.86" cy="15.30" r="0.5" fill="#c2bea8"/><circle cx="10.68" cy="14.18" r="0.5" fill="#c2bea8"/><g transform="translate(40 15) scale(2.5)"><circle cx="0" cy="0" r="1.4" fill="#3f63be"/><circle cx="0.00" cy="-2.25" r="0.5" fill="#c2bea8"/><circle cx="1.32" cy="-1.82" r="0.5" fill="#c2bea8"/><circle cx="2.14" cy="-0.70" r="0.5" fill="#c2bea8"/><circle cx="2.14" cy="0.70" r="0.5" fill="#c2bea8"/><circle cx="1.32" cy="1.82" r="0.5" fill="#c2bea8"/><circle cx="0.00" cy="2.25" r="0.5" fill="#c2bea8"/><circle cx="-1.32" cy="1.82" r="0.5" fill="#c2bea8"/><circle cx="-2.14" cy="0.70" r="0.5" fill="#c2bea8"/><circle cx="-2.14" cy="-0.70" r="0.5" fill="#c2bea8"/><circle cx="-1.32" cy="-1.82" r="0.5" fill="#c2bea8"/></g></svg></div>
+    <p class="worked-a"><b>Answer:</b> 4 times bigger, though the value only doubled</p>
+  </div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">10</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section></body></html>

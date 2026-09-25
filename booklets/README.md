@@ -39,12 +39,23 @@ Fix the warnings before printing. Usually that means moving or shortening a ques
 
 To try the commented starter lesson, run `npm run example`.
 
+## 2b. Individual lesson booklets
+
+The same command also makes a separate 10-page booklet for every lesson, in the chapter's `individual/` folder. Each one has:
+- its own cover
+- a **Before you start** page: what to bring, the syllabus outcome, a page-by-page lesson map with tick boxes, and a 4-question warm-up
+- the lesson itself
+- its own answer key, which includes the warm-up answers
+
+The warm-up questions, the equipment list and the outcome for each lesson are in the chapter's `standalone.js`.
+To build only the whole-chapter booklet, add `--no-individual`.
+
 ## 3. Make a new chapter
 
 1. Copy `examples/starter-chapter` to a new folder, for example `year7/ch11-algebra`.
 2. Edit `chapter.js`. Set the chapter number, the title, the PDF file name, the "In this chapter you will" goals and the syllabus outcomes. The cover, spine, contents and headers all update from this file.
 3. In `lessons/`, write one file per exercise. Start from `0-01.js`, which explains every part of a lesson. For full lessons to copy from, see `year7/ch10-analysing-data/lessons/`.
-4. List the lesson files, in order, in `chapter.js`.
+4. List the lesson files, in order, in `chapter.js`, and add each lesson's warm-up to `standalone.js`.
 5. Run `node build.js year7/ch11-algebra`.
 
 ## 4. The lesson format (keep it the same across the series)
