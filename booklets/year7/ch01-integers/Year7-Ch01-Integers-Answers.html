@@ -440,6 +440,16 @@ li { margin-bottom: 0.6mm; }
 .q.side .box { align-self: stretch; }
 .contents.tight td { padding: 1mm 2mm; }
 .fr { font-size: 0.95em; }
+.q.side .side-fig .graph { max-height: 26mm; }
+/* First page of a lesson is the tightest: keep its diagrams a little smaller. */
+.lesson-first .q.side .side-fig .graph { max-height: 21mm; }
+.lesson-first .example .inline-fig .graph { max-height: 19mm; }
+.lesson-first .q.side .side-row { min-height: 0; }
+.tgrid .graph { max-height: 31mm; }
+/* Transformation grids fill the space the question has. */
+.q.draw .draw-area { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.draw-area > .template-card.tgrid { flex: 1 1 auto; min-height: 30mm; display: flex; }
+.tgrid .graph { flex: 1 1 auto; width: 100%; height: auto; max-height: none; aspect-ratio: auto !important; }
 :root { --accent: #c0392b; }
   @page { size: A4; margin: 12mm 12mm 14mm; }
   .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }

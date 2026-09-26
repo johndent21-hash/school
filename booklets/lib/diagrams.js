@@ -86,10 +86,17 @@ const parallel = ({ tilt = 62, marks = [], w = 60, h = 38, arrows = true, names 
 
 // Polygon from points (mm). vlabels: vertex letters. sides: labels at side midpoints (pushed outwards).
 // angles: labels inside each vertex. right: vertex indexes with a right-angle mark. ticks: [[side, n]] equal-side marks.
-const polygon = ({ pts, vlabels = [], sides = [], angles = [], right = [], ticks = [], w, h, fill = 'none', dash = [] }) => {
+const polygon = ({ pts, vlabels = [], sides = [], angles = [], right = [], ticks = [], w, h, fill = 'none', dash = [], lines = [], labels = [], arrows = [], angleDist = 7.5 }) => {
   const n = pts.length;
   const cx = pts.reduce((s, p) => s + p[0], 0) / n, cy = pts.reduce((s, p) => s + p[1], 0) / n;
   let b = `<polygon points="${pts.map((p) => p.join(',')).join(' ')}" fill="${fill}" stroke="${C.charcoal}" stroke-width="0.45"/>`;
+  lines.forEach(([p1, p2]) => { b += line(p1[0], p1[1], p2[0], p2[1], C.charcoal, 0.45); });
+  labels.forEach(([t, x, y]) => { b += T(x, y, t, { size: 3.2, anchor: 'middle', fill: C.blue, weight: 600 }); });
+  // arrows: [side index, count] marks a side as parallel with > arrowheads
+  arrows.forEach(([i, k]) => {
+    const a = pts[i], c = pts[(i + 1) % n], mx = (a[0] + c[0]) / 2, my = (a[1] + c[1]) / 2, dx = c[0] - a[0], dy = c[1] - a[1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+    for (let j = 0; j < k; j++) { const px = mx + ux * j * 1.3, py = my + uy * j * 1.3; b += `<polyline points="${f(px - ux * 1.3 - uy * 1)},${f(py - uy * 1.3 + ux * 1)} ${f(px)},${f(py)} ${f(px - ux * 1.3 + uy * 1)},${f(py - uy * 1.3 - ux * 1)}" fill="none" stroke="${C.charcoal}" stroke-width="0.35"/>`; }
+  });
   dash.forEach(([p1, p2]) => { b += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="${C.grey}" stroke-width="0.35" stroke-dasharray="1.2 1"/>`; });
   const out = (x, y, d) => { const dx = x - cx, dy = y - cy, L = Math.hypot(dx, dy) || 1; return [x + (dx / L) * d, y + (dy / L) * d]; };
   vlabels.forEach((s, i) => { if (s) { const [x, y] = out(pts[i][0], pts[i][1], 3); b += T(x, y + 1, s, { size: 2.8, anchor: 'middle', weight: 600 }); } });
@@ -98,13 +105,13 @@ const polygon = ({ pts, vlabels = [], sides = [], angles = [], right = [], ticks
     const a = pts[i], c = pts[(i + 1) % n];
     const mx = (a[0] + c[0]) / 2, my = (a[1] + c[1]) / 2;
     const [x, y] = out(mx, my, 3.6);
-    b += T(x, y + 1, s, { size: 2.6, anchor: 'middle' });
+    b += T(x, y + 1, s, { size: 3, anchor: 'middle' });
   });
   angles.forEach((s, i) => {
     if (!s) return;
     const [x, y] = pts[i];
     const dx = cx - x, dy = cy - y, L = Math.hypot(dx, dy);
-    b += T(x + (dx / L) * 6.5, y + (dy / L) * 6.5 + 1, s, { size: 2.5, anchor: 'middle', fill: C.blue, weight: 600 });
+    b += T(x + (dx / L) * angleDist, y + (dy / L) * angleDist + 1, s, { size: 3.2, anchor: 'middle', fill: C.blue, weight: 600 });
   });
   right.forEach((i) => {
     const p = pts[i], a = pts[(i + n - 1) % n], c = pts[(i + 1) % n];
