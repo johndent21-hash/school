@@ -6,6 +6,7 @@
   "scripts": {
     "setup": "npm install && npx playwright install chromium",
     "build:all": "for d in year7/ch*/; do node build.js $d; done",
+    "build:blend": "for d in year7-blend/ch*/; do node build.js $d; done",
     "example": "node build.js examples/starter-chapter"
   },
   "dependencies": {

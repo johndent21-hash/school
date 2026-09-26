@@ -48,18 +48,31 @@ const worked = (lvl, title, question, steps, answer, extra = '') => `
 const graphCard = (g, cls = '') => `<div class="graph-card ${cls}">${g}</div>`;
 const split = (a, b, cls = '') => `<div class="split ${cls}">${a}${b}</div>`;
 
+// Mandelbrot-theme page: a charcoal header band with the logo and a Mandelbrot detail in the booklet's colour.
+// {{ASSETSREL}} is replaced by the build with the path to the assets folder.
+const mbPage = (chapter, { code, title, section, body, first = false, cls = '' }) => `
+<section class="page mb${first ? ' lesson-first' : ''}${cls ? ` ${cls}` : ''}">
+  <header class="mb-band">
+    <img class="mb-logo" src="{{ASSETSREL}}/kingscliff-logo.png" alt="Kingscliff High School">
+    <div class="mb-titles"><span class="mb-kicker">Mathematics · Year ${chapter.year} · Chapter ${chapter.number}</span><span class="mb-title">${code ? `<b>${code}</b> ` : ''}${title}</span></div>
+    <span class="mb-sec">${section}</span>
+  </header>
+  <div class="content">${body}</div>
+  <footer class="page-foot"><span>Kingscliff High School · Year ${chapter.year} Mathematics</span><span class="pn">{{PN}}</span><span>Chapter ${chapter.number} · ${chapter.title}</span></footer>
+</section>`;
+
 // Learning intentions, success criteria and key terms of each lesson, recorded when its intro is built.
 const lessonMeta = {};
 
 const makeLesson = ({ chapter, code, title }) => {
   const head = `Year ${chapter.year} · Chapter ${chapter.number} · ${code} ${title}`;
-  const page = (section, body, { first = false } = {}) => `
+  const page = (section, body, { first = false } = {}) => (chapter.theme === 'mandelbrot' ? mbPage(chapter, { code, title, section, body, first }) : `
 <section class="page${first ? ' lesson-first' : ''}">
   <div class="art-strip"></div>
   <header class="page-head"><span><b class="ch-chip">Ch ${chapter.number}</b>${head}</span><span class="sec">${section}</span></header>
   <div class="content">${body}</div>
   <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">{{PN}}</span><span>Kingscliff High School · Year ${chapter.year} Mathematics</span></footer>
-</section>`;
+</section>`);
 
   const intro = ({ li, sc, terms }) => (lessonMeta[code] = { li, sc, terms }) && `
   <div class="lesson-title">
@@ -113,4 +126,4 @@ const makeLesson = ({ chapter, code, title }) => {
   return { page, intro, notes, exitTicket, tearBack, summaryBanner, summary };
 };
 
-module.exports = { lessonMeta, dots, banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson };
+module.exports = { mbPage, lessonMeta, dots, banner, weDo, youDo, q, qDraw, qs, qsGrid, qGrid, extension, example, worked, graphCard, split, makeLesson };

@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>The number plane answers</title>
+<style>/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
+:root {
+  --charcoal: #3d3b3c;
+  --blue: #3f63be;
+  --blue-soft: #e6ecf8;
+  --sand: #c2bea8;
+  --sand-soft: #f3f1ea;
+  --we-soft: #f1f1f1;
+  --line: #d8d4c4;
+  --ink: #26292e;
+  --muted: #6b6a64;
+  --tear-h: 64mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
+}
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../assets/lexend-latin-700-normal.woff2); }
+
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.5pt; line-height: 1.3; }
+b { font-weight: 600; }
+h1, h2, h3 { margin: 0; color: var(--charcoal); }
+h3 { font-size: 10.5pt; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 4.5mm; }
+li { margin-bottom: 0.6mm; }
+
+/* ---------- page shell ---------- */
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
+.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url(../../assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
+.page-head {
+  position: absolute; top: 10mm; left: 12mm; right: 12mm;
+  display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
+  border-bottom: 0.35mm solid var(--sand); padding-bottom: 1mm;
+}
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.content { position: absolute; top: 17mm; bottom: 11mm; left: 12mm; right: 12mm; display: flex; flex-direction: column; gap: 2.4mm; }
+.page-foot { position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6mm; display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f; }
+.page-foot .pn {
+  width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 7.5pt;
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--sand); margin: 0 4mm;
+}
+.grow { flex: 1 1 0; min-height: 0; }
+
+/* ---------- lesson opening ---------- */
+.lesson-title { display: flex; align-items: center; gap: 4mm; flex: none; }
+.lesson-badge {
+  flex: none; width: 17mm; height: 17mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 0.8mm #fff, 0 0 0 1.6mm var(--sand);
+}
+.lesson-badge span { font-size: 6pt; text-transform: uppercase; letter-spacing: 0.08em; }
+.lesson-badge b { font-size: 11pt; font-weight: 700; margin-top: 0.6mm; }
+.lesson-title h1 { font-size: 19pt; line-height: 1.1; flex: 1; }
+.date-line { display: flex; align-items: flex-end; gap: 2mm; width: 45mm; font-weight: 600; font-size: 9pt; }
+.date-line i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; }
+.card { background: var(--sand-soft); border-radius: 2.5mm; padding: 2.5mm 4mm; border-top: 1.2mm solid var(--sand); }
+.card-sub { font-size: 8.5pt; color: var(--muted); margin-bottom: 0.8mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 5mm; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.8mm; width: 2.6mm; height: 2.6mm; border: 0.35mm solid var(--charcoal); border-radius: 0.6mm; }
+.terms-head { display: flex; gap: 3mm; align-items: baseline; flex: none; margin-bottom: -1mm; }
+.terms-head span { font-size: 8.5pt; color: var(--muted); }
+.terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.terms.n2 { grid-template-columns: repeat(2, 1fr); }
+.terms.n1 { grid-template-columns: 1fr; }
+.term { display: flex; flex-direction: column; }
+.term-name { align-self: flex-start; background: var(--sand); color: var(--charcoal); font-weight: 700; padding: 0.6mm 3mm; border-radius: 1.5mm; }
+.term i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.notes { border: 0.4mm solid var(--sand); border-radius: 2.5mm; position: relative; min-height: 22mm; }
+.notes-label { position: absolute; top: 1.5mm; left: 3mm; font-weight: 600; font-size: 8.5pt; color: var(--muted); }
+
+/* ---------- banners and level dots (neutral colours: charcoal means WE DO, blue means YOU DO) ---------- */
+.banner { display: flex; align-items: center; gap: 3mm; padding: 1.6mm 4mm; border-radius: 2mm; background: var(--sand); color: var(--charcoal); flex: none; }
+.banner.summary { background: var(--sand-soft); border: 0.35mm solid var(--sand); }
+.banner-title { font-size: 11.5pt; font-weight: 700; }
+.banner-note { margin-left: auto; font-size: 8.5pt; color: var(--charcoal); }
+.lvl-dots { display: inline-flex; gap: 1mm; vertical-align: middle; }
+.lvl-dots i { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.9mm var(--sand); }
+.banner .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--sand), 0 0 0 0.9mm #fff; }
+
+/* ---------- WE DO (charcoal) and YOU DO (blue) zones ---------- */
+.zone { border: 0.8mm solid; border-radius: 3mm; padding: 1.8mm 2.5mm 2.5mm; display: flex; flex-direction: column; gap: 1.8mm; flex: none; min-height: 0; }
+.zone.grow { flex: 1 1 0; }
+.zone.fill { height: 100%; }
+.zone.fill > .col { flex: 1; }
+.zone.we { border-color: var(--charcoal); background: var(--we-soft); }
+.zone.you { border-color: var(--blue); background: var(--blue-soft); }
+.zone-head { display: flex; align-items: center; gap: 2.5mm; flex: none; }
+.zone-pill { flex: none; font-weight: 700; font-size: 9pt; letter-spacing: 0.08em; color: #fff; padding: 0.8mm 3mm; border-radius: 1.5mm; }
+.zone.we .zone-pill, .legend-item.we .zone-pill { background: var(--charcoal); }
+.zone.you .zone-pill, .legend-item.you .zone-pill, .you-pill { background: var(--blue); }
+.zone-text { font-size: 8.5pt; font-weight: 600; }
+.zone.we .zone-text { color: var(--charcoal); }
+.zone.you .zone-text { color: var(--blue); }
+.zone.we .box, .zone.we .grid-paper, .zone.we .sl.template table { border-color: var(--charcoal); }
+.zone.you .box, .zone.you .grid-paper, .zone.you .sl.template table { border-color: var(--blue); }
+.zone.we .q-num.ex { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
+.zone.you .q-num { background: #fff; border-color: var(--blue); color: var(--blue); }
+.zone .graph-card { background: #fff; }
+
+/* ---------- layout helpers ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; min-height: 0; }
+.split.grow { flex: 1 1 0; }
+.split.wide-left { grid-template-columns: 1.4fr 1fr; }
+.split.wide-right { grid-template-columns: 1fr 1.4fr; }
+.split3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.col { display: flex; flex-direction: column; gap: 2mm; min-height: 0; }
+.graph-card { border: 0.35mm solid var(--line); border-radius: 2mm; padding: 1.5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; }
+.graph { width: 100%; height: auto; display: block; font-family: Lexend, sans-serif; }
+.graph-card.narrow .graph { width: 80%; }
+.sym { width: 3.4mm; height: 3.4mm; vertical-align: -0.6mm; }
+.given { background: #fff; border: 0.3mm solid var(--line); border-radius: 1.5mm; padding: 1.5mm 3mm; font-size: 9.5pt; flex: none; }
+.given b { color: var(--charcoal); }
+
+/* ---------- questions and boxes (plain boxes, no ruled lines) ---------- */
+.box { border: 0.45mm solid var(--sand); border-radius: 1.8mm; background: #fff; }
+.q { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.q .box { flex: 1 1 0; min-height: 6mm; }
+.q-head { display: flex; gap: 2mm; align-items: baseline; }
+.q-num {
+  flex: none; min-width: 5.5mm; height: 5.5mm; padding: 0 1.2mm; border-radius: 3mm;
+  background: var(--sand-soft); border: 0.3mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2mm; font-weight: 700; font-size: 8pt;
+}
+.q-num.ex { padding: 0 2.5mm; }
+.q-text { font-size: 9.5pt; }
+.col > .example, .col > .q { flex: 1 1 0; }
+.ex-row .example .box { height: 14mm; flex: none; }
+.ex-row.tall .example .box { height: 22mm; }
+.draw-area { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.draw-area > .graph, .draw-area > .graph-card { flex: none; }
+.draw-area .template { background: #fff; border-radius: 1.8mm; }
+
+.qs { display: grid; grid-template-columns: 6mm 1fr 20mm; gap: 2mm; align-items: center; font-size: 9pt; }
+.qs .box { height: 7mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 34mm; }
+.short-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, auto); gap: 1.6mm 6mm; flex: none; }
+.short-grid.fill { flex: 1 1 0; grid-template-rows: repeat(5, 1fr); align-items: center; }
+.short-list { display: grid; grid-template-rows: repeat(10, 1fr); gap: 0.6mm; }
+.short-list .qs .box { height: 100%; min-height: 5.6mm; }
+.short-grid .qs .q-text, .short-list .qs .q-text { font-size: 9pt; }
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); gap: 2mm 5mm; flex: 1 1 0; min-height: 0; }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.work-grid.r4 { grid-template-rows: repeat(4, 1fr); }
+.work-grid.r2 { grid-template-rows: repeat(2, 1fr); }
+.work-grid .q-text { font-size: 9pt; }
+.stack { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 0; min-height: 0; }
+.stack > .q { flex: 1 1 0; }
+
+/* ---------- drawing templates ---------- */
+.grid-paper {
+  flex: 1 1 0; min-height: 30mm; position: relative; border: 0.45mm solid var(--sand); border-radius: 1.8mm;
+  background-color: #fff;
+  background-image: linear-gradient(to right, #dcd9cc 0.2mm, transparent 0.2mm), linear-gradient(to bottom, #dcd9cc 0.2mm, transparent 0.2mm);
+  background-size: 5mm 5mm; background-position: -0.1mm -0.1mm;
+}
+.grid-label { position: absolute; top: 1mm; right: 2mm; font-size: 7.5pt; color: var(--muted); background: #fff; padding: 0 1mm; }
+.sl { display: flex; flex-direction: column; gap: 0.8mm; }
+.sl-title { font-weight: 600; font-size: 9pt; text-align: center; }
+.sl table { border-collapse: collapse; font-size: 10pt; }
+.sl th { font-size: 8pt; color: var(--muted); font-weight: 600; padding: 0.6mm 2.5mm; text-align: left; border-bottom: 0.3mm solid var(--line); }
+.sl td { padding: 0.8mm 2.5mm; letter-spacing: 0.05em; }
+.sl td.stem { text-align: right; border-right: 0.5mm solid var(--charcoal); font-weight: 600; width: 10mm; }
+.sl th:first-child { text-align: right; border-right: 0.5mm solid var(--charcoal); }
+.sl-key { font-size: 8pt; color: var(--muted); }
+.sl.b2b td.leaf.l, .sl.b2b th.l { text-align: right; }
+.sl.b2b td.stem, .sl.b2b th:nth-child(2) { border-left: 0.5mm solid var(--charcoal); text-align: center; }
+.sl.b2b th:first-child { border-right: none; }
+.sl.template { flex: 1 1 0; min-height: 0; }
+.sl.template table { flex: 1 1 0; width: 100%; border: 0.45mm solid var(--sand); border-radius: 1.8mm; border-collapse: separate; border-spacing: 0; background: #fff; }
+.sl.template td { border-bottom: 0.25mm dotted var(--line); }
+.sl.template td.stem { width: 16mm; }
+.sl.b2b.template td.stem { width: 16mm; }
+.data-table { border-collapse: collapse; font-size: 9pt; background: #fff; }
+.data-table th, .data-table td { border: 0.3mm solid var(--line); padding: 1mm 2.5mm; text-align: center; }
+.data-table th { background: var(--sand-soft); font-weight: 600; }
+.data-table.blank td { height: 7mm; min-width: 11mm; }
+
+/* ---------- worked examples ---------- */
+.worked { border: 0.45mm solid var(--sand); border-radius: 2.5mm; padding: 2.5mm 3mm; display: flex; flex-direction: column; gap: 1.5mm; background: #fff; }
+.worked-head { display: flex; align-items: center; gap: 2mm; color: var(--charcoal); }
+.worked-q { padding: 1.5mm 2mm; background: var(--sand-soft); border-radius: 1.5mm; }
+.steps { padding-left: 4.5mm; }
+.steps li::marker { color: var(--charcoal); font-weight: 700; }
+.worked-a { padding: 1.2mm 2mm; background: var(--sand-soft); border: 0.3mm solid var(--sand); border-radius: 1.5mm; margin-top: auto; }
+.worked .graph-card { border: none; padding: 0; }
+.ext { min-height: 0; }
+.ext .worked { font-size: 9.5pt; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; font-size: 8.5pt; flex: none; }
+.summary-grid.g2 { grid-template-columns: repeat(2, 1fr); flex: 1 1 0; min-height: 0; font-size: 9pt; }
+.summary-grid .worked { padding: 2mm 2.5mm; }
+.steps-card { grid-column: 1 / -1; background: var(--sand-soft); border-radius: 2.5mm; padding: 2mm 4mm; display: flex; gap: 4mm; align-items: baseline; font-size: 9pt; }
+.steps-card ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5mm 6mm; flex: 1; }
+.diagram { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.diagram .graph { width: auto; height: 100%; max-height: 42mm; }
+
+/* ---------- tear-off exit ticket ---------- */
+.tear-space { flex: none; height: var(--tear-h); }
+.tear-zone { position: absolute; left: 0; right: 0; bottom: 0; height: var(--tear-h); display: flex; flex-direction: column; gap: 2mm; }
+.cut-line { border-top: 0.55mm dashed var(--charcoal); text-align: center; height: 0; margin: 1.5mm -12mm 2mm; }
+.cut-line span { position: relative; top: -2.6mm; background: #fff; padding: 0 3mm; font-size: 8pt; color: var(--muted); }
+.exit-head { display: flex; align-items: center; gap: 4mm; }
+.exit-head h2 { font-size: 14pt; color: var(--blue); white-space: nowrap; }
+.exit-head p { font-size: 9pt; }
+.name-lines { display: flex; gap: 3mm; font-weight: 600; font-size: 9pt; margin-left: auto; width: 74mm; }
+.name-lines > div { display: flex; align-items: flex-end; gap: 2mm; flex: 1; }
+.name-lines > .short { flex: 0 0 24mm; }
+.name-lines i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.exit-body { flex: 1; display: grid; grid-template-columns: 56mm repeat(3, 1fr); gap: 3mm; min-height: 0; }
+.exit-body.no-graph { grid-template-columns: repeat(3, 1fr); }
+.exit-graph { justify-content: center; }
+.exit-graph .sl table { font-size: 9pt; }
+.exit-q { border: 0.45mm solid var(--blue); background: var(--blue-soft); border-radius: 2.5mm; padding: 2mm; }
+.exit-q .q-head { flex-direction: column; gap: 1.2mm; min-height: 17mm; }
+.exit-q .q-num { background: var(--blue); color: #fff; border-color: var(--blue); padding: 0 2.5mm; height: 6mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--blue), 0 0 0 0.9mm #fff; }
+.exit-q .q-text { font-size: 9pt; }
+.exit-q .box { border-color: var(--blue); }
+.tear-zone.back .blank-note { flex: 1; display: flex; align-items: center; justify-content: center; color: #b3b0a3; font-size: 9pt; }
+
+/* ---------- cover ---------- */
+.cover { background: var(--charcoal); }
+.cover-art { position: absolute; inset: 0; background: url(../../assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-spine {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 15mm; background: var(--blue);
+  display: flex; align-items: center; justify-content: center; box-shadow: 0.8mm 0 0 var(--sand);
+}
+.cover-spine span { transform: rotate(-90deg); white-space: nowrap; color: #fff; font-weight: 700; letter-spacing: 0.2em; font-size: 11pt; }
+.cover-series { position: absolute; top: 12mm; left: 24mm; right: 12mm; display: flex; justify-content: space-between; align-items: center; }
+.cover-series span { background: rgba(255,255,255,0.95); color: var(--charcoal); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 10pt; padding: 2mm 4mm; border-radius: 2mm; }
+.cover-panel {
+  position: absolute; left: 24mm; right: 12mm; top: 70mm; padding: 9mm 11mm 10mm;
+  background: rgba(255,255,255,0.96); border-radius: 5mm; box-shadow: 0 0 0 1.4mm var(--sand);
+}
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cover .logo { height: 22mm; display: block; }
+.chapter-badge {
+  width: 34mm; height: 34mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--blue);
+}
+.chapter-badge span { font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; }
+.chapter-badge b { font-size: 30pt; font-weight: 700; margin-top: 1mm; }
+.cover-kicker { margin-top: 3mm; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--blue); font-size: 12pt; }
+.cover h1 { font-size: 38pt; line-height: 1.05; margin: 1mm 0 3mm; color: var(--charcoal); }
+.cover-lessons { display: grid; grid-template-columns: 1fr 1fr; gap: 1mm 6mm; font-size: 9pt; margin-bottom: 7mm; padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; }
+.cover-lessons b { color: var(--blue); margin-right: 1.5mm; }
+.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
+.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
+.cover-fields span { width: 20mm; }
+.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.cover-credit { position: absolute; bottom: 8mm; right: 12mm; background: rgba(255,255,255,0.95); padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt; }
+
+/* ---------- inside cover ---------- */
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 4mm; flex: none; }
+.howto > div { display: flex; gap: 3mm; align-items: flex-start; padding: 2.5mm 3mm; border-radius: 2.5mm; background: var(--sand-soft); font-size: 9pt; }
+.howto .step { flex: none; width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 8.5pt; }
+.howto > div.we { background: var(--we-soft); border: 0.8mm solid var(--charcoal); }
+.howto > div.you { background: var(--blue-soft); border: 0.8mm solid var(--blue); }
+.howto .zone-pill { align-self: flex-start; }
+.howto > div.we .zone-pill { background: var(--charcoal); }
+.howto > div.you .zone-pill { background: var(--blue); }
+.contents { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.contents th { text-align: left; font-size: 8.5pt; color: var(--muted); font-weight: 600; padding: 1mm 2mm; border-bottom: 0.35mm solid var(--sand); }
+.contents td { padding: 1.6mm 2mm; border-bottom: 0.25mm solid var(--line); }
+.contents td.code { font-weight: 700; color: var(--blue); width: 14mm; }
+.contents td.pg { text-align: right; width: 14mm; font-weight: 600; }
+.contents td.tick { width: 16mm; text-align: center; }
+.contents td.tick i { display: inline-block; width: 4mm; height: 4mm; border: 0.35mm solid var(--charcoal); border-radius: 0.8mm; }
+.goals { columns: 2; column-gap: 8mm; font-size: 9pt; }
+.ack-box { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
+.ack-box h3 { color: var(--sand); font-size: 10pt; margin-bottom: 1mm; }
+.ack-box p { font-size: 8.5pt; margin-bottom: 2mm; }
+.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url(../../assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
+.section-title { font-size: 13pt; color: var(--charcoal); font-weight: 700; flex: none; }
+
+/* ---------- answers ---------- */
+.answers { columns: 2; column-gap: 8mm; }
+.ans-lesson { break-inside: avoid-column; }
+.ans-lesson h2 { font-size: 12pt; color: var(--blue); margin: 2mm 0 1mm; break-after: avoid; }
+.ans-block { break-inside: avoid; margin-bottom: 2mm; }
+.ans-block h3 { font-size: 9.5pt; margin-bottom: 0.6mm; }
+.ans-block li { font-size: 8.5pt; margin-bottom: 0.2mm; }
+.answers-flow .page { height: auto; min-height: 297mm; overflow: visible; }
+
+/* ---------- shared tweaks ---------- */
+.zone.grow > .ex-row, .zone.grow > .split.grow { flex: 1 1 0; min-height: 0; }
+.zone.grow > .ex-row .example .box { height: auto; flex: 1 1 0; }
+.exit-q .q-num .lvl-dots i { background: #fff; }
+.q.draw .draw-area .grid-paper { min-height: 30mm; }
+.zone .col > .graph-card { flex: none; }
+.summary-grid.g2 .worked { font-size: 9.5pt; }
+.summary-grid.g2 .diagram .graph { max-height: 40mm; width: auto; }
+.summary-grid .diagram { min-height: 0; }
+.template-card { background: #fff; border: 0.45mm solid var(--sand); border-radius: 1.8mm; padding: 1mm 1.5mm; flex: 1 1 auto; display: flex; align-items: flex-end; }
+.zone.you .template-card { border-color: var(--blue); }
+.zone.we .template-card { border-color: var(--charcoal); }
+.template-card .graph { width: 100%; }
+.work-grid.c3 { grid-template-columns: repeat(3, 1fr); }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.q.draw .data-table { width: 100%; }
+.draw-area { flex: 1 1 auto; }
+.summary-grid.g2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.summary-grid.g2 .worked { min-height: 0; overflow: hidden; }
+.worked .diagram { flex: 1 1 0; min-height: 0; }
+.worked .diagram .graph { height: 100%; width: auto; max-width: 100%; max-height: 44mm; }
+.stack > .q.draw { flex: none; }
+.summary-grid:not(.g2) .diagram { flex: 1 0 16mm; }
+.summary-grid:not(.g2) .diagram .graph { max-height: 22mm; }
+.sl.template td { height: 6.5mm; }
+.graph-card .sl { align-self: center; }
+.worked .sl table { font-size: 9pt; }
+/* stem-and-leaf templates: fixed row heights, never stretched */
+.sl.template { flex: none; }
+.sl.template table { flex: none; height: auto; }
+.sl.template th { height: 5.5mm; }
+.sl.template td { height: 7.5mm; }
+.col > .q.draw { flex: none; }
+.tip { padding: 2mm 3mm; background: var(--sand-soft); border-left: 1.2mm solid var(--sand); border-radius: 1mm; }
+.q-text .data-table { margin-top: 1mm; }
+.lesson-title h1 { font-size: 17pt; }
+.notes { min-height: 18mm; }
+.sl.b2b.template td.leaf { width: 45%; }
+.terms .term-name { white-space: nowrap; }
+.notes.fixed { flex: none; height: 26mm; }
+.zone.fill .example .box { min-height: 10mm; }
+.stack > .q { min-height: 18mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 38mm; }
+
+/* ================= roomier layout rules (override earlier values) ================= */
+/* WE DO panels next to a graph grow with their content instead of being squeezed to the graph's height */
+.zone.fill { height: auto; }
+.zone.fill .example { flex: 1 1 auto; }
+.zone.fill .example .box, .col > .example .box { min-height: 22mm; flex: 1 1 auto; }
+.ex-row .example .box { height: 24mm; }
+.ex-row.tall .example .box { height: 34mm; }
+/* short answers: fixed, comfortable rows */
+.qs { gap: 2.5mm; }
+.qs .box, .short-list .qs .box { height: 8.5mm; min-height: 8.5mm; }
+.short-list { grid-template-rows: none; grid-auto-rows: auto; gap: 1.8mm; align-content: start; }
+.short-grid { gap: 2.2mm 6mm; }
+/* full-working questions: never smaller than 16 mm */
+.q .box { min-height: 16mm; }
+.work-grid { gap: 3mm 5mm; }
+.grid-paper { min-height: 45mm; }
+.notes { min-height: 30mm; }
+.summary-page { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3mm; font-size: 9.5pt; }
+.summary-page .worked { min-height: 0; }
+.summary-page .diagram .graph { max-height: 38mm; }
+.content > .steps-card { flex: none; }
+.work-grid { flex: 1 1 auto; }
+.zone.grow > .work-grid { flex: 1 1 0; }
+
+/* short-answer lists beside a graph: spread the rows over the height of the graph */
+.split > .short-list { align-content: space-between; }
+/* a question is never shorter than its text plus its minimum box; drawing questions fill spare space */
+.q { min-height: auto; }
+.zone.grow > .q.draw, .col > .q.draw.grow { flex: 1 1 0; }
+.zone.grow > .q.draw .grid-paper { flex: 1 1 0; }
+.graph-card.wide-graph { flex: 1 1 0; min-height: 0; }
+.graph-card.wide-graph .graph { height: 100%; width: auto; max-width: 100%; }
+.zone.grow > .short-grid { flex: none; }
+.graph-card.wide-graph { flex: none; }
+.graph-card.wide-graph .graph { width: 118mm; height: auto; }
+.zone.grow > .short-grid { flex: 1 1 0; align-items: center; }
+.ex-row.grow-ex { flex: 1 1 0; display: flex; flex-direction: column; min-height: 0; }
+.ex-row.grow-ex .example { flex: 1 1 0; }
+.ex-row.grow-ex .example .box { height: auto; flex: 1 1 0; }
+/* only grid paper grows to fill space; tables and number lines keep their natural size */
+.zone.grow > .q.draw:not(:has(.grid-paper)) { flex: none; }
+.q.draw:not(:has(.grid-paper)) .draw-area { flex: none; }
+.draw-area .template-card { flex: none; }
+.split.grow-row { flex: 1 1 0; min-height: 0; }
+.split.grow-row .example .box { height: auto; flex: 1 1 0; }
+.zone.grow > .split.grow-row { flex: 1 1 0; }
+
+/* ---------- standalone lesson booklets ---------- */
+.chapter-badge.lesson b { font-size: 21pt; }
+.cover-progress { display: flex; align-items: center; gap: 2mm; margin: -1mm 0 5mm; font-size: 9pt; font-weight: 600; color: var(--muted); }
+.cover-progress span { margin-right: 2mm; }
+.cover-progress i { width: 4mm; height: 4mm; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0.5mm var(--sand); }
+.cover-progress i.done { background: var(--sand); }
+.cover-progress i.on { background: var(--blue); box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.2mm var(--blue); }
+.cover-learn { padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; margin-bottom: 7mm; font-size: 10pt; }
+.cover-learn ul { margin-top: 1.5mm; }
+.bys-top { display: flex; align-items: center; gap: 6mm; flex: none; }
+.need { display: flex; align-items: center; gap: 2mm; flex: none; }
+.need b { margin-right: 1mm; }
+.need span { padding: 1mm 3mm; border-radius: 10mm; background: var(--sand-soft); border: 0.35mm solid var(--sand); font-size: 9pt; font-weight: 600; }
+.outcome { font-size: 8.5pt; color: var(--muted); }
+.ack-box:not(.grow) .ack-art { height: 30mm; }
+.map-we, .map-you { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: 0.06em; color: #fff; padding: 0.2mm 1.6mm; border-radius: 1mm; margin-right: 0.8mm; vertical-align: 0.3mm; }
+.map-we { background: var(--charcoal); }
+.map-you { background: var(--blue); }
+
+/* ---------- chapter accent colour (set per chapter in chapter.js) ---------- */
+.cover-spine { background: var(--accent); }
+.chapter-badge { background: var(--accent); box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--accent); }
+.cover-kicker { color: var(--accent); }
+.lesson-badge { background: var(--accent); }
+.page-head { border-bottom: 0.7mm solid var(--accent); }
+.page-head .sec { color: var(--accent); }
+.ch-chip { display: inline-block; background: var(--accent); color: #fff; font-weight: 700; font-size: 7.5pt; padding: 0.2mm 2mm; border-radius: 1mm; margin-right: 2mm; }
+.contents td.code { color: var(--accent); }
+.cover-lessons b { color: var(--accent); }
+.inline-fig { margin-top: 1mm; }
+.inline-fig .graph { width: auto; max-width: 100%; height: auto; max-height: 34mm; }
+.set-fig { flex: none; }
+.set-fig .graph { width: auto; max-width: 100%; max-height: 52mm; }
+.cover-lessons { grid-template-columns: 1fr 1fr; font-size: 8.5pt; }
+.fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.85em; line-height: 1.05; margin: 0 0.4mm; }
+.fr sup { border-bottom: 0.25mm solid currentColor; padding: 0 0.4mm; }
+.fr sub, .fr sup { vertical-align: baseline; font-size: 1em; }
+.notes.fixed { height: 20mm; }
+.summary-grid .worked { font-size: 8.5pt; }
+/* Inline and set diagrams show at their natural (mm) size, never stretched. */
+.inline-fig .graph, .set-fig .graph { width: min(var(--w, 100%), 100%); max-width: 100%; }
+.q-head .q-text { min-width: 0; flex: 1 1 auto; }
+.q-head { align-items: flex-start; }
+.q.side .side-row { display: flex; gap: 2mm; flex: 1 1 0; min-height: 18mm; align-items: stretch; }
+.q.side .side-fig { flex: none; display: flex; align-items: center; justify-content: center; max-width: 55%; }
+.q.side .side-fig .graph { width: auto; height: auto; max-height: 22mm; max-width: 100%; }
+.q.side .box { flex: 1 1 0; min-width: 12mm; min-height: 0; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 34mm); max-width: 100%; height: auto; max-height: 22mm; }
+.example .inline-fig .graph { max-height: 26mm; }
+/* Diagrams beside a box show at natural size so labels stay readable (about 8pt). */
+.q.side .side-fig { max-width: 60%; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 100%); max-height: none; }
+.q.side .side-row { flex: 1 1 auto; min-height: 0; }
+.example .inline-fig .graph { max-height: 22mm; }
+.q.side .side-row { align-items: flex-start; }
+.q.side .side-fig { flex: 0 0 55%; max-width: 55%; }
+.q.side .side-fig .graph { width: 100%; max-width: calc(var(--w, 30mm) * 1.4); }
+.q.side .box { align-self: stretch; }
+.contents.tight td { padding: 1mm 2mm; }
+.fr { font-size: 0.95em; }
+.q.side .side-fig .graph { max-height: 26mm; }
+/* First page of a lesson is the tightest: keep its diagrams a little smaller. */
+.lesson-first .q.side .side-fig .graph { max-height: 21mm; }
+.lesson-first .example .inline-fig .graph { max-height: 19mm; }
+.lesson-first .q.side .side-row { min-height: 0; }
+.tgrid .graph { max-height: 31mm; }
+/* Transformation grids fill the space the question has. */
+.q.draw .draw-area { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.draw-area > .template-card.tgrid { flex: 1 1 auto; min-height: 30mm; display: flex; }
+.tgrid .graph { flex: 1 1 auto; width: 100%; height: auto; max-height: none; aspect-ratio: auto !important; }
+.q.draw:has(.tgrid) .draw-area { flex: 1 1 auto; }
+.draw-area > .template-card.tgrid { align-items: center; justify-content: center; }
+.tgrid .graph { flex: none; width: 100%; height: auto; max-height: 100%; aspect-ratio: var(--ar) !important; }
+/* Recurring decimal: a dot above the digit. */
+.rec { position: relative; display: inline-block; }
+.rec::before { content: ''; position: absolute; left: 50%; top: -0.12em; width: 0.2em; height: 0.2em; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
+/* Number planes to draw on: fixed heights by where they sit, so square planes never overrun a page. */
+.template-card.tplane { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; }
+.tplane .graph { height: 40mm; width: auto; max-width: 100%; aspect-ratio: var(--ar); }
+.zone.grow .tplane .graph { height: 48mm; }
+.ex-row .tplane .graph, .lesson-first .tplane .graph { height: 30mm; }
+.ex-row .tplane .graph { height: 34mm; }
+.lesson-first .zone.grow .tplane .graph { height: 36mm; }
+/* A big diagram on the left with its short questions listed on the right. */
+.fig-side { display: grid; grid-template-columns: 58% 1fr; gap: 3mm; flex: 1 1 auto; min-height: 0; align-items: center; }
+.fig-side .set-fig .graph { max-height: 60mm; }
+.fig-side .short-list { display: flex; flex-direction: column; gap: 2.2mm; }
+.fig-side .short-list .qs { display: grid; grid-template-columns: auto 1fr 26mm; align-items: center; gap: 2mm; }
+.fig-side .short-list .box { height: 8.5mm; }
+/* In a panel that fills the page, the questions beside a diagram get full working boxes. */
+.zone.grow .fig-side { align-items: stretch; }
+.zone.grow .fig-side > .set-fig { align-self: center; }
+.zone.grow .fig-side .short-list .qs { flex: 1 1 0; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; }
+.zone.grow .fig-side .short-list .box { grid-column: 1 / -1; height: auto; min-height: 9mm; }
+.zone.grow .fig-side .short-list { height: 100%; }
+.zone.grow .fig-side .short-list .qs { align-items: stretch; }
+.zone.grow .fig-side .short-list .qs .q-text { align-self: center; }
+
+/* ===================== Mandelbrot theme (blended series) ===================== */
+.page.mb .content { top: 18mm; }
+.mb-band {
+  position: absolute; top: 0; left: 0; right: 0; height: 14.5mm; display: flex; align-items: center; gap: 4mm; padding: 0 12mm 0 10mm; color: #fff;
+  background: linear-gradient(90deg, var(--charcoal) 38%, rgba(61,59,60,0.55) 70%, rgba(61,59,60,0.1)), var(--mb-dark) right center / auto 100% no-repeat, var(--charcoal);
+  border-bottom: 0.9mm solid var(--accent);
+}
+.mb-logo { height: 9mm; background: #fff; border-radius: 1.2mm; padding: 0.8mm 1.5mm; flex: none; }
+.mb-titles { display: flex; flex-direction: column; gap: 0.3mm; min-width: 0; }
+.mb-kicker { font-size: 6.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: #d9d6cc; font-weight: 600; }
+.mb-title { font-size: 11pt; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mb-title b { color: #fff; background: var(--accent); padding: 0 1.6mm; border-radius: 1mm; margin-right: 1mm; font-weight: 700; }
+.mb-sec { margin-left: auto; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.92); color: var(--charcoal); padding: 1mm 2.5mm; border-radius: 1mm; flex: none; }
+.theme-mb .page-foot .pn { box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--accent); }
+.theme-mb .lesson-badge { background: var(--accent); }
+.theme-mb .banner { border-left: 1.6mm solid var(--accent); }
+
+/* cover */
+.mb-cover { background: #fff; }
+.mbc-band { position: absolute; top: 0; left: 0; right: 0; height: 64mm; background: var(--charcoal); color: #fff; display: flex; gap: 6mm; padding: 10mm 12mm 8mm 22mm; }
+.mbc-logo { height: 20mm; background: #fff; border-radius: 2mm; padding: 2mm 3mm; flex: none; }
+.mbc-titles { flex: 1; min-width: 0; }
+.mbc-kicker { font-size: 8pt; letter-spacing: 0.24em; text-transform: uppercase; color: #d9d6cc; font-weight: 600; }
+.mbc-titles h1 { color: #fff; font-size: 24pt; margin: 2mm 0 1.5mm; line-height: 1.1; }
+.mbc-titles h1 span { color: var(--accent); filter: brightness(1.45) saturate(0.9); }
+.mbc-sub { font-size: 9pt; color: #e8e6df; }
+.mbc-outcome { margin-top: 3mm; font-size: 7.5pt; color: #cfccc2; border-left: 0.8mm solid var(--accent); padding-left: 2.5mm; }
+.mbc-outcome b { color: #fff; }
+.mbc-name { width: 46mm; flex: none; background: #fff; color: var(--charcoal); border-radius: 2mm; padding: 3mm 4mm; display: flex; flex-direction: column; gap: 1mm; align-self: flex-start; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+.mbc-name i { display: block; border-bottom: 0.3mm solid var(--line); height: 6mm; margin-bottom: 1.5mm; }
+.mbc-spine { position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: var(--accent); }
+.mbc-body { position: absolute; top: 74mm; left: 22mm; right: 12mm; display: flex; gap: 8mm; align-items: flex-start; }
+.mbc-badge { flex: none; width: 46mm; height: 46mm; border-radius: 50%; background: var(--accent); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 0 2mm #fff, 0 0 0 3mm var(--accent); }
+.mbc-badge span { font-size: 10pt; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; }
+.mbc-badge b { font-size: 44pt; line-height: 1; font-weight: 700; }
+.mbc-lessons { flex: 1; display: flex; flex-direction: column; gap: 1.6mm; font-size: 10pt; }
+.mbc-lessons div { padding: 1.4mm 3mm; border-radius: 1.5mm; background: var(--sand-soft); border-left: 1.2mm solid var(--accent); }
+.mbc-lessons b { color: var(--accent); margin-right: 2.5mm; }
+.mbc-art { position: absolute; left: 10mm; right: 0; bottom: 0; height: 62mm; background: center / cover no-repeat; }
+
+/* inside cover */
+.tracker td.date { width: 26mm; border-bottom: 0.25mm solid var(--line); }
+.mb-ack { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
+.mb-ack h3 { color: #fff; font-size: 10pt; margin-bottom: 1mm; }
+.mb-ack p { font-size: 8.5pt; margin-bottom: 2mm; color: #e8e6df; }
+.mb-ack-art { width: 44mm; align-self: stretch; flex: none; border-radius: 2mm; background: 30% center / cover no-repeat; }
+.theme-mb .contents td.code, .theme-mb .howto .step { color: var(--accent); }
+.theme-mb .howto .step { background: var(--accent); color: #fff; }
+
+/* level words: Easy / Medium / Challenging */
+.lvl-word { display: inline-block; padding: 0 1.8mm; border-radius: 1mm; color: #fff; font-weight: 700; margin-right: 1mm; font-size: 0.92em; }
+.lvl-word.l1 { background: #2e8b57; }
+.lvl-word.l2 { background: #c98a00; }
+.lvl-word.l3 { background: #c0392b; }
+.zone-text .count { float: right; font-size: 7.5pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-left: 3mm; }
+.zone-head .zone-text { flex: 1; }
+
+/* hint strip inside a YOU DO panel */
+.hint { display: flex; gap: 2.5mm; align-items: baseline; background: #fff; border-left: 1mm solid var(--blue); border-radius: 1mm; padding: 1mm 2.5mm; font-size: 8.5pt; flex: none; }
+.hint b { color: var(--blue); text-transform: uppercase; font-size: 7pt; letter-spacing: 0.12em; }
+
+/* WE DO example with parts a, b, c */
+.ex-head { display: flex; gap: 2.5mm; align-items: baseline; flex: none; }
+.ex-stem { font-weight: 600; font-size: 10pt; }
+.ex-parts { display: grid; gap: 2.5mm 4mm; grid-template-columns: repeat(2, 1fr); flex: 1 1 auto; min-height: 0; }
+.ex-parts.n1 { grid-template-columns: 1fr; }
+.ex-parts.n3 { grid-template-columns: repeat(3, 1fr); }
+.ex-parts.n4 { grid-template-columns: repeat(2, 1fr); }
+.ex-part { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.ex-part .q-head { align-items: flex-start; }
+.part-l { flex: none; width: 5.5mm; height: 5.5mm; border-radius: 50%; background: var(--charcoal); color: #fff; font-weight: 700; font-size: 8.5pt; display: flex; align-items: center; justify-content: center; }
+.ex-part .box.teacher { height: 22mm; flex: 1 1 auto; position: relative; }
+.ex-part .box.teacher span { position: absolute; right: 2mm; bottom: 1mm; font-size: 6.5pt; color: #b3b0a6; }
+.ex-zone.grow .ex-part .box.teacher, .ex-zone.tall .ex-part .box.teacher { height: 30mm; }
+.ex-zone.grow { display: flex; flex-direction: column; }
+.ex-zone.grow .ex-parts { flex: 1 1 0; }
+.ex-part .draw-area { flex: 1 1 auto; display: flex; flex-direction: column; }
+.ex-part .inline-fig .graph { max-height: 24mm; }
+
+/* quick drill */
+.drill { display: grid; gap: 1.6mm 4mm; flex: 1 1 auto; align-content: space-evenly; }
+.drill.c2 { grid-template-columns: repeat(2, 1fr); }
+.drill.c3 { grid-template-columns: repeat(3, 1fr); }
+.drill.c4 { grid-template-columns: repeat(4, 1fr); }
+.dq { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 1.8mm; align-items: baseline; }
+.dq .q-text { font-size: 9pt; }
+.dq .ans-line { grid-column: 2; border-bottom: 0.3mm solid #9aa6c8; height: 6mm; }
+.zone.drill-zone { flex: 1 1 auto; }
+
+/* homework */
+.hw-intro { background: var(--sand-soft); border-left: 1.2mm solid var(--accent); border-radius: 1.5mm; padding: 2.5mm 4mm; font-size: 9pt; flex: none; }
+.hw-tag { display: inline-block; font-size: 6.5pt; color: var(--muted); border: 0.25mm solid var(--line); border-radius: 1mm; padding: 0 1mm; margin-left: 1mm; vertical-align: middle; }
+.work-grid.hw { grid-auto-rows: 1fr; flex: 1 1 0; }
+ul.plain { list-style: none; padding-left: 0; }
+.summary-grid.tall { flex: 1 1 0; }
+.hw-lead { display: block; font-size: 7.5pt; color: var(--muted); font-style: italic; }
+.mbc-art { height: 100mm; }
+.mbc-body { bottom: 104mm; }
+.box.teacher.split-cols { display: grid; grid-template-columns: 1fr 1fr; }
+.box.teacher.split-cols > div { padding: 1mm 2mm; font-size: 7pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.box.teacher.split-cols > div + div { border-left: 0.3mm dashed var(--line); }
+.mbc-titles h1 span { filter: none; color: color-mix(in srgb, var(--accent) 45%, white); }
+.drill-sub { grid-column: 1 / -1; font-size: 8.5pt; font-weight: 600; color: var(--blue); margin-top: 0.5mm; border-top: 0.3mm dashed #b8c3e0; padding-top: 1mm; }
+.ex-body { display: grid; grid-template-columns: 46% 1fr; gap: 3mm; flex: 1 1 auto; min-height: 0; }
+.ex-body .ex-parts { grid-template-columns: 1fr; }
+.ex-fig { display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 1.5mm; padding: 1mm; }
+.ex-fig .graph { width: 100%; height: auto; max-height: 58mm; }
+.ex-fig .sl, .ex-fig table { font-size: 8.5pt; }
+.theme-mb .zone.grow .tplane .graph { height: 64mm; }
+.mbc-titles h1.long { font-size: 19pt; }
+.lvl-word.mini { font-size: 6.5pt; padding: 0 1.2mm; margin-right: 1.5mm; vertical-align: 1px; }
+:root { --accent: #6b8e23; --mb-dark: url(../../assets/mandelbrot/6b8e23-dark.png); }
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }
+  .ans-lesson { break-inside: auto; }
+  .ans-lesson h2 { break-inside: avoid; break-after: avoid; }
+  .ans-block { break-inside: avoid; }
+  .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }</style></head><body class="theme-mb">
+  <div class="ans-header"><h1>Year 7 · Chapter 9 · The number plane: answers (teacher copy)</h1></div>
+  <div class="answers">
+  <div class="ans-lesson"><h2>9.01 Grid references on maps <span class="ans-page">(booklet p. 3)</span></h2><div class="ans-block"><h3>WE DO examples (teacher)</h3><ol><li>Ex 1a: the lake</li><li>Ex 1b: the library</li><li>Ex 2a: D9</li><li>Ex 2b: B2, C2, B3, C3</li><li>Ex 3a: e.g. walk to Gauss Rd, west to Euclid St, then north</li><li>Ex 3b: it is a convention so everyone reads it the same way</li></ol></div><div class="ans-block"><h3>Easy · Set A</h3><ol><li>lake</li><li>library</li><li>stadium</li><li>student centre</li></ol></div><div class="ans-block"><h3>Easy · Set A2 (quick drill)</h3><ol><li>car park</li><li>car park</li><li>lake</li><li>stadium</li><li>student centre</li><li>main campus</li></ol></div><div class="ans-block"><h3>Easy · Set B</h3><ol><li>D9</li><li>F2 or G2</li><li>A8 or B8</li><li>B2, B3, C2 or C3</li><li>H7, H8, I7 or I8</li><li>G10, H10 or I10</li></ol></div><div class="ans-block"><h3>Medium · Set C</h3><ol><li>e.g. A6</li><li>e.g. E1</li><li>E6</li><li>main campus (row 10)</li><li>4 squares</li><li>student centre and main campus</li></ol></div><div class="ans-block"><h3>Challenging · Set D</h3><ol><li>own map</li><li>own directions</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>C5</li><li>18 squares</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: stadium</li><li>Level 2: F2</li><li>Level 3: student centre (H7)</li></ol></div></div><div class="ans-lesson"><h2>9.02 Points in the first quadrant <span class="ans-page">(booklet p. 9)</span></h2><div class="ans-block"><h3>WE DO examples (teacher)</h3><ol><li>Ex 1a: plotted</li><li>Ex 1b: plotted on the axes</li><li>Ex 2a: P(4, 1), Q(2, 5)</li><li>Ex 2b: No: (2, 5) is 2 across, 5 up</li><li>Ex 3a: rectangle</li><li>Ex 3b: (0, 0)</li></ol></div><div class="ans-block"><h3>Easy · Set A</h3><ol><li>plotted</li><li>plotted</li></ol></div><div class="ans-block"><h3>Easy · Set A2 (quick drill)</h3><ol><li>4</li><li>7</li><li>0</li><li>0</li><li>9</li><li>8</li></ol></div><div class="ans-block"><h3>Easy · Set B</h3><ol><li>(1, 2)</li><li>(4, 5)</li><li>(7, 1)</li><li>(0, 3)</li><li>(5, 0)</li><li>(6, 4)</li></ol></div><div class="ans-block"><h3>Medium · Set C</h3><ol><li>rectangle</li><li>isosceles triangle</li></ol></div><div class="ans-block"><h3>Challenging · Set D</h3><ol><li>(1, 6)</li><li>x-axis points have y = 0; y-axis points have x = 0</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>(3, 5)</li><li>24 square units</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 7</li><li>Level 2: on the y-axis, 5 up</li><li>Level 3: (1, 5)</li></ol></div></div><div class="ans-lesson"><h2>9.03 The number plane <span class="ans-page">(booklet p. 15)</span></h2><div class="ans-block"><h3>WE DO examples (teacher)</h3><ol><li>Ex 1a: 1st top right, 2nd top left, 3rd bottom left, 4th bottom right</li><li>Ex 1b: 3rd</li><li>Ex 2a: A(2, 3), B(−3, 1), C(−2, −4), D(4, −2)</li><li>Ex 2b: 4th</li><li>Ex 3a: a zigzag line</li><li>Ex 3b: e.g. (−2, 3); e.g. (0, 5)</li></ol></div><div class="ans-block"><h3>Easy · Set A (quick drill)</h3><ol><li>3rd</li><li>1st</li><li>2nd</li><li>4th</li><li>y-axis</li><li>x-axis</li><li>4th</li><li>3rd</li><li>2nd</li><li>y-axis</li><li>1st</li><li>x-axis</li><li>4th</li><li>2nd</li><li>origin</li></ol></div><div class="ans-block"><h3>Easy · Set B</h3><ol><li>(1, 3)</li><li>(−4, 2)</li><li>(−3, −3)</li><li>(3, −2)</li><li>(0, −4)</li><li>(−5, 0)</li></ol></div><div class="ans-block"><h3>Medium · Set C</h3><ol><li>a flower / star shape (symmetrical)</li><li>D(−4, 3)</li></ol></div><div class="ans-block"><h3>Challenging · Set D</h3><ol><li>B: 2nd</li><li>(0, 0)</li><li>(−3, −2)</li><li>7 units</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>12 square units</li><li>(1, −1), (4, −1), (1, −3)</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 2nd</li><li>Level 2: e.g. (3, −1)</li><li>Level 3: (−2, −5)</li></ol></div></div><div class="ans-lesson"><h2>9.04 Plotting tables of values <span class="ans-page">(booklet p. 21)</span></h2><div class="ans-block"><h3>WE DO examples (teacher)</h3><ol><li>Ex 1a: vertical line x = −2</li><li>Ex 1b: horizontal line y = 3</li><li>Ex 2a: straight line going down</li><li>Ex 2b: straight line going up steeply</li><li>Ex 3a: y goes up by 2</li><li>Ex 3b: y = 7</li></ol></div><div class="ans-block"><h3>Easy · Set A</h3><ol><li>vertical line</li><li>horizontal line</li></ol></div><div class="ans-block"><h3>Easy · Set A2 (quick drill)</h3><ol><li>(0, 3)</li><li>(2, −1)</li><li>(−4, 0)</li><li>(−1, −5)</li><li>(5, 5)</li><li>(0, 0)</li></ol></div><div class="ans-block"><h3>Easy · Set B</h3><ol><li>(0, 5), (1, 4), (2, 3)</li><li>(−1, −1), (0, 1), (1, 3)</li><li>(1, 2), (2, 4), (3, 6)</li><li>(0, 1), (2, 1), (4, 1)</li></ol></div><div class="ans-block"><h3>Medium · Set C</h3><ol><li>straight line going down</li><li>straight line going up</li></ol></div><div class="ans-block"><h3>Challenging · Set D</h3><ol><li>a U-shaped curve (parabola)</li><li>no, it is a curve</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>−5</li><li>y = 4x</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: (0, 3), (1, 5), (2, 7)</li><li>Level 2: horizontal line</li><li>Level 3: it goes up by 3</li></ol></div></div><div class="ans-lesson"><h2>9.05 Tables of values from rules <span class="ans-page">(booklet p. 27)</span></h2><div class="ans-block"><h3>WE DO examples (teacher)</h3><ol><li>Ex 1a: 2, 3, 4, 5, 6</li><li>Ex 1b: −11, −9, −7, −5, −3</li><li>Ex 2a: 6, 5, 4, 3, 2</li><li>Ex 2b: −5, −2, 1, 4, 7</li><li>Ex 3a: y = 2x + 4</li><li>Ex 3b: y = 8 − x</li></ol></div><div class="ans-block"><h3>Easy · Set A</h3><ol><li>2, 3, 4, 5, 6</li><li>−2, 0, 2, 4, 6</li><li>−4, −3, −2, −1, 0</li><li>−10, −5, 0, 5, 10</li></ol></div><div class="ans-block"><h3>Easy · Set A2 (quick drill)</h3><ol><li>6</li><li>15</li><li>−6</li><li>7</li><li>6</li><li>−2</li><li>3</li><li>−7</li><li>4</li></ol></div><div class="ans-block"><h3>Easy · Set B</h3><ol><li>−11, −9, −7, −5, −3</li><li>6, 5, 4, 3, 2</li></ol></div><div class="ans-block"><h3>Medium · Set C</h3><ol><li>−5, −2, 1, 4, 7</li><li>7, 5, 3, 1, −1</li><li>−4, −3, −2, −1, 0</li><li>10, 7, 4, 1, −2</li></ol></div><div class="ans-block"><h3>Challenging · Set D</h3><ol><li>y = 2x + 4</li><li>y = 8 − x</li><li>y = 4x − 3</li><li>y = −3x</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>2, 0, 0, 2, 6</li><li>y = x²</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 3</li><li>Level 2: −1, 3, 7</li><li>Level 3: y = 3x + 1</li></ol></div></div><div class="ans-lesson"><h2>9.06 Graphing linear equations <span class="ans-page">(booklet p. 33)</span></h2><div class="ans-block"><h3>WE DO examples (teacher)</h3><ol><li>Ex 1a: y: −3, −1, 1, 3; straight line</li><li>Ex 1b: line through (0, 3) going down</li><li>Ex 2a: yes</li><li>Ex 2b: yes</li><li>Ex 3a: y: −4, −3, −2, −1, 0</li><li>Ex 3b: (0, −1)</li></ol></div><div class="ans-block"><h3>Easy · Set A</h3><ol><li>y: −1, 0, 1, 2, 3</li><li>y: −3, −1, 1, 3</li></ol></div><div class="ans-block"><h3>Easy · Set A2 (quick drill)</h3><ol><li>yes</li><li>yes</li><li>no</li><li>yes</li><li>yes</li><li>no</li></ol></div><div class="ans-block"><h3>Easy · Set B</h3><ol><li>no</li><li>no</li><li>yes</li><li>yes</li><li>yes</li><li>yes</li></ol></div><div class="ans-block"><h3>Medium · Set C</h3><ol><li>y: 5, 4, 3, 2, 1</li><li>y: −4, −3, −2, −1, 0</li></ol></div><div class="ans-block"><h3>Challenging · Set D</h3><ol><li>parallel lines, 2 units apart</li><li>(1, 2)</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>m = 3</li><li>y = 2x + 1 and y = 2x − 3</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 5</li><li>Level 2: yes</li><li>Level 3: yes</li></ol></div></div>
+  </div></body></html>

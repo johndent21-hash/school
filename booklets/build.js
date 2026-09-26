@@ -179,7 +179,7 @@ const assemble = (front, lessons) => {
 
 const doc = (dir, title, body, extraCss = '') => `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8"><title>${title}</title>
-<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; }${extraCss}</style></head><body>${body}</body></html>`;
+<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; --mb-dark: url(${assetsFor(dir)}/mandelbrot/${(chapter.accent || '#7d3c98').slice(1)}-dark.png); }${extraCss}</style></head><body class="${chapter.theme === 'mandelbrot' ? 'theme-mb' : ''}">${body.replaceAll('{{ASSETSREL}}', assetsFor(dir))}</body></html>`;
 
 const answersCss = `
   @page { size: A4; margin: 12mm 12mm 14mm; }
@@ -201,7 +201,17 @@ const jobs = []; // { dir, name, html, check }
 {
   assetsRel = assetsFor(chapterDir);
   const lessons = chapter.lessons.map((make) => make(chapter));
-  const pages = assemble([() => cover(lessons), () => insideCover(lessons)], lessons);
+  const MB = chapter.theme === 'mandelbrot' ? require('./lib/blend-front') : null;
+  const pages = MB ? assemble([() => MB.cover(chapter, lessons), () => MB.insideCover(chapter, lessons)], lessons)
+    : assemble([() => cover(lessons), () => insideCover(lessons)], lessons);
+  if (MB && chapter.homework !== false) {
+    const hw = MB.homework(chapter, lessons);
+    const name = chapter.fileName.replace(/-Lessons$/, '') + '-Homework';
+    const hwPages = hw.pages.map((p, i) => p.replaceAll('{{PN}}', i + 1));
+    jobs.push({ dir: chapterDir, name, check: true, html: doc(chapterDir, `${chapter.title} homework`, hwPages.join('\n')) });
+    jobs.push({ dir: chapterDir, name: `${name}-Answers`, html: doc(chapterDir, `${chapter.title} homework answers`,
+      `<div class="ans-header"><h1>Year ${chapter.year} · Chapter ${chapter.number} · ${chapter.title}: homework answers (teacher copy)</h1></div><div class="answers">${hw.answers.map(([h, list]) => `<div class="ans-block"><h3>${h}</h3><ul class="plain">${list.map((a) => `<li>${a}</li>`).join('')}</ul></div>`).join('')}</div>`, answersCss) });
+  }
   const base = chapter.fileName;
   jobs.push({ dir: chapterDir, name: base, check: true, html: doc(chapterDir, `${chapter.title} booklet`, pages.join('\n')) });
   jobs.push({ dir: chapterDir, name: `${base}-Answers`, html: doc(chapterDir, `${chapter.title} answers`,

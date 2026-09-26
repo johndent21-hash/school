@@ -48,7 +48,7 @@ const setBody = (set, start = 1) => {
 // questions get working boxes instead so there are no big gaps.
 const setZone = (name, set, cls = 'grow') => youDo(`Set ${name}. ${set.text}`, setBody(cls === 'grow' && set.kind === 'short' && !set.fig && !set.keepShort ? { ...set, kind: 'work' } : set), cls);
 
-module.exports = (spec) => (chapter) => {
+const build = (spec) => (chapter) => {
   const L = makeLesson({ chapter, code: spec.code, title: spec.title });
   const [e1, e2, e3, e4, e5, e6] = spec.we;
   const exRow = (a, b, n) => weDo(split(ex(n, a), ex(n + 1, b), spec.tallExamples ? 'ex-row tall' : 'ex-row'));
@@ -105,3 +105,6 @@ module.exports = (spec) => (chapter) => {
   if (A.we.length !== 6 || A.ext.length !== spec.ext.qs.length || A.exit.length !== 3) throw new Error(`${spec.code}: examples, extension or exit answers missing`);
   return { code: spec.code, title: spec.title, pages, answers };
 };
+
+// The spec is kept on the function so other templates (e.g. lib/lesson-blend.js) can reuse the same lesson content.
+module.exports = (spec) => Object.assign(build(spec), { spec });

@@ -100,3 +100,41 @@ Useful set options in a lesson: `kind: 'short' | 'work'`, `cols`, `keepShort` (k
 If you use Claude, or a similar assistant that can run code, you can hand it this folder and ask it to make a new chapter. For example:
 
 > Using this booklet builder, make a booklet from the attached Test Yourself, one 4-page lesson per exercise. Follow the lesson format and colour rules in README.md, start from examples/starter-chapter, build it, and fix any warnings.
+
+## 8. The blended series (Mandelbrot theme)
+
+`year7-blend/` holds a second set of Year 7 booklets. It combines the lesson booklets in `year7/` with the revision booklets (`Yr7_*_Revision_Booklet*.pdf`). The original set in `year7/` is unchanged. Build one chapter, or all of them:
+
+```bash
+node build.js year7-blend/ch09-number-plane
+npm run build:blend
+```
+
+Each chapter builds four PDFs:
+
+| File | What it is |
+| --- | --- |
+| `*-Lessons.pdf` | One lesson per exercise, each one hour long. A lesson is 4 or 6 pages, set per chapter or per lesson. |
+| `*-Lessons-Answers.pdf` | Teacher answers, including the WE DO examples and the quick drill. |
+| `*-Homework.pdf` | A short mixed revision booklet (Easy, then Medium, then Challenging) that covers every lesson. |
+| `*-Homework-Answers.pdf` | Answers to the homework. |
+
+Chapter 5 is split into `ch05a-algebra` (5.01 to 5.09) and `ch05b-equations` (5.10 to 5.13).
+
+How it fits together:
+
+- **`lib/blend.js`**: `blend(require('../../year7/chXX/chapter.js'), { fileName, pages, accent, only, chapter, more })` reuses each lesson's content from `year7/`. `more['5.04']` adds to or replaces fields of that lesson.
+- **`lib/lesson-blend.js`**: the lesson template. Its spec options are listed at the top of the file. The main ones are:
+
+  | Option | What it does |
+  | --- | --- |
+  | `pages` | 4 or 6 |
+  | `stems` | The instruction for Examples 1 to 3. Each example has parts a and b, with blank boxes for the teacher's working. |
+  | `ex` / `exAns` | Your own examples and their answers. |
+  | `exFigs` | A diagram for each example. |
+  | `exCols` | Split columns inside the teacher box. |
+  | `drill` | Quick drill questions: `{ text, items, ans, cols, hw: [question, answer, instruction] }`. The drill is added to Set A, and `hw` is its homework question. |
+  | `hwFig` | A diagram that homework questions can use. |
+
+- **`lib/blend-front.js`**: the cover, the inside cover (with a progress tracker) and the homework booklet. The homework builder leaves out questions that only make sense inside the lesson, such as ones that refer to "Set A" or "Example 2", or that need a diagram it doesn't have.
+- **`tools/mandelbrot.py`**: draws the Mandelbrot artwork for each accent colour into `assets/mandelbrot/`. It needs Python 3 with `numpy` and `Pillow`. Run it again only if you add a new accent colour.
