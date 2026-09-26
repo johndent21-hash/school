@@ -55,12 +55,12 @@ const insideCover = (lessons) => `
       <div><span class="step">2</span><span>Work through the levels in order: Level 1 ${'<span class="lvl-dots"><i></i></span>'}, then Level 2, then Level 3. Extension questions stretch you further.</span></div>
       <div class="we"><span class="zone-pill">WE DO</span><span><b>Grey boxes with a dark border.</b> Work with your teacher. Copy what they write on the board.</span></div>
       <div class="you"><span class="zone-pill">YOU DO</span><span><b>Blue boxes.</b> Work on your own. Show your working in the box and write your answer.</span></div>
-      <div><span class="step">3</span><span>Some questions ask you to <b>draw</b> a graph, dot plot or stem-and-leaf plot. Use the grid or template given and a ruler.</span></div>
+      <div><span class="step">3</span><span>Some questions ask you to <b>draw</b> a diagram, graph or construction. Use the space given, a ruler and a sharp pencil.</span></div>
       <div><span class="step">4</span><span>At the end of each lesson, <b>show off your skill</b>: choose one question, then tear off the ticket and hand it in.</span></div>
       <div style="grid-column: 1 / -1"><span class="step">5</span><span>Missed a lesson? Each lesson ends with a <b>summary</b> that has a worked example for every level. Start there, then try the questions.</span></div>
     </div>
     <p class="section-title">Contents</p>
-    <table class="contents">
+    <table class="contents${lessons.length > 10 ? ' tight' : ''}">
       <tr><th>Lesson</th><th>Topic</th><th style="text-align:right">Page</th><th style="text-align:center">Done</th></tr>
       ${lessons.map((l) => `<tr><td class="code">${l.code}</td><td>${l.title}</td><td class="pg">${l.startPage}</td><td class="tick"><i></i></td></tr>`).join('')}
     </table>

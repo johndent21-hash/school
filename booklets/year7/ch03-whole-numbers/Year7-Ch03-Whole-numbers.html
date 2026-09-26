@@ -1,0 +1,2394 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Whole numbers booklet</title>
+<style>/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
+:root {
+  --charcoal: #3d3b3c;
+  --blue: #3f63be;
+  --blue-soft: #e6ecf8;
+  --sand: #c2bea8;
+  --sand-soft: #f3f1ea;
+  --we-soft: #f1f1f1;
+  --line: #d8d4c4;
+  --ink: #26292e;
+  --muted: #6b6a64;
+  --tear-h: 64mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
+}
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../assets/lexend-latin-700-normal.woff2); }
+
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.5pt; line-height: 1.3; }
+b { font-weight: 600; }
+h1, h2, h3 { margin: 0; color: var(--charcoal); }
+h3 { font-size: 10.5pt; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 4.5mm; }
+li { margin-bottom: 0.6mm; }
+
+/* ---------- page shell ---------- */
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
+.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url(../../assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
+.page-head {
+  position: absolute; top: 10mm; left: 12mm; right: 12mm;
+  display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
+  border-bottom: 0.35mm solid var(--sand); padding-bottom: 1mm;
+}
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.content { position: absolute; top: 17mm; bottom: 11mm; left: 12mm; right: 12mm; display: flex; flex-direction: column; gap: 2.4mm; }
+.page-foot { position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6mm; display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f; }
+.page-foot .pn {
+  width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 7.5pt;
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--sand); margin: 0 4mm;
+}
+.grow { flex: 1 1 0; min-height: 0; }
+
+/* ---------- lesson opening ---------- */
+.lesson-title { display: flex; align-items: center; gap: 4mm; flex: none; }
+.lesson-badge {
+  flex: none; width: 17mm; height: 17mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 0.8mm #fff, 0 0 0 1.6mm var(--sand);
+}
+.lesson-badge span { font-size: 6pt; text-transform: uppercase; letter-spacing: 0.08em; }
+.lesson-badge b { font-size: 11pt; font-weight: 700; margin-top: 0.6mm; }
+.lesson-title h1 { font-size: 19pt; line-height: 1.1; flex: 1; }
+.date-line { display: flex; align-items: flex-end; gap: 2mm; width: 45mm; font-weight: 600; font-size: 9pt; }
+.date-line i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; }
+.card { background: var(--sand-soft); border-radius: 2.5mm; padding: 2.5mm 4mm; border-top: 1.2mm solid var(--sand); }
+.card-sub { font-size: 8.5pt; color: var(--muted); margin-bottom: 0.8mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 5mm; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.8mm; width: 2.6mm; height: 2.6mm; border: 0.35mm solid var(--charcoal); border-radius: 0.6mm; }
+.terms-head { display: flex; gap: 3mm; align-items: baseline; flex: none; margin-bottom: -1mm; }
+.terms-head span { font-size: 8.5pt; color: var(--muted); }
+.terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.terms.n2 { grid-template-columns: repeat(2, 1fr); }
+.terms.n1 { grid-template-columns: 1fr; }
+.term { display: flex; flex-direction: column; }
+.term-name { align-self: flex-start; background: var(--sand); color: var(--charcoal); font-weight: 700; padding: 0.6mm 3mm; border-radius: 1.5mm; }
+.term i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.notes { border: 0.4mm solid var(--sand); border-radius: 2.5mm; position: relative; min-height: 22mm; }
+.notes-label { position: absolute; top: 1.5mm; left: 3mm; font-weight: 600; font-size: 8.5pt; color: var(--muted); }
+
+/* ---------- banners and level dots (neutral colours: charcoal means WE DO, blue means YOU DO) ---------- */
+.banner { display: flex; align-items: center; gap: 3mm; padding: 1.6mm 4mm; border-radius: 2mm; background: var(--sand); color: var(--charcoal); flex: none; }
+.banner.summary { background: var(--sand-soft); border: 0.35mm solid var(--sand); }
+.banner-title { font-size: 11.5pt; font-weight: 700; }
+.banner-note { margin-left: auto; font-size: 8.5pt; color: var(--charcoal); }
+.lvl-dots { display: inline-flex; gap: 1mm; vertical-align: middle; }
+.lvl-dots i { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.9mm var(--sand); }
+.banner .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--sand), 0 0 0 0.9mm #fff; }
+
+/* ---------- WE DO (charcoal) and YOU DO (blue) zones ---------- */
+.zone { border: 0.8mm solid; border-radius: 3mm; padding: 1.8mm 2.5mm 2.5mm; display: flex; flex-direction: column; gap: 1.8mm; flex: none; min-height: 0; }
+.zone.grow { flex: 1 1 0; }
+.zone.fill { height: 100%; }
+.zone.fill > .col { flex: 1; }
+.zone.we { border-color: var(--charcoal); background: var(--we-soft); }
+.zone.you { border-color: var(--blue); background: var(--blue-soft); }
+.zone-head { display: flex; align-items: center; gap: 2.5mm; flex: none; }
+.zone-pill { flex: none; font-weight: 700; font-size: 9pt; letter-spacing: 0.08em; color: #fff; padding: 0.8mm 3mm; border-radius: 1.5mm; }
+.zone.we .zone-pill, .legend-item.we .zone-pill { background: var(--charcoal); }
+.zone.you .zone-pill, .legend-item.you .zone-pill, .you-pill { background: var(--blue); }
+.zone-text { font-size: 8.5pt; font-weight: 600; }
+.zone.we .zone-text { color: var(--charcoal); }
+.zone.you .zone-text { color: var(--blue); }
+.zone.we .box, .zone.we .grid-paper, .zone.we .sl.template table { border-color: var(--charcoal); }
+.zone.you .box, .zone.you .grid-paper, .zone.you .sl.template table { border-color: var(--blue); }
+.zone.we .q-num.ex { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
+.zone.you .q-num { background: #fff; border-color: var(--blue); color: var(--blue); }
+.zone .graph-card { background: #fff; }
+
+/* ---------- layout helpers ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; min-height: 0; }
+.split.grow { flex: 1 1 0; }
+.split.wide-left { grid-template-columns: 1.4fr 1fr; }
+.split.wide-right { grid-template-columns: 1fr 1.4fr; }
+.split3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.col { display: flex; flex-direction: column; gap: 2mm; min-height: 0; }
+.graph-card { border: 0.35mm solid var(--line); border-radius: 2mm; padding: 1.5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; }
+.graph { width: 100%; height: auto; display: block; font-family: Lexend, sans-serif; }
+.graph-card.narrow .graph { width: 80%; }
+.sym { width: 3.4mm; height: 3.4mm; vertical-align: -0.6mm; }
+.given { background: #fff; border: 0.3mm solid var(--line); border-radius: 1.5mm; padding: 1.5mm 3mm; font-size: 9.5pt; flex: none; }
+.given b { color: var(--charcoal); }
+
+/* ---------- questions and boxes (plain boxes, no ruled lines) ---------- */
+.box { border: 0.45mm solid var(--sand); border-radius: 1.8mm; background: #fff; }
+.q { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.q .box { flex: 1 1 0; min-height: 6mm; }
+.q-head { display: flex; gap: 2mm; align-items: baseline; }
+.q-num {
+  flex: none; min-width: 5.5mm; height: 5.5mm; padding: 0 1.2mm; border-radius: 3mm;
+  background: var(--sand-soft); border: 0.3mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2mm; font-weight: 700; font-size: 8pt;
+}
+.q-num.ex { padding: 0 2.5mm; }
+.q-text { font-size: 9.5pt; }
+.col > .example, .col > .q { flex: 1 1 0; }
+.ex-row .example .box { height: 14mm; flex: none; }
+.ex-row.tall .example .box { height: 22mm; }
+.draw-area { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.draw-area > .graph, .draw-area > .graph-card { flex: none; }
+.draw-area .template { background: #fff; border-radius: 1.8mm; }
+
+.qs { display: grid; grid-template-columns: 6mm 1fr 20mm; gap: 2mm; align-items: center; font-size: 9pt; }
+.qs .box { height: 7mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 34mm; }
+.short-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, auto); gap: 1.6mm 6mm; flex: none; }
+.short-grid.fill { flex: 1 1 0; grid-template-rows: repeat(5, 1fr); align-items: center; }
+.short-list { display: grid; grid-template-rows: repeat(10, 1fr); gap: 0.6mm; }
+.short-list .qs .box { height: 100%; min-height: 5.6mm; }
+.short-grid .qs .q-text, .short-list .qs .q-text { font-size: 9pt; }
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); gap: 2mm 5mm; flex: 1 1 0; min-height: 0; }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.work-grid.r4 { grid-template-rows: repeat(4, 1fr); }
+.work-grid.r2 { grid-template-rows: repeat(2, 1fr); }
+.work-grid .q-text { font-size: 9pt; }
+.stack { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 0; min-height: 0; }
+.stack > .q { flex: 1 1 0; }
+
+/* ---------- drawing templates ---------- */
+.grid-paper {
+  flex: 1 1 0; min-height: 30mm; position: relative; border: 0.45mm solid var(--sand); border-radius: 1.8mm;
+  background-color: #fff;
+  background-image: linear-gradient(to right, #dcd9cc 0.2mm, transparent 0.2mm), linear-gradient(to bottom, #dcd9cc 0.2mm, transparent 0.2mm);
+  background-size: 5mm 5mm; background-position: -0.1mm -0.1mm;
+}
+.grid-label { position: absolute; top: 1mm; right: 2mm; font-size: 7.5pt; color: var(--muted); background: #fff; padding: 0 1mm; }
+.sl { display: flex; flex-direction: column; gap: 0.8mm; }
+.sl-title { font-weight: 600; font-size: 9pt; text-align: center; }
+.sl table { border-collapse: collapse; font-size: 10pt; }
+.sl th { font-size: 8pt; color: var(--muted); font-weight: 600; padding: 0.6mm 2.5mm; text-align: left; border-bottom: 0.3mm solid var(--line); }
+.sl td { padding: 0.8mm 2.5mm; letter-spacing: 0.05em; }
+.sl td.stem { text-align: right; border-right: 0.5mm solid var(--charcoal); font-weight: 600; width: 10mm; }
+.sl th:first-child { text-align: right; border-right: 0.5mm solid var(--charcoal); }
+.sl-key { font-size: 8pt; color: var(--muted); }
+.sl.b2b td.leaf.l, .sl.b2b th.l { text-align: right; }
+.sl.b2b td.stem, .sl.b2b th:nth-child(2) { border-left: 0.5mm solid var(--charcoal); text-align: center; }
+.sl.b2b th:first-child { border-right: none; }
+.sl.template { flex: 1 1 0; min-height: 0; }
+.sl.template table { flex: 1 1 0; width: 100%; border: 0.45mm solid var(--sand); border-radius: 1.8mm; border-collapse: separate; border-spacing: 0; background: #fff; }
+.sl.template td { border-bottom: 0.25mm dotted var(--line); }
+.sl.template td.stem { width: 16mm; }
+.sl.b2b.template td.stem { width: 16mm; }
+.data-table { border-collapse: collapse; font-size: 9pt; background: #fff; }
+.data-table th, .data-table td { border: 0.3mm solid var(--line); padding: 1mm 2.5mm; text-align: center; }
+.data-table th { background: var(--sand-soft); font-weight: 600; }
+.data-table.blank td { height: 7mm; min-width: 11mm; }
+
+/* ---------- worked examples ---------- */
+.worked { border: 0.45mm solid var(--sand); border-radius: 2.5mm; padding: 2.5mm 3mm; display: flex; flex-direction: column; gap: 1.5mm; background: #fff; }
+.worked-head { display: flex; align-items: center; gap: 2mm; color: var(--charcoal); }
+.worked-q { padding: 1.5mm 2mm; background: var(--sand-soft); border-radius: 1.5mm; }
+.steps { padding-left: 4.5mm; }
+.steps li::marker { color: var(--charcoal); font-weight: 700; }
+.worked-a { padding: 1.2mm 2mm; background: var(--sand-soft); border: 0.3mm solid var(--sand); border-radius: 1.5mm; margin-top: auto; }
+.worked .graph-card { border: none; padding: 0; }
+.ext { min-height: 0; }
+.ext .worked { font-size: 9.5pt; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; font-size: 8.5pt; flex: none; }
+.summary-grid.g2 { grid-template-columns: repeat(2, 1fr); flex: 1 1 0; min-height: 0; font-size: 9pt; }
+.summary-grid .worked { padding: 2mm 2.5mm; }
+.steps-card { grid-column: 1 / -1; background: var(--sand-soft); border-radius: 2.5mm; padding: 2mm 4mm; display: flex; gap: 4mm; align-items: baseline; font-size: 9pt; }
+.steps-card ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5mm 6mm; flex: 1; }
+.diagram { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.diagram .graph { width: auto; height: 100%; max-height: 42mm; }
+
+/* ---------- tear-off exit ticket ---------- */
+.tear-space { flex: none; height: var(--tear-h); }
+.tear-zone { position: absolute; left: 0; right: 0; bottom: 0; height: var(--tear-h); display: flex; flex-direction: column; gap: 2mm; }
+.cut-line { border-top: 0.55mm dashed var(--charcoal); text-align: center; height: 0; margin: 1.5mm -12mm 2mm; }
+.cut-line span { position: relative; top: -2.6mm; background: #fff; padding: 0 3mm; font-size: 8pt; color: var(--muted); }
+.exit-head { display: flex; align-items: center; gap: 4mm; }
+.exit-head h2 { font-size: 14pt; color: var(--blue); white-space: nowrap; }
+.exit-head p { font-size: 9pt; }
+.name-lines { display: flex; gap: 3mm; font-weight: 600; font-size: 9pt; margin-left: auto; width: 74mm; }
+.name-lines > div { display: flex; align-items: flex-end; gap: 2mm; flex: 1; }
+.name-lines > .short { flex: 0 0 24mm; }
+.name-lines i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.exit-body { flex: 1; display: grid; grid-template-columns: 56mm repeat(3, 1fr); gap: 3mm; min-height: 0; }
+.exit-body.no-graph { grid-template-columns: repeat(3, 1fr); }
+.exit-graph { justify-content: center; }
+.exit-graph .sl table { font-size: 9pt; }
+.exit-q { border: 0.45mm solid var(--blue); background: var(--blue-soft); border-radius: 2.5mm; padding: 2mm; }
+.exit-q .q-head { flex-direction: column; gap: 1.2mm; min-height: 17mm; }
+.exit-q .q-num { background: var(--blue); color: #fff; border-color: var(--blue); padding: 0 2.5mm; height: 6mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--blue), 0 0 0 0.9mm #fff; }
+.exit-q .q-text { font-size: 9pt; }
+.exit-q .box { border-color: var(--blue); }
+.tear-zone.back .blank-note { flex: 1; display: flex; align-items: center; justify-content: center; color: #b3b0a3; font-size: 9pt; }
+
+/* ---------- cover ---------- */
+.cover { background: var(--charcoal); }
+.cover-art { position: absolute; inset: 0; background: url(../../assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-spine {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 15mm; background: var(--blue);
+  display: flex; align-items: center; justify-content: center; box-shadow: 0.8mm 0 0 var(--sand);
+}
+.cover-spine span { transform: rotate(-90deg); white-space: nowrap; color: #fff; font-weight: 700; letter-spacing: 0.2em; font-size: 11pt; }
+.cover-series { position: absolute; top: 12mm; left: 24mm; right: 12mm; display: flex; justify-content: space-between; align-items: center; }
+.cover-series span { background: rgba(255,255,255,0.95); color: var(--charcoal); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 10pt; padding: 2mm 4mm; border-radius: 2mm; }
+.cover-panel {
+  position: absolute; left: 24mm; right: 12mm; top: 70mm; padding: 9mm 11mm 10mm;
+  background: rgba(255,255,255,0.96); border-radius: 5mm; box-shadow: 0 0 0 1.4mm var(--sand);
+}
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cover .logo { height: 22mm; display: block; }
+.chapter-badge {
+  width: 34mm; height: 34mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--blue);
+}
+.chapter-badge span { font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; }
+.chapter-badge b { font-size: 30pt; font-weight: 700; margin-top: 1mm; }
+.cover-kicker { margin-top: 3mm; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--blue); font-size: 12pt; }
+.cover h1 { font-size: 38pt; line-height: 1.05; margin: 1mm 0 3mm; color: var(--charcoal); }
+.cover-lessons { display: grid; grid-template-columns: 1fr 1fr; gap: 1mm 6mm; font-size: 9pt; margin-bottom: 7mm; padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; }
+.cover-lessons b { color: var(--blue); margin-right: 1.5mm; }
+.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
+.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
+.cover-fields span { width: 20mm; }
+.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.cover-credit { position: absolute; bottom: 8mm; right: 12mm; background: rgba(255,255,255,0.95); padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt; }
+
+/* ---------- inside cover ---------- */
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 4mm; flex: none; }
+.howto > div { display: flex; gap: 3mm; align-items: flex-start; padding: 2.5mm 3mm; border-radius: 2.5mm; background: var(--sand-soft); font-size: 9pt; }
+.howto .step { flex: none; width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 8.5pt; }
+.howto > div.we { background: var(--we-soft); border: 0.8mm solid var(--charcoal); }
+.howto > div.you { background: var(--blue-soft); border: 0.8mm solid var(--blue); }
+.howto .zone-pill { align-self: flex-start; }
+.howto > div.we .zone-pill { background: var(--charcoal); }
+.howto > div.you .zone-pill { background: var(--blue); }
+.contents { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.contents th { text-align: left; font-size: 8.5pt; color: var(--muted); font-weight: 600; padding: 1mm 2mm; border-bottom: 0.35mm solid var(--sand); }
+.contents td { padding: 1.6mm 2mm; border-bottom: 0.25mm solid var(--line); }
+.contents td.code { font-weight: 700; color: var(--blue); width: 14mm; }
+.contents td.pg { text-align: right; width: 14mm; font-weight: 600; }
+.contents td.tick { width: 16mm; text-align: center; }
+.contents td.tick i { display: inline-block; width: 4mm; height: 4mm; border: 0.35mm solid var(--charcoal); border-radius: 0.8mm; }
+.goals { columns: 2; column-gap: 8mm; font-size: 9pt; }
+.ack-box { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
+.ack-box h3 { color: var(--sand); font-size: 10pt; margin-bottom: 1mm; }
+.ack-box p { font-size: 8.5pt; margin-bottom: 2mm; }
+.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url(../../assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
+.section-title { font-size: 13pt; color: var(--charcoal); font-weight: 700; flex: none; }
+
+/* ---------- answers ---------- */
+.answers { columns: 2; column-gap: 8mm; }
+.ans-lesson { break-inside: avoid-column; }
+.ans-lesson h2 { font-size: 12pt; color: var(--blue); margin: 2mm 0 1mm; break-after: avoid; }
+.ans-block { break-inside: avoid; margin-bottom: 2mm; }
+.ans-block h3 { font-size: 9.5pt; margin-bottom: 0.6mm; }
+.ans-block li { font-size: 8.5pt; margin-bottom: 0.2mm; }
+.answers-flow .page { height: auto; min-height: 297mm; overflow: visible; }
+
+/* ---------- shared tweaks ---------- */
+.zone.grow > .ex-row, .zone.grow > .split.grow { flex: 1 1 0; min-height: 0; }
+.zone.grow > .ex-row .example .box { height: auto; flex: 1 1 0; }
+.exit-q .q-num .lvl-dots i { background: #fff; }
+.q.draw .draw-area .grid-paper { min-height: 30mm; }
+.zone .col > .graph-card { flex: none; }
+.summary-grid.g2 .worked { font-size: 9.5pt; }
+.summary-grid.g2 .diagram .graph { max-height: 40mm; width: auto; }
+.summary-grid .diagram { min-height: 0; }
+.template-card { background: #fff; border: 0.45mm solid var(--sand); border-radius: 1.8mm; padding: 1mm 1.5mm; flex: 1 1 auto; display: flex; align-items: flex-end; }
+.zone.you .template-card { border-color: var(--blue); }
+.zone.we .template-card { border-color: var(--charcoal); }
+.template-card .graph { width: 100%; }
+.work-grid.c3 { grid-template-columns: repeat(3, 1fr); }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.q.draw .data-table { width: 100%; }
+.draw-area { flex: 1 1 auto; }
+.summary-grid.g2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.summary-grid.g2 .worked { min-height: 0; overflow: hidden; }
+.worked .diagram { flex: 1 1 0; min-height: 0; }
+.worked .diagram .graph { height: 100%; width: auto; max-width: 100%; max-height: 44mm; }
+.stack > .q.draw { flex: none; }
+.summary-grid:not(.g2) .diagram { flex: 1 0 16mm; }
+.summary-grid:not(.g2) .diagram .graph { max-height: 22mm; }
+.sl.template td { height: 6.5mm; }
+.graph-card .sl { align-self: center; }
+.worked .sl table { font-size: 9pt; }
+/* stem-and-leaf templates: fixed row heights, never stretched */
+.sl.template { flex: none; }
+.sl.template table { flex: none; height: auto; }
+.sl.template th { height: 5.5mm; }
+.sl.template td { height: 7.5mm; }
+.col > .q.draw { flex: none; }
+.tip { padding: 2mm 3mm; background: var(--sand-soft); border-left: 1.2mm solid var(--sand); border-radius: 1mm; }
+.q-text .data-table { margin-top: 1mm; }
+.lesson-title h1 { font-size: 17pt; }
+.notes { min-height: 18mm; }
+.sl.b2b.template td.leaf { width: 45%; }
+.terms .term-name { white-space: nowrap; }
+.notes.fixed { flex: none; height: 26mm; }
+.zone.fill .example .box { min-height: 10mm; }
+.stack > .q { min-height: 18mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 38mm; }
+
+/* ================= roomier layout rules (override earlier values) ================= */
+/* WE DO panels next to a graph grow with their content instead of being squeezed to the graph's height */
+.zone.fill { height: auto; }
+.zone.fill .example { flex: 1 1 auto; }
+.zone.fill .example .box, .col > .example .box { min-height: 22mm; flex: 1 1 auto; }
+.ex-row .example .box { height: 24mm; }
+.ex-row.tall .example .box { height: 34mm; }
+/* short answers: fixed, comfortable rows */
+.qs { gap: 2.5mm; }
+.qs .box, .short-list .qs .box { height: 8.5mm; min-height: 8.5mm; }
+.short-list { grid-template-rows: none; grid-auto-rows: auto; gap: 1.8mm; align-content: start; }
+.short-grid { gap: 2.2mm 6mm; }
+/* full-working questions: never smaller than 16 mm */
+.q .box { min-height: 16mm; }
+.work-grid { gap: 3mm 5mm; }
+.grid-paper { min-height: 45mm; }
+.notes { min-height: 30mm; }
+.summary-page { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3mm; font-size: 9.5pt; }
+.summary-page .worked { min-height: 0; }
+.summary-page .diagram .graph { max-height: 38mm; }
+.content > .steps-card { flex: none; }
+.work-grid { flex: 1 1 auto; }
+.zone.grow > .work-grid { flex: 1 1 0; }
+
+/* short-answer lists beside a graph: spread the rows over the height of the graph */
+.split > .short-list { align-content: space-between; }
+/* a question is never shorter than its text plus its minimum box; drawing questions fill spare space */
+.q { min-height: auto; }
+.zone.grow > .q.draw, .col > .q.draw.grow { flex: 1 1 0; }
+.zone.grow > .q.draw .grid-paper { flex: 1 1 0; }
+.graph-card.wide-graph { flex: 1 1 0; min-height: 0; }
+.graph-card.wide-graph .graph { height: 100%; width: auto; max-width: 100%; }
+.zone.grow > .short-grid { flex: none; }
+.graph-card.wide-graph { flex: none; }
+.graph-card.wide-graph .graph { width: 118mm; height: auto; }
+.zone.grow > .short-grid { flex: 1 1 0; align-items: center; }
+.ex-row.grow-ex { flex: 1 1 0; display: flex; flex-direction: column; min-height: 0; }
+.ex-row.grow-ex .example { flex: 1 1 0; }
+.ex-row.grow-ex .example .box { height: auto; flex: 1 1 0; }
+/* only grid paper grows to fill space; tables and number lines keep their natural size */
+.zone.grow > .q.draw:not(:has(.grid-paper)) { flex: none; }
+.q.draw:not(:has(.grid-paper)) .draw-area { flex: none; }
+.draw-area .template-card { flex: none; }
+.split.grow-row { flex: 1 1 0; min-height: 0; }
+.split.grow-row .example .box { height: auto; flex: 1 1 0; }
+.zone.grow > .split.grow-row { flex: 1 1 0; }
+
+/* ---------- standalone lesson booklets ---------- */
+.chapter-badge.lesson b { font-size: 21pt; }
+.cover-progress { display: flex; align-items: center; gap: 2mm; margin: -1mm 0 5mm; font-size: 9pt; font-weight: 600; color: var(--muted); }
+.cover-progress span { margin-right: 2mm; }
+.cover-progress i { width: 4mm; height: 4mm; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0.5mm var(--sand); }
+.cover-progress i.done { background: var(--sand); }
+.cover-progress i.on { background: var(--blue); box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.2mm var(--blue); }
+.cover-learn { padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; margin-bottom: 7mm; font-size: 10pt; }
+.cover-learn ul { margin-top: 1.5mm; }
+.bys-top { display: flex; align-items: center; gap: 6mm; flex: none; }
+.need { display: flex; align-items: center; gap: 2mm; flex: none; }
+.need b { margin-right: 1mm; }
+.need span { padding: 1mm 3mm; border-radius: 10mm; background: var(--sand-soft); border: 0.35mm solid var(--sand); font-size: 9pt; font-weight: 600; }
+.outcome { font-size: 8.5pt; color: var(--muted); }
+.ack-box:not(.grow) .ack-art { height: 30mm; }
+.map-we, .map-you { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: 0.06em; color: #fff; padding: 0.2mm 1.6mm; border-radius: 1mm; margin-right: 0.8mm; vertical-align: 0.3mm; }
+.map-we { background: var(--charcoal); }
+.map-you { background: var(--blue); }
+
+/* ---------- chapter accent colour (set per chapter in chapter.js) ---------- */
+.cover-spine { background: var(--accent); }
+.chapter-badge { background: var(--accent); box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--accent); }
+.cover-kicker { color: var(--accent); }
+.lesson-badge { background: var(--accent); }
+.page-head { border-bottom: 0.7mm solid var(--accent); }
+.page-head .sec { color: var(--accent); }
+.ch-chip { display: inline-block; background: var(--accent); color: #fff; font-weight: 700; font-size: 7.5pt; padding: 0.2mm 2mm; border-radius: 1mm; margin-right: 2mm; }
+.contents td.code { color: var(--accent); }
+.cover-lessons b { color: var(--accent); }
+.inline-fig { margin-top: 1mm; }
+.inline-fig .graph { width: auto; max-width: 100%; height: auto; max-height: 34mm; }
+.set-fig { flex: none; }
+.set-fig .graph { width: auto; max-width: 100%; max-height: 52mm; }
+.cover-lessons { grid-template-columns: 1fr 1fr; font-size: 8.5pt; }
+.fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.85em; line-height: 1.05; margin: 0 0.4mm; }
+.fr sup { border-bottom: 0.25mm solid currentColor; padding: 0 0.4mm; }
+.fr sub, .fr sup { vertical-align: baseline; font-size: 1em; }
+.notes.fixed { height: 20mm; }
+.summary-grid .worked { font-size: 8.5pt; }
+/* Inline and set diagrams show at their natural (mm) size, never stretched. */
+.inline-fig .graph, .set-fig .graph { width: min(var(--w, 100%), 100%); max-width: 100%; }
+.q-head .q-text { min-width: 0; flex: 1 1 auto; }
+.q-head { align-items: flex-start; }
+.q.side .side-row { display: flex; gap: 2mm; flex: 1 1 0; min-height: 18mm; align-items: stretch; }
+.q.side .side-fig { flex: none; display: flex; align-items: center; justify-content: center; max-width: 55%; }
+.q.side .side-fig .graph { width: auto; height: auto; max-height: 22mm; max-width: 100%; }
+.q.side .box { flex: 1 1 0; min-width: 12mm; min-height: 0; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 34mm); max-width: 100%; height: auto; max-height: 22mm; }
+.example .inline-fig .graph { max-height: 26mm; }
+/* Diagrams beside a box show at natural size so labels stay readable (about 8pt). */
+.q.side .side-fig { max-width: 60%; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 100%); max-height: none; }
+.q.side .side-row { flex: 1 1 auto; min-height: 0; }
+.example .inline-fig .graph { max-height: 22mm; }
+.q.side .side-row { align-items: flex-start; }
+.q.side .side-fig { flex: 0 0 55%; max-width: 55%; }
+.q.side .side-fig .graph { width: 100%; max-width: calc(var(--w, 30mm) * 1.4); }
+.q.side .box { align-self: stretch; }
+.contents.tight td { padding: 1mm 2mm; }
+:root { --accent: #b7950b; }</style></head><body>
+<section class="page cover">
+  <div class="cover-art"></div>
+  <div class="cover-spine"><span>YEAR 7 · CHAPTER 3 · WHOLE NUMBERS</span></div>
+  <div class="cover-series"><span>Year 7 Mathematics</span><span>Stage 4</span></div>
+  <div class="cover-panel">
+    <div class="cover-top">
+      <img class="logo" src="../../assets/kingscliff-logo.png" alt="Kingscliff High School">
+      <div class="chapter-badge"><span>Chapter</span><b>3</b></div>
+    </div>
+    <p class="cover-kicker">Year 7 Mathematics · Chapter 3</p>
+    <h1>Whole numbers</h1>
+    <div class="cover-lessons"><div><b>3.01</b>Rounding and estimation</div><div><b>3.02</b>Multiplication</div><div><b>3.03</b>Division</div><div><b>3.04</b>Divisibility tests</div><div><b>3.05</b>Long division</div><div><b>3.06</b>Roman numerals</div><div><b>3.07</b>Index notation and powers</div><div><b>3.08</b>Square roots and cube roots</div><div><b>3.09</b>Prime and composite numbers</div><div><b>3.10</b>Prime factors</div><div><b>3.11</b>Highest common factor</div><div><b>3.12</b>Lowest common multiple</div></div>
+    <div class="cover-fields">
+      <div><span>Name</span><i></i></div>
+      <div><span>Class</span><i></i></div>
+      <div><span>Teacher</span><i></i></div>
+    </div>
+  </div>
+  <p class="cover-credit">Cover and theme artwork by <b>Marni Tuala</b></p>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · Whole numbers</span><span class="sec">Start here</span></header>
+  <div class="content">
+    <p class="section-title">How to use this booklet</p>
+    <div class="howto">
+      <div><span class="step">1</span><span>Each lesson starts with <b>learning intentions</b> and <b>success criteria</b>. Write the <b>key terms</b> as your teacher explains them, and use the <b>notes</b> box.</span></div>
+      <div><span class="step">2</span><span>Work through the levels in order: Level 1 <span class="lvl-dots"><i></i></span>, then Level 2, then Level 3. Extension questions stretch you further.</span></div>
+      <div class="we"><span class="zone-pill">WE DO</span><span><b>Grey boxes with a dark border.</b> Work with your teacher. Copy what they write on the board.</span></div>
+      <div class="you"><span class="zone-pill">YOU DO</span><span><b>Blue boxes.</b> Work on your own. Show your working in the box and write your answer.</span></div>
+      <div><span class="step">3</span><span>Some questions ask you to <b>draw</b> a diagram, graph or construction. Use the space given, a ruler and a sharp pencil.</span></div>
+      <div><span class="step">4</span><span>At the end of each lesson, <b>show off your skill</b>: choose one question, then tear off the ticket and hand it in.</span></div>
+      <div style="grid-column: 1 / -1"><span class="step">5</span><span>Missed a lesson? Each lesson ends with a <b>summary</b> that has a worked example for every level. Start there, then try the questions.</span></div>
+    </div>
+    <p class="section-title">Contents</p>
+    <table class="contents tight">
+      <tr><th>Lesson</th><th>Topic</th><th style="text-align:right">Page</th><th style="text-align:center">Done</th></tr>
+      <tr><td class="code">3.01</td><td>Rounding and estimation</td><td class="pg">3</td><td class="tick"><i></i></td></tr><tr><td class="code">3.02</td><td>Multiplication</td><td class="pg">7</td><td class="tick"><i></i></td></tr><tr><td class="code">3.03</td><td>Division</td><td class="pg">11</td><td class="tick"><i></i></td></tr><tr><td class="code">3.04</td><td>Divisibility tests</td><td class="pg">15</td><td class="tick"><i></i></td></tr><tr><td class="code">3.05</td><td>Long division</td><td class="pg">19</td><td class="tick"><i></i></td></tr><tr><td class="code">3.06</td><td>Roman numerals</td><td class="pg">23</td><td class="tick"><i></i></td></tr><tr><td class="code">3.07</td><td>Index notation and powers</td><td class="pg">27</td><td class="tick"><i></i></td></tr><tr><td class="code">3.08</td><td>Square roots and cube roots</td><td class="pg">31</td><td class="tick"><i></i></td></tr><tr><td class="code">3.09</td><td>Prime and composite numbers</td><td class="pg">35</td><td class="tick"><i></i></td></tr><tr><td class="code">3.10</td><td>Prime factors</td><td class="pg">39</td><td class="tick"><i></i></td></tr><tr><td class="code">3.11</td><td>Highest common factor</td><td class="pg">43</td><td class="tick"><i></i></td></tr><tr><td class="code">3.12</td><td>Lowest common multiple</td><td class="pg">47</td><td class="tick"><i></i></td></tr>
+    </table>
+    <p class="section-title">In this chapter you will</p>
+    <ul class="goals"><li>round and estimate</li><li>multiply and divide whole numbers</li><li>use divisibility tests</li><li>use long division and Roman numerals</li><li>use index notation, square roots and cube roots</li><li>find prime numbers and prime factors</li><li>find the HCF and LCM of two numbers</li></ul>
+    <p style="font-size:8.5pt;color:var(--muted)">NSW Mathematics K–10 Syllabus (2022), Stage 4 Number and algebra: MA4-CAL-C-01 compares, orders and calculates with integers, and MA4-IND-C-01 (index notation, primes, factors and multiples).</p>
+    <div class="ack-box grow">
+      <div class="ack-art"></div>
+      <div>
+        <h3>Acknowledgement of artwork</h3>
+        <p>The artwork used throughout this booklet series was created by <b>Marni Tuala</b>. We thank Marni for sharing this artwork with our school community.</p>
+        <h3>Acknowledgement of Country</h3>
+        <p>We acknowledge the Bundjalung people, the Traditional Custodians of the land on which Kingscliff High School stands, and pay our respects to Elders past and present.</p>
+      </div>
+    </div>
+  </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">2</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.01 Rounding and estimation</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.01</b></div>
+    <h1>Rounding and estimation</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>round whole numbers</li><li>estimate answers by rounding first</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>find the <b>rounding digit</b> and look at the digit after it</li><li>round to the nearest 10, 100, 1000 or 10 000</li><li>estimate by rounding each number first</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Round</span><i></i><i></i></div><div class="term"><span class="term-name">Estimate</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Round 87 531 to the nearest thousand.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Round 87 531 to the nearest ten.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Round each number to the nearest ten.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">47</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">152</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">3875</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">995</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">6004</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">87 531</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">3</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.01 Rounding and estimation</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Round to the place shown.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">748 (hundred)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">87 531 (hundred)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">3499 (thousand)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">87 531 (ten thousand)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">65 250 (thousand)</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">149 999 (ten thousand)</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Estimate 425 + 81 + 940 + 22.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Estimate 864 + 250 − 417.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Estimate by rounding each number to its first digit.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">612 + 285</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">4190 − 1820</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">38 + 71 + 405</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">783 − 219 + 96</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">7210 + 2890</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">5125 − 3980</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">4</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.01 Rounding and estimation</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Estimate 93 × 19.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Estimate 2402 ÷ 32.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Estimate, then check with a calculator.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">48 × 21</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">612 × 9</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">3950 ÷ 38</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">A school has 28 classes of 31 students. Estimate the number of students.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Round 6382 to the nearest hundred.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Estimate 512 + 289 − 97.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Estimate 4180 ÷ 21.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">5</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.01 Rounding and estimation</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">A number rounded to the nearest hundred is 4700. What are the smallest and largest whole numbers it could be?</div>
+    <ol class="steps"><li>Numbers from 4650 round up to 4700</li><li>4750 rounds up to 4800, so stop at 4749</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 4650 and 4749</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">A number rounded to the nearest thousand is 12 000. Find the smallest and largest whole numbers it could be.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">A crowd was “about 35 000” to the nearest thousand. What is the largest the crowd could have been?</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>Find the rounding digit.</li><li>Look at the digit to its right.</li><li>5 or more: round up. 4 or less: stay.</li><li>Estimate: round first, then calculate.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">Round 87 531 to the nearest thousand</div>
+    <ol class="steps"><li>Thousands digit 7, next digit 5</li><li>Round up</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 88 000</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">Round 3499 to the nearest thousand</div>
+    <ol class="steps"><li>Next digit 4</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 3000</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">Estimate 93 × 19</div>
+    <ol class="steps"><li>≈ 90 × 20</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 1800</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">Nearest hundred is 4700</div>
+    <ol class="steps"><li>4650 to 4749</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 4650 and 4749</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">6</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.02 Multiplication</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.02</b></div>
+    <h1>Multiplication</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>multiply whole numbers mentally and on paper</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>use mental strategies such as doubling or splitting a number</li><li>multiply by a one-digit number on paper</li><li>multiply by a two-digit number on paper</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Product</span><i></i><i></i></div><div class="term"><span class="term-name">Algorithm</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">12 × 4</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">25 × 8 (use doubling)</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Evaluate each product mentally.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">12 × 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">15 × 6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">20 × 9</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">11 × 8</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">25 × 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">50 × 7</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">7</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.02 Multiplication</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Evaluate using a strategy.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">34 × 5</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">25 × 8</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">33 × 9</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">16 × 5</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">45 × 4</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">21 × 11</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">34 × 5 (use × 10 ÷ 2)</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">33 × 9 (use × 10 − 1)</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Evaluate each product on paper.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">126 × 7</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">208 × 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">375 × 6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">93 × 8</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">1234 × 3</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">459 × 9</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">8</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.02 Multiplication</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">126 × 7</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">565 × 18</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Evaluate each product on paper.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">565 × 18</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">47 × 23</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">312 × 45</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">A bus holds 57 people. How many people can 24 buses hold?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Evaluate 14 × 5.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Evaluate 243 × 6.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Evaluate 128 × 27.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">9</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.02 Multiplication</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Find the missing digits: 4☐ × 6 = 2☐8</div>
+    <ol class="steps"><li>Units: ☐ × 6 ends in 8, so ☐ = 3 or 8</li><li>43 × 6 = 258 ✓; 48 × 6 = 288 ✓</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 43 × 6 = 258 or 48 × 6 = 288</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Find the missing digit: ☐7 × 5 = 185.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Find two 2-digit numbers whose product is 1000.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>Double and halve: 25 × 8 = 50 × 4.</li><li>× 5 is the same as × 10 ÷ 2.</li><li>× 9 is the same as × 10 − the number.</li><li>On paper: multiply each digit and carry.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">12 × 4</div>
+    <ol class="steps"><li>10 × 4 + 2 × 4</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 48</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">34 × 5</div>
+    <ol class="steps"><li>340 ÷ 2</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 170</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">565 × 18</div>
+    <ol class="steps"><li>565 × 8 = 4520</li><li>565 × 10 = 5650</li><li>Add</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 10 170</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">4☐ × 6 = 2☐8</div>
+    <ol class="steps"><li>Try 3 and 8</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 43 or 48</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">10</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.03 Division</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.03</b></div>
+    <h1>Division</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>divide whole numbers mentally and using short division</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>divide by 10, 100 and 1000 mentally</li><li>use short division with a one-digit divisor</li><li>write a remainder when the division is not exact</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Quotient</span><i></i><i></i></div><div class="term"><span class="term-name">Remainder</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">2400 ÷ 10</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">144 ÷ 9</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Evaluate each quotient mentally.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">2400 ÷ 10</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">48 ÷ 6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">72 ÷ 8</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">3500 ÷ 100</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">144 ÷ 12</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">63 ÷ 9</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">11</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.03 Division</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Evaluate each quotient mentally.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">144 ÷ 9</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">90 ÷ 5</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">120 ÷ 4</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">96 ÷ 3</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">81 000 ÷ 1000</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">84 ÷ 7</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">620 ÷ 5</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">528 ÷ 4</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Use short division.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">620 ÷ 5</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">528 ÷ 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">1296 ÷ 8</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">847 ÷ 7</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">2115 ÷ 9</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">936 ÷ 6</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">12</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.03 Division</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">1296 ÷ 8</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">847 ÷ 7</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Divide. Write any remainder.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">475 ÷ 6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">1003 ÷ 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">5000 ÷ 7</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">250 students go on buses that hold 45. How many buses are needed?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Evaluate 360 ÷ 10.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Evaluate 738 ÷ 6.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Evaluate 1250 ÷ 8, with remainder.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">13</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.03 Division</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">I am a number between 50 and 70. Divided by 4 I leave remainder 1; divided by 5 I leave remainder 3. What am I?</div>
+    <ol class="steps"><li>Remainder 1 ÷ 4: 53, 57, 61, 65, 69</li><li>Remainder 3 ÷ 5: 53, 58, 63, 68</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 53</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Find a number between 20 and 40 that leaves remainder 2 when divided by 3, 4 and 6.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">1000 ÷ 7: what is the remainder?</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>÷ 10, 100, 1000: move digits right.</li><li>Short division: divide each digit, carry the remainder.</li><li>A remainder is what is left over.</li><li>In a problem, decide whether to round up.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">2400 ÷ 10</div>
+    <ol class="steps"><li>Move digits 1 place right</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 240</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">528 ÷ 4</div>
+    <ol class="steps"><li>5 ÷ 4 = 1 r1</li><li>12 ÷ 4 = 3</li><li>8 ÷ 4 = 2</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 132</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">475 ÷ 6</div>
+    <ol class="steps"><li>47 ÷ 6 = 7 r5</li><li>55 ÷ 6 = 9 r1</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 79 r 1</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">÷4 r1 and ÷5 r3</div>
+    <ol class="steps"><li>List and compare</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 53</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">14</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.04 Divisibility tests</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.04</b></div>
+    <h1>Divisibility tests</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>use divisibility tests for 2, 3, 4, 5, 6, 8, 9 and 10</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>test for 2, 5 and 10 using the last digit</li><li>test for 3 and 9 using the digit sum</li><li>test for 4, 6 and 8</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Divisible</span><i></i><i></i></div><div class="term"><span class="term-name">Digit sum</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Is 1208 divisible by 2? By 5? By 10?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Is 1208 divisible by 3? By 9?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Write yes or no.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Is 346 divisible by 2?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Is 346 divisible by 5?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Is 780 divisible by 10?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">Is 915 divisible by 5?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">Is 4071 divisible by 2?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">Is 5500 divisible by 10?</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">15</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.04 Divisibility tests</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Find the digit sum, then answer yes or no.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">Is 471 divisible by 3?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">Is 471 divisible by 9?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">Is 5832 divisible by 9?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">Is 1000 divisible by 3?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">Is 2226 divisible by 3?</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">Is 8109 divisible by 9?</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Is 1208 divisible by 4? By 8?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Is 1208 divisible by 6?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Test each number for 4, 6 and 8. Show your test.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">324</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">1208</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">516</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">7040</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">2346</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">9112</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">16</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.04 Divisibility tests</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Which number is divisible by both 3 and 8: 30, 24, 90 or 94?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Find the smallest digit ☐ so that 52☐ is divisible by 6.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Use divisibility tests.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Test 2520 for 2, 3, 4, 5, 6, 8, 9 and 10.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Which numbers are divisible by both 3 and 8: 30, 24, 90, 96, 120?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Find all digits ☐ that make 7☐4 divisible by 3.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">Can a number be divisible by 9 but not by 3? Explain.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Is 735 divisible by 5?</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Is 4815 divisible by 9?</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Is 1716 divisible by 6? Explain.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">17</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.04 Divisibility tests</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Is 3 162 816 divisible by 12?</div>
+    <ol class="steps"><li>12 = 3 × 4, so test 3 and 4</li><li>Digit sum 3 + 1 + 6 + 2 + 8 + 1 + 6 = 27, divisible by 3</li><li>Last two digits 16, divisible by 4</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> Yes</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Is 45 720 divisible by 15? Explain using tests.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Find the smallest 4-digit number divisible by 2, 3, 4, 5 and 6.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Divisibility tests</b><ol><li>2: even. 5: ends in 0 or 5. 10: ends in 0.</li><li>3: digit sum divisible by 3. 9: digit sum by 9.</li><li>4: last 2 digits by 4. 8: last 3 digits by 8.</li><li>6: divisible by 2 and 3.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">1208 ÷ 2?</div>
+    <ol class="steps"><li>Ends in 8, even</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> yes</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">1208 ÷ 3?</div>
+    <ol class="steps"><li>1 + 2 + 0 + 8 = 11</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> no</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">1208 ÷ 8?</div>
+    <ol class="steps"><li>208 ÷ 8 = 26</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> yes</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">3 162 816 ÷ 12?</div>
+    <ol class="steps"><li>Test 3 and 4</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> yes</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">18</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.05 Long division</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.05</b></div>
+    <h1>Long division</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>divide by a two-digit number using long division</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>set out long division</li><li>use the steps divide, multiply, subtract, bring down</li><li>write the answer with a remainder</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Divisor</span><i></i><i></i></div><div class="term"><span class="term-name">Dividend</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">650 ÷ 25</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">2976 ÷ 24</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Warm up: know your multiples.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">12 × 7</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">25 × 6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">24 × 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">15 × 8</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">32 × 3</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">16 × 9</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">19</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.05 Long division</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Evaluate.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">96 ÷ 12</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">175 ÷ 25</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">144 ÷ 24</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">240 ÷ 15</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">128 ÷ 16</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">99 ÷ 11</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">3079 ÷ 12</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">864 ÷ 16</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Use long division.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">650 ÷ 25</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">2976 ÷ 24</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">864 ÷ 16</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">1344 ÷ 12</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">3825 ÷ 15</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">2574 ÷ 11</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">20</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.05 Long division</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">5000 ÷ 32</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">How many 45-seat buses are needed for 1000 people?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Use long division. Write any remainder.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">3079 ÷ 12</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">5000 ÷ 32</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">9876 ÷ 21</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">1000 people need 45-seat buses. How many buses?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Evaluate 84 ÷ 14.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Evaluate 1728 ÷ 16.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Evaluate 4000 ÷ 27 with remainder.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">21</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.05 Long division</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">A number divided by 23 gives 41 remainder 17. Find the number.</div>
+    <ol class="steps"><li>Number = divisor × quotient + remainder</li><li>23 × 41 + 17 = 943 + 17</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 960</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">A number divided by 18 gives 55 remainder 4. Find the number.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Find the largest 3-digit number that leaves remainder 5 when divided by 13.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>Divide: how many times does the divisor go in?</li><li>Multiply and write it under.</li><li>Subtract, then bring down the next digit.</li><li>Repeat. What is left is the remainder.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">96 ÷ 12</div>
+    <ol class="steps"><li>12 × 8 = 96</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 8</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">650 ÷ 25</div>
+    <ol class="steps"><li>65 ÷ 25 = 2 r15</li><li>150 ÷ 25 = 6</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 26</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">3079 ÷ 12</div>
+    <ol class="steps"><li>30 ÷ 12 = 2 r6</li><li>67 ÷ 12 = 5 r7</li><li>79 ÷ 12 = 6 r7</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 256 r 7</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">23 × 41 + 17</div>
+    <ol class="steps"><li>943 + 17</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 960</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">22</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.06 Roman numerals</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.06</b></div>
+    <h1>Roman numerals</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>read and write Roman numerals</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>know the values of I, V, X, L, C, D and M</li><li>add values when a symbol is followed by a smaller or equal one</li><li>subtract when a smaller symbol comes before a larger one</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Numeral</span><i></i><i></i></div><div class="term"><span class="term-name">Symbol</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">What is XXXVII?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">What is CCXL?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Write each Roman numeral as a number.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">VIII</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">XII</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">XXXVII</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">LX</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">CCX</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">XV</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">23</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.06 Roman numerals</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Write each Roman numeral as a number.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">IV</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">IX</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">XXIV</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">XL</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">CCXL</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">XC</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">What is XXIV?</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Write 28 in Roman numerals.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Write each number in Roman numerals.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">13</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">28</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">74</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">125</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">49</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">24</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.06 Roman numerals</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Write 74 in Roman numerals.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Write 125 in Roman numerals.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Harder numerals.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Write 1999 in Roman numerals.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Write MMXXVI as a number.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Write this year and your birth year in Roman numerals.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">Why is IC not used for 99?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Write XVI as a number.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Write 39 in Roman numerals.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Write 2024 in Roman numerals.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">25</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.06 Roman numerals</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Evaluate XLIV + LVI and write the answer in Roman numerals.</div>
+    <ol class="steps"><li>XLIV = 44, LVI = 56</li><li>44 + 56 = 100</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> C</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Evaluate CCC − XLV and write the answer in Roman numerals.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Evaluate XII × IX in Roman numerals.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Roman numerals</b><ol><li>I 1, V 5, X 10, L 50, C 100, D 500, M 1000.</li><li>Larger then smaller: add (VI = 6).</li><li>Smaller before larger: subtract (IV = 4).</li><li>Never more than 3 of the same symbol in a row.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">XXXVII</div>
+    <ol class="steps"><li>10 + 10 + 10 + 5 + 1 + 1</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 37</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">CCXL</div>
+    <ol class="steps"><li>200 + 40</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 240</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">125</div>
+    <ol class="steps"><li>100 + 20 + 5</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> CXXV</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">XLIV + LVI</div>
+    <ol class="steps"><li>44 + 56 = 100</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> C</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">26</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.07 Index notation and powers</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.07</b></div>
+    <h1>Index notation and powers</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>write repeated multiplication using index notation</li><li>evaluate powers</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>identify the <b>base</b> and <b>index</b></li><li>write a product like 3 × 3 × 3 × 3 as 3<sup>4</sup></li><li>evaluate a power such as 5<sup>3</sup></li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n3">
+    <div class="term"><span class="term-name">Base</span><i></i><i></i></div><div class="term"><span class="term-name">Index</span><i></i><i></i></div><div class="term"><span class="term-name">Power</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Write 3 × 3 × 3 × 3 in index notation.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Write 7 × 7 × 7 × 7 × 7 × 7 × 7 in index notation.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Write in index notation.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">4 × 4 × 4</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">6 × 6 × 6 × 6 × 6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">9 × 9</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">2 × 2 × 2 × 2 × 2 × 2</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">10 × 10 × 10 × 10</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">5 × 5 × 5 × 3 × 3</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">27</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.07 Index notation and powers</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Write as a product (expanded form).</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">8<sup>3</sup></span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">3<sup>5</sup></span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">11<sup>2</sup></span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">2<sup>4</sup></span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">7<sup>1</sup></span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">2<sup>3</sup> × 5<sup>2</sup></span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Evaluate 6<sup>2</sup>.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Evaluate 5<sup>3</sup>.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Evaluate each power.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">6<sup>2</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">5<sup>3</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">2<sup>5</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">10<sup>4</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">3<sup>4</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">1<sup>9</sup></span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">28</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.07 Index notation and powers</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Evaluate 10<sup>5</sup>.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Evaluate 2<sup>8</sup>.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Evaluate.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">2<sup>8</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">4<sup>3</sup> − 3<sup>3</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">2<sup>3</sup> × 3<sup>2</sup></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">Which is larger: 2<sup>5</sup> or 5<sup>2</sup>? Explain.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Write 7 × 7 × 7 in index notation.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Evaluate 4<sup>3</sup>.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Evaluate 3<sup>2</sup> × 2<sup>4</sup>.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">29</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.07 Index notation and powers</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Write 64 as a power of 2, 4 and 8.</div>
+    <ol class="steps"><li>64 = 2 × 2 × 2 × 2 × 2 × 2</li><li>64 = 4 × 4 × 4</li><li>64 = 8 × 8</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 2<sup>6</sup> = 4<sup>3</sup> = 8<sup>2</sup></p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Write 81 as a power of 3 and of 9.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Find n if 2<sup>n</sup> = 1024.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>In 5<sup>3</sup>, 5 is the <b>base</b> and 3 the <b>index</b>.</li><li>5<sup>3</sup> = 5 × 5 × 5, not 5 × 3.</li><li>Count the equal factors to find the index.</li><li>Squared means index 2; cubed means index 3.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">3 × 3 × 3 × 3</div>
+    <ol class="steps"><li>Four 3s</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 3<sup>4</sup></p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">5<sup>3</sup></div>
+    <ol class="steps"><li>5 × 5 × 5</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 125</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">2<sup>8</sup></div>
+    <ol class="steps"><li>2, 4, 8, 16, 32, 64, 128, 256</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 256</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">64 as powers</div>
+    <ol class="steps"><li>2⁶, 4³, 8²</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 2<sup>6</sup>, 4<sup>3</sup>, 8<sup>2</sup></p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">30</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.08 Square roots and cube roots</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.08</b></div>
+    <h1>Square roots and cube roots</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>find square roots and cube roots</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>know the square numbers to 15² and the cube numbers to 10³</li><li>find √ as the number that squares to it</li><li>find ∛ as the number that cubes to it</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Square root</span><i></i><i></i></div><div class="term"><span class="term-name">Cube root</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">√49</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">√144</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Evaluate each square root.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">√16</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">√49</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">√81</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">√100</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">√144</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">√1</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">31</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.08 Square roots and cube roots</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Evaluate each cube root.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">∛8</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">∛27</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">∛64</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">∛125</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">∛1000</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">∛1</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">∛8000</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">∛729</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Evaluate.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">√400</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">∛8000</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">∛729</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">√225</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">√36 + √64</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">∛216 × √4</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">32</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.08 Square roots and cube roots</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">√(9 × 16)</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Between which two whole numbers is √50?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Think it through.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Between which two whole numbers is √90?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Between which two whole numbers is ∛100?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Evaluate √(36 + 64). Is it the same as √36 + √64?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">A square has area 196 cm². Find its side length.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Evaluate √64.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Evaluate ∛125.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Evaluate √121 − ∛1000.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">33</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.08 Square roots and cube roots</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Find √1600 without a calculator.</div>
+    <ol class="steps"><li>1600 = 16 × 100</li><li>√16 = 4 and √100 = 10</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 40</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Find √4900 and ∛27 000 without a calculator.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">A cube has volume 343 cm³. Find the length of its edge.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>√49 = 7 because 7² = 49.</li><li>∛64 = 4 because 4³ = 64.</li><li>Learn the squares to 15² and cubes to 10³.</li><li>Estimate a root using the nearest squares.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">√144</div>
+    <ol class="steps"><li>12 × 12 = 144</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 12</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">∛729</div>
+    <ol class="steps"><li>9 × 9 × 9 = 729</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 9</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">√50</div>
+    <ol class="steps"><li>49 < 50 < 64</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> between 7 and 8</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">√1600</div>
+    <ol class="steps"><li>4 × 10</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 40</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">34</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.09 Prime and composite numbers</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.09</b></div>
+    <h1>Prime and composite numbers</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>identify prime and composite numbers</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>know a prime has exactly 2 factors</li><li>know a composite number has more than 2 factors</li><li>list the primes and composites in a range</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n3">
+    <div class="term"><span class="term-name">Factor</span><i></i><i></i></div><div class="term"><span class="term-name">Prime</span><i></i><i></i></div><div class="term"><span class="term-name">Composite</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">List the factors of 12 and of 13.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Is 1 prime, composite or neither?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. List all the factors of each number.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">6</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">11</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">15</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">20</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">17</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">36</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">35</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.09 Prime and composite numbers</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Prime or composite?</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">7</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">21</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">29</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">39</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">47</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">91</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">List the prime numbers less than 30.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Is 51 prime? Explain.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. List the numbers.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">The prime numbers between 50 and 70.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">The composite numbers between 20 and 32.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">The composite numbers larger than 40 but less than 59.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">The composite numbers between 45 and 70 that are odd.</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">36</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.09 Prime and composite numbers</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">List the prime numbers between 26 and 50.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">List the composite numbers between 45 and 60.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Think it through.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Why is 2 the only even prime number?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Find two primes that add to 36 (find 2 ways).</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Twin primes differ by 2, like 11 and 13. Find all twin primes under 50.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">Is 2 × 3 × 5 + 1 prime?</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Is 23 prime or composite?</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">List the factors of 28.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">List the primes between 30 and 45.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">37</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.09 Prime and composite numbers</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Is 143 prime?</div>
+    <ol class="steps"><li>Only test primes up to √143 ≈ 12: 2, 3, 5, 7, 11</li><li>143 ÷ 11 = 13</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> No: 143 = 11 × 13</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Is 197 prime? Show your tests.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Is 221 prime?</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>A <b>prime</b> has exactly 2 factors: 1 and itself.</li><li>A <b>composite</b> number has more than 2 factors.</li><li>1 is neither prime nor composite.</li><li>Test for primes by dividing by 2, 3, 5, 7, …</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">Factors of 12</div>
+    <ol class="steps"><li>1 × 12, 2 × 6, 3 × 4</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 1, 2, 3, 4, 6, 12</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">Is 51 prime?</div>
+    <ol class="steps"><li>5 + 1 = 6 so divisible by 3</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> no, 51 = 3 × 17</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">Primes 26 to 50</div>
+    <ol class="steps"><li>Test each odd number</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 29, 31, 37, 41, 43, 47</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">Is 143 prime?</div>
+    <ol class="steps"><li>Try 11</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> no, 11 × 13</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">38</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.10 Prime factors</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.10</b></div>
+    <h1>Prime factors</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>write a number as a product of prime factors using a factor tree</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>draw a factor tree until every branch ends in a prime</li><li>write the answer in index notation</li><li>use prime factors to find square and cube roots</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Factor tree</span><i></i><i></i></div><div class="term"><span class="term-name">Prime factor</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Use a factor tree for 60.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Use a factor tree for 200.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Draw a factor tree for each number.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">12</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">18</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">30</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">40</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">45</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">50</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">39</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.10 Prime factors</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Write each number as a product of primes in index notation.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(1, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">24</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">36</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">72</span></div><div class="box"></div></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Use a factor tree for 144.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Write 90 as a product of primes in index notation.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Use a factor tree. Write in index notation.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">60</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">200</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">144</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">252</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">675</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">392</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">40</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.10 Prime factors</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Use a factor tree to find √256.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Use a factor tree to find ∛5832.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. Use prime factors to evaluate each root.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">√256</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">√324</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">∛5832</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">∛2744</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Write 20 as a product of primes.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Write 84 as a product of primes in index notation.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Use prime factors to find √576.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">41</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.10 Prime factors</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">What is the smallest number that 72 must be multiplied by to make a perfect square?</div>
+    <ol class="steps"><li>72 = 2<sup>3</sup> × 3<sup>2</sup></li><li>A square needs even indices</li><li>× 2 gives 2<sup>4</sup> × 3<sup>2</sup> = 144</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 2</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Find the smallest number that 180 must be multiplied by to make a perfect square.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Find the smallest number that 18 must be multiplied by to make a perfect cube.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>Split the number into two factors.</li><li>Keep splitting until every branch is prime.</li><li>Write the primes in order, using indices.</li><li>For √, halve the indices; for ∛, divide them by 3.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">Factor tree for 60</div>
+    <ol class="steps"><li>60 = 6 × 10 = 2 × 3 × 2 × 5</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 2<sup>2</sup> × 3 × 5</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">200</div>
+    <ol class="steps"><li>200 = 2 × 100 = 2 × 10 × 10</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 2<sup>3</sup> × 5<sup>2</sup></p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">√256</div>
+    <ol class="steps"><li>256 = 2<sup>8</sup></li><li>Halve the index: 2<sup>4</sup></li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 16</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">72 × ? = square</div>
+    <ol class="steps"><li>2<sup>3</sup> × 3<sup>2</sup></li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 2</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">42</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.11 Highest common factor</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.11</b></div>
+    <h1>Highest common factor</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>find the highest common factor (HCF) of two numbers</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>list the factors of each number and find the largest common one</li><li>use prime factors to find the HCF</li><li>use the HCF to solve problems</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Common factor</span><i></i><i></i></div><div class="term"><span class="term-name">HCF</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Find the HCF of 12 and 18.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Find the HCF of 20 and 48.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. Find the HCF by listing factors.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">6 and 9</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">8 and 12</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">10 and 15</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">14 and 21</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">16 and 24</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">9 and 20</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">43</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.11 Highest common factor</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Find the HCF.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">20 and 48</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">36 and 84</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">45 and 60</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">24 and 40</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">18 and 54</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">28 and 42</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Find the HCF of 36 and 84.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Find the HCF of 17 and 34.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Use factor trees to find the HCF.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">243 and 162</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">120 and 200</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">96 and 144</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">84 and 126</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">150 and 225</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">98 and 140</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">44</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.11 Highest common factor</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Use factor trees to find the HCF of 243 and 162.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Use factor trees to find the HCF of 180 and 252.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. HCF problems.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Simplify 36/84 using the HCF.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">24 boys and 32 girls are put into equal teams with no mixing. What is the largest team size?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Two ribbons are 45 cm and 75 cm long. They are cut into equal pieces as long as possible. How long is each piece?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">The HCF of two numbers is 6. Both are between 20 and 40. Find a possible pair.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Find the HCF of 8 and 20.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Find the HCF of 42 and 70.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Use prime factors to find the HCF of 168 and 252.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">45</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.11 Highest common factor</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Find the HCF of 36, 60 and 84.</div>
+    <ol class="steps"><li>36 = 2<sup>2</sup> × 3<sup>2</sup>, 60 = 2<sup>2</sup> × 3 × 5, 84 = 2<sup>2</sup> × 3 × 7</li><li>Common primes: 2<sup>2</sup> × 3</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 12</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Find the HCF of 48, 72 and 120.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Find the HCF of 105, 165 and 195.</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>List the factors of both numbers.</li><li>Circle the common factors.</li><li>The largest one is the <b>HCF</b>.</li><li>Or: multiply the prime factors they share.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">HCF of 12 and 18</div>
+    <ol class="steps"><li>12: 1, 2, 3, 4, 6, 12</li><li>18: 1, 2, 3, 6, 9, 18</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 6</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">HCF of 20 and 48</div>
+    <ol class="steps"><li>Common: 1, 2, 4</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 4</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">HCF of 243 and 162</div>
+    <ol class="steps"><li>243 = 3<sup>5</sup></li><li>162 = 2 × 3<sup>4</sup></li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 3<sup>4</sup> = 81</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">HCF of 36, 60, 84</div>
+    <ol class="steps"><li>2<sup>2</sup> × 3</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 12</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">46</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page lesson-first">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.12 Lowest common multiple</span><span class="sec">Start here · Level 1</span></header>
+  <div class="content">
+      
+  <div class="lesson-title">
+    <div class="lesson-badge"><span>Lesson</span><b>3.12</b></div>
+    <h1>Lowest common multiple</h1>
+    <div class="date-line"><span>Date</span><i></i></div>
+  </div>
+  <div class="li-sc">
+    <div class="card"><h3>Learning intentions</h3><p class="card-sub">We are learning to:</p><ul><li>find the lowest common multiple (LCM) of two numbers</li></ul></div>
+    <div class="card"><h3>Success criteria</h3><p class="card-sub">I can:</p><ul class="ticks"><li>list multiples of each number and find the smallest common one</li><li>use prime factors to find the LCM</li><li>use the LCM to solve problems</li></ul></div>
+  </div>
+  <div class="terms-head"><b>Key terms</b><span>Write the definition as your teacher explains it.</span></div>
+  <div class="terms n2">
+    <div class="term"><span class="term-name">Multiple</span><i></i><i></i></div><div class="term"><span class="term-name">LCM</span><i></i><i></i></div>
+  </div>
+      <div class="notes fixed"><span class="notes-label">Notes</span></div>
+      <div class="banner"><span class="lvl-dots"><i></i></span><span class="banner-title">Level 1 · Getting started</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 1</span><span class="q-text">Find the LCM of 4 and 6.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 2</span><span class="q-text">Find the LCM of 6 and 8.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set A. List the first 6 multiples of each number.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">3</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">5</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">8</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">12</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">9</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">15</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">47</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.12 Lowest common multiple</span><span class="sec">Level 1 · Level 2</span></header>
+  <div class="content">
+      
+  <div class="zone you "><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set B. Find the LCM.</span></div><div class="short-grid" style="grid-template-rows: repeat(3, minmax(min-content, 1fr))"><div class="qs wide-box"><span class="q-num">1</span><span class="q-text">2 and 3</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">2</span><span class="q-text">4 and 10</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">3</span><span class="q-text">6 and 9</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">4</span><span class="q-text">3 and 7</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">5</span><span class="q-text">8 and 12</span><span class="box"></span></div><div class="qs wide-box"><span class="q-num">6</span><span class="q-text">10 and 15</span><span class="box"></span></div></div></div>
+      <div class="banner"><span class="lvl-dots"><i></i><i></i></span><span class="banner-title">Level 2 · Building up</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 3</span><span class="q-text">Find the LCM of 18 and 10.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 4</span><span class="q-text">Find the LCM of 5 and 7.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set C. Find the LCM. Use factor trees for larger numbers.</span></div><div class="work-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">18 and 10</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">25 and 16</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">12 and 90</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">14 and 21</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text">24 and 36</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text">20 and 45</span></div><div class="box"></div></div></div></div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">48</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.12 Lowest common multiple</span><span class="sec">Level 3 · Exit ticket</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i></span><span class="banner-title">Level 3 · Challenge</span><span class="banner-note">Finished Set D? Try the extension on the next page.</span></div>
+      
+  <div class="zone we "><div class="zone-head"><span class="zone-pill">WE DO</span><span class="zone-text">With your teacher: copy what they write on the board.</span></div><div class="split ex-row">
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 5</span><span class="q-text">Use factor trees to find the LCM of 25 and 16.</span></div><div class="box"></div></div>
+  <div class="q example"><div class="q-head"><span class="q-num ex">Example 6</span><span class="q-text">Use factor trees to find the LCM of 12 and 90.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Set D. LCM problems.</span></div><div class="work-grid" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(min-content, 1fr))">
+  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text">Buses leave at 6:00 am. One route runs every 12 minutes and another every 15 minutes. When do they next leave together?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text">Find the lowest common denominator of 5/6 and 3/8.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text">Hot dogs come in packs of 10 and buns in packs of 8. What is the smallest number of each you can buy to have no leftovers?</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text">The LCM of two numbers is 24 and one number is 8. Find all possible values of the other number.</span></div><div class="box"></div></div></div></div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone" data-exit="1">
+    <div class="cut-line"><span>✂ Show off your skill: tear along this line and hand it to your teacher ✂</span></div>
+    <div class="exit-head">
+      <span class="zone-pill you-pill">YOU DO</span>
+      <h2>Show off your skill</h2>
+      <p>Choose <b>ONE</b> question. Show your working.</p>
+      <div class="name-lines inline"><div><span>Name</span><i></i></div><div class="short"><span>Class</span><i></i></div></div>
+    </div>
+    <div class="exit-body no-graph">
+      
+      
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i></span> Level 1</span><span class="q-text">Find the LCM of 3 and 4.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i></span> Level 2</span><span class="q-text">Find the LCM of 12 and 16.</span></div><div class="box"></div></div>
+  <div class="q exit-q"><div class="q-head"><span class="q-num"><span class="lvl-dots"><i></i><i></i><i></i></span> Level 3</span><span class="q-text">Use prime factors to find the LCM of 28 and 42.</span></div><div class="box"></div></div>
+    </div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">49</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section>
+
+<section class="page">
+  <div class="art-strip"></div>
+  <header class="page-head"><span><b class="ch-chip">Ch 3</b>Year 7 · Chapter 3 · 3.12 Lowest common multiple</span><span class="sec">Extension · Summary</span></header>
+  <div class="content">
+      <div class="banner"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><span class="banner-title">Extension · Stretch yourself</span></div>
+      <div class="split ext grow">
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Worked example</b></div>
+    <div class="worked-q">Find the LCM of 4, 6 and 10.</div>
+    <ol class="steps"><li>4 = 2<sup>2</sup>, 6 = 2 × 3, 10 = 2 × 5</li><li>Highest power of each prime: 2<sup>2</sup> × 3 × 5</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 60</p>
+  </div>
+        
+  <div class="zone you fill"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: read the worked example, then try these.</span></div><div class="stack">
+  <div class="q "><div class="q-head"><span class="q-num">E1</span><span class="q-text">Find the LCM of 6, 8 and 9.</span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">E2</span><span class="q-text">Three lights flash every 4, 5 and 6 seconds. They flash together now. When do they next flash together?</span></div><div class="box"></div></div></div></div>
+      </div>
+      <div class="banner summary"><span class="banner-title">Lesson summary</span><span class="banner-note">Missed the lesson? Start here.</span></div>
+      <div class="summary-grid">
+        <div class="steps-card"><b>Remember</b><ol><li>List multiples of each number.</li><li>The smallest common one is the <b>LCM</b>.</li><li>Prime factors: take the highest power of each prime.</li><li>LCM × HCF = the product of the two numbers.</li></ol></div>
+        
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i></span><b>Level 1</b></div>
+    <div class="worked-q">LCM of 4 and 6</div>
+    <ol class="steps"><li>4, 8, 12</li><li>6, 12</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 12</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i></span><b>Level 2</b></div>
+    <div class="worked-q">LCM of 18 and 10</div>
+    <ol class="steps"><li>18, 36, 54, 72, 90</li><li>10, …, 90</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 90</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i></span><b>Level 3</b></div>
+    <div class="worked-q">LCM of 25 and 16</div>
+    <ol class="steps"><li>5<sup>2</sup> and 2<sup>4</sup></li><li>No common primes: multiply</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 400</p>
+  </div>
+  <div class="worked">
+    <div class="worked-head"><span class="lvl-dots"><i></i><i></i><i></i><i></i></span><b>Extension</b></div>
+    <div class="worked-q">LCM of 4, 6, 10</div>
+    <ol class="steps"><li>2<sup>2</sup> × 3 × 5</li></ol>
+    
+    <p class="worked-a"><b>Answer:</b> 60</p>
+  </div>
+      </div>
+      
+  <div class="tear-space"></div>
+  <div class="tear-zone back">
+    <div class="cut-line"><span>✂</span></div>
+    <div class="blank-note">This space is left blank on purpose. It is the back of your exit ticket.</div>
+  </div>
+    </div>
+  <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">50</span><span>Kingscliff High School · Year 7 Mathematics</span></footer>
+</section></body></html>
