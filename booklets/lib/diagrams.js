@@ -159,8 +159,8 @@ const plane = ({ min = -5, max = 5, ymin, ymax, cell = 4, points = [], segments 
   if (min <= 0 && max >= 0) b += line(X(0), Y(ymin), X(0), Y(ymax), C.charcoal, 0.4);
   if (ymin <= 0 && ymax >= 0) b += line(X(min), Y(0), X(max), Y(0), C.charcoal, 0.4);
   const ax = Math.max(min, Math.min(0, max)), ay = Math.max(ymin, Math.min(0, ymax));
-  for (let x = min; x <= max; x++) if (x !== 0) b += T(X(x), Y(ay) + 3.4, String(x).replace('-', '−'), { size: 2.1, anchor: 'middle' });
-  for (let y = ymin; y <= ymax; y++) if (y !== 0) b += T(X(ax) - 1, Y(y) + 0.8, String(y).replace('-', '−'), { size: 2.1, anchor: 'end' });
+  for (let x = min; x <= max; x++) if (x !== 0) b += T(X(x), Y(ay) + 3.4, String(x).replace('-', '−'), { size: 2.5, anchor: 'middle' });
+  for (let y = ymin; y <= ymax; y++) if (y !== 0) b += T(X(ax) - 1, Y(y) + 0.9, String(y).replace('-', '−'), { size: 2.5, anchor: 'end' });
   b += T(X(max) + 1, Y(ay) + 1, 'x', { size: 2.8, weight: 600 }) + T(X(ax) + 1, Y(ymax) - 1, 'y', { size: 2.8, weight: 600 });
   if (poly) b += `<polyline points="${poly.map(([x, y]) => `${X(x)},${Y(y)}`).join(' ')}" fill="none" stroke="${C.blue}" stroke-width="0.5"/>`;
   segments.forEach(([a, c, d, e]) => { b += line(X(a), Y(c), X(d), Y(e), C.blue, 0.5); });

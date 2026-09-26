@@ -1,4 +1,6 @@
-/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>The number plane answers</title>
+<style>/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
 :root {
   --charcoal: #3d3b3c;
   --blue: #3f63be;
@@ -11,9 +13,9 @@
   --muted: #6b6a64;
   --tear-h: 64mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
 }
-@font-face { font-family: Lexend; font-weight: 400; src: url({{ASSETS}}/lexend-latin-400-normal.woff2); }
-@font-face { font-family: Lexend; font-weight: 600; src: url({{ASSETS}}/lexend-latin-600-normal.woff2); }
-@font-face { font-family: Lexend; font-weight: 700; src: url({{ASSETS}}/lexend-latin-700-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../assets/lexend-latin-700-normal.woff2); }
 
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -28,7 +30,7 @@ li { margin-bottom: 0.6mm; }
 
 /* ---------- page shell ---------- */
 .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
-.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url({{ASSETS}}/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
+.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url(../../assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
 .page-head {
   position: absolute; top: 10mm; left: 12mm; right: 12mm;
   display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
@@ -224,7 +226,7 @@ li { margin-bottom: 0.6mm; }
 
 /* ---------- cover ---------- */
 .cover { background: var(--charcoal); }
-.cover-art { position: absolute; inset: 0; background: url({{ASSETS}}/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-art { position: absolute; inset: 0; background: url(../../assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
 .cover-spine {
   position: absolute; top: 0; bottom: 0; left: 0; width: 15mm; background: var(--blue);
   display: flex; align-items: center; justify-content: center; box-shadow: 0.8mm 0 0 var(--sand);
@@ -275,7 +277,7 @@ li { margin-bottom: 0.6mm; }
 .ack-box { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
 .ack-box h3 { color: var(--sand); font-size: 10pt; margin-bottom: 1mm; }
 .ack-box p { font-size: 8.5pt; margin-bottom: 2mm; }
-.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url({{ASSETS}}/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
+.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url(../../assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
 .section-title { font-size: 13pt; color: var(--charcoal); font-weight: 700; flex: none; }
 
 /* ---------- answers ---------- */
@@ -467,3 +469,14 @@ li { margin-bottom: 0.6mm; }
 .fig-side .short-list { display: flex; flex-direction: column; gap: 2.2mm; }
 .fig-side .short-list .qs { display: grid; grid-template-columns: auto 1fr 26mm; align-items: center; gap: 2mm; }
 .fig-side .short-list .box { height: 8.5mm; }
+:root { --accent: #6b8e23; }
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }
+  .ans-lesson { break-inside: auto; }
+  .ans-lesson h2 { break-inside: avoid; break-after: avoid; }
+  .ans-block { break-inside: avoid; }
+  .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }</style></head><body>
+  <div class="ans-header"><h1>Year 7 · Chapter 9 · The number plane: answers (teacher copy)</h1></div>
+  <div class="answers">
+  <div class="ans-lesson"><h2>9.01 Grid references on maps <span class="ans-page">(booklet p. 3)</span></h2><div class="ans-block"><h3>WE DO examples</h3><ol><li>Ex 1: the lake</li><li>Ex 2: the library</li><li>Ex 3: D9</li><li>Ex 4: B2, C2, B3, C3</li><li>Ex 5: e.g. walk to Gauss Rd, west to Euclid St, then north</li><li>Ex 6: it is a convention so everyone reads it the same way</li></ol></div><div class="ans-block"><h3>Set A</h3><ol><li>lake</li><li>library</li><li>stadium</li><li>student centre</li></ol></div><div class="ans-block"><h3>Set B</h3><ol><li>D9</li><li>F2 or G2</li><li>A8 or B8</li><li>B2, B3, C2 or C3</li><li>H7, H8, I7 or I8</li><li>G10, H10 or I10</li></ol></div><div class="ans-block"><h3>Set C</h3><ol><li>e.g. A6</li><li>e.g. E1</li><li>E6</li><li>main campus (row 10)</li><li>4 squares</li><li>student centre and main campus</li></ol></div><div class="ans-block"><h3>Set D</h3><ol><li>own map</li><li>own directions</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>C5</li><li>18 squares</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: stadium</li><li>Level 2: F2</li><li>Level 3: student centre (H7)</li></ol></div></div><div class="ans-lesson"><h2>9.02 Points in the first quadrant <span class="ans-page">(booklet p. 7)</span></h2><div class="ans-block"><h3>WE DO examples</h3><ol><li>Ex 1: plotted</li><li>Ex 2: plotted on the axes</li><li>Ex 3: P(4, 1), Q(2, 5)</li><li>Ex 4: No: (2, 5) is 2 across, 5 up</li><li>Ex 5: rectangle</li><li>Ex 6: (0, 0)</li></ol></div><div class="ans-block"><h3>Set A</h3><ol><li>plotted</li><li>plotted</li></ol></div><div class="ans-block"><h3>Set B</h3><ol><li>(1, 2)</li><li>(4, 5)</li><li>(7, 1)</li><li>(0, 3)</li><li>(5, 0)</li><li>(6, 4)</li></ol></div><div class="ans-block"><h3>Set C</h3><ol><li>rectangle</li><li>isosceles triangle</li></ol></div><div class="ans-block"><h3>Set D</h3><ol><li>(1, 6)</li><li>x-axis points have y = 0; y-axis points have x = 0</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>(3, 5)</li><li>24 square units</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 7</li><li>Level 2: on the y-axis, 5 up</li><li>Level 3: (1, 5)</li></ol></div></div><div class="ans-lesson"><h2>9.03 The number plane <span class="ans-page">(booklet p. 11)</span></h2><div class="ans-block"><h3>WE DO examples</h3><ol><li>Ex 1: 1st top right, 2nd top left, 3rd bottom left, 4th bottom right</li><li>Ex 2: 3rd</li><li>Ex 3: A(2, 3), B(−3, 1), C(−2, −4), D(4, −2)</li><li>Ex 4: 4th</li><li>Ex 5: a zigzag line</li><li>Ex 6: e.g. (−2, 3); e.g. (0, 5)</li></ol></div><div class="ans-block"><h3>Set A</h3><ol><li>3rd</li><li>1st</li><li>2nd</li><li>4th</li><li>y-axis</li><li>x-axis</li></ol></div><div class="ans-block"><h3>Set B</h3><ol><li>(1, 3)</li><li>(−4, 2)</li><li>(−3, −3)</li><li>(3, −2)</li><li>(0, −4)</li><li>(−5, 0)</li></ol></div><div class="ans-block"><h3>Set C</h3><ol><li>a flower / star shape (symmetrical)</li><li>D(−4, 3)</li></ol></div><div class="ans-block"><h3>Set D</h3><ol><li>B: 2nd</li><li>(0, 0)</li><li>(−3, −2)</li><li>7 units</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>12 square units</li><li>(1, −1), (4, −1), (1, −3)</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 2nd</li><li>Level 2: e.g. (3, −1)</li><li>Level 3: (−2, −5)</li></ol></div></div><div class="ans-lesson"><h2>9.04 Plotting tables of values <span class="ans-page">(booklet p. 15)</span></h2><div class="ans-block"><h3>WE DO examples</h3><ol><li>Ex 1: vertical line x = −2</li><li>Ex 2: horizontal line y = 3</li><li>Ex 3: straight line going down</li><li>Ex 4: straight line going up steeply</li><li>Ex 5: y goes up by 2</li><li>Ex 6: y = 7</li></ol></div><div class="ans-block"><h3>Set A</h3><ol><li>vertical line</li><li>horizontal line</li></ol></div><div class="ans-block"><h3>Set B</h3><ol><li>(0, 5), (1, 4), (2, 3)</li><li>(−1, −1), (0, 1), (1, 3)</li><li>(1, 2), (2, 4), (3, 6)</li><li>(0, 1), (2, 1), (4, 1)</li></ol></div><div class="ans-block"><h3>Set C</h3><ol><li>straight line going down</li><li>straight line going up</li></ol></div><div class="ans-block"><h3>Set D</h3><ol><li>a U-shaped curve (parabola)</li><li>no, it is a curve</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>−5</li><li>y = 4x</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: (0, 3), (1, 5), (2, 7)</li><li>Level 2: horizontal line</li><li>Level 3: it goes up by 3</li></ol></div></div><div class="ans-lesson"><h2>9.05 Tables of values from rules <span class="ans-page">(booklet p. 19)</span></h2><div class="ans-block"><h3>WE DO examples</h3><ol><li>Ex 1: 2, 3, 4, 5, 6</li><li>Ex 2: −11, −9, −7, −5, −3</li><li>Ex 3: 6, 5, 4, 3, 2</li><li>Ex 4: −5, −2, 1, 4, 7</li><li>Ex 5: y = 2x + 4</li><li>Ex 6: y = 8 − x</li></ol></div><div class="ans-block"><h3>Set A</h3><ol><li>2, 3, 4, 5, 6</li><li>−2, 0, 2, 4, 6</li><li>−4, −3, −2, −1, 0</li><li>−10, −5, 0, 5, 10</li></ol></div><div class="ans-block"><h3>Set B</h3><ol><li>−11, −9, −7, −5, −3</li><li>6, 5, 4, 3, 2</li></ol></div><div class="ans-block"><h3>Set C</h3><ol><li>−5, −2, 1, 4, 7</li><li>7, 5, 3, 1, −1</li><li>−4, −3, −2, −1, 0</li><li>10, 7, 4, 1, −2</li></ol></div><div class="ans-block"><h3>Set D</h3><ol><li>y = 2x + 4</li><li>y = 8 − x</li><li>y = 4x − 3</li><li>y = −3x</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>2, 0, 0, 2, 6</li><li>y = x²</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 3</li><li>Level 2: −1, 3, 7</li><li>Level 3: y = 3x + 1</li></ol></div></div><div class="ans-lesson"><h2>9.06 Graphing linear equations <span class="ans-page">(booklet p. 23)</span></h2><div class="ans-block"><h3>WE DO examples</h3><ol><li>Ex 1: y: −3, −1, 1, 3; straight line</li><li>Ex 2: line through (0, 3) going down</li><li>Ex 3: yes</li><li>Ex 4: yes</li><li>Ex 5: y: −4, −3, −2, −1, 0</li><li>Ex 6: (0, −1)</li></ol></div><div class="ans-block"><h3>Set A</h3><ol><li>y: −1, 0, 1, 2, 3</li><li>y: −3, −1, 1, 3</li></ol></div><div class="ans-block"><h3>Set B</h3><ol><li>no</li><li>no</li><li>yes</li><li>yes</li><li>yes</li><li>yes</li></ol></div><div class="ans-block"><h3>Set C</h3><ol><li>y: 5, 4, 3, 2, 1</li><li>y: −4, −3, −2, −1, 0</li></ol></div><div class="ans-block"><h3>Set D</h3><ol><li>parallel lines, 2 units apart</li><li>(1, 2)</li></ol></div><div class="ans-block"><h3>Extension</h3><ol><li>m = 3</li><li>y = 2x + 1 and y = 2x − 3</li></ol></div><div class="ans-block"><h3>Exit ticket</h3><ol><li>Level 1: 5</li><li>Level 2: yes</li><li>Level 3: yes</li></ol></div></div>
+  </div></body></html>

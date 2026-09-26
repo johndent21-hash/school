@@ -13,7 +13,8 @@
 //    summary: { title, steps: [4 reminders], worked: [[question, [steps], answer, fig?] x4] },
 //    exit: { fig?, qs: [L1, L2, L3] },
 //    ans: { we: [..], a: [..], b: [..], c: [..], d: [..], ext: [..], exit: [..] } }
-//  set:  { text: 'instruction', items: [..], kind: 'short' | 'work', cols?, fig?, given?, stack? (diagram above the box, not beside it) }
+//  set:  { text: 'instruction', items: [..], kind: 'short' | 'work', cols?, fig?, given?, stack? (diagram above the box, not beside it),
+//          figSide? (big diagram on the left, short questions listed on the right) }
 //  item / example: 'text'  or  { t: 'text', fig: svg shown with the question, draw: html drawing area instead of a box }
 const { banner, weDo, youDo, q, qDraw, dots, example, worked, graphCard, split, makeLesson } = require('./layout');
 
@@ -29,6 +30,8 @@ const setBody = (set, start = 1) => {
   const items = set.items;
   const figTop = set.fig ? graphCard(set.fig, `set-fig${set.figWide ? ' wide' : ''}`) : '';
   const given = set.given ? `<p class="given">${set.given}</p>` : '';
+  if (set.figSide) return `${given}<div class="fig-side">${figTop}<div class="short-list">${items.map((it, i) =>
+    `<div class="qs wide-box"><span class="q-num">${i + start}</span><span class="q-text">${withFig(it)}</span><span class="box"></span></div>`).join('')}</div></div>`;
   if (set.kind === 'short') {
     const rows = Math.ceil(items.length / 2);
     return `${given}${figTop}<div class="short-grid" style="grid-template-rows: repeat(${rows}, minmax(min-content, 1fr))">${items.map((it, i) =>
