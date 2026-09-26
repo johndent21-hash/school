@@ -170,12 +170,12 @@ const plane = ({ min = -5, max = 5, ymin, ymax, cell = 4, points = [], segments 
 
 // Rectangular prism drawn in oblique projection with edge labels.
 const box = ({ l = '', wd = '', ht = '', w = 56, h = 36, L = 30, H = 16, D = 10 }) => {
-  const x = 6, y = h - 6, dx = D * 0.8, dy = D * 0.6;
+  const x = ht ? 13 : 6, y = h - 6, dx = D * 0.8, dy = D * 0.6;
   const P = (a, c) => `${f(a)},${f(c)}`;
   let b = `<polygon points="${P(x, y)} ${P(x + L, y)} ${P(x + L, y - H)} ${P(x, y - H)}" fill="#eef1f9" stroke="${C.charcoal}" stroke-width="0.45"/>`
     + `<polygon points="${P(x, y - H)} ${P(x + L, y - H)} ${P(x + L + dx, y - H - dy)} ${P(x + dx, y - H - dy)}" fill="#f7f7f7" stroke="${C.charcoal}" stroke-width="0.45"/>`
     + `<polygon points="${P(x + L, y)} ${P(x + L + dx, y - dy)} ${P(x + L + dx, y - H - dy)} ${P(x + L, y - H)}" fill="#e3e3e3" stroke="${C.charcoal}" stroke-width="0.45"/>`;
-  b += T(x + L / 2, y + 4, l, { size: 2.7, anchor: 'middle' }) + T(x + L + dx / 2 + 2.5, y - dy / 2 + 1.5, wd, { size: 2.7 }) + T(x - 1.5, y - H / 2 + 1, ht, { size: 2.7, anchor: 'end' });
+  b += T(x + L / 2, y + 4.5, l, { size: 3.3, anchor: 'middle' }) + T(x + L + dx / 2 + 2.5, y - dy / 2 + 1.5, wd, { size: 3.3 }) + T(x - 1.5, y - H / 2 + 1, ht, { size: 3.3, anchor: 'end' });
   return svg(w, h, b);
 };
 
@@ -187,8 +187,8 @@ const triPrism = ({ base = '', tri = '', len = '', w = 60, h = 36 }) => {
     + `<polygon points="${S(c)} ${S(M(c))} ${S(M(t))} ${S(t)}" fill="#e3e3e3" stroke="${C.charcoal}" stroke-width="0.45"/>`
     + `<polygon points="${S(t)} ${S(M(t))} ${S(M(a))} ${S(a)}" fill="#f7f7f7" stroke="${C.charcoal}" stroke-width="0.45" stroke-opacity="0.6"/>`
     + `<line x1="${t[0]}" y1="${t[1]}" x2="${t[0]}" y2="${a[1]}" stroke="${C.grey}" stroke-width="0.3" stroke-dasharray="1 0.8"/>`;
-  b += T((a[0] + c[0]) / 2, a[1] + 4, base, { size: 2.7, anchor: 'middle' }) + T(t[0] + 1, (t[1] + a[1]) / 2 + 3, tri, { size: 2.5 })
-    + T(c[0] + d[0] / 2 + 3, c[1] + d[1] / 2 + 2, len, { size: 2.7 });
+  b += T((a[0] + c[0]) / 2, a[1] + 4.5, base, { size: 3.4, anchor: 'middle' }) + T(t[0] + 1, (t[1] + a[1]) / 2 + 3, tri, { size: 3.2 })
+    + T(c[0] + d[0] / 2 + 3, c[1] + d[1] / 2 + 2, len, { size: 3.4 });
   return svg(w, h, b);
 };
 
@@ -245,4 +245,33 @@ const drawSpace = ({ label = '', w = 80, h = 30, ray = true }) => {
   return svg(w, h, b, 'graph template');
 };
 
-module.exports = { numberLine, angle, rays, parallel, polygon, grid, plane, box, triPrism, circle, spinner, squares, fractionBar, drawSpace };
+
+// A polygon placed in its own box: shifts the points (and any extra lines, dashes and labels) so it sits with a margin.
+const fit = (pts, o = {}, m = 6) => {
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const extra = [...(o.lines || []).flat(), ...(o.dash || []).flat()];
+  const all = [...pts, ...extra];
+  const dx = m - Math.min(...all.map((p) => p[0])), dy = m - Math.min(...all.map((p) => p[1]));
+  const sh = (p) => [f(p[0] + dx), f(p[1] + dy)];
+  return polygon({ ...o, pts: pts.map(sh), lines: (o.lines || []).map(([a, b]) => [sh(a), sh(b)]), dash: (o.dash || []).map(([a, b]) => [sh(a), sh(b)]),
+    labels: (o.labels || []).map(([t, x, y]) => [t, ...sh([x, y])]), w: f(Math.max(...all.map((p) => p[0])) + dx + m), h: f(Math.max(...all.map((p) => p[1])) + dy + m) });
+};
+// A prism made by pushing a front face back by d = [dx, dy]. labels: [[text, x, y]] in face coordinates.
+const prism = ({ pts, d = [10, -7], labels = [], m = 6 }) => {
+  const back = pts.map(([x, y]) => [x + d[0], y + d[1]]);
+  const all = [...pts, ...back];
+  const dx = m - Math.min(...all.map((p) => p[0])), dy = m - Math.min(...all.map((p) => p[1]));
+  const S = ([x, y]) => `${f(x + dx)},${f(y + dy)}`;
+  let b = `<polygon points="${back.map(S).join(' ')}" fill="#f4f4f4" stroke="${C.grey}" stroke-width="0.3" stroke-dasharray="1 0.8"/>`;
+  pts.forEach((p, i) => { b += `<line x1="${f(p[0] + dx)}" y1="${f(p[1] + dy)}" x2="${f(back[i][0] + dx)}" y2="${f(back[i][1] + dy)}" stroke="${C.charcoal}" stroke-width="0.4"/>`; });
+  // visible back edges: those on the outline of the solid (drawn solid on top of the dashed ones)
+  back.forEach((p, i) => { const q = back[(i + 1) % back.length]; const mid = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+    const inside = pointIn(mid, pts); if (!inside) b += `<line x1="${f(p[0] + dx)}" y1="${f(p[1] + dy)}" x2="${f(q[0] + dx)}" y2="${f(q[1] + dy)}" stroke="${C.charcoal}" stroke-width="0.4"/>`; });
+  b += `<polygon points="${pts.map(S).join(' ')}" fill="#eef1f9" stroke="${C.charcoal}" stroke-width="0.45"/>`;
+  labels.forEach(([t, x, y]) => { b += T(x + dx, y + dy, t, { size: 2.8, anchor: 'middle' }); });
+  const W = Math.max(...all.map((p) => p[0])) + dx + m, H = Math.max(...all.map((p) => p[1])) + dy + m;
+  return svg(f(W), f(H), b);
+};
+const pointIn = ([x, y], poly) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
+
+module.exports = { fit, prism, numberLine, angle, rays, parallel, polygon, grid, plane, box, triPrism, circle, spinner, squares, fractionBar, drawSpace };

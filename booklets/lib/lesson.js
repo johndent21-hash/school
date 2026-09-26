@@ -13,7 +13,7 @@
 //    summary: { title, steps: [4 reminders], worked: [[question, [steps], answer, fig?] x4] },
 //    exit: { fig?, qs: [L1, L2, L3] },
 //    ans: { we: [..], a: [..], b: [..], c: [..], d: [..], ext: [..], exit: [..] } }
-//  set:  { text: 'instruction', items: [..], kind: 'short' | 'work', cols?, fig?, given? }
+//  set:  { text: 'instruction', items: [..], kind: 'short' | 'work', cols?, fig?, given?, stack? (diagram above the box, not beside it) }
 //  item / example: 'text'  or  { t: 'text', fig: svg shown with the question, draw: html drawing area instead of a box }
 const { banner, weDo, youDo, q, qDraw, dots, example, worked, graphCard, split, makeLesson } = require('./layout');
 
@@ -37,7 +37,7 @@ const setBody = (set, start = 1) => {
   const cols = set.cols || 2;
   const rows = Math.ceil(items.length / cols);
   const cells = items.map((it, i) => (typeof it === 'object' && it.draw ? qDraw(i + start, withFig(it), it.draw)
-    : typeof it === 'object' && it.fig ? sideQ(i + start, it) : q(i + start, withFig(it))));
+    : typeof it === 'object' && it.fig && !set.stack ? sideQ(i + start, it) : q(i + start, withFig(it))));
   return `${given}${figTop}<div class="work-grid" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, minmax(min-content, 1fr))">${cells.join('')}</div>`;
 };
 
