@@ -20,7 +20,7 @@ const scale = (marks = [], words = true) => {
 };
 
 module.exports = {
-  year: 7, stage: 4, number: 11, title: 'Probability', accent: '#922b21',
+  year: 7, stage: 4, number: 11, title: 'Probability', accent: '#7b1f4b',
   fileName: 'Year7-Ch11-Probability',
   goals: ['list the sample space of an experiment', 'find the probability of simple events as fractions, decimals and percentages', 'use the probability scale and chance words', 'compare experimental and theoretical probability', 'find the probability of complementary events'],
   syllabus: 'NSW Mathematics K–10 Syllabus (2022), Stage 4 Statistics and probability: MA4-PRO-C-01 solves problems involving the probabilities of simple chance experiments.',

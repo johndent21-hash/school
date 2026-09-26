@@ -440,6 +440,43 @@ li { margin-bottom: 0.6mm; }
 .q.side .box { align-self: stretch; }
 .contents.tight td { padding: 1mm 2mm; }
 .fr { font-size: 0.95em; }
+.q.side .side-fig .graph { max-height: 26mm; }
+/* First page of a lesson is the tightest: keep its diagrams a little smaller. */
+.lesson-first .q.side .side-fig .graph { max-height: 21mm; }
+.lesson-first .example .inline-fig .graph { max-height: 19mm; }
+.lesson-first .q.side .side-row { min-height: 0; }
+.tgrid .graph { max-height: 31mm; }
+/* Transformation grids fill the space the question has. */
+.q.draw .draw-area { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.draw-area > .template-card.tgrid { flex: 1 1 auto; min-height: 30mm; display: flex; }
+.tgrid .graph { flex: 1 1 auto; width: 100%; height: auto; max-height: none; aspect-ratio: auto !important; }
+.q.draw:has(.tgrid) .draw-area { flex: 1 1 auto; }
+.draw-area > .template-card.tgrid { align-items: center; justify-content: center; }
+.tgrid .graph { flex: none; width: 100%; height: auto; max-height: 100%; aspect-ratio: var(--ar) !important; }
+/* Recurring decimal: a dot above the digit. */
+.rec { position: relative; display: inline-block; }
+.rec::before { content: ''; position: absolute; left: 50%; top: -0.12em; width: 0.2em; height: 0.2em; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
+/* Number planes to draw on: fixed heights by where they sit, so square planes never overrun a page. */
+.template-card.tplane { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; }
+.tplane .graph { height: 40mm; width: auto; max-width: 100%; aspect-ratio: var(--ar); }
+.zone.grow .tplane .graph { height: 48mm; }
+.ex-row .tplane .graph, .lesson-first .tplane .graph { height: 30mm; }
+.ex-row .tplane .graph { height: 34mm; }
+.lesson-first .zone.grow .tplane .graph { height: 36mm; }
+/* A big diagram on the left with its short questions listed on the right. */
+.fig-side { display: grid; grid-template-columns: 58% 1fr; gap: 3mm; flex: 1 1 auto; min-height: 0; align-items: center; }
+.fig-side .set-fig .graph { max-height: 60mm; }
+.fig-side .short-list { display: flex; flex-direction: column; gap: 2.2mm; }
+.fig-side .short-list .qs { display: grid; grid-template-columns: auto 1fr 26mm; align-items: center; gap: 2mm; }
+.fig-side .short-list .box { height: 8.5mm; }
+/* In a panel that fills the page, the questions beside a diagram get full working boxes. */
+.zone.grow .fig-side { align-items: stretch; }
+.zone.grow .fig-side > .set-fig { align-self: center; }
+.zone.grow .fig-side .short-list .qs { flex: 1 1 0; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; }
+.zone.grow .fig-side .short-list .box { grid-column: 1 / -1; height: auto; min-height: 9mm; }
+.zone.grow .fig-side .short-list { height: 100%; }
+.zone.grow .fig-side .short-list .qs { align-items: stretch; }
+.zone.grow .fig-side .short-list .qs .q-text { align-self: center; }
 :root { --accent: #229954; }
   @page { size: A4; margin: 12mm 12mm 14mm; }
   .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }

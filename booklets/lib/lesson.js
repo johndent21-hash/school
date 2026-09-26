@@ -37,7 +37,7 @@ const setBody = (set, start = 1) => {
     return `${given}${figTop}<div class="short-grid" style="grid-template-rows: repeat(${rows}, minmax(min-content, 1fr))">${items.map((it, i) =>
       `<div class="qs${set.wide !== false ? ' wide-box' : ''}"><span class="q-num">${i + start}</span><span class="q-text">${withFig(it)}</span><span class="box"></span></div>`).join('')}</div>`;
   }
-  const cols = set.cols || 2;
+  const cols = set.cols || (items.length === 1 ? 1 : 2);
   const rows = Math.ceil(items.length / cols);
   const cells = items.map((it, i) => (typeof it === 'object' && it.draw ? qDraw(i + start, withFig(it), it.draw)
     : typeof it === 'object' && it.fig && !set.stack ? sideQ(i + start, it) : q(i + start, withFig(it))));
