@@ -469,6 +469,11 @@ li { margin-bottom: 0.6mm; }
 .fig-side .short-list { display: flex; flex-direction: column; gap: 2.2mm; }
 .fig-side .short-list .qs { display: grid; grid-template-columns: auto 1fr 26mm; align-items: center; gap: 2mm; }
 .fig-side .short-list .box { height: 8.5mm; }
+/* In a panel that fills the page, the questions beside a diagram get full working boxes. */
+.zone.grow .fig-side { align-items: stretch; }
+.zone.grow .fig-side > .set-fig { align-self: center; }
+.zone.grow .fig-side .short-list .qs { flex: 1 1 0; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; }
+.zone.grow .fig-side .short-list .box { grid-column: 1 / -1; height: auto; min-height: 9mm; }
 :root { --accent: #6b8e23; }
   @page { size: A4; margin: 12mm 12mm 14mm; }
   .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }
