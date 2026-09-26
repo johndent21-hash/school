@@ -419,6 +419,25 @@ li { margin-bottom: 0.6mm; }
 .fr sub, .fr sup { vertical-align: baseline; font-size: 1em; }
 .notes.fixed { height: 20mm; }
 .summary-grid .worked { font-size: 8.5pt; }
+/* Inline and set diagrams show at their natural (mm) size, never stretched. */
+.inline-fig .graph, .set-fig .graph { width: min(var(--w, 100%), 100%); max-width: 100%; }
+.q-head .q-text { min-width: 0; flex: 1 1 auto; }
+.q-head { align-items: flex-start; }
+.q.side .side-row { display: flex; gap: 2mm; flex: 1 1 0; min-height: 18mm; align-items: stretch; }
+.q.side .side-fig { flex: none; display: flex; align-items: center; justify-content: center; max-width: 55%; }
+.q.side .side-fig .graph { width: auto; height: auto; max-height: 22mm; max-width: 100%; }
+.q.side .box { flex: 1 1 0; min-width: 12mm; min-height: 0; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 34mm); max-width: 100%; height: auto; max-height: 22mm; }
+.example .inline-fig .graph { max-height: 26mm; }
+/* Diagrams beside a box show at natural size so labels stay readable (about 8pt). */
+.q.side .side-fig { max-width: 60%; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 100%); max-height: none; }
+.q.side .side-row { flex: 1 1 auto; min-height: 0; }
+.example .inline-fig .graph { max-height: 22mm; }
+.q.side .side-row { align-items: flex-start; }
+.q.side .side-fig { flex: 0 0 55%; max-width: 55%; }
+.q.side .side-fig .graph { width: 100%; max-width: calc(var(--w, 30mm) * 1.4); }
+.q.side .box { align-self: stretch; }
 :root { --accent: #c0392b; }
   @page { size: A4; margin: 12mm 12mm 14mm; }
   .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }

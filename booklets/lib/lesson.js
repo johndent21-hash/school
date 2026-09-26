@@ -22,6 +22,9 @@ const withFig = (it) => (typeof it === 'string' || !it.fig ? txt(it) : `${it.t}<
 
 const ex = (n, it) => (typeof it === 'object' && it.draw ? example(`Example ${n}`, withFig(it), it.draw) : example(`Example ${n}`, withFig(it)));
 
+// A diagram question: the diagram sits beside its working box, so diagram sets stay compact.
+const sideQ = (n, it) => `<div class="q side"><div class="q-head"><span class="q-num">${n}</span><span class="q-text">${it.t}</span></div><div class="side-row"><div class="side-fig">${it.fig}</div><div class="box"></div></div></div>`;
+
 const setBody = (set, start = 1) => {
   const items = set.items;
   const figTop = set.fig ? graphCard(set.fig, `set-fig${set.figWide ? ' wide' : ''}`) : '';
@@ -33,7 +36,8 @@ const setBody = (set, start = 1) => {
   }
   const cols = set.cols || 2;
   const rows = Math.ceil(items.length / cols);
-  const cells = items.map((it, i) => (typeof it === 'object' && it.draw ? qDraw(i + start, withFig(it), it.draw) : q(i + start, withFig(it))));
+  const cells = items.map((it, i) => (typeof it === 'object' && it.draw ? qDraw(i + start, withFig(it), it.draw)
+    : typeof it === 'object' && it.fig ? sideQ(i + start, it) : q(i + start, withFig(it))));
   return `${given}${figTop}<div class="work-grid" style="grid-template-columns: repeat(${cols}, 1fr); grid-template-rows: repeat(${rows}, minmax(min-content, 1fr))">${cells.join('')}</div>`;
 };
 

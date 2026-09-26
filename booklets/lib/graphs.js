@@ -7,7 +7,7 @@ const C = {
 };
 
 const svg = (w, h, body, cls = 'graph') =>
-  `<svg class="${cls}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:${w}/${h}">${body}</svg>`;
+  `<svg class="${cls}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="aspect-ratio:${w}/${h}; --w:${w}mm">${body}</svg>`;
 
 const text = (x, y, t, { size = 2.6, anchor = 'start', weight = 400, fill = C.ink, rotate = null } = {}) =>
   `<text x="${+x.toFixed ? x.toFixed(2) : x}" y="${+y.toFixed ? y.toFixed(2) : y}" font-size="${size}" text-anchor="${anchor}" font-weight="${weight}" fill="${fill}"${rotate !== null ? ` transform="rotate(${rotate} ${x} ${y})"` : ''}>${t}</text>`;
