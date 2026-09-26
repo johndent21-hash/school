@@ -9,7 +9,7 @@ const chapterDir = path.join(ROOT, process.argv[2] || 'year7/ch10-analysing-data
 const shotsIdx = process.argv.indexOf('--shots');
 const shotsDir = shotsIdx > 0 ? process.argv[shotsIdx + 1] : null;
 
-const noIndividual = process.argv.includes('--no-individual');
+const noIndividual = !process.argv.includes('--individual');
 
 const chapter = require(path.join(chapterDir, 'chapter.js'));
 const extrasFile = path.join(chapterDir, 'standalone.js');
@@ -47,7 +47,7 @@ const cover = (lessons) => `
 const insideCover = (lessons) => `
 <section class="page">
   <div class="art-strip"></div>
-  <header class="page-head"><span>Year ${chapter.year} · Chapter ${chapter.number} · ${chapter.title}</span><span class="sec">Start here</span></header>
+  <header class="page-head"><span><b class="ch-chip">Ch ${chapter.number}</b>Year ${chapter.year} · Chapter ${chapter.number} · ${chapter.title}</span><span class="sec">Start here</span></header>
   <div class="content">
     <p class="section-title">How to use this booklet</p>
     <div class="howto">
@@ -179,7 +179,7 @@ const assemble = (front, lessons) => {
 
 const doc = (dir, title, body, extraCss = '') => `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8"><title>${title}</title>
-<style>${cssFor(dir)}${extraCss}</style></head><body>${body}</body></html>`;
+<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; }${extraCss}</style></head><body>${body}</body></html>`;
 
 const answersCss = `
   @page { size: A4; margin: 12mm 12mm 14mm; }

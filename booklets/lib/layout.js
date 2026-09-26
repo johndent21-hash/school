@@ -56,7 +56,7 @@ const makeLesson = ({ chapter, code, title }) => {
   const page = (section, body, { first = false } = {}) => `
 <section class="page${first ? ' lesson-first' : ''}">
   <div class="art-strip"></div>
-  <header class="page-head"><span>${head}</span><span class="sec">${section}</span></header>
+  <header class="page-head"><span><b class="ch-chip">Ch ${chapter.number}</b>${head}</span><span class="sec">${section}</span></header>
   <div class="content">${body}</div>
   <footer class="page-foot"><span>Artwork © Marni Tuala</span><span class="pn">{{PN}}</span><span>Kingscliff High School · Year ${chapter.year} Mathematics</span></footer>
 </section>`;
