@@ -437,3 +437,4 @@ li { margin-bottom: 0.6mm; }
 .q.side .side-fig .graph { width: 100%; max-width: calc(var(--w, 30mm) * 1.4); }
 .q.side .box { align-self: stretch; }
 .contents.tight td { padding: 1mm 2mm; }
+.fr { font-size: 0.95em; }
