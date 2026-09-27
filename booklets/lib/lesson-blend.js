@@ -19,7 +19,10 @@
 //   exFigs: [fig, fig, fig]            a diagram shown inside each default example
 //   stems: ['..', '..', '..']           clear instructions for the three default examples (when ex is not given)
 //   hwFig: fig                         a diagram homework questions from this lesson may use (e.g. a map)
-//   skills: { easy: [round, round], medium: [round, round] }   the Skill drill pages (see lib/drill.js); a round
+//   skills: { easy: [round, round], medium: [round, round] }   the Skill drill pages (see lib/drill.js)
+//   inline: true                        put the drill inside the 4 pages instead: the Easy and Medium questions are the
+//                                       drill rounds (first round beside its example, the rest on the next page), then
+//                                       three Set D questions and the extension round off the lesson; a round
 //                                       may have a fig (a map or number plane its questions use), shown beside them
 // A part is text, { t, fig } or { t, draw }. Parts are never worked: the teacher works them live and students copy.
 const { banner, weDo, youDo, q, qDraw, worked, graphCard, split, makeLesson } = require('./layout');
@@ -84,18 +87,33 @@ const pairExamples = (we, stems = [], figs = []) => [0, 1, 2].map((k) => ({ stem
 
 // A Skill drill page: a banner, then rounds of short questions numbered 1, 2, 3, … down the page, a score box.
 const dqCell = (it, n, work) => `<div class="dq${work ? ' work' : ''}"><span class="q-num">${n}</span><span class="q-text">${withFig(it)}</span>${work ? '<span class="box"></span>' : '<span class="ans-line"></span>'}</div>`;
+// One round of drill: "Round 1 · Questions 1–24: instruction", then the questions numbered from `from`.
+const roundHtml = (x, i, from) => {
+  const cols = x.cols || 4, rows = Math.ceil(x.items.length / cols);
+  let n = from - 1; const cells = x.items.map((it) => dqCell(it, ++n, x.work)).join('');
+  const figs = x.items.some((it) => typeof it === 'object' && it.fig);
+  return `<div class="round" style="flex-grow:${rows * (figs ? 2.8 : x.work ? 2.2 : 1)}"><p class="round-h"><b>Round ${i + 1}</b><span>Questions ${from}–${n}: ${x.text}</span></p>${x.fig ? `<div class="round-body"><div class="round-fig">${x.fig}</div>` : ''}<div class="drill c${cols}${x.work ? ' work' : ''}">${cells}</div>${x.fig ? '</div>' : ''}</div>`;
+};
 const skillPage = (k, lvl, rounds) => {
   const total = rounds.reduce((t, x) => t + x.items.length, 0);
   let n = 0;
-  const body = rounds.map((x, i) => {
-    const cols = x.cols || 4, rows = Math.ceil(x.items.length / cols);
-    const from = n + 1; const cells = x.items.map((it) => dqCell(it, ++n, x.work)).join('');
-    const figs = x.items.some((it) => typeof it === 'object' && it.fig);
-    return `<div class="round" style="flex-grow:${rows * (figs ? 2.8 : x.work ? 2.2 : 1)}"><p class="round-h"><b>Round ${i + 1}</b><span>Questions ${from}–${n}: ${x.text}</span></p>${x.fig ? `<div class="round-body"><div class="round-fig">${x.fig}</div>` : ''}<div class="drill c${cols}${x.work ? ' work' : ''}">${cells}</div>${x.fig ? '</div>' : ''}</div>`;
-  }).join('');
+  const body = rounds.map((x, i) => { const h = roundHtml(x, i, n + 1); n += x.items.length; return h; }).join('');
   return `<div class="banner drill-b"><span class="drill-tag">Skill drill ${k}</span><span class="banner-title">${lvl === 1 ? 'Easy basics: practise until it is automatic' : 'Medium basics: keep practising'}</span><span class="banner-note">${total} questions</span></div>
     ${youDo(`<b class="lvl-word l${lvl}">${LEVEL_WORD[lvl]}</b> Skill drill ${k}. Work down the page, one round at a time. Write each answer on its line${rounds.some((x) => x.work) ? ' (show working in the box)' : ''}.`,
     `<div class="drill-score"><span>Start time <i></i></span><span>Finish time <i></i></span><span>Score <i></i> / ${total}</span><span class="note">Mark it with your teacher. Aim to beat your time next lesson.</span></div>${body}`, 'grow skill-zone')}`;
+};
+
+// Inline drill (spec.inline): the Easy and Medium questions are the drill rounds, split over two zones so they sit
+// next to their teacher example. part 0 is the first round, part 1 the rest; numbering runs on through the level.
+const drillZone = (lvl, rounds, part, h) => {
+  const total = rounds.reduce((t, x) => t + x.items.length, 0);
+  const idx = part === 0 ? [0] : rounds.map((_, i) => i).slice(1);
+  if (!idx.length) return '';
+  let from = 1 + rounds.slice(0, idx[0]).reduce((t, x) => t + x.items.length, 0);
+  const body = idx.map((i) => { const html = roundHtml(rounds[i], i, from); from += rounds[i].items.length; return html; }).join('');
+  const head = part === 0 ? `<b class="lvl-word l${lvl}">${LEVEL_WORD[lvl]}</b> practise the skill. Work down the page, one round at a time. Write each answer on its line${rounds.some((x) => x.work) ? ' (show working in the boxes)' : ''}.`
+    : `<b class="lvl-word l${lvl}">${LEVEL_WORD[lvl]}</b> keep going: ${idx.length > 1 ? 'the next rounds' : `Round ${idx[0] + 1}`}.`;
+  return youDo(`${head}<span class="count">${part === 0 ? qn(total) : `${qn(idx.reduce((t, i) => t + rounds[i].items.length, 0))} more`}</span>`, `${part === 0 ? hint(h) : ''}${body}`, 'grow skill-zone');
 };
 
 module.exports = (spec) => (chapter) => {
@@ -129,7 +147,50 @@ module.exports = (spec) => (chapter) => {
   const drill1 = sk ? [Lx.page('Skill drill 1 · Easy', skillPage(1, 1, sk.easy))] : [];
   const drill2 = sk ? [Lx.page('Skill drill 2 · Medium', skillPage(2, 2, sk.medium))] : [];
 
-  const pages = six ? [
+  // Inline drill layout: four pages, the drill is the Easy and Medium practice, three Set D questions to finish.
+  // Each drill slot has a row budget (page 1 Easy, page 2 Easy continued, page 2 Medium, page 3 Medium continued);
+  // rounds are cut to fit it. A working-box row counts as 2 rows, a row of diagrams as 3.
+  const BUDGET = { easy: [4, 4], medium: [4, 2] };
+  const fit = (rounds, [first, rest]) => rounds.map((x, i) => {
+    const per = x.items.some((it) => typeof it === 'object' && it.fig) ? 3 : x.work ? 2 : 1;
+    const rows = Math.max(1, Math.floor((i === 0 ? first : rest / Math.max(1, rounds.length - 1)) / per));
+    const n = Math.min(x.items.length, rows * (x.cols || 4));
+    return { ...x, items: x.items.slice(0, n), ans: x.ans.slice(0, n) };
+  });
+  if (spec.inline && sk) Object.assign(sk, { easy: fit(sk.easy, BUDGET.easy), medium: fit(sk.medium, BUDGET.medium) });
+  // Three challenge questions in one row, or two when they need drawing space.
+  const drawn = spec.d.items.slice(0, 3).some((it) => typeof it === 'object' && (it.draw || it.fig));
+  const D3 = { ...spec.d, items: spec.d.items.slice(0, drawn ? 2 : 3), cols: drawn ? 2 : 3 };
+  const challenge = () => youDo(`<b class="lvl-word l3">Challenging</b> ${spec.d.text}<span class="count">${qn(D3.items.length)}</span>`, `${hint(h(2))}${setBody(D3.kind === 'short' ? { ...D3, kind: 'work' } : D3)}`, 'grow');
+  const inline = spec.inline && sk ? [
+    Lx.page('Start here · Easy', `
+      ${Lx.intro({ li: spec.li, sc: spec.sc, terms: spec.terms })}
+      ${Lx.notes('fixed')}
+      ${banner(1, `Easy · ${qn(sk.easy.reduce((t, x) => t + x.items.length, 0))}`)}
+      ${exBlock(1, ex[0], '', spec.exCols)}
+      ${drillZone(1, sk.easy, 0, h(0))}
+    `, { first: true }),
+    Lx.page('Easy · Medium', `
+      ${drillZone(1, sk.easy, 1)}
+      ${banner(2, `Medium · ${qn(sk.medium.reduce((t, x) => t + x.items.length, 0))}`)}
+      ${exBlock(2, ex[1], '', spec.exCols)}
+      ${drillZone(2, sk.medium, 0, h(1))}
+    `),
+    Lx.page('Medium · Challenging · Exit ticket', `
+      ${drillZone(2, sk.medium, 1)}
+      ${banner(3, `Challenging · ${qn(D3.items.length)} · then try the extension`)}
+      ${exBlock(3, ex[2], '', spec.exCols)}
+      ${challenge()}
+      ${exit}
+    `),
+    Lx.page('Extension · Summary', `
+      ${banner(4)}
+      ${ext}
+      ${summary()}
+      ${Lx.tearBack()}
+    `),
+  ] : null;
+  const pages = inline || (six ? [
     Lx.page('Start here · Easy', `
       ${Lx.intro({ li: spec.li, sc: spec.sc, terms: spec.terms })}
       ${Lx.notes('fixed')}
@@ -191,13 +252,17 @@ module.exports = (spec) => (chapter) => {
       ${summary()}
       ${Lx.tearBack()}
     `),
-  ];
+  ]);
 
   const A2 = spec.ans;
   const exAns = spec.ex ? spec.exAns : null; // [[a, b], [a, b], [a, b]] when spec.ex is given
   const weAns = exAns ? exAns.flatMap((parts, k) => parts.map((a, i) => `Ex ${k + 1}${L[i]}: ${a}`)) : A2.we.map((a, i) => `Ex ${Math.floor(i / 2) + 1}${L[i % 2]}: ${a}`);
   const aAns = [...A2.a, ...(spec.drill && aIsDrill ? spec.drill.ans : [])];
-  const answers = [
+  const answers = inline ? [
+    ['WE DO examples (teacher)', weAns],
+    ['Easy (drill)', sk.easy.flatMap((x) => x.ans)], ['Medium (drill)', sk.medium.flatMap((x) => x.ans)], ['Challenging', A2.d.slice(0, D3.items.length)],
+    ['Extension', A2.ext], ['Exit ticket', A2.exit.map((a, i) => `Level ${i + 1}: ${a}`)],
+  ] : [
     ['WE DO examples (teacher)', weAns],
     [`Easy · Set A${aIsDrill ? ' (quick drill)' : ''}`, aAns], ...(Q ? [['Easy · Set A2 (quick drill)', spec.drill.ans]] : []), ['Easy · Set B', A2.b], ['Medium · Set C', A2.c], ['Challenging · Set D', A2.d],
     ...(sk ? [['Skill drill 1 (Easy basics)', sk.easy.flatMap((x) => x.ans)], ['Skill drill 2 (Medium basics)', sk.medium.flatMap((x) => x.ans)]] : []),

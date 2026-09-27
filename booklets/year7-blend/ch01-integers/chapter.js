@@ -8,7 +8,7 @@ const cmp = (a, b) => (ev(a).replace('−', '-') * 1 < ev(b).replace('−', '-')
 const lt = (pairs) => pairs.map(([a, b]) => `${a} ☐ ${b}`);
 
 module.exports = blend(require('../../year7/ch01-integers/chapter.js'), {
-  fileName: 'Year7-Ch01-Integers-Lessons', art: 'antenna', skills: require('./skills'), pages: 4,
+  fileName: 'Year7-Ch01-Integers-Lessons', art: 'antenna', skills: require('./skills'), inline: true, pages: 4,
   more: {
     '1.01': {
       stems: ['Write an integer for each situation, or its opposite.', 'Use integers to describe the movement.', 'Use opposites to find the number.'],

@@ -141,5 +141,7 @@ How it fits together:
   - `work` gives each question a working box.
   - `fig` shows a map, graph or number plane beside the questions.
 
+  With `inline: true` in the chapter file (Chapter 1 uses this), there are no extra pages: the drill rounds become the Easy and Medium questions of the 4-page lesson, each placed straight after its teacher example. Each round is cut to fit its space. Three Set D questions (two if they need drawing) and the extension round off the lesson.
+
   `lib/drill.js` supplies the seeded random helpers (`round`, `list`, `ri`, `pick`, …), so every booklet builds the same each time and every answer is calculated. `lib/algebra.js` writes algebra neatly (italic pronumerals, collected like terms).
 - **`tools/mandelbrot.py`**: draws the artwork in the colours of the revision booklet covers: a periwinkle field, blue filaments and a charcoal set. Each booklet shows a different region of the set (`REGIONS`, named by `art` in the chapter file). Each region has three images in `assets/mandelbrot/`: `-cover` (the lesson booklet cover), `-hw` (a closer view for the homework cover) and `-band` (the page headers). The script needs Python 3 with `numpy` and `Pillow`. Run `python3 tools/mandelbrot.py <region>` after adding or changing a region.
