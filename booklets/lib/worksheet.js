@@ -5,10 +5,11 @@
 // the columns.
 //
 // Gradual release in each YOU DO section (as on the Freefall sheets):
-//   column 1  the first question is answered for you, then answer on the line
-//   column 2  the first question is fully worked, the next has only the answers left blank, the next has every number
-//             blank, then the lines are blank
+//   column 1  the first question of each round is answered for you, then answer on the line
+//   column 2  the first question of each round is fully worked, the next has only the answers left blank, the next
+//             has every number blank, then the lines are blank
 //   column 3  the first question has only the answers blank, the next has every number blank, then blank lines
+// Each round (each speech bubble) starts with WE DO examples: one of each kind of question that follows.
 //
 // content: [column 1 rounds, column 2 rounds, column 3 rounds]; a round is { text, gen }, gen() => { q, a, lines }
 // where lines is the working (one step a line, the answer last). See year7-worksheets/ch01-integers/content.js.
@@ -41,37 +42,39 @@ const work = (label, it, level, minLines) => {
 };
 
 // A pool of different questions from a generator (a question of '' means "skip this one").
-const pool = (gen, n = 40) => { const seen = new Set(), out = []; for (let t = 0; out.length < n && t < n * 30; t++) { const it = gen(); if (!it || !it.q || seen.has(it.q)) continue; seen.add(it.q); out.push(it); } return out; };
+// gen(i) is told the index of the question it makes, so rounds with several kinds of question (kinds: n) take turns.
+const pool = (gen, n = 40) => { const seen = new Set(), out = []; for (let t = 0; out.length < n && t < n * 30; t++) { const it = gen(out.length); if (!it || !it.q || seen.has(it.q)) continue; seen.add(it.q); out.push(it); } return out; };
 
 // numberLine: { min, max } puts a number line across the top of the page for students to use.
 module.exports = ({ code, title, numberLine }, content) => (chapter) => {
   // The room in a column is about 260 mm. Estimated heights (mm) decide how many questions fit.
-  const ROOM = numberLine ? 240 : 258, BUBBLE = 13, TAG = 5;
+  const ROOM = numberLine ? 238 : 258, BUBBLE = 13, TAG = 5;
   const lineCount = (t, chars) => Math.max(1, Math.ceil(plainText(t).length / chars));
   const hQuick = (it) => 3.2 + 4.2 * lineCount(it.q, 20);
   const hWork = (two) => (it) => 2.6 + 4.2 * lineCount(it.q, two ? 15 : 31) + Math.max(two ? 2 : 2, (it.lines || [1]).length) * 6.2;
   let n = 0;
   const answers = [], examples = [];
 
+  // Every round starts with WE DO: one example of each kind of question in it (two when there is only one kind and
+  // it opens the column), laid out just like the questions. Then YOU DO, fading from worked to blank.
   const column = (c, rounds) => {
     const side = c === 2 ? 'right' : 'left';
-    let left = ROOM, html = '', youCount = 0;
+    let left = ROOM, html = '', ex = 0;
     rounds.forEach((rd, r) => {
       const items = pool(rd.gen);
       const two = c === 2 && items.every((it) => plainText(it.q).length <= 17 && (it.lines || []).every((l) => plainText(l).length <= 18));
       const h = c === 1 ? hQuick : hWork(two);
-      const perRow = two ? 2 : 1;
+      const perRow = two ? 2 : 1, set = c === 1 ? 'list' : two ? 'two' : 'one';
       left -= BUBBLE;
       html += bubble(rd.text, side);
-      let exHtml = '';
-      if (r === 0) {
-        const ex = items.splice(0, 2);
-        ex.forEach((it, i) => examples.push(`Column ${c} example ${i + 1}: ${it.q} → ${(it.lines || [it.a]).join('; ')}`));
-        const exCells = ex.map((it, i) => (c === 1 ? quick(`E${i + 1}`, it) : work(`E${i + 1}`, it, 'blank', (it.lines || [1]).length)));
-        exHtml = `<div class="ff-tag we"><span class="zone-pill">WE DO</span><span>With your teacher: copy the working.</span></div><div class="ff-set we ${c === 1 ? 'list' : two ? 'two' : 'one'}">${exCells.join('')}</div><div class="ff-tag you"><span class="zone-pill">YOU DO</span><span>Your turn.</span></div>`;
-        left -= 2 * TAG + (two ? h(ex[0]) : ex.reduce((t, it) => t + h(it), 0)) + 2;
-      }
-      const room = r === 0 && rounds[1] ? left * 0.62 : left;
+      const exItems = items.splice(0, rd.kinds || (r === 0 ? 2 : 1));
+      exItems.forEach((it) => examples.push(`Column ${c}, E${++ex}: ${it.q} → ${(it.lines || [it.a]).join('; ')}`));
+      const exCells = exItems.map((it, i) => (c === 1 ? quick(`E${ex - exItems.length + i + 1}`, it) : work(`E${ex - exItems.length + i + 1}`, it, 'blank', (it.lines || [1]).length)));
+      html += `<div class="ff-tag we"><span class="zone-pill">WE DO</span><span>With your teacher: copy the working.</span></div><div class="ff-set we ${set}">${exCells.join('')}</div><div class="ff-tag you"><span class="zone-pill">YOU DO</span><span>Your turn.</span></div>`;
+      let exH = 0;
+      for (let k = 0; k < exItems.length; k += perRow) exH += Math.max(...exItems.slice(k, k + perRow).map(h));
+      left -= 2 * TAG + exH + 2;
+      const room = r < rounds.length - 1 ? left * (rounds.length === 2 ? 0.55 : 0.4) : left;
       const out = []; let used = 0;
       for (let i = 0; i < items.length; i += perRow) {
         const row = items.slice(i, i + perRow), hh = Math.max(...row.map(h));
@@ -79,12 +82,13 @@ module.exports = ({ code, title, numberLine }, content) => (chapter) => {
         used += hh; out.push(...row);
       }
       left -= used;
-      const cells = out.map((it) => {
-        const k = youCount++, label = String(++n);
+      const cells = out.map((it, k) => {
+        const label = String(++n);
         answers.push(it.a);
-        return c === 1 ? quick(label, it, k === 0) : work(label, it, (r === 0 && LEVELS[c][k]) || 'blank', 2);
+        return c === 1 ? quick(label, it, k === 0) : work(label, it, LEVELS[c][k] || 'blank', 2);
       });
-      html += `${exHtml}<div class="ff-set ${c === 1 ? 'list' : two ? 'two' : 'one'}">${cells.join('')}</div>`;
+      // Any spare room in the column is shared out between the YOU DO sets, as extra writing space.
+      html += `<div class="ff-set fill ${set}" style="flex-grow:${Math.max(1, Math.round(used))}">${cells.join('')}</div>`;
     });
     return html;
   };

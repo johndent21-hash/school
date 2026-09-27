@@ -681,19 +681,16 @@ ul.plain { list-style: none; padding-left: 0; }
 .ws-nl svg.graph { flex: 1; width: auto; height: 13mm; }
 /* worksheet booklet cover */
 .wsc { background: #fff; overflow: hidden; }
-.wsc .wsc-band { height: 66mm; padding-left: 14mm; }
-.wsc .mbc-titles h1 span { color: #8fa3ea; }
-.wsc .mbc-name { gap: 0.6mm; }
-.wsc-art { position: absolute; top: 66mm; left: 0; right: 0; bottom: 0; background: 72% center / cover no-repeat; }
-.wsc-panel { position: absolute; left: 14mm; top: 104mm; width: 104mm; background: rgba(255,255,255,0.93); border-radius: 3mm; border-left: 2.5mm solid var(--accent); padding: 7mm 8mm 6mm; box-shadow: 0 1.5mm 5mm rgba(40,40,60,0.18); }
-.wsc-chapter { font-size: 10pt; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
-.wsc-panel h2 { font-size: 40pt; line-height: 1.02; margin: 1mm 0 4mm; color: var(--charcoal); }
-.wsc-levels { display: flex; gap: 2mm; margin-bottom: 3.5mm; }
-.wsc-levels .lvl-word { font-size: 10pt; padding: 0.6mm 2.6mm; }
-.wsc-how { font-size: 9.5pt; color: var(--charcoal); display: flex; align-items: center; gap: 1.5mm; flex-wrap: wrap; }
-.wsc-how .zone-pill { font-size: 7.5pt; }
-.wsc-how .zone-pill.we { background: var(--charcoal); }
-.wsc-how .zone-pill.you { background: var(--blue); }
-.wsc-credit { position: absolute; right: 8mm; bottom: 5mm; left: 80mm; text-align: right; font-size: 7pt; color: #fff; text-shadow: 0 0 1.5mm rgba(0,0,0,0.6); }
-.ws-nl { padding: 0.3mm 2mm; }
-.ws-nl svg.graph { width: 100% !important; height: 12.5mm !important; aspect-ratio: auto !important; max-height: none; }
+.wsc-art { position: absolute; top: 70mm; left: 0; right: 0; bottom: 0; background: 70% 30% / cover no-repeat; }
+.wsc-top { position: absolute; top: 12mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; align-items: flex-start; }
+.wsc-logo { height: 19mm; }
+.wsc-name { width: 58mm; display: grid; grid-template-columns: auto 1fr; gap: 3mm 2mm; align-items: end; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.wsc-name i { border-bottom: 0.3mm solid #b9b6ab; height: 5mm; }
+.wsc-titles { position: absolute; top: 42mm; left: 16mm; right: 16mm; }
+.wsc-year { font-size: 11pt; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--charcoal); }
+.wsc-chapter { font-size: 18pt; font-weight: 700; color: var(--accent); margin-top: 3mm; letter-spacing: 0.02em; }
+.wsc-titles h1 { font-size: 58pt; line-height: 1; margin: 0.5mm 0 0; color: var(--charcoal); letter-spacing: -0.01em; }
+.wsc-kind { display: inline-block; margin-top: 4mm; font-size: 9pt; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #fff; background: var(--charcoal); padding: 1mm 3mm; border-radius: 1mm; }
+.wsc-big { position: absolute; left: 12mm; bottom: 6mm; font-size: 190pt; font-weight: 700; line-height: 0.8; color: #fff; opacity: 0.9; text-shadow: 0 1mm 4mm rgba(30,30,60,0.35); }
+.wsc-credit { position: absolute; right: 10mm; bottom: 6mm; width: 90mm; text-align: right; font-size: 7pt; color: #fff; text-shadow: 0 0 1.5mm rgba(0,0,0,0.7); }
+.ff-set.fill { flex: 1 1 auto; align-content: space-between; }

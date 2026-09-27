@@ -21,30 +21,25 @@ const ART = {
 
 // Worksheet booklet cover, in the style of the revision booklets: the charcoal band with the title and name box,
 // then the booklet's Mandelbrot region across the whole page with a title panel. The lesson list is on page 2.
-const worksheetCover = (chapter, lessons) => {
-  const [first, ...rest] = chapter.title.split(' ');
-  return `
+// Worksheet booklet cover: clean and bold, so the chapter and year group stand out. White top with the logo, the
+// year group and the chapter title; the booklet's Mandelbrot region fills the lower page (the picture fades in from
+// white), with the chapter number over it. The lesson list is on page 2.
+const worksheetCover = (chapter) => `
 <section class="page mb-cover wsc">
-  <div class="mbc-band wsc-band">
-    <img class="mbc-logo" src="{{ASSETSREL}}/kingscliff-logo.png" alt="Kingscliff High School">
-    <div class="mbc-titles">
-      <span class="mbc-kicker">Mathematics · Year ${chapter.year} · Worksheet booklet</span>
-      <h1>Chapter ${chapter.number}: <span>${chapter.title}</span></h1>
-      <p class="mbc-sub">${lessons.length} worksheets · one for each exercise · ${lessons.length * 3} columns of practice</p>
-      <p class="mbc-outcome"><b>NSW syllabus outcome</b><br>${chapter.syllabus.replace(/^NSW Mathematics K–10 Syllabus \(2022\),?\s*/, '')}</p>
-    </div>
-    <div class="mbc-name"><span>Name</span><i></i><span>Class</span><i></i><span>Teacher</span><i></i></div>
-  </div>
   <div class="wsc-art" style="background-image:url(${mbImg(chapter, 'cover')})"></div>
-  <div class="wsc-panel">
-    <span class="wsc-chapter">Chapter ${chapter.number}</span>
-    <h2>${chapter.title}</h2>
-    <p class="wsc-levels"><b class="lvl-word l1">Easy</b><b class="lvl-word l2">Medium</b><b class="lvl-word l3">Challenging</b></p>
-    <p class="wsc-how"><span class="zone-pill we">WE DO</span> with your teacher, then <span class="zone-pill you">YOU DO</span> on your own</p>
+  <div class="wsc-top">
+    <img class="wsc-logo" src="{{ASSETSREL}}/kingscliff-logo.png" alt="Kingscliff High School">
+    <div class="wsc-name"><span>Name</span><i></i><span>Class</span><i></i></div>
   </div>
+  <div class="wsc-titles">
+    <p class="wsc-year">Year ${chapter.year} Mathematics</p>
+    <p class="wsc-chapter">Chapter ${chapter.number}</p>
+    <h1>${chapter.title}</h1>
+    <p class="wsc-kind">Worksheets</p>
+  </div>
+  <div class="wsc-big">${chapter.number}</div>
   <p class="wsc-credit">Artwork: ${ART[chapter.art] || ART['whole-set']}, part of the Mandelbrot set.</p>
 </section>`;
-};
 
 const cover = (chapter, lessons, { kind = chapter.format === 'worksheet' ? 'Worksheet booklet' : 'Lesson booklet', sub, list = true } = {}) => `
 <section class="page mb-cover">
