@@ -589,7 +589,47 @@ ul.plain { list-style: none; padding-left: 0; }
 .theme-mb .zone.grow .tplane .graph { height: 64mm; }
 .mbc-titles h1.long { font-size: 19pt; }
 .lvl-word.mini { font-size: 6.5pt; padding: 0 1.2mm; margin-right: 1.5mm; vertical-align: 1px; }
-:root { --accent: #c0392b; --mb-dark: url(../../assets/mandelbrot/c0392b-dark.png); }</style></head><body class="theme-mb">
+
+/* Mandelbrot art in the colours of the revision booklets: header band art fades in from the charcoal */
+.mb-band { background: linear-gradient(90deg, var(--charcoal) 42%, rgba(61,59,60,0.7) 62%, rgba(61,59,60,0.05) 88%), var(--mb-dark) right center / auto 100% no-repeat, var(--charcoal); }
+.mb-ack-art { background-position: center; }
+
+/* Skill drill pages */
+.howto > div.skill { grid-column: 1 / -1; background: #eef1fb; border: 0.8mm dashed var(--blue); }
+.howto > div.skill .zone-pill { background: var(--blue); }
+.banner.drill-b { background: #e4e9f8; border-left: 1.6mm solid var(--blue); }
+.drill-tag { background: var(--blue); color: #fff; font-weight: 700; font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6mm 2.2mm; border-radius: 1mm; }
+.zone.skill-zone { display: flex; flex-direction: column; }
+.drill-score { display: flex; gap: 5mm; align-items: baseline; background: #fff; border-radius: 1.5mm; padding: 1.4mm 3mm; font-size: 8.5pt; font-weight: 600; flex: none; }
+.drill-score i { display: inline-block; width: 16mm; border-bottom: 0.3mm solid #9aa6c8; margin-left: 1mm; }
+.drill-score .note { margin-left: auto; font-weight: 400; font-size: 7.5pt; color: var(--muted); }
+.round { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; gap: 1mm; }
+.round + .round { border-top: 0.4mm dashed #b8c3e0; padding-top: 1.5mm; }
+.round-h { display: flex; gap: 2.5mm; align-items: baseline; font-size: 9pt; flex: none; }
+.round-h b { color: #fff; background: var(--charcoal); border-radius: 1mm; padding: 0.2mm 2mm; font-size: 8pt; letter-spacing: 0.06em; text-transform: uppercase; }
+.round-h span { font-weight: 600; color: var(--blue); }
+.round .drill { flex: 1 1 auto; align-content: space-evenly; }
+.dq.work { grid-template-rows: auto 1fr; align-items: start; }
+.dq.work .box { grid-column: 1 / -1; min-height: 11mm; height: 100%; background: #fff; }
+.drill-score > span { white-space: nowrap; }
+.drill-score .note { white-space: normal; }
+.round .drill.work { align-content: stretch; grid-auto-rows: 1fr; }
+.dq.work .box { min-height: 14mm; }
+.dq .inline-fig { margin-top: 0.5mm; }
+.dq .inline-fig .graph { max-height: 22mm; max-width: 100%; width: auto; }
+.round { flex: 1 1 auto; }
+.dq .inline-fig .graph { max-height: 30mm; }
+.drill.c5 { grid-template-columns: repeat(5, 1fr); }
+.drill.c6 { grid-template-columns: repeat(6, 1fr); }
+.theme-mb .howto > div { padding: 2mm 3mm; }
+.theme-mb .howto { gap: 2mm 4mm; }
+.round-body { display: grid; grid-template-columns: auto 1fr; gap: 4mm; flex: 1 1 auto; align-items: center; }
+.round-fig { background: #fff; border-radius: 1.5mm; padding: 1.5mm; }
+.round-fig .graph { width: auto; height: auto; max-height: 78mm; max-width: 92mm; display: block; }
+.round-body .drill { height: 100%; }
+.round-fig { width: 84mm; }
+.round-fig .graph { width: 100%; max-width: none; }
+:root { --accent: #c0392b; --mb-dark: url(../../assets/mandelbrot/antenna-band.jpg); }</style></head><body class="theme-mb">
 <section class="page mb-cover">
   <div class="mbc-band">
     <img class="mbc-logo" src="../../assets/kingscliff-logo.png" alt="Kingscliff High School">
@@ -606,7 +646,7 @@ ul.plain { list-style: none; padding-left: 0; }
     <div class="mbc-badge"><span>Chapter</span><b>1</b></div>
     
   </div>
-  <div class="mbc-art" style="background-image:url(../../assets/mandelbrot/c0392b-light.png)"></div>
+  <div class="mbc-art" style="background-image:url(../../assets/mandelbrot/antenna-hw.jpg)"></div>
 </section>
 
 <section class="page mb">

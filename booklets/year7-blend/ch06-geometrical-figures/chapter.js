@@ -4,7 +4,7 @@ const blend = require('../../lib/blend');
 const D = (text, pairs, hw, cols = 3) => ({ text, cols, items: pairs.map((p) => p[0]), ans: pairs.map((p) => p[1]), hw });
 
 module.exports = blend(require('../../year7/ch06-geometrical-figures/chapter.js'), {
-  fileName: 'Year7-Ch06-Geometrical-figures-Lessons', pages: 6,
+  fileName: 'Year7-Ch06-Geometrical-figures-Lessons', art: 'period-3', skills: require('./skills'), pages: 6,
   more: {
     '6.01': { stems: ['Reflect, then translate the shape.', 'Rotate the shape about O.', 'Reflect, then rotate the shape.'],
       drill: D('Quick drill: a point is at (3, 2) on a grid. Where is it after the translation?', [['2 right', '(5, 2)'], ['3 up', '(3, 5)'], ['1 left, 2 down', '(2, 0)'], ['4 right, 1 up', '(7, 3)'], ['3 left, 2 up', '(0, 4)'], ['5 right, 2 down', '(8, 0)']], ['2 left, 4 up', '(1, 6)', 'A point at (3, 2) is translated. Where is it now?']) },

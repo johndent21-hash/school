@@ -1,7 +1,23 @@
 // Front pages and the homework booklet for the Mandelbrot-theme (blended) series.
 const { mbPage, youDo, q, qDraw, graphCard } = require('./layout');
 
-const mbImg = (chapter, kind) => `{{ASSETSREL}}/mandelbrot/${(chapter.accent || '#7d3c98').slice(1)}-${kind}.png`;
+const mbImg = (chapter, kind) => `{{ASSETSREL}}/mandelbrot/${chapter.art || 'whole-set'}-${kind}.jpg`;
+// Where in the Mandelbrot set each booklet's picture comes from (tools/mandelbrot.py draws them).
+const ART = {
+  antenna: 'the long antenna of the set along the negative real axis, dotted with tiny copies of the whole set',
+  seahorse: 'Seahorse Valley, the curling tails between the main body and the round bulb on its left',
+  tentacles: 'the tentacled edge of a small copy of the whole set, out on the antenna near −1.77',
+  'triple-spiral': 'a triple spiral on the edge of the top bulb',
+  elephant: 'Elephant Valley, the row of trunks along the right-hand edge of the main body',
+  valley: 'the valley between the main body and the left bulb, where the seahorses start',
+  'period-3': 'the top bulb of the set and the lacy edge around it',
+  'double-spiral': 'a double spiral deep inside Seahorse Valley',
+  dendrite: 'the thin branches (dendrites) that grow from the very top of the set',
+  'whole-set': 'the whole set, drawn on the complex number plane',
+  snowflake: 'snowflake-like branches between the main body and the top bulb',
+  feather: 'feathery spirals deep in Elephant Valley',
+  jellyfish: 'a jellyfish of spirals near the neck of the left bulb',
+};
 
 const cover = (chapter, lessons, { kind = 'Lesson booklet', sub, list = true } = {}) => `
 <section class="page mb-cover">
@@ -20,7 +36,7 @@ const cover = (chapter, lessons, { kind = 'Lesson booklet', sub, list = true } =
     <div class="mbc-badge"><span>Chapter</span><b>${chapter.number}</b></div>
     ${list ? `<div class="mbc-lessons">${lessons.map((l) => `<div><b>${l.code}</b>${l.title}</div>`).join('')}</div>` : ''}
   </div>
-  <div class="mbc-art" style="background-image:url(${mbImg(chapter, 'light')})"></div>
+  <div class="mbc-art" style="background-image:url(${mbImg(chapter, kind === 'Homework booklet' ? 'hw' : 'cover')})"></div>
 </section>`;
 
 const HOWTO = `
@@ -29,6 +45,7 @@ const HOWTO = `
       <div><span class="step">2</span><span>Every lesson has three levels: <b class="lvl-word l1">Easy</b>, then <b class="lvl-word l2">Medium</b>, then <b class="lvl-word l3">Challenging</b>. Work down the page: the questions get harder as you go.</span></div>
       <div class="we"><span class="zone-pill">WE DO</span><span><b>Grey boxes.</b> Your teacher works each example (parts a, b, c) on the board. <b>Copy every step</b> into the space.</span></div>
       <div class="you"><span class="zone-pill">YOU DO</span><span><b>Blue boxes.</b> Now it is your turn. Work on your own. Quick drill answers go on the line; show working in the boxes.</span></div>
+      <div class="skill"><span class="zone-pill">DRILL</span><span><b>Skill drill pages.</b> After the Easy and the Medium examples there is a full page of short practice questions. Work down the page, write answers on the lines, then mark it and record your score and time.</span></div>
       <div><span class="step">3</span><span>Finished early? Try the <b>extension</b>. At the end, <b>show off your skill</b> on the tear-off exit ticket and hand it in.</span></div>
       <div><span class="step">4</span><span>Missed a lesson? Each lesson ends with a <b>summary</b> with a worked example for every level. Start there.</span></div>
     </div>`;
@@ -44,10 +61,10 @@ const insideCover = (chapter, lessons) => mbPage(chapter, { title: chapter.title
     <p class="section-title">In this chapter you will</p>
     <ul class="goals">${chapter.goals.map((g) => `<li>${g}</li>`).join('')}</ul>
     <div class="mb-ack grow">
-      <div class="mb-ack-art" style="background-image:url(${mbImg(chapter, 'light')})"></div>
+      <div class="mb-ack-art" style="background-image:url(${mbImg(chapter, 'cover')})"></div>
       <div>
         <h3>About the artwork</h3>
-        <p>The pictures in this booklet are parts of the <b>Mandelbrot set</b>, drawn by a computer that repeats one simple rule, z → z² + c, thousands of times for every point. Maths can make beautiful things.</p>
+        <p>The pictures in this booklet are parts of the <b>Mandelbrot set</b>, drawn by a computer that repeats one simple rule, z → z² + c, thousands of times for every point. Every booklet shows a different part of the set: this one is ${ART[chapter.art] || ART['whole-set']}. Maths can make beautiful things.</p>
         <h3>Acknowledgement of Country</h3>
         <p>We acknowledge the Bundjalung people, the Traditional Custodians of the land on which Kingscliff High School stands, and pay our respects to Elders past and present.</p>
       </div>

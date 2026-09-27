@@ -10,7 +10,7 @@ const stat = (fn, sets, lab) => sets.map((xs) => [xs.join(', '), lab(xs)]);
 const s1 = sp('10.01');
 
 module.exports = blend(base, {
-  fileName: 'Year7-Ch10-Analysing-Data-Lessons', pages: 6,
+  fileName: 'Year7-Ch10-Analysing-Data-Lessons', art: 'snowflake', skills: require('./skills'), pages: 6,
   more: {
     '10.01': { exFigs: [s1.a.fig, s1.b.fig, s1.c.fig], stems: ['Use the sector graph.', 'Use the picture graph.', 'Use the line graph.'],
       we: [...s1.we.slice(0, 5), 'Describe the trend from January to July.'], ans: { ...s1.ans, we: [...s1.ans.we.slice(0, 5), 'it falls steadily to a low in July'] },

@@ -5,7 +5,7 @@ const cls = (d) => (d < 90 ? 'acute' : d === 90 ? 'right' : d < 180 ? 'obtuse' :
 const deg = (xs) => xs.map((x) => `${x}°`);
 
 module.exports = blend(require('../../year7/ch02-angles/chapter.js'), {
-  fileName: 'Year7-Ch02-Angles-Lessons', pages: 6,
+  fileName: 'Year7-Ch02-Angles-Lessons', art: 'seahorse', skills: require('./skills'), pages: 6,
   more: {
     '2.01': { stems: ['Name the angle, then draw an angle from its name.', 'Name the angles at O.', 'Name the marked angle, then answer the question.'],
       drill: { text: 'Quick drill: which letter is the vertex of each angle?', cols: 4, items: ['∠ABC', '∠PQR', '∠XYZ', '∠DEF', '∠MNK', '∠STU', '∠GHJ', '∠BKT'], ans: ['B', 'Q', 'Y', 'E', 'N', 'T', 'H', 'K'], hw: ['∠LMN', 'M', 'Which letter is the vertex?'] } },

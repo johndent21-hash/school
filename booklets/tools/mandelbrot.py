@@ -1,56 +1,94 @@
-"""Draws the Mandelbrot set artwork for the blended booklet series, tinted to each booklet's colour.
+"""Draws the Mandelbrot set artwork for the blended booklet series.
 
-  python3 tools/mandelbrot.py            (needs numpy and Pillow)
+  python3 tools/mandelbrot.py            (needs numpy and Pillow; about a minute)
+  python3 tools/mandelbrot.py seahorse   (one region only)
 
-Writes assets/mandelbrot/<hex>-light.png (cover strip: pale field, dark set) and <hex>-dark.png (header band: charcoal field, glowing edge).
+The colours match the strip on the revision booklet covers: a soft periwinkle field, bright blue filaments close to
+the set, and a charcoal set. Each booklet shows a different region of the set (REGIONS below; the chapter file names
+its region with `art`). For each region it writes, in assets/mandelbrot/:
+  <region>-cover.jpg  the cover picture (fades to white at the top)
+  <region>-band.jpg   the strip on the right of each page's header band
+  <region>-hw.jpg     a closer look at the same region, for the homework booklet's cover
 """
 import numpy as np
 from PIL import Image
 import os, sys
 
 OUT = os.path.join(os.path.dirname(__file__), '..', 'assets', 'mandelbrot')
-COLOURS = ['#c0392b', '#e67e22', '#b7950b', '#229954', '#148f77', '#0b5345', '#7d3c98', '#d63384', '#8d5524', '#6b8e23', '#00838f', '#7b1f4b', '#6c5b7b']
-CHARCOAL = np.array([0x3d, 0x3b, 0x3c]) / 255
 
-def rgb(h):
-    h = h.lstrip('#'); return np.array([int(h[i:i + 2], 16) for i in (0, 2, 4)]) / 255
+# c: centre, span: width of the view, it: iterations. hw: (x, y, width) of the homework picture (default: 4 times closer);
+# band: (x, y, width) of the header strip (default: the cover view, a little closer). The header shows the strip's right half.
+REGIONS = {
+    'antenna':        dict(c=(-1.45, 0.0), span=1.1, it=400, hw=(-1.7685, 0.0, 0.075), band=(-1.64, 0.0, 0.42)),            # Ch 1: the set along the real axis
+    'seahorse':       dict(c=(-0.7453, 0.1127), span=0.012, it=800),                               # Ch 2: seahorse valley
+    'tentacles':      dict(c=(-1.7690, 0.0056), span=0.006, it=1200, hw=(-1.7677, 0.0058, 0.002)),                                 # Ch 3: the edge of a small copy of the set on the antenna
+    'triple-spiral':  dict(c=(-0.0886, 0.6542), span=0.0045, it=900),                              # Ch 4
+    'elephant':       dict(c=(0.2925, 0.0155), span=0.012, it=800),                                # Ch 5A: elephant valley
+    'valley':         dict(c=(-0.748, 0.1), span=0.05, it=700),                                    # Ch 5B: the valley between the bulbs
+    'period-3':       dict(c=(-0.1225, 0.745), span=0.6, it=500, hw=(-0.1225, 0.745, 0.35), band=(-0.37, 0.745, 1.0)),                                 # Ch 6: the top bulb
+    'double-spiral':  dict(c=(-0.7437, 0.1318), span=0.004, it=900),                               # Ch 7
+    'dendrite':       dict(c=(-0.16, 1.0405), span=0.035, it=800),                                 # Ch 8
+    'whole-set':      dict(c=(-0.6, 0.0), span=3.0, it=300, hw=(-0.16, 1.0405, 0.25), band=(-1.65, 0.0, 3.4)),             # Ch 9: the whole set on the number plane
+    'snowflake':      dict(c=(-0.5582, 0.6353), span=0.035, it=700),                               # Ch 10
+    'feather':        dict(c=(0.3245, 0.04855), span=0.004, it=1200),                              # Ch 11
+    'jellyfish':      dict(c=(-1.25066, 0.02012), span=0.0012, it=1200),                           # Ch 12
+}
 
-def escape(w, h, cx, cy, span, it=160):
+STOPS = [(0.0, (190, 197, 222)), (0.45, (168, 181, 222)), (0.7, (140, 162, 232)), (0.86, (96, 128, 236)), (0.95, (60, 80, 170)), (1.0, (40, 44, 70))]
+INSIDE = (50, 49, 45)
+
+
+def escape(w, h, cx, cy, span, it):
+    """Smooth escape count for each pixel; -1 inside the set."""
     x = np.linspace(cx - span / 2, cx + span / 2, w)
-    y = np.linspace(cy - span * h / w / 2, cy + span * h / w / 2, h)
-    c = x[None, :] + 1j * y[:, None]
-    z = np.zeros_like(c); n = np.zeros(c.shape); alive = np.ones(c.shape, bool)
+    y = np.linspace(cy + span * h / w / 2, cy - span * h / w / 2, h)
+    c = (x[None, :] + 1j * y[:, None]).ravel()
+    n = np.full(c.size, -1.0)
+    # Skip the main cardioid and the period-2 bulb: they are inside, and would cost every iteration.
+    q = (c.real - 0.25) ** 2 + c.imag ** 2
+    known = (q * (q + (c.real - 0.25)) <= 0.25 * c.imag ** 2) | ((c.real + 1) ** 2 + c.imag ** 2 <= 1 / 16)
+    idx = np.nonzero(~known)[0]; cf = c[idx]; zf = np.zeros_like(cf)
     for i in range(it):
-        z[alive] = z[alive] ** 2 + c[alive]
-        esc = alive & (np.abs(z) > 4)
-        n[esc] = i + 1 - np.log2(np.log(np.abs(z[esc])) + 1e-9)
-        alive &= ~esc
-    n[alive] = -1
-    return n
+        zf = zf * zf + cf
+        esc = np.abs(zf) > 16
+        if esc.any():
+            n[idx[esc]] = i + 1 - np.log2(np.log(np.abs(zf[esc])))
+            keep = ~esc; zf, cf, idx = zf[keep], cf[keep], idx[keep]
+        if idx.size == 0:
+            break
+    return n.reshape(h, w)
 
-def render(n, colour, mode):
+
+def colour(n, it):
     inside = n < 0
-    t = np.clip(np.where(inside, 0, n) / (40 if mode == 'light' else 90), 0, 1) ** (0.55 if mode == 'light' else 0.8)  # 0 = far away, 1 = close to the set
-    acc = rgb(colour)
-    if mode == 'light':
-        field = np.array([1, 1, 1]) * 0.97
-        tint = acc * 0.55 + 0.45  # pale accent
-        img = field[None, None, :] * (1 - t[..., None]) + tint[None, None, :] * t[..., None]
-        edge = np.clip((t - 0.75) / 0.25, 0, 1)[..., None]
-        img = img * (1 - edge) + acc[None, None, :] * edge
-        img[inside] = CHARCOAL
-    else:
-        img = CHARCOAL[None, None, :] * (1 - t[..., None]) + acc[None, None, :] * t[..., None]
-        glow = np.clip((t - 0.8) / 0.2, 0, 1)[..., None]
-        img = img * (1 - glow) + (acc * 0.4 + 0.6)[None, None, :] * glow
-        img[inside] = CHARCOAL * 0.55
-    return Image.fromarray((np.clip(img, 0, 1) * 255).astype('uint8'))
+    t = np.clip(np.log1p(np.where(inside, 0, n)) / np.log1p(it * 0.6), 0, 1)
+    img = np.zeros(n.shape + (3,))
+    for (a, ca), (b, cb) in zip(STOPS, STOPS[1:]):
+        m = (t >= a) & (t <= b); f = ((t - a) / (b - a))[m][:, None]
+        img[m] = np.array(ca) * (1 - f) + np.array(cb) * f
+    img[inside] = INSIDE
+    return img
+
+
+def save(img, path, fade=0.0):
+    if fade:  # fade into the white page at the top, as on the revision booklet covers
+        h = img.shape[0]
+        a = (np.clip(np.arange(h) / (h * fade), 0, 1) ** 1.5)[:, None, None]
+        img = img * a + 255 * (1 - a)
+    Image.fromarray(np.clip(img, 0, 255).astype('uint8')).save(path, quality=86, optimize=True)
+
+
+def draw(name, r):
+    (cx, cy), span, it = r['c'], r['span'], r['it']
+    save(colour(escape(2400, 1100, cx, cy, span, it), it), os.path.join(OUT, f'{name}-cover.jpg'), fade=0.14)
+    bx, by, bs = r.get('band', (cx, cy, span * 0.6))
+    save(colour(escape(2400, 260, bx, by, bs, it), it), os.path.join(OUT, f'{name}-band.jpg'))
+    hx, hy, hs = r.get('hw', (cx, cy, span / 4))
+    save(colour(escape(2400, 1100, hx, hy, hs, it + 300), it + 300), os.path.join(OUT, f'{name}-hw.jpg'), fade=0.14)
+    print('written', name, flush=True)
+
 
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
-    wide = escape(2400, 420, -1.25, 0.0, 2.7)          # the antenna and the left bulbs, the main body at the right edge (cover strip)
-    band = escape(2400, 240, -1.768, 0.0, 0.2, 300)   # the small copy of the set on the antenna (header band)
-    for c in COLOURS:
-        render(wide, c, 'light').save(os.path.join(OUT, f'{c[1:]}-light.png'), optimize=True)
-        render(band, c, 'dark').save(os.path.join(OUT, f'{c[1:]}-dark.png'), optimize=True)
-        print('written', c)
+    for name in sys.argv[1:] or REGIONS:
+        draw(name, REGIONS[name])

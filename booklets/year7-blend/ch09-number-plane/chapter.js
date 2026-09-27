@@ -9,7 +9,7 @@ const quad = ([x, y]) => (x === 0 && y === 0 ? 'origin' : x === 0 ? 'y-axis' : y
 const pt = ([x, y]) => `(${String(x).replace('-', '−')}, ${String(y).replace('-', '−')})`;
 
 module.exports = blend(base, {
-  fileName: 'Year7-Ch09-Number-plane-Lessons', pages: 6,
+  fileName: 'Year7-Ch09-Number-plane-Lessons', art: 'whole-set', skills: require('./skills'), pages: 6,
   more: {
     '9.01': { hwFig: map, exFigs: [map, map, map], stems: ['Use the map. What is at each grid reference?', 'Use the map. Write the grid references.', 'Use the map, then explain.'],
       drill: D('Quick drill: use the map in Set A. What is at:', [['B2', 'car park'], ['C3', 'car park'], ['G2', 'lake'], ['B8', 'stadium'], ['I8', 'student centre'], ['H10', 'main campus']], ['I10', 'main campus', 'Use the campus map. What is at the grid reference?']) },

@@ -9,7 +9,7 @@ const rat = (...xs) => { const g = xs.reduce((a, b) => gcd(a, b)); return xs.map
 const s11 = sp('12.11');
 
 module.exports = blend(base, {
-  fileName: 'Year7-Ch12-Ratios-rates-and-time-Lessons', pages: 4,
+  fileName: 'Year7-Ch12-Ratios-rates-and-time-Lessons', art: 'jellyfish', skills: require('./skills'), pages: 4,
   more: {
     '12.01': { stems: ['Write the ratio of shaded to unshaded parts.', 'Write each ratio in the order the words give.', 'Write the ratio, then explain.'],
       drill: D('Quick drill: 8 red and 5 blue marbles. Write the ratio of:', [['red to blue', '8 : 5'], ['blue to red', '5 : 8'], ['red to all', '8 : 13'], ['blue to all', '5 : 13']], ['all to red', '13 : 8', 'A bag has 8 red and 5 blue marbles. Write the ratio.'], 2) },

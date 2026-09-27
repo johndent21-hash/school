@@ -114,8 +114,8 @@ Each chapter builds four PDFs:
 
 | File | What it is |
 | --- | --- |
-| `*-Lessons.pdf` | One lesson per exercise, each one hour long. A lesson is 4 or 6 pages, set per chapter or per lesson. |
-| `*-Lessons-Answers.pdf` | Teacher answers, including the WE DO examples and the quick drill. |
+| `*-Lessons.pdf` | One lesson per exercise, each one hour long. A lesson is 4 or 6 pages (set per chapter or per lesson), plus two Skill drill pages, so 6 or 8 pages. |
+| `*-Lessons-Answers.pdf` | Teacher answers, including the WE DO examples, the quick drill and both Skill drill pages. |
 | `*-Homework.pdf` | A short mixed revision booklet (Easy, then Medium, then Challenging) that covers every lesson. |
 | `*-Homework-Answers.pdf` | Answers to the homework. |
 
@@ -123,7 +123,7 @@ Chapter 5 is split into `ch05a-algebra` (5.01 to 5.09) and `ch05b-equations` (5.
 
 How it fits together:
 
-- **`lib/blend.js`**: `blend(require('../../year7/chXX/chapter.js'), { fileName, pages, accent, only, chapter, more })` reuses each lesson's content from `year7/`. `more['5.04']` adds to or replaces fields of that lesson.
+- **`lib/blend.js`**: `blend(require('../../year7/chXX/chapter.js'), { fileName, art, skills, pages, accent, only, chapter, more })` reuses each lesson's content from `year7/`. `art` names the booklet's Mandelbrot region, `skills` is the chapter's `skills.js`, and `more['5.04']` adds to or replaces fields of that lesson.
 - **`lib/lesson-blend.js`**: the lesson template. Its spec options are listed at the top of the file. The main ones are:
 
   | Option | What it does |
@@ -137,4 +137,9 @@ How it fits together:
   | `hwFig` | A diagram that homework questions can use. |
 
 - **`lib/blend-front.js`**: the cover, the inside cover (with a progress tracker) and the homework booklet. The homework builder leaves out questions that only make sense inside the lesson, such as ones that refer to "Set A" or "Example 2", or that need a diagram it doesn't have.
-- **`tools/mandelbrot.py`**: draws the Mandelbrot artwork for each accent colour into `assets/mandelbrot/`. It needs Python 3 with `numpy` and `Pillow`. Run it again only if you add a new accent colour.
+- **Skill drill pages**: each lesson has two full pages of short practice questions. The first comes after the Easy level (the basics) and the second after the Medium level. Each chapter's `skills.js` maps a lesson code to a function that returns `{ easy: [round, …], medium: [round, …] }`. A round is `{ text, items, ans, cols, work, fig }`:
+  - `work` gives each question a working box.
+  - `fig` shows a map, graph or number plane beside the questions.
+
+  `lib/drill.js` supplies the seeded random helpers (`round`, `list`, `ri`, `pick`, …), so every booklet builds the same each time and every answer is calculated. `lib/algebra.js` writes algebra neatly (italic pronumerals, collected like terms).
+- **`tools/mandelbrot.py`**: draws the artwork in the colours of the revision booklet covers: a periwinkle field, blue filaments and a charcoal set. Each booklet shows a different region of the set (`REGIONS`, named by `art` in the chapter file). Each region has three images in `assets/mandelbrot/`: `-cover` (the lesson booklet cover), `-hw` (a closer view for the homework cover) and `-band` (the page headers). The script needs Python 3 with `numpy` and `Pillow`. Run `python3 tools/mandelbrot.py <region>` after adding or changing a region.

@@ -11,7 +11,7 @@ const hcf = (a, b) => String(gcd(a, b));
 const lcm = (a, b) => String((a * b) / gcd(a, b));
 
 module.exports = blend(require('../../year7/ch03-whole-numbers/chapter.js'), {
-  fileName: 'Year7-Ch03-Whole-numbers-Lessons', pages: 4,
+  fileName: 'Year7-Ch03-Whole-numbers-Lessons', art: 'tentacles', skills: require('./skills'), pages: 4,
   more: {
     '3.01': { stems: ['Round 87 531 to the place given.', 'Estimate by rounding each number first.', 'Estimate by rounding each number first.'],
       drill: { text: 'Quick drill: round to the nearest hundred.', cols: 4, items: ['348', '1250', '7963', '15 049', '99 950', '608'], ans: [348, 1250, 7963, 15049, 99950, 608].map((n) => round(n, 100)), hw: ['4 862', '4900', 'Round to the nearest hundred.'] } },

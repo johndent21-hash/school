@@ -8,7 +8,7 @@ const P = (n, d) => { if (n === 0) return '0'; if (n === d) return '1'; const [a
 const D = (text, pairs, hw, cols = 3) => ({ text, cols, items: pairs.map((p) => p[0]), ans: pairs.map((p) => p[1]), hw });
 
 module.exports = blend(base, {
-  fileName: 'Year7-Ch11-Probability-Lessons', pages: 4,
+  fileName: 'Year7-Ch11-Probability-Lessons', art: 'feather', skills: require('./skills'), pages: 4,
   more: {
     '11.01': { exFigs: [undefined, undefined, sp('11.01').b.fig], stems: ['List the sample space.', 'List all the possible outcomes.', 'Use the spinner, then list the outcomes.'],
       drill: D('Quick drill: how many outcomes are in the sample space?', [['tossing a coin', '2'], ['rolling a die', '6'], ['choosing a month', '12'], ['choosing a letter of the alphabet', '26'], ['spinning A, B, C, D, E', '5'], ['choosing a card suit', '4']], ['choosing a day of the week', '7', 'How many outcomes are in the sample space?']) },

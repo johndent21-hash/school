@@ -1,10 +1,13 @@
-// Blended lesson template: the one-hour WE DO / YOU DO lesson, plus the quick drill of the revision booklets.
-// Each lesson is 4 or 6 pages (spec.pages), chosen by how much room its diagrams and working need.
+// Blended lesson template: the one-hour WE DO / YOU DO lesson, plus the drill practice of the revision booklets.
+// Each lesson is 4 or 6 pages (spec.pages), chosen by how much room its diagrams and working need, plus two
+// Skill drill pages (spec.skills: page 1 practises the Easy basics, page 2 the Medium basics):
 //
-//  4 pages: 1 start here, Level 1 (Easy) WE DO + quick drill · 2 Easy set B, Level 2 (Medium) WE DO + set C
-//           3 Level 3 (Challenging) WE DO + set D, exit ticket · 4 extension, summary, back of the ticket
-//  6 pages: 1 start here, Level 1 WE DO · 2 quick drill + Easy set B · 3 Level 2 WE DO + set C
-//           4 Level 3 WE DO + set D · 5 extension + exit ticket · 6 summary + back of the ticket
+//  4 (+2) pages: 1 start here, Level 1 (Easy) WE DO + quick drill · 2 Skill drill 1 · 3 Easy set B, Level 2 (Medium)
+//           WE DO + set C · 4 Skill drill 2 · 5 Level 3 (Challenging) WE DO + set D, exit ticket
+//           · 6 extension, summary, back of the ticket
+//  6 (+2) pages: 1 start here, Level 1 WE DO · 2 quick drill + Easy set B · 3 Skill drill 1 · 4 Level 2 WE DO + set C
+//           · 5 Skill drill 2 · 6 Level 3 WE DO + set D · 7 extension + exit ticket · 8 summary + back of the ticket
+// The exit ticket is always on an odd page, so the page after it (the back of the ticket) is left free.
 //
 // The spec is the same as lib/lesson.js (use the .spec kept on each lesson) plus:
 //   pages: 4 | 6
@@ -16,6 +19,8 @@
 //   exFigs: [fig, fig, fig]            a diagram shown inside each default example
 //   stems: ['..', '..', '..']           clear instructions for the three default examples (when ex is not given)
 //   hwFig: fig                         a diagram homework questions from this lesson may use (e.g. a map)
+//   skills: { easy: [round, round], medium: [round, round] }   the Skill drill pages (see lib/drill.js); a round
+//                                       may have a fig (a map or number plane its questions use), shown beside them
 // A part is text, { t, fig } or { t, draw }. Parts are never worked: the teacher works them live and students copy.
 const { banner, weDo, youDo, q, qDraw, worked, graphCard, split, makeLesson } = require('./layout');
 
@@ -77,6 +82,22 @@ const unref = (it) => (typeof it === 'string' ? it.replace(/^Use the map in Set 
 const pairExamples = (we, stems = [], figs = []) => [0, 1, 2].map((k) => ({ stem: stems[k] || 'Work through each part with your teacher.', fig: figs[k],
   parts: [we[2 * k], we[2 * k + 1]].map((p) => (figs[k] ? unref(p) : p)) }));
 
+// A Skill drill page: a banner, then rounds of short questions numbered 1, 2, 3, … down the page, a score box.
+const dqCell = (it, n, work) => `<div class="dq${work ? ' work' : ''}"><span class="q-num">${n}</span><span class="q-text">${withFig(it)}</span>${work ? '<span class="box"></span>' : '<span class="ans-line"></span>'}</div>`;
+const skillPage = (k, lvl, rounds) => {
+  const total = rounds.reduce((t, x) => t + x.items.length, 0);
+  let n = 0;
+  const body = rounds.map((x, i) => {
+    const cols = x.cols || 4, rows = Math.ceil(x.items.length / cols);
+    const from = n + 1; const cells = x.items.map((it) => dqCell(it, ++n, x.work)).join('');
+    const figs = x.items.some((it) => typeof it === 'object' && it.fig);
+    return `<div class="round" style="flex-grow:${rows * (figs ? 2.8 : x.work ? 2.2 : 1)}"><p class="round-h"><b>Round ${i + 1}</b><span>Questions ${from}–${n}: ${x.text}</span></p>${x.fig ? `<div class="round-body"><div class="round-fig">${x.fig}</div>` : ''}<div class="drill c${cols}${x.work ? ' work' : ''}">${cells}</div>${x.fig ? '</div>' : ''}</div>`;
+  }).join('');
+  return `<div class="banner drill-b"><span class="drill-tag">Skill drill ${k}</span><span class="banner-title">${lvl === 1 ? 'Easy basics: practise until it is automatic' : 'Medium basics: keep practising'}</span><span class="banner-note">${total} questions</span></div>
+    ${youDo(`<b class="lvl-word l${lvl}">${LEVEL_WORD[lvl]}</b> Skill drill ${k}. Work down the page, one round at a time. Write each answer on its line${rounds.some((x) => x.work) ? ' (show working in the box)' : ''}.`,
+    `<div class="drill-score"><span>Start time <i></i></span><span>Finish time <i></i></span><span>Score <i></i> / ${total}</span><span class="note">Mark it with your teacher. Aim to beat your time next lesson.</span></div>${body}`, 'grow skill-zone')}`;
+};
+
 module.exports = (spec) => (chapter) => {
   const Lx = makeLesson({ chapter, code: spec.code, title: spec.title });
   const six = (spec.pages || chapter.pages || 4) === 6;
@@ -104,6 +125,9 @@ module.exports = (spec) => (chapter) => {
         ${s.worked.map(([wq, st, wa, fig], i) => worked(i + 1, i === 3 ? 'Extension' : `Level ${i + 1}`, wq, st, `<b>Answer:</b> ${wa}`, fig ? `<div class="diagram">${fig}</div>` : '')).join('')}
       </div>`;
   const exit = Lx.exitTicket({ graph: spec.exit.fig || '', questions: spec.exit.qs });
+  const sk = spec.skills;
+  const drill1 = sk ? [Lx.page('Skill drill 1 · Easy', skillPage(1, 1, sk.easy))] : [];
+  const drill2 = sk ? [Lx.page('Skill drill 2 · Medium', skillPage(2, 2, sk.medium))] : [];
 
   const pages = six ? [
     Lx.page('Start here · Easy', `
@@ -117,11 +141,13 @@ module.exports = (spec) => (chapter) => {
       ${Q ? setZone(1, 'A2', Q, '', '') : ''}
       ${setZone(1, 'B', spec.b, '', 'grow')}
     `),
+    ...drill1,
     Lx.page('Medium', `
       ${banner(2, `Medium · ${qn(count(spec.c))}`)}
       ${exBlock(2, ex[1], 'tall', spec.exCols)}
       ${setZone(2, 'C', spec.c, h(1))}
     `),
+    ...drill2,
     Lx.page('Challenging', `
       ${banner(3, `Challenging · ${qn(count(spec.d))}`)}
       ${exBlock(3, ex[2], 'tall', spec.exCols)}
@@ -145,12 +171,14 @@ module.exports = (spec) => (chapter) => {
       ${exBlock(1, ex[0], '', spec.exCols)}
       ${setZone(1, 'A', A, h(0), aIsDrill && !spec.a.grow ? 'grow drill-zone' : 'grow')}
     `, { first: true }),
+    ...drill1,
     Lx.page('Easy · Medium', `
       ${setZone(1, 'B', spec.b, '', spec.b.grow ? 'grow' : '')}
       ${banner(2, `Medium · ${qn(count(spec.c))}`)}
       ${exBlock(2, ex[1], '', spec.exCols)}
       ${setZone(2, 'C', spec.c, h(1))}
     `),
+    ...drill2,
     Lx.page('Challenging · Exit ticket', `
       ${banner(3, `Challenging · ${qn(count(spec.d))} · then try the extension`)}
       ${exBlock(3, ex[2], '', spec.exCols)}
@@ -172,6 +200,7 @@ module.exports = (spec) => (chapter) => {
   const answers = [
     ['WE DO examples (teacher)', weAns],
     [`Easy · Set A${aIsDrill ? ' (quick drill)' : ''}`, aAns], ...(Q ? [['Easy · Set A2 (quick drill)', spec.drill.ans]] : []), ['Easy · Set B', A2.b], ['Medium · Set C', A2.c], ['Challenging · Set D', A2.d],
+    ...(sk ? [['Skill drill 1 (Easy basics)', sk.easy.flatMap((x) => x.ans)], ['Skill drill 2 (Medium basics)', sk.medium.flatMap((x) => x.ans)]] : []),
     ['Extension', A2.ext], ['Exit ticket', A2.exit.map((a, i) => `Level ${i + 1}: ${a}`)],
   ];
   if (spec.drill && spec.drill.items.length !== spec.drill.ans.length) throw new Error(`${spec.code}: drill has ${spec.drill.items.length} questions but ${spec.drill.ans.length} answers`);
@@ -179,5 +208,6 @@ module.exports = (spec) => (chapter) => {
   [['a', spec.a], ['b', spec.b], ['c', spec.c], ['d', spec.d]].forEach(([k, set]) => {
     if (!A2[k] || A2[k].length !== set.items.length) throw new Error(`${spec.code}: Set ${k.toUpperCase()} has ${set.items.length} questions but ${A2[k] ? A2[k].length : 0} answers`);
   });
+  if (sk) [...sk.easy, ...sk.medium].forEach((x) => { if (x.items.length !== x.ans.length) throw new Error(`${spec.code}: skill drill round "${x.text}" has ${x.items.length} questions but ${x.ans.length} answers`); });
   return { code: spec.code, title: spec.title, pages, answers, spec };
 };

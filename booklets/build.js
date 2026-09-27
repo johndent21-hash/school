@@ -179,7 +179,7 @@ const assemble = (front, lessons) => {
 
 const doc = (dir, title, body, extraCss = '') => `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8"><title>${title}</title>
-<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; --mb-dark: url(${assetsFor(dir)}/mandelbrot/${(chapter.accent || '#7d3c98').slice(1)}-dark.png); }${extraCss}</style></head><body class="${chapter.theme === 'mandelbrot' ? 'theme-mb' : ''}">${body.replaceAll('{{ASSETSREL}}', assetsFor(dir))}</body></html>`;
+<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; --mb-dark: url(${assetsFor(dir)}/mandelbrot/${chapter.art || 'whole-set'}-band.jpg); }${extraCss}</style></head><body class="${chapter.theme === 'mandelbrot' ? 'theme-mb' : ''}">${body.replaceAll('{{ASSETSREL}}', assetsFor(dir))}</body></html>`;
 
 const answersCss = `
   @page { size: A4; margin: 12mm 12mm 14mm; }
@@ -187,8 +187,12 @@ const answersCss = `
   .ans-lesson { break-inside: auto; }
   .ans-lesson h2 { break-inside: avoid; break-after: avoid; }
   .ans-block { break-inside: avoid; }
-  .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }`;
-const answerBlocks = (items) => items.map(([h, list]) => `<div class="ans-block"><h3>${h}</h3><ol>${list.map((a) => `<li>${a}</li>`).join('')}</ol></div>`).join('');
+  .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }
+  .theme-mb .ans-block ol.multi { columns: 3; column-gap: 8mm; }
+  .theme-mb .ans-block ol.multi li { break-inside: avoid; }
+  .theme-mb .ans-block { break-inside: auto; }`;
+// Long lists (the skill drills) flow into columns in the blended series (see .theme-mb .ans-block ol.multi).
+const answerBlocks = (items) => items.map(([h, list]) => `<div class="ans-block"><h3>${h}</h3><ol${list.length > 10 ? ' class="multi"' : ''}>${list.map((a) => `<li>${a}</li>`).join('')}</ol></div>`).join('');
 const answersHtml = (heading, lessons, pageLabel) => `
   <div class="ans-header"><h1>${heading}</h1></div>
   <div class="answers">
