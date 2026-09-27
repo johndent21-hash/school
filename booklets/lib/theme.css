@@ -676,3 +676,24 @@ ul.plain { list-style: none; padding-left: 0; }
 .ff-l { display: flex; align-items: flex-end; height: 6.2mm; border-bottom: 0.3mm solid var(--charcoal); font-style: normal; overflow: hidden; padding-left: 1mm; }
 .ff-l .ff-done { white-space: nowrap; padding-bottom: 0.4mm; }
 .ff-set.two .ff-done { font-size: 7.8pt; }
+.ws-nl { flex: none; display: flex; align-items: center; gap: 2mm; border: 0.4mm solid var(--charcoal); border-radius: 1.5mm; padding: 0.5mm 2mm; background: #fff; }
+.ws-nl span { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1.1; }
+.ws-nl svg.graph { flex: 1; width: auto; height: 13mm; }
+/* worksheet booklet cover */
+.wsc { background: #fff; overflow: hidden; }
+.wsc .wsc-band { height: 66mm; padding-left: 14mm; }
+.wsc .mbc-titles h1 span { color: #8fa3ea; }
+.wsc .mbc-name { gap: 0.6mm; }
+.wsc-art { position: absolute; top: 66mm; left: 0; right: 0; bottom: 0; background: 72% center / cover no-repeat; }
+.wsc-panel { position: absolute; left: 14mm; top: 104mm; width: 104mm; background: rgba(255,255,255,0.93); border-radius: 3mm; border-left: 2.5mm solid var(--accent); padding: 7mm 8mm 6mm; box-shadow: 0 1.5mm 5mm rgba(40,40,60,0.18); }
+.wsc-chapter { font-size: 10pt; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
+.wsc-panel h2 { font-size: 40pt; line-height: 1.02; margin: 1mm 0 4mm; color: var(--charcoal); }
+.wsc-levels { display: flex; gap: 2mm; margin-bottom: 3.5mm; }
+.wsc-levels .lvl-word { font-size: 10pt; padding: 0.6mm 2.6mm; }
+.wsc-how { font-size: 9.5pt; color: var(--charcoal); display: flex; align-items: center; gap: 1.5mm; flex-wrap: wrap; }
+.wsc-how .zone-pill { font-size: 7.5pt; }
+.wsc-how .zone-pill.we { background: var(--charcoal); }
+.wsc-how .zone-pill.you { background: var(--blue); }
+.wsc-credit { position: absolute; right: 8mm; bottom: 5mm; left: 80mm; text-align: right; font-size: 7pt; color: #fff; text-shadow: 0 0 1.5mm rgba(0,0,0,0.6); }
+.ws-nl { padding: 0.3mm 2mm; }
+.ws-nl svg.graph { width: 100% !important; height: 12.5mm !important; aspect-ratio: auto !important; max-height: none; }

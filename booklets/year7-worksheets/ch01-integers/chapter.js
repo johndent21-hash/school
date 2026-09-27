@@ -10,5 +10,5 @@ module.exports = {
   format: 'worksheet',
   homework: false,
   fileName: 'Year7-Ch01-Integers-Worksheets',
-  lessons: blended.lessons.map(({ spec }) => worksheet({ code: spec.code, title: spec.title }, content[spec.code](kit(`worksheet ${spec.code}`)))),
+  lessons: blended.lessons.map(({ spec }) => worksheet({ code: spec.code, title: spec.title, numberLine: { min: -15, max: 15 } }, content[spec.code](kit(`worksheet ${spec.code}`)))),
 };

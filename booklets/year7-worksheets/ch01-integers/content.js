@@ -64,7 +64,7 @@ module.exports = {
         { q: `The temperature is ${N(t)}°C and rises ${r}°C. What is the new temperature?`, a: `${N(t + r)}°C`, lines: [`${N(t)} + ${r}`, `= ${N(t + r)}°C`] },
         { q: `A lift at level ${N(l)} goes up ${f} floors. Which level is it on?`, a: `level ${N(l + f)}`, lines: [`${N(l)} + ${f}`, `= level ${N(l + f)}`] },
         { q: `Sam has $${m} and spends $${s} on credit. What is the balance?`, a: `−$${s - m}`, lines: [`${m} + (−${s})`, `= −$${s - m}`] },
-        { q: `Find the missing number: ${N(t)} + ☐ = ${N(t + r)}`, a: String(r), lines: [`from ${N(t)} to ${N(t + r)} is ${r} to the right`, `☐ = ${r}`] },
+        { q: `Find the missing number: ${N(t)} + ☐ = ${N(t + r)}`, a: String(r), lines: [`${N(t)} to ${N(t + r)}: ${r} right`, `☐ = ${r}`] },
       ][k];
     } }],
   ],

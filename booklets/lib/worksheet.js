@@ -13,6 +13,7 @@
 // content: [column 1 rounds, column 2 rounds, column 3 rounds]; a round is { text, gen }, gen() => { q, a, lines }
 // where lines is the working (one step a line, the answer last). See year7-worksheets/ch01-integers/content.js.
 const plainText = (t) => String(t).replace(/<[^>]+>/g, '');
+const D = require('./diagrams');
 
 // The worksheet's own character: the Mandelbrot set, with eyes.
 const mascot = (() => {
@@ -42,9 +43,10 @@ const work = (label, it, level, minLines) => {
 // A pool of different questions from a generator (a question of '' means "skip this one").
 const pool = (gen, n = 40) => { const seen = new Set(), out = []; for (let t = 0; out.length < n && t < n * 30; t++) { const it = gen(); if (!it || !it.q || seen.has(it.q)) continue; seen.add(it.q); out.push(it); } return out; };
 
-module.exports = ({ code, title }, content) => (chapter) => {
+// numberLine: { min, max } puts a number line across the top of the page for students to use.
+module.exports = ({ code, title, numberLine }, content) => (chapter) => {
   // The room in a column is about 260 mm. Estimated heights (mm) decide how many questions fit.
-  const ROOM = 258, BUBBLE = 13, TAG = 5;
+  const ROOM = numberLine ? 240 : 258, BUBBLE = 13, TAG = 5;
   const lineCount = (t, chars) => Math.max(1, Math.ceil(plainText(t).length / chars));
   const hQuick = (it) => 3.2 + 4.2 * lineCount(it.q, 20);
   const hWork = (two) => (it) => 2.6 + 4.2 * lineCount(it.q, two ? 15 : 31) + Math.max(two ? 2 : 2, (it.lines || [1]).length) * 6.2;
@@ -94,6 +96,7 @@ module.exports = ({ code, title }, content) => (chapter) => {
   });
   const body = `
     <div class="ws-title"><h2><span>${code}</span>${title}</h2><p>Year ${chapter.year} · Chapter ${chapter.number}: ${chapter.title}</p></div>
+    ${numberLine ? `<div class="ws-nl">${D.numberLine({ min: numberLine.min, max: numberLine.max, w: 176, h: 13 })}</div>` : ''}
     <div class="ff-frame">${cols.join('')}</div>`;
   const page = `
 <section class="page mb ws-page">

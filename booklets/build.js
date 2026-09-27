@@ -207,7 +207,7 @@ const jobs = []; // { dir, name, html, check }
   assetsRel = assetsFor(chapterDir);
   const lessons = chapter.lessons.map((make) => make(chapter));
   const MB = chapter.theme === 'mandelbrot' ? require('./lib/blend-front') : null;
-  const pages = MB ? assemble([() => MB.cover(chapter, lessons), () => MB.insideCover(chapter, lessons)], lessons)
+  const pages = MB ? assemble([() => (chapter.format === 'worksheet' ? MB.worksheetCover : MB.cover)(chapter, lessons), () => MB.insideCover(chapter, lessons)], lessons)
     : assemble([() => cover(lessons), () => insideCover(lessons)], lessons);
   if (MB && chapter.homework !== false) {
     const hw = MB.homework(chapter, lessons);
