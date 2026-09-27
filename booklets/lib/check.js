@@ -47,7 +47,7 @@ module.exports = () => {
     p.querySelectorAll('.q-text, .worked-q, .steps li, .worked-a, .given, .card li, .zone-text, .banner-title, .qs .q-text, td, th').forEach((el) => {
       if (el.scrollWidth > el.clientWidth + 2) out.push(`${pg}: text too wide for its box${label(el)} "${el.textContent.trim().slice(0, 40)}"`);
     });
-    p.querySelectorAll('.worked, .zone, .exit-q').forEach((el) => {
+    p.querySelectorAll('.worked, .zone, .exit-q, .ff-col').forEach((el) => {
       if (el.scrollHeight > el.clientHeight + 2) out.push(`${pg}: text cut off at the bottom of a ${el.className.split(' ')[0]}${label(el)}`);
     });
 
