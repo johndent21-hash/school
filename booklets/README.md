@@ -152,12 +152,16 @@ How it fits together:
 
 ## 9. Three-column worksheets (Freefall style)
 
-`year7-worksheets/ch01-integers` builds Chapter 1 as one-page worksheets in the style of the Freefall Mathematics sheets (`node build.js year7-worksheets/ch01-integers`). The template is `lib/worksheet.js`.
+`year7-worksheets/` builds every chapter (1 to 12, with 5A and 5B) as one-page worksheets in the style of the Freefall Mathematics sheets. Build one chapter with `node tools/fit-worksheets.js year7-worksheets/ch02-angles`. It builds the chapter, and if a page overflows it lowers that lesson's column room (saved in `room.json`) and builds again.
 
-- Each page has three columns that get harder from left to right: Easy, then Medium, then Challenging.
-- The top quarter of each column is WE DO: a speech bubble saying what to do, then the teacher's examples, left unworked with space for the working.
-- The rest of each column is YOU DO:
-  - **Column 1:** quick answers on a line.
-  - **Column 2:** two lines of working. The first questions carry a scaffold that fades.
-  - **Column 3:** three lines of working.
-- The content comes from `year7-blend` (examples, drill rounds, Set D and the extension). Questions are added to each column while they still fit. The scaffolds are listed in the chapter file.
+- **Columns:** each page has three columns that get harder from left to right: Easy, then Medium, then Challenging.
+- **Rounds:** every speech bubble starts a round. The round opens with WE DO examples, one for each kind of question in it, laid out like the questions. The YOU DO questions follow.
+- **Scaffolding:** the YOU DO questions fade from worked, to part-worked, to blank. The scaffolds are made from each question's working lines.
+- **Filling the column:** questions are added while they fit, and spare room becomes writing space.
+- **Template:** `lib/worksheet.js`. `lib/worksheet-chapter.js` builds a chapter from the blended chapter (its title, goals and lesson list) plus the chapter's `content.js`.
+- **`content.js`:** a lesson has three columns of rounds `{ text, gen, kinds?, fig?, fh?, one? }`.
+  - `gen(i)` returns `{ q, a, lines?, fig? }`.
+  - `lines` is the working, one step a line.
+  - `kinds: n` makes the kinds of question take turns.
+  - `fig` on a question draws a diagram under it. `fig` on a round draws a map, graph or timetable that the whole round uses.
+- **Cover:** the worksheet booklet has its own cleaner cover. Chapter 1 also has a number line across the top of every page (`numberLine` in its chapter file).

@@ -210,7 +210,7 @@ const spinner = ({ sectors, w = 36, h = 36 }) => {
   sectors.forEach((s, i) => {
     const sw = ((s.size || 1) / tot) * 360;
     const [x0, y0] = pt(cx, cy, r, a), [x1, y1] = pt(cx, cy, r, a - sw);
-    b += `<path d="M${cx},${cy} L${x0},${y0} A${r},${r} 0 ${sw > 180 ? 1 : 0} 1 ${x1},${y1} Z" fill="${fills[i % fills.length]}" stroke="${C.charcoal}" stroke-width="0.4"/>`;
+    b += `<path d="M${cx},${cy} L${x0},${y0} A${r},${r} 0 ${sw > 180 ? 1 : 0} 1 ${x1},${y1} Z" fill="${s.fill || fills[i % fills.length]}" stroke="${C.charcoal}" stroke-width="0.4"/>`;
     const [lx, ly] = pt(cx, cy, r * 0.62, a - sw / 2);
     b += T(lx, ly + 1.1, s.label, { size: 3.2, anchor: 'middle', weight: 700 });
     a -= sw;

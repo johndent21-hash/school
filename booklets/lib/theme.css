@@ -694,3 +694,26 @@ ul.plain { list-style: none; padding-left: 0; }
 .wsc-big { position: absolute; left: 12mm; bottom: 6mm; font-size: 190pt; font-weight: 700; line-height: 0.8; color: #fff; opacity: 0.9; text-shadow: 0 1mm 4mm rgba(30,30,60,0.35); }
 .wsc-credit { position: absolute; right: 10mm; bottom: 6mm; width: 90mm; text-align: right; font-size: 7pt; color: #fff; text-shadow: 0 0 1.5mm rgba(0,0,0,0.7); }
 .ff-set.fill { flex: 1 1 auto; align-content: space-between; }
+/* worksheet diagrams */
+.ff-fig { display: flex; align-items: center; justify-content: center; margin: 0.6mm 0 0.3mm; grid-column: 1 / -1; min-height: 0; }
+.ff-fig > svg.graph, .ff-rfig > svg.graph { width: 100% !important; height: 100% !important; max-width: 100%; max-height: 100%; aspect-ratio: auto !important; }
+.ff-fig .data-table, .ff-rfig .data-table { font-size: 7.5pt; }
+.ff-rfig { flex: none; display: flex; align-items: center; justify-content: center; background: #fff; border: 0.3mm solid #cfccc2; border-radius: 1mm; padding: 0.8mm; overflow: hidden; }
+.ff-rfig .sl { font-size: 8pt; }
+.ff-fcell { display: grid; grid-template-columns: auto 1fr; column-gap: 1.2mm; align-content: start; min-width: 0; }
+.ff-fcell .ff-a { grid-column: 1 / -1; height: 5.5mm; margin: 0 1mm; }
+.ff-set.figs { gap: 1.5mm 2.5mm; }
+.ff-frow { display: grid; grid-template-columns: auto 1fr 17mm; gap: 1.5mm; align-items: center; }
+.ff-frow .ff-q { grid-column: 2 / -1; }
+.ff-frow .ff-fig { grid-column: 2; margin: 0; }
+.ff-frow .ff-a { grid-column: 3; align-self: end; margin-bottom: 1mm; }
+.ff-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.ff-l.long .ff-done { font-size: 7pt; }
+/* worksheet diagrams: labels a little larger so they read clearly when a diagram is scaled down */
+.ff-fig svg text, .ff-rfig svg text { font-size: 3.3px; font-weight: 600; }
+.ff-l:has(.fr) { height: 8.4mm; }
+.ff-l .fr { font-size: 0.95em; }
+.ff-rfig .sl table { font-size: 9pt; }
+.ff-rfig .sl td.leaf { letter-spacing: 0.08em; }
+.ff-rfig .data-table { font-size: 7pt; width: 100%; table-layout: fixed; }
+.ff-rfig .data-table th, .ff-rfig .data-table td { padding: 0.5mm 0.6mm; white-space: nowrap; }

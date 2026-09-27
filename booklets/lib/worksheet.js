@@ -11,8 +11,13 @@
 //   column 3  the first question has only the answers blank, the next has every number blank, then blank lines
 // Each round (each speech bubble) starts with WE DO examples: one of each kind of question that follows.
 //
-// content: [column 1 rounds, column 2 rounds, column 3 rounds]; a round is { text, gen }, gen() => { q, a, lines }
-// where lines is the working (one step a line, the answer last). See year7-worksheets/ch01-integers/content.js.
+// content: [column 1 rounds, column 2 rounds, column 3 rounds]; a round is { text, gen, kinds?, fig?, fh?, one? },
+// gen(i) => { q, a, lines?, fig?, fh? } where lines is the working (one step a line, the answer last).
+//   fig, fh    a diagram under the question, printed near its drawn size (fh caps its height in mm). In column 1 a
+//              diagram question has the diagram in the middle of the row and the answer line on the right.
+//   round.fig  a diagram the whole round uses (a map, a graph, a timetable), shown under the speech bubble
+//   round.one  keep column 2 questions one to a row
+// See year7-worksheets/ch01-integers/content.js.
 const plainText = (t) => String(t).replace(/<[^>]+>/g, '');
 const D = require('./diagrams');
 
@@ -28,30 +33,54 @@ const bubble = (text, side) => `<div class="ff-talk ${side}">${side === 'right' 
 
 // Scaffolds made from the worked lines: 'full' shows them, 'answer' blanks the numbers on the last line,
 // 'numbers' blanks every number (the structure stays), 'blank' leaves empty lines.
-const NUM = /[−-]?\$?\d+(?:\.\d+)?/g;
-const scaffold = (lines, level) => lines.map((l, i) => (level === 'full' ? l : level === 'answer' ? (i === lines.length - 1 ? l.replace(NUM, '____') : l) : level === 'numbers' ? l.replace(NUM, '____') : ''));
+const NUM = /[−-]?\$?\d+(?: \d{3})*(?:\.\d+)?/g; // 6 160 is one number
+// A line with no numbers (a construction step, a reason) keeps its first two words and blanks the rest.
+// A line with no numbers (a word answer, a reason) keeps only a label before a colon ("vertex: ____").
+// Powers (cm², x³) are kept: their small digits are part of the unit or the letter, not an answer.
+const keepSup = (l, fn) => { const sups = []; const t = l.replace(/<sup>[^<]*<\/sup>/g, (m) => { sups.push(m); return `\u0001${'abcdefghij'[sups.length - 1]}\u0001`; }); return fn(t).replace(/\u0001([a-j])\u0001/g, (_, k) => sups['abcdefghij'.indexOf(k)]); };
+const blankLine = (l) => { NUM.lastIndex = 0; if (NUM.test(l.replace(/<sup>[^<]*<\/sup>/g, ''))) { NUM.lastIndex = 0; return keepSup(l, (t) => t.replace(NUM, '___')); } const k = l.indexOf(':'); return k > 0 && k < 24 ? `${l.slice(0, k + 1)} ________` : '________'; };
+const scaffold = (lines, level) => lines.map((l, i) => (level === 'full' ? l : level === 'answer' ? (i === lines.length - 1 ? blankLine(l) : l) : level === 'numbers' ? blankLine(l) : ''));
 const LEVELS = { 2: ['full', 'answer', 'numbers'], 3: ['answer', 'numbers'] };
 
 const num = (label, cls = '') => `<span class="ff-n ${cls}">${label}</span>`;
-const quick = (label, it, shown) => `<div class="ff-row">${num(label)}<span class="ff-q">${it.q}</span><span class="ff-a">${shown ? `<b class="ff-done">${it.a}</b>` : ''}</span></div>`;
+// Diagrams print close to the size they were drawn (1 unit = 1 mm, so labels stay about 7 pt), shrunk only to fit
+// the width available: about 36 mm beside a column 1 question, 56 mm across a working cell.
+const viewBox = (fig) => { const m = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(fig || ''); return m ? [+m[1], +m[2]] : null; };
+const figH = (it, width) => { if (!it.fig) return 0; const vb = viewBox(it.fig); return vb ? Math.min(it.fh || 24, vb[1] * Math.min(1.1, width / vb[0])) : it.fh || 20; };
+const figHtml = (it, width) => (it.fig ? `<div class="ff-fig" style="height:${figH(it, width).toFixed(1)}mm">${it.fig}</div>` : '');
+const quick = (label, it, shown) => (it.fig
+  ? `<div class="ff-frow">${num(label)}${it.q ? `<span class="ff-q">${it.q}</span>` : ''}${figHtml(it, 36)}<span class="ff-a">${shown ? `<b class="ff-done">${it.a}</b>` : ''}</span></div>`
+  : `<div class="ff-row">${num(label)}<span class="ff-q">${it.q}</span><span class="ff-a">${shown ? `<b class="ff-done">${it.a}</b>` : ''}</span></div>`);
 const work = (label, it, level, minLines) => {
   const ls = it.lines || [it.a];
   const shown = scaffold(ls, level);
   while (shown.length < minLines) shown.push('');
-  return `<div class="ff-cell">${num(label)}<span class="ff-q">${it.q}</span>${shown.map((l) => `<i class="ff-l">${l ? `<b class="ff-done${level === 'full' ? '' : ' part'}">${l}</b>` : ''}</i>`).join('')}</div>`;
+  return `<div class="ff-cell">${num(label)}<span class="ff-q">${it.q}</span>${figHtml(it, 56)}${shown.map((l) => `<i class="ff-l${plainText(l).length > 36 ? ' long' : ''}">${l ? `<b class="ff-done${level === 'full' ? '' : ' part'}">${l}</b>` : ''}</i>`).join('')}</div>`;
 };
 
 // A pool of different questions from a generator (a question of '' means "skip this one").
 // gen(i) is told the index of the question it makes, so rounds with several kinds of question (kinds: n) take turns.
-const pool = (gen, n = 40) => { const seen = new Set(), out = []; for (let t = 0; out.length < n && t < n * 30; t++) { const it = gen(out.length); if (!it || !it.q || seen.has(it.q)) continue; seen.add(it.q); out.push(it); } return out; };
+// A question may be only a diagram (q: ''); two questions are the same only if their text and diagram both match.
+const pool = (gen, n = 40) => {
+  const seen = new Set(), out = [];
+  for (let t = 0; out.length < n && t < n * 30; t++) {
+    // t: the attempt number, for generators that step through a list. null ends a finite list.
+    const it = gen(out.length, t); if (it === null) break; if (!it || !(it.q || it.fig)) continue;
+    const key = `${it.q}|${it.fig || ''}`; if (seen.has(key)) continue;
+    seen.add(key); out.push(it);
+  }
+  return out;
+};
 
 // numberLine: { min, max } puts a number line across the top of the page for students to use.
-module.exports = ({ code, title, numberLine }, content) => (chapter) => {
+// room: the height (mm) the questions of a column may fill; tools/fit-worksheets.js lowers it for a lesson that overflows.
+module.exports = ({ code, title, numberLine, room }, content) => Object.assign((chapter) => {
   // The room in a column is about 260 mm. Estimated heights (mm) decide how many questions fit.
-  const ROOM = numberLine ? 238 : 258, BUBBLE = 13, TAG = 5;
+  const ROOM = room || (numberLine ? 244 : 268), BUBBLE = 13, TAG = 5;
   const lineCount = (t, chars) => Math.max(1, Math.ceil(plainText(t).length / chars));
-  const hQuick = (it) => 3.2 + 4.2 * lineCount(it.q, 20);
-  const hWork = (two) => (it) => 2.6 + 4.2 * lineCount(it.q, two ? 15 : 31) + Math.max(two ? 2 : 2, (it.lines || [1]).length) * 6.2;
+  const hQuick = (it) => (it.fig ? Math.max(8, figH(it, 36) + 2 + (it.q ? 4.2 : 0)) : 3.2 + 4.2 * lineCount(it.q, 20));
+  const lineH = (l) => (/class="fr"/.test(l) ? 8.4 : 6.2); // a line with a stacked fraction is taller
+  const hWork = (two) => (it) => 2.6 + 4.2 * lineCount(it.q, two ? 15 : 31) * (/class="fr"/.test(it.q) ? 1.4 : 1) + (it.fig ? figH(it, 56) + 1.5 : 0) + Math.max(2, (it.lines || [1]).length) * 6.2 + (it.lines || []).reduce((t, l) => t + lineH(l) - 6.2, 0);
   let n = 0;
   const answers = [], examples = [];
 
@@ -59,29 +88,36 @@ module.exports = ({ code, title, numberLine }, content) => (chapter) => {
   // it opens the column), laid out just like the questions. Then YOU DO, fading from worked to blank.
   const column = (c, rounds) => {
     const side = c === 2 ? 'right' : 'left';
-    let left = ROOM, html = '', ex = 0;
-    rounds.forEach((rd, r) => {
+    let html = '', ex = 0;
+    // First pass: each round's questions, layout and fixed height (bubble, round diagram, WE DO examples, tags).
+    const plan = rounds.map((rd, r) => {
       const items = pool(rd.gen);
-      const two = c === 2 && items.every((it) => plainText(it.q).length <= 17 && (it.lines || []).every((l) => plainText(l).length <= 18));
+      const figs = items.some((it) => it.fig);
+      const two = c === 1 ? false : c === 2 && !rd.one && items.every((it) => plainText(it.q).length <= 17 && !it.fig && (it.lines || []).every((l) => plainText(l).length <= 18));
       const h = c === 1 ? hQuick : hWork(two);
       const perRow = two ? 2 : 1, set = c === 1 ? 'list' : two ? 'two' : 'one';
-      left -= BUBBLE;
-      html += bubble(rd.text, side);
       const exItems = items.splice(0, rd.kinds || (r === 0 ? 2 : 1));
-      exItems.forEach((it) => examples.push(`Column ${c}, E${++ex}: ${it.q} → ${(it.lines || [it.a]).join('; ')}`));
-      const exCells = exItems.map((it, i) => (c === 1 ? quick(`E${ex - exItems.length + i + 1}`, it) : work(`E${ex - exItems.length + i + 1}`, it, 'blank', (it.lines || [1]).length)));
-      html += `<div class="ff-tag we"><span class="zone-pill">WE DO</span><span>With your teacher: copy the working.</span></div><div class="ff-set we ${set}">${exCells.join('')}</div><div class="ff-tag you"><span class="zone-pill">YOU DO</span><span>Your turn.</span></div>`;
       let exH = 0;
       for (let k = 0; k < exItems.length; k += perRow) exH += Math.max(...exItems.slice(k, k + perRow).map(h));
-      left -= 2 * TAG + exH + 2;
-      const room = r < rounds.length - 1 ? left * (rounds.length === 2 ? 0.55 : 0.4) : left;
+      return { rd, items, h, perRow, set, exItems, fixed: BUBBLE + (rd.fig ? (rd.fh || 40) + 1.5 : 0) + 2 * TAG + exH + 2 };
+    });
+    // Second pass: the room left is shared evenly between the rounds' YOU DO questions (a round passes on what it
+    // does not use).
+    let free = ROOM - plan.reduce((t, p) => t + p.fixed, 0);
+    plan.forEach(({ rd, items, h, perRow, set, exItems }, r) => {
+      html += bubble(rd.text, side);
+      if (rd.fig) html += `<div class="ff-rfig" style="height:${rd.fh || 40}mm">${rd.fig}</div>`;
+      exItems.forEach((it) => examples.push(`Column ${c}, E${++ex}: ${it.q || '(diagram)'} → ${(it.lines || [it.a]).join('; ')}`));
+      const exCells = exItems.map((it, i) => (c === 1 ? quick(`E${ex - exItems.length + i + 1}`, it) : work(`E${ex - exItems.length + i + 1}`, it, 'blank', (it.lines || [1]).length)));
+      html += `<div class="ff-tag we"><span class="zone-pill">WE DO</span><span>With your teacher: copy the working.</span></div><div class="ff-set we ${set}">${exCells.join('')}</div><div class="ff-tag you"><span class="zone-pill">YOU DO</span><span>Your turn.</span></div>`;
+      const room = free / (plan.length - r);
       const out = []; let used = 0;
       for (let i = 0; i < items.length; i += perRow) {
         const row = items.slice(i, i + perRow), hh = Math.max(...row.map(h));
         if (used + hh > room) break;
         used += hh; out.push(...row);
       }
-      left -= used;
+      free -= used;
       const cells = out.map((it, k) => {
         const label = String(++n);
         answers.push(it.a);
@@ -109,4 +145,4 @@ module.exports = ({ code, title, numberLine }, content) => (chapter) => {
   <footer class="page-foot"><span>Kingscliff High School · Year ${chapter.year} Mathematics</span><span class="pn">{{PN}}</span><span>Chapter ${chapter.number} · ${chapter.title}</span></footer>
 </section>`;
   return { code, title, pages: [page], answers: [['WE DO examples (teacher)', examples], ['Questions (in order: Easy, Medium, Challenging)', answers]] };
-};
+}, { code, room: room || (numberLine ? 244 : 268) });

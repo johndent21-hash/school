@@ -640,6 +640,85 @@ ul.plain { list-style: none; padding-left: 0; }
 /* inline drill: a little tighter so the practice fits beside the examples */
 .skill-zone .dq .ans-line { height: 5mm; }
 .skill-zone .drill { gap: 1.2mm 4mm; }
+
+/* ===================== Three-column worksheets (lib/worksheet.js) ===================== */
+.page.mb.ws-page .content { top: 7mm; gap: 1.5mm; }
+.ws-strip { position: absolute; top: 0; left: 0; right: 0; height: 4.5mm; background: linear-gradient(90deg, var(--charcoal) 30%, rgba(61,59,60,0.2) 80%, rgba(61,59,60,0)), var(--mb-dark) right center / auto 100% no-repeat, var(--charcoal); border-bottom: 0.7mm solid var(--accent); }
+.ws-title { display: flex; align-items: baseline; justify-content: space-between; gap: 4mm; flex: none; border-bottom: 0.3mm solid #cfccc2; padding-bottom: 0.8mm; }
+.ws-title h2 { white-space: nowrap; font-size: 14pt; margin: 0; text-decoration: underline; text-underline-offset: 1mm; text-decoration-thickness: 0.3mm; }
+.ws-title h2 span { display: inline-block; text-decoration: none; background: var(--accent); color: #fff; font-size: 10pt; padding: 0 1.6mm; border-radius: 1mm; margin-right: 2mm; vertical-align: 1.5px; }
+.ws-title p { font-size: 6.5pt; color: #9a978d; letter-spacing: 0.05em; text-transform: uppercase; }
+.ff-frame { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); border: 0.8mm solid var(--charcoal); }
+.ff-col { display: flex; flex-direction: column; gap: 1mm; min-height: 0; min-width: 0; padding: 1.2mm 2mm 1.5mm; overflow: hidden; }
+.ff-col + .ff-col { border-left: 0.6mm solid var(--charcoal); }
+.ff-level { display: flex; align-items: center; justify-content: space-between; font-size: 7pt; color: var(--muted); flex: none; }
+.ff-level .lvl-word { font-size: 7.5pt; }
+.ff-talk { display: flex; align-items: center; gap: 1mm; flex: none; margin-top: 0.8mm; }
+.ff-bubble { flex: 1; position: relative; background: #fff; border: 0.35mm solid var(--charcoal); border-radius: 2mm; padding: 1mm 2mm; font-size: 8.3pt; line-height: 1.25; box-shadow: 0.5mm 0.5mm 0 var(--charcoal); }
+.ff-talk .ff-bubble::after { content: ''; position: absolute; top: 45%; width: 2.4mm; height: 2.4mm; background: #fff; border: 0.35mm solid var(--charcoal); border-width: 0 0 0.35mm 0.35mm; }
+.ff-talk.left .ff-bubble::after { right: -1.45mm; transform: rotate(-135deg); }
+.ff-talk.right .ff-bubble::after { left: -1.45mm; transform: rotate(45deg); }
+.ff-mascot { width: 11mm; height: 8mm; flex: none; }
+.ff-tag { display: flex; align-items: center; gap: 1.5mm; font-size: 7pt; color: var(--muted); flex: none; }
+.ff-tag .zone-pill { font-size: 6.5pt; padding: 0.2mm 1.6mm; }
+.ff-tag.we .zone-pill { background: var(--charcoal); }
+.ff-tag.you .zone-pill { background: var(--blue); }
+.ff-set { display: grid; gap: 0.8mm 2.5mm; flex: none; }
+.ff-set.two { grid-template-columns: 1fr 1fr; }
+.ff-set.we { background: var(--we-soft); border-radius: 1mm; padding: 0.8mm 1.2mm; }
+.ff-n { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 4.8mm; height: 4.8mm; padding: 0 0.6mm; border: 0.3mm solid #8a877e; font-size: 7.5pt; font-weight: 600; color: var(--charcoal); background: #fff; }
+.ff-q { font-size: 9pt; line-height: 1.25; min-width: 0; }
+.ff-set.two .ff-q { font-size: 8.5pt; }
+.ff-row { display: grid; grid-template-columns: auto 1fr 17mm; gap: 1.5mm; align-items: center; min-height: 6.6mm; }
+.ff-a { border-bottom: 0.35mm solid var(--charcoal); height: 5mm; display: flex; align-items: flex-end; justify-content: center; }
+.ff-done { color: #2451c9; font-weight: 600; font-size: 8.5pt; font-family: 'Lexend', sans-serif; }
+.ff-done.part { font-weight: 500; }
+.ff-cell { display: grid; grid-template-columns: auto 1fr; column-gap: 1.2mm; align-content: start; min-width: 0; }
+.ff-cell .ff-l { grid-column: 1 / -1; }
+.ff-l { display: flex; align-items: flex-end; height: 6.2mm; border-bottom: 0.3mm solid var(--charcoal); font-style: normal; overflow: hidden; padding-left: 1mm; }
+.ff-l .ff-done { white-space: nowrap; padding-bottom: 0.4mm; }
+.ff-set.two .ff-done { font-size: 7.8pt; }
+.ws-nl { flex: none; display: flex; align-items: center; gap: 2mm; border: 0.4mm solid var(--charcoal); border-radius: 1.5mm; padding: 0.5mm 2mm; background: #fff; }
+.ws-nl span { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1.1; }
+.ws-nl svg.graph { flex: 1; width: auto; height: 13mm; }
+/* worksheet booklet cover */
+.wsc { background: #fff; overflow: hidden; }
+.wsc-art { position: absolute; top: 70mm; left: 0; right: 0; bottom: 0; background: 70% 30% / cover no-repeat; }
+.wsc-top { position: absolute; top: 12mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; align-items: flex-start; }
+.wsc-logo { height: 19mm; }
+.wsc-name { width: 58mm; display: grid; grid-template-columns: auto 1fr; gap: 3mm 2mm; align-items: end; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.wsc-name i { border-bottom: 0.3mm solid #b9b6ab; height: 5mm; }
+.wsc-titles { position: absolute; top: 42mm; left: 16mm; right: 16mm; }
+.wsc-year { font-size: 11pt; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--charcoal); }
+.wsc-chapter { font-size: 18pt; font-weight: 700; color: var(--accent); margin-top: 3mm; letter-spacing: 0.02em; }
+.wsc-titles h1 { font-size: 58pt; line-height: 1; margin: 0.5mm 0 0; color: var(--charcoal); letter-spacing: -0.01em; }
+.wsc-kind { display: inline-block; margin-top: 4mm; font-size: 9pt; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #fff; background: var(--charcoal); padding: 1mm 3mm; border-radius: 1mm; }
+.wsc-big { position: absolute; left: 12mm; bottom: 6mm; font-size: 190pt; font-weight: 700; line-height: 0.8; color: #fff; opacity: 0.9; text-shadow: 0 1mm 4mm rgba(30,30,60,0.35); }
+.wsc-credit { position: absolute; right: 10mm; bottom: 6mm; width: 90mm; text-align: right; font-size: 7pt; color: #fff; text-shadow: 0 0 1.5mm rgba(0,0,0,0.7); }
+.ff-set.fill { flex: 1 1 auto; align-content: space-between; }
+/* worksheet diagrams */
+.ff-fig { display: flex; align-items: center; justify-content: center; margin: 0.6mm 0 0.3mm; grid-column: 1 / -1; min-height: 0; }
+.ff-fig > svg.graph, .ff-rfig > svg.graph { width: 100% !important; height: 100% !important; max-width: 100%; max-height: 100%; aspect-ratio: auto !important; }
+.ff-fig .data-table, .ff-rfig .data-table { font-size: 7.5pt; }
+.ff-rfig { flex: none; display: flex; align-items: center; justify-content: center; background: #fff; border: 0.3mm solid #cfccc2; border-radius: 1mm; padding: 0.8mm; overflow: hidden; }
+.ff-rfig .sl { font-size: 8pt; }
+.ff-fcell { display: grid; grid-template-columns: auto 1fr; column-gap: 1.2mm; align-content: start; min-width: 0; }
+.ff-fcell .ff-a { grid-column: 1 / -1; height: 5.5mm; margin: 0 1mm; }
+.ff-set.figs { gap: 1.5mm 2.5mm; }
+.ff-frow { display: grid; grid-template-columns: auto 1fr 17mm; gap: 1.5mm; align-items: center; }
+.ff-frow .ff-q { grid-column: 2 / -1; }
+.ff-frow .ff-fig { grid-column: 2; margin: 0; }
+.ff-frow .ff-a { grid-column: 3; align-self: end; margin-bottom: 1mm; }
+.ff-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.ff-l.long .ff-done { font-size: 7pt; }
+/* worksheet diagrams: labels a little larger so they read clearly when a diagram is scaled down */
+.ff-fig svg text, .ff-rfig svg text { font-size: 3.3px; font-weight: 600; }
+.ff-l:has(.fr) { height: 8.4mm; }
+.ff-l .fr { font-size: 0.95em; }
+.ff-rfig .sl table { font-size: 9pt; }
+.ff-rfig .sl td.leaf { letter-spacing: 0.08em; }
+.ff-rfig .data-table { font-size: 7pt; width: 100%; table-layout: fixed; }
+.ff-rfig .data-table th, .ff-rfig .data-table td { padding: 0.5mm 0.6mm; white-space: nowrap; }
 :root { --accent: #6b8e23; --mb-dark: url(../../assets/mandelbrot/whole-set-band.jpg); }</style></head><body class="theme-mb">
 <section class="page mb-cover">
   <div class="mbc-band">
