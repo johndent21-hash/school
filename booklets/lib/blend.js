@@ -15,6 +15,6 @@ module.exports = (base, o = {}) => {
     accent: o.accent || base.accent,
     pages: o.pages || 4,
     fileName: o.fileName,
-    lessons: specs.map((s) => lessonBlend({ ...s, skills: make(o.skills, s.code), hwSkills: make(o.skills, s.code, 'homework'), inline: o.inline, ...((o.more || {})[s.code] || {}) })),
+    lessons: specs.map((s) => { const sp = { ...s, skills: make(o.skills, s.code), hwSkills: make(o.skills, s.code, 'homework'), inline: o.inline, ...((o.more || {})[s.code] || {}) }; return Object.assign(lessonBlend(sp), { spec: sp }); }),
   };
 };

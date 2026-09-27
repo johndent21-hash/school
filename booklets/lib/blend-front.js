@@ -19,14 +19,14 @@ const ART = {
   jellyfish: 'a jellyfish of spirals near the neck of the left bulb',
 };
 
-const cover = (chapter, lessons, { kind = 'Lesson booklet', sub, list = true } = {}) => `
+const cover = (chapter, lessons, { kind = chapter.format === 'worksheet' ? 'Worksheet booklet' : 'Lesson booklet', sub, list = true } = {}) => `
 <section class="page mb-cover">
   <div class="mbc-band">
     <img class="mbc-logo" src="{{ASSETSREL}}/kingscliff-logo.png" alt="Kingscliff High School">
     <div class="mbc-titles">
       <span class="mbc-kicker">Mathematics · Year ${chapter.year} · ${kind}</span>
       <h1 class="${chapter.title.length > 18 ? 'long' : ''}">Chapter ${chapter.number}: <span>${chapter.title}</span></h1>
-      <p class="mbc-sub">${sub || `${lessons.length} lessons · one lesson for each exercise · each lesson is one hour`}</p>
+      <p class="mbc-sub">${sub || (chapter.format === 'worksheet' ? `${lessons.length} worksheets · one for each exercise · Easy, Medium and Challenging columns` : `${lessons.length} lessons · one lesson for each exercise · each lesson is one hour`)}</p>
       <p class="mbc-outcome"><b>NSW syllabus outcome</b><br>${chapter.syllabus.replace(/^NSW Mathematics K–10 Syllabus \(2022\),?\s*/, '')}</p>
     </div>
     <div class="mbc-name"><span>Name</span><i></i><span>Class</span><i></i></div>
@@ -50,9 +50,16 @@ const HOWTO = `
       <div><span class="step">4</span><span>Missed a lesson? Each lesson ends with a <b>summary</b> with a worked example for every level. Start there.</span></div>
     </div>`;
 
+const HOWTO_WS = `
+    <div class="howto">
+      <div><span class="step">1</span><span>There is <b>one worksheet for each lesson</b>. It has three columns that get harder from left to right: <b class="lvl-word l1">Easy</b>, then <b class="lvl-word l2">Medium</b>, then <b class="lvl-word l3">Challenging</b>.</span></div>
+      <div><span class="step">2</span><span>Read the <b>speech bubble</b> at the top of each column: it tells you what to do. A new bubble means a new kind of question.</span></div>
+      <div class="we"><span class="zone-pill">WE DO</span><span><b>Top of each column.</b> Your teacher works the examples on the board. <b>Copy every step</b> into the space.</span></div>
+      <div class="you"><span class="zone-pill">YOU DO</span><span><b>The rest of the column.</b> Your turn. Column 1: answer on the line. Columns 2 and 3: show your working on the lines.</span></div>
+    </div>`;
 const insideCover = (chapter, lessons) => mbPage(chapter, { title: chapter.title, section: 'Start here', body: `
     <p class="section-title">How to use this booklet</p>
-    ${HOWTO}
+    ${chapter.format === 'worksheet' ? HOWTO_WS : HOWTO}
     <p class="section-title">Contents and progress tracker</p>
     <table class="contents tracker${lessons.length > 10 ? ' tight' : ''}">
       <tr><th>Lesson</th><th>Topic</th><th style="text-align:right">Page</th><th>Date</th><th style="text-align:center">Done</th></tr>

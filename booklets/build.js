@@ -161,9 +161,10 @@ const beforeYouStart = (l) => {
 // Lays lessons out after the front pages, fills in {{L1}}… and {{PN}}, and checks exit ticket placement.
 const assemble = (front, lessons) => {
   let next = front.length + 1;
+  const worksheets = chapter.format === 'worksheet'; // one-page worksheets: no exit tickets, any page count
   lessons.forEach((l) => {
-    if (l.pages.length % 2) throw new Error(`${l.code} has ${l.pages.length} pages; lessons must have an even number of pages`);
-    if (next % 2 === 0) throw new Error(`${l.code} would start on a left-hand page`);
+    if (!worksheets && l.pages.length % 2) throw new Error(`${l.code} has ${l.pages.length} pages; lessons must have an even number of pages`);
+    if (!worksheets && next % 2 === 0) throw new Error(`${l.code} would start on a left-hand page`);
     l.startPage = next;
     l.pages = l.pages.map((p) => p.replace(/\{\{L(\d)\}\}/g, (_, n) => l.startPage + +n - 1));
     next += l.pages.length;

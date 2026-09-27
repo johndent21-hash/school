@@ -328,3 +328,5 @@ module.exports = (spec) => (chapter) => {
   if (sk) [...sk.easy, ...sk.medium].forEach((x) => { if (x.items.length !== x.ans.length) throw new Error(`${spec.code}: skill drill round "${x.text}" has ${x.items.length} questions but ${x.ans.length} answers`); });
   return { code: spec.code, title: spec.title, pages, answers, spec };
 };
+
+module.exports.pairExamples = pairExamples;

@@ -149,3 +149,15 @@ How it fits together:
 
   `lib/drill.js` supplies the seeded random helpers (`round`, `list`, `ri`, `pick`, …), so every booklet builds the same each time and every answer is calculated. `lib/algebra.js` writes algebra neatly (italic pronumerals, collected like terms).
 - **`tools/mandelbrot.py`**: draws the artwork in the colours of the revision booklet covers: a periwinkle field, blue filaments and a charcoal set. Each booklet shows a different region of the set (`REGIONS`, named by `art` in the chapter file). Each region has three images in `assets/mandelbrot/`: `-cover` (the lesson booklet cover), `-hw` (a closer view for the homework cover) and `-band` (the page headers). The script needs Python 3 with `numpy` and `Pillow`. Run `python3 tools/mandelbrot.py <region>` after adding or changing a region.
+
+## 9. Three-column worksheets (Freefall style)
+
+`year7-worksheets/ch01-integers` builds Chapter 1 as one-page worksheets in the style of the Freefall Mathematics sheets (`node build.js year7-worksheets/ch01-integers`). The template is `lib/worksheet.js`.
+
+- Each page has three columns that get harder from left to right: Easy, then Medium, then Challenging.
+- The top quarter of each column is WE DO: a speech bubble saying what to do, then the teacher's examples, left unworked with space for the working.
+- The rest of each column is YOU DO:
+  - **Column 1:** quick answers on a line.
+  - **Column 2:** two lines of working. The first questions carry a scaffold that fades.
+  - **Column 3:** three lines of working.
+- The content comes from `year7-blend` (examples, drill rounds, Set D and the extension). Questions are added to each column while they still fit. The scaffolds are listed in the chapter file.
