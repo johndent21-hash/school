@@ -9,7 +9,7 @@ const solve = (text, pairs, hw, cols = 4) => ({ text, cols, items: pairs.map((p)
 const EQ = (s) => s.replace(/([a-z])/g, '<i>$1</i>');
 
 module.exports = blend(require('../../year7/ch05-algebra-equations/chapter.js'), {
-  fileName: 'Year7-Ch05B-Equations-Lessons', art: 'valley', skills: require('./skills'), pages: 4, accent: '#0b5345',
+  fileName: 'Year7-Ch05B-Equations-Lessons', art: 'valley', skills: require('./skills'), inline: true, pages: 4, accent: '#0b5345',
   only: ['5.10', '5.11', '5.12', '5.13'],
   chapter: { number: '5B', title: 'Equations',
     goals: ['check whether a value is a solution', 'solve equations by guess, check and improve', 'solve one-step and two-step equations using inverse operations', 'write and solve equations to solve problems'],

@@ -629,6 +629,17 @@ ul.plain { list-style: none; padding-left: 0; }
 .round-body .drill { height: 100%; }
 .round-fig { width: 84mm; }
 .round-fig .graph { width: 100%; max-width: none; }
+/* homework drill practice */
+.hw-drills { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 auto; justify-content: space-between; }
+.hw-drill { background: #fff; border-radius: 1.5mm; padding: 1.5mm 3mm 2mm; }
+.hw-drill-h { font-size: 9pt; font-weight: 600; margin-bottom: 0.5mm; }
+.hw-drill-h b { color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 1.5mm; margin-right: 1mm; }
+.hw-drill .drill-sub { border-top: none; padding-top: 0.5mm; margin-top: 0.5mm; font-weight: 500; color: var(--charcoal); }
+.hw-drill .drill { gap: 1mm 4mm; }
+.hw-drill .dq .ans-line { height: 5.5mm; }
+/* inline drill: a little tighter so the practice fits beside the examples */
+.skill-zone .dq .ans-line { height: 5mm; }
+.skill-zone .drill { gap: 1.2mm 4mm; }
 :root { --accent: #0b5345; --mb-dark: url(../../assets/mandelbrot/valley-band.jpg); }</style></head><body class="theme-mb">
 <section class="page mb-cover">
   <div class="mbc-band">
@@ -636,7 +647,7 @@ ul.plain { list-style: none; padding-left: 0; }
     <div class="mbc-titles">
       <span class="mbc-kicker">Mathematics · Year 7 · Homework booklet</span>
       <h1 class="">Chapter 5B: <span>Equations</span></h1>
-      <p class="mbc-sub">Mixed revision of all 4 lessons · 12 questions</p>
+      <p class="mbc-sub">Drill practice and mixed revision of all 4 lessons · 36 questions</p>
       <p class="mbc-outcome"><b>NSW syllabus outcome</b><br>Stage 4 Number and algebra: MA4-EQU-C-01 solves linear equations of up to two steps.</p>
     </div>
     <div class="mbc-name"><span>Name</span><i></i><span>Class</span><i></i></div>
@@ -653,20 +664,10 @@ ul.plain { list-style: none; padding-left: 0; }
   <header class="mb-band">
     <img class="mb-logo" src="../../assets/kingscliff-logo.png" alt="Kingscliff High School">
     <div class="mb-titles"><span class="mb-kicker">Mathematics · Year 7 · Chapter 5B</span><span class="mb-title">Equations: homework</span></div>
-    <span class="mb-sec">Homework · page 1</span>
+    <span class="mb-sec">Homework · drill practice</span>
   </header>
-  <div class="content"><div class="hw-intro"><b>Mixed revision homework.</b> These questions mix all the lessons in Chapter 5B, from <b class="lvl-word l1">Easy</b> to <b class="lvl-word l3">Challenging</b>. Each one is tagged with its lesson, so you can look back at that lesson's summary if you get stuck. Show your working in the boxes.</div>
-  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: mixed revision.<span class="count">questions 1–10 of 12</span></span></div><div class="work-grid hw" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(5, 1fr); grid-auto-flow: row">
-  <div class="q "><div class="q-head"><span class="q-num">1</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Solve by guess and check.</span> 4<i>a</i> + 1 = 21 <span class="hw-tag">Lesson 5.10</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">2</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Write an equation and solve it.</span> Three times a number, plus 4, is 25. <span class="hw-tag">Lesson 5.13</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">3</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Solve.</span> 6<i>t</i> + 5 = 35 <span class="hw-tag">Lesson 5.12</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">4</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Solve.</span> <i>e</i> + 4 = −3 <span class="hw-tag">Lesson 5.11</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">5</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Solve 3<i>x</i> + 4 = 25. <span class="hw-tag">Lesson 5.10</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">6</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Four equal books cost $62. Find the cost of one book. <span class="hw-tag">Lesson 5.13</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">7</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Solve <span class="fr"><sup><i>n</i></sup><sub>3</sub></span> − 2 = 4. <span class="hw-tag">Lesson 5.12</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">8</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Solve 9<i>x</i> = 63. <span class="hw-tag">Lesson 5.11</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">9</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>Solve <span class="fr"><sup><i>y</i></sup><sub>4</sub></span> + 7 = 12. <span class="hw-tag">Lesson 5.10</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">10</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>A number is doubled and 9 is added. The result is 41. Find the number. <span class="hw-tag">Lesson 5.13</span></span></div><div class="box"></div></div></div></div></div>
+  <div class="content"><div class="hw-intro"><b>Homework.</b> Part 1 is <b>drill practice</b>: quick questions on the main skill of each lesson in Chapter 5B. Write each answer on its line. Part 2 is <b>mixed revision</b>, from <b class="lvl-word l1">Easy</b> to <b class="lvl-word l3">Challenging</b>. Each question is tagged with its lesson, so you can look back at that lesson's summary if you get stuck.</div>
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Part 1, drill practice.<span class="count">questions 1–24</span></span></div><div class="hw-drills"><div class="hw-drill"><p class="hw-drill-h"><b>5.10</b> Guess, check and improve</p><p class="drill-sub"><b class="lvl-word l1 mini">Easy</b> Is the value given a solution? Write yes or no.</p><div class="drill c3"><div class="dq"><span class="q-num">1</span><span class="q-text">2<i>t</i> + 8 = 26; <i>t</i> = 9</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">2</span><span class="q-text">4<i>y</i> + 4 = 32; <i>y</i> = 6</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">3</span><span class="q-text">3<i>p</i> + 8 = 29; <i>p</i> = 7</span><span class="ans-line"></span></div></div><p class="drill-sub"><b class="lvl-word l2 mini">Medium</b> Solve by guess and check.</p><div class="drill c3"><div class="dq"><span class="q-num">4</span><span class="q-text">5<i>t</i> − 4 = 6</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">5</span><span class="q-text">3<i>p</i> − 6 = 0</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">6</span><span class="q-text">5<i>t</i> − 9 = 41</span><span class="ans-line"></span></div></div></div><div class="hw-drill"><p class="hw-drill-h"><b>5.11</b> Solving one-step equations</p><p class="drill-sub"><b class="lvl-word l1 mini">Easy</b> Solve. Do the opposite operation to both sides.</p><div class="drill c4"><div class="dq"><span class="q-num">7</span><span class="q-text"><i>n</i> + 16 = 25</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">8</span><span class="q-text"><i>t</i> + 7 = 12</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">9</span><span class="q-text"><i>t</i> + 8 = 19</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">10</span><span class="q-text"><i>a</i> + 20 = 25</span><span class="ans-line"></span></div></div><p class="drill-sub"><b class="lvl-word l2 mini">Medium</b> Solve. The answer may be negative.</p><div class="drill c4"><div class="dq"><span class="q-num">11</span><span class="q-text"><i>n</i> − 2 = 5</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">12</span><span class="q-text">8<i>w</i> = 64</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">13</span><span class="q-text">10<i>b</i> = 70</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">14</span><span class="q-text"><i>y</i> + 5 = −4</span><span class="ans-line"></span></div></div></div><div class="hw-drill"><p class="hw-drill-h"><b>5.12</b> Solving two-step equations</p><p class="drill-sub"><b class="lvl-word l1 mini">Easy</b> Solve. Undo the + or − first, then the ×.</p><div class="drill c4"><div class="dq"><span class="q-num">15</span><span class="q-text">3<i>t</i> + 8 = 20</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">16</span><span class="q-text">5<i>a</i> + 3 = 53</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">17</span><span class="q-text">6<i>w</i> − 11 = 19</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">18</span><span class="q-text">3<i>t</i> + 2 = 32</span><span class="ans-line"></span></div></div><p class="drill-sub"><b class="lvl-word l2 mini">Medium</b> Solve. The answer may be negative.</p><div class="drill c4"><div class="dq"><span class="q-num">19</span><span class="q-text">9<i>n</i> + 7 = −11</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">20</span><span class="q-text">4<i>y</i> + 16 = 8</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">21</span><span class="q-text">5<i>n</i> + 5 = 20</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">22</span><span class="q-text">3<i>k</i> − 8 = −11</span><span class="ans-line"></span></div></div></div><div class="hw-drill"><p class="hw-drill-h"><b>5.13</b> Equations and problem solving</p><p class="drill-sub"><b class="lvl-word l1 mini">Easy</b> Write an equation (use n for the number), then solve it.</p><div class="drill c2"><div class="dq"><span class="q-num">23</span><span class="q-text">A number divided by 2 is 18.</span><span class="ans-line"></span></div><div class="dq"><span class="q-num">24</span><span class="q-text">9 times a number is 72.</span><span class="ans-line"></span></div></div></div></div></div></div>
   <footer class="page-foot"><span>Kingscliff High School · Year 7 Mathematics</span><span class="pn">2</span><span>Chapter 5B · Equations</span></footer>
 </section>
 
@@ -674,12 +675,20 @@ ul.plain { list-style: none; padding-left: 0; }
   <header class="mb-band">
     <img class="mb-logo" src="../../assets/kingscliff-logo.png" alt="Kingscliff High School">
     <div class="mb-titles"><span class="mb-kicker">Mathematics · Year 7 · Chapter 5B</span><span class="mb-title">Equations: homework</span></div>
-    <span class="mb-sec">Homework · page 2</span>
+    <span class="mb-sec">Homework · mixed revision</span>
   </header>
   <div class="content">
-  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: mixed revision.<span class="count">questions 11–12 of 12</span></span></div><div class="work-grid hw" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(5, 1fr); grid-auto-flow: row">
-  <div class="q "><div class="q-head"><span class="q-num">11</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>Solve 3(<i>k</i> − 1) = 24. <span class="hw-tag">Lesson 5.12</span></span></div><div class="box"></div></div>
-  <div class="q "><div class="q-head"><span class="q-num">12</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>Solve <span class="fr"><sup><i>t</i></sup><sub>6</sub></span> = −4. <span class="hw-tag">Lesson 5.11</span></span></div><div class="box"></div></div></div></div></div>
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Part 2, mixed revision.<span class="count">questions 25–34</span></span></div><div class="work-grid hw" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(5, 1fr); grid-auto-flow: row">
+  <div class="q "><div class="q-head"><span class="q-num">25</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Solve by guess and check.</span> 4<i>a</i> + 1 = 21 <span class="hw-tag">Lesson 5.10</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">26</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Write an equation and solve it.</span> Three times a number, plus 4, is 25. <span class="hw-tag">Lesson 5.13</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">27</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Solve.</span> 6<i>t</i> + 5 = 35 <span class="hw-tag">Lesson 5.12</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">28</span><span class="q-text"><b class="lvl-word l1 mini">Easy</b><span class="hw-lead">Solve.</span> <i>e</i> + 4 = −3 <span class="hw-tag">Lesson 5.11</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">29</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Solve 3<i>x</i> + 4 = 25. <span class="hw-tag">Lesson 5.10</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">30</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Four equal books cost $62. Find the cost of one book. <span class="hw-tag">Lesson 5.13</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">31</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Solve <span class="fr"><sup><i>n</i></sup><sub>3</sub></span> − 2 = 4. <span class="hw-tag">Lesson 5.12</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">32</span><span class="q-text"><b class="lvl-word l2 mini">Medium</b>Solve 9<i>x</i> = 63. <span class="hw-tag">Lesson 5.11</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">33</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>Solve <span class="fr"><sup><i>y</i></sup><sub>4</sub></span> + 7 = 12. <span class="hw-tag">Lesson 5.10</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">34</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>A number is doubled and 9 is added. The result is 41. Find the number. <span class="hw-tag">Lesson 5.13</span></span></div><div class="box"></div></div></div></div></div>
   <footer class="page-foot"><span>Kingscliff High School · Year 7 Mathematics</span><span class="pn">3</span><span>Chapter 5B · Equations</span></footer>
 </section>
 
@@ -687,9 +696,11 @@ ul.plain { list-style: none; padding-left: 0; }
   <header class="mb-band">
     <img class="mb-logo" src="../../assets/kingscliff-logo.png" alt="Kingscliff High School">
     <div class="mb-titles"><span class="mb-kicker">Mathematics · Year 7 · Chapter 5B</span><span class="mb-title">Equations: homework</span></div>
-    <span class="mb-sec">Homework · extra space</span>
+    <span class="mb-sec">Homework · mixed revision</span>
   </header>
   <div class="content">
-  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: extra working space. Write the question number next to your working.</span></div><div class="work-grid" style="grid-template-rows:1fr"><div class="q"><div class="box"></div></div></div></div></div>
+  <div class="zone you grow"><div class="zone-head"><span class="zone-pill">YOU DO</span><span class="zone-text">On your own: Part 2, mixed revision.<span class="count">questions 35–36</span></span></div><div class="work-grid hw" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(5, 1fr); grid-auto-flow: row">
+  <div class="q "><div class="q-head"><span class="q-num">35</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>Solve 3(<i>k</i> − 1) = 24. <span class="hw-tag">Lesson 5.12</span></span></div><div class="box"></div></div>
+  <div class="q "><div class="q-head"><span class="q-num">36</span><span class="q-text"><b class="lvl-word l3 mini">Challenging</b>Solve <span class="fr"><sup><i>t</i></sup><sub>6</sub></span> = −4. <span class="hw-tag">Lesson 5.11</span></span></div><div class="box"></div></div></div></div></div>
   <footer class="page-foot"><span>Kingscliff High School · Year 7 Mathematics</span><span class="pn">4</span><span>Chapter 5B · Equations</span></footer>
 </section></body></html>

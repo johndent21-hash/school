@@ -9,7 +9,7 @@ const larger = (a, b) => String(Math.max(a, b));
 const rec = (d) => `<span class="rec">${d}</span>`;
 
 module.exports = blend(require('../../year7/ch07-decimals/chapter.js'), {
-  fileName: 'Year7-Ch07-Decimals-Lessons', art: 'double-spiral', skills: require('./skills'), pages: 4,
+  fileName: 'Year7-Ch07-Decimals-Lessons', art: 'double-spiral', skills: require('./skills'), inline: true, pages: 4,
   more: {
     '7.01': { stems: ['Which is larger?', 'Write the place value, then order the decimals.', 'Order the decimals.'],
       drill: { text: 'Quick drill: which is larger?', cols: 4, items: [[0.8, 0.75], [1.2, 1.09], [0.06, 0.1], [3.45, 3.5], [7.07, 7.7], [0.505, 0.55]].map(([a, b]) => `${a} or ${b}`), ans: [[0.8, 0.75], [1.2, 1.09], [0.06, 0.1], [3.45, 3.5], [7.07, 7.7], [0.505, 0.55]].map(([a, b]) => larger(a, b)), hw: ['4.09 or 4.1', '4.1', 'Which is larger?'] } },

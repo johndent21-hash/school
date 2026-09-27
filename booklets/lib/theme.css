@@ -627,3 +627,14 @@ ul.plain { list-style: none; padding-left: 0; }
 .round-body .drill { height: 100%; }
 .round-fig { width: 84mm; }
 .round-fig .graph { width: 100%; max-width: none; }
+/* homework drill practice */
+.hw-drills { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 auto; justify-content: space-between; }
+.hw-drill { background: #fff; border-radius: 1.5mm; padding: 1.5mm 3mm 2mm; }
+.hw-drill-h { font-size: 9pt; font-weight: 600; margin-bottom: 0.5mm; }
+.hw-drill-h b { color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 1.5mm; margin-right: 1mm; }
+.hw-drill .drill-sub { border-top: none; padding-top: 0.5mm; margin-top: 0.5mm; font-weight: 500; color: var(--charcoal); }
+.hw-drill .drill { gap: 1mm 4mm; }
+.hw-drill .dq .ans-line { height: 5.5mm; }
+/* inline drill: a little tighter so the practice fits beside the examples */
+.skill-zone .dq .ans-line { height: 5mm; }
+.skill-zone .drill { gap: 1.2mm 4mm; }

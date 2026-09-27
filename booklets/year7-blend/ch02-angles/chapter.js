@@ -5,11 +5,11 @@ const cls = (d) => (d < 90 ? 'acute' : d === 90 ? 'right' : d < 180 ? 'obtuse' :
 const deg = (xs) => xs.map((x) => `${x}°`);
 
 module.exports = blend(require('../../year7/ch02-angles/chapter.js'), {
-  fileName: 'Year7-Ch02-Angles-Lessons', art: 'seahorse', skills: require('./skills'), pages: 6,
+  fileName: 'Year7-Ch02-Angles-Lessons', art: 'seahorse', skills: require('./skills'), inline: true, pages: 6,
   more: {
     '2.01': { stems: ['Name the angle, then draw an angle from its name.', 'Name the angles at O.', 'Name the marked angle, then answer the question.'],
       drill: { text: 'Quick drill: which letter is the vertex of each angle?', cols: 4, items: ['∠ABC', '∠PQR', '∠XYZ', '∠DEF', '∠MNK', '∠STU', '∠GHJ', '∠BKT'], ans: ['B', 'Q', 'Y', 'E', 'N', 'T', 'H', 'K'], hw: ['∠LMN', 'M', 'Which letter is the vertex?'] } },
-    '2.02': { stems: ['Measure the angle, then draw an angle of the given size.', 'Measure the angle, then draw an angle of the given size.', 'Draw each reflex angle.'],
+    '2.02': { budget: { easy: [2, 14] }, stems: ['Measure the angle, then draw an angle of the given size.', 'Measure the angle, then draw an angle of the given size.', 'Draw each reflex angle.'],
       drill: { text: 'Quick drill: for each reflex angle, write the angle you draw with the protractor (360° − the angle).', cols: 4, items: deg([210, 300, 195, 270, 250, 330, 185, 240]), ans: deg([150, 60, 165, 90, 110, 30, 175, 120]), hw: ['225°', '135°', 'What angle do you draw with the protractor to make this reflex angle?'] } },
     '2.03': { stems: ['Classify each angle.', 'Answer each question.', 'Name and classify, then explain.'],
       drill: { text: 'Quick drill: classify each angle (acute, right, obtuse, straight, reflex or revolution).', cols: 4, items: deg([34, 145, 250, 360, 89, 91, 179, 181, 300, 5]), ans: [34, 145, 250, 360, 89, 91, 179, 181, 300, 5].map(cls), hw: ['154°', 'obtuse', 'Classify the angle.'] } },

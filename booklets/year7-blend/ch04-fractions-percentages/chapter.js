@@ -10,7 +10,7 @@ const pct = (n, d) => `${fmt((n / d) * 100, 2)}%`;
 const drill = (text, pairs, hw, cols = 4) => ({ text, cols, items: pairs.map((p) => p[0]), ans: pairs.map((p) => (Array.isArray(p[1]) ? S(p[1]) : p[1])), hw: [hw[0], Array.isArray(hw[1]) ? S(hw[1]) : hw[1], hw[2]] });
 
 module.exports = blend(require('../../year7/ch04-fractions-percentages/chapter.js'), {
-  fileName: 'Year7-Ch04-Fractions-and-percentages-Lessons', art: 'triple-spiral', skills: require('./skills'), pages: 4,
+  fileName: 'Year7-Ch04-Fractions-and-percentages-Lessons', art: 'triple-spiral', skills: require('./skills'), inline: true, pages: 4,
   more: {
     '4.01': { stems: ['Convert between mixed numerals and improper fractions.', 'Complete each pair of equivalent fractions.', 'Simplify each fraction.'],
       drill: drill('Quick drill: simplify each fraction.', [[f(6, 8), [6, 8]], [f(10, 15), [10, 15]], [f(12, 16), [12, 16]], [f(9, 27), [9, 27]], [f(14, 21), [14, 21]], [f(20, 50), [20, 50]]], [f(18, 24), [18, 24], 'Simplify.']) },

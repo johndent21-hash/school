@@ -9,7 +9,7 @@ const rat = (...xs) => { const g = xs.reduce((a, b) => gcd(a, b)); return xs.map
 const s11 = sp('12.11');
 
 module.exports = blend(base, {
-  fileName: 'Year7-Ch12-Ratios-rates-and-time-Lessons', art: 'jellyfish', skills: require('./skills'), pages: 4,
+  fileName: 'Year7-Ch12-Ratios-rates-and-time-Lessons', art: 'jellyfish', skills: require('./skills'), inline: true, pages: 4,
   more: {
     '12.01': { stems: ['Write the ratio of shaded to unshaded parts.', 'Write each ratio in the order the words give.', 'Write the ratio, then explain.'],
       drill: D('Quick drill: 8 red and 5 blue marbles. Write the ratio of:', [['red to blue', '8 : 5'], ['blue to red', '5 : 8'], ['red to all', '8 : 13'], ['blue to all', '5 : 13']], ['all to red', '13 : 8', 'A bag has 8 red and 5 blue marbles. Write the ratio.'], 2) },
@@ -23,7 +23,7 @@ module.exports = blend(base, {
       drill: D('Quick drill: find the unit price.', [['4 for $6', '$1.50'], ['2 kg for $9', '$4.50/kg'], ['5 L for $12', '$2.40/L'], ['10 for $4.50', '$0.45'], ['3 m for $7.50', '$2.50/m'], ['6 for $9.60', '$1.60']], ['8 for $10', '$1.25', 'Find the unit price.'], 3) },
     '12.06': { stems: ['Use the rate to find the total.', 'Use the rate to find how many.', 'Use the rate to find the time or distance.'],
       drill: D('Quick drill: use the rate.', [['$15/h for 4 h', '$60'], ['60 km/h for 3 h', '180 km'], ['$2/kg for 7 kg', '$14'], ['10 L/min for 6 min', '60 L'], ['$12 at $3/kg (kg?)', '4 kg'], ['200 km at 50 km/h (h?)', '4 h']], ['$1.50/L for 20 L', '$30', 'Use the rate.'], 3) },
-    '12.07': { pages: 6, exFigs: [sp('12.07').a.fig, sp('12.07').a.fig, sp('12.07').a.fig], stems: ['Use the travel graph.', 'Use the travel graph.', 'Use the travel graph, then explain.'],
+    '12.07': { budget: { easy: [2, 14] }, pages: 6, exFigs: [sp('12.07').a.fig, sp('12.07').a.fig, sp('12.07').a.fig], stems: ['Use the travel graph.', 'Use the travel graph.', 'Use the travel graph, then explain.'],
       drill: D('Quick drill: find the speed.', [['60 km in 2 h', '30 km/h'], ['12 km in 3 h', '4 km/h'], ['150 km in 1.5 h', '100 km/h'], ['5 km in 30 min', '10 km/h'], ['0 km in 1 h', '0 km/h (stopped)'], ['240 km in 4 h', '60 km/h']], ['90 km in 2 h', '45 km/h', 'Find the speed.'], 3) },
     '12.08': { stems: ['Round, then convert.', 'Convert.', 'Add and subtract times.'],
       drill: D('Quick drill: convert.', [['2 h to min', '120 min'], ['90 min to h and min', '1 h 30 min'], ['3 min to s', '180 s'], ['150 s to min and s', '2 min 30 s'], ['0.5 h to min', '30 min'], ['1 day to h', '24 h']], ['200 min to h and min', '3 h 20 min', 'Convert.'], 3) },

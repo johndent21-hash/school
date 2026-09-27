@@ -150,19 +150,71 @@ module.exports = (spec) => (chapter) => {
   // Inline drill layout: four pages, the drill is the Easy and Medium practice, three Set D questions to finish.
   // Each drill slot has a row budget (page 1 Easy, page 2 Easy continued, page 2 Medium, page 3 Medium continued);
   // rounds are cut to fit it. A working-box row counts as 2 rows, a row of diagrams as 3.
-  const BUDGET = { easy: [4, 4], medium: [4, 2] };
-  const fit = (rounds, [first, rest]) => rounds.map((x, i) => {
+  // spec.budget overrides the row budgets for one lesson. A round with a map or graph beside it goes in the larger slot.
+  // Three challenge questions in one row, or two when they need drawing space. In a 6-page lesson, drawn challenge
+  // questions fill page 4, so the Medium practice is then only the page-3 round.
+  const drawn = spec.d.items.slice(0, 3).some((it) => typeof it === 'object' && (it.draw || it.fig));
+  const BUDGET = { ...(six ? { easy: [3, 14], medium: [8, drawn ? 0 : 4] } : { easy: [4, 4], medium: [4, 2] }), ...(spec.budget || {}) };
+  const plain = (x) => !x.fig && !x.items.some((it) => typeof it === 'object' && it.fig);
+  const figFirst = (rounds) => { const k = rounds.findIndex(plain); return k > 0 ? [rounds[k], ...rounds.filter((_, i) => i !== k)] : rounds; };
+  const fit = (rounds, [first, rest]) => figFirst(rounds).map((x, i, all) => {
     const per = x.items.some((it) => typeof it === 'object' && it.fig) ? 3 : x.work ? 2 : 1;
-    const rows = Math.max(1, Math.floor((i === 0 ? first : rest / Math.max(1, rounds.length - 1)) / per));
+    const slot = i === 0 ? first : rest / Math.max(1, all.length - 1);
+    if (x.fig) return x; // the questions sit beside the diagram, which sets the height
+    const rows = Math.max(1, Math.floor(slot / per));
     const n = Math.min(x.items.length, rows * (x.cols || 4));
     return { ...x, items: x.items.slice(0, n), ans: x.ans.slice(0, n) };
   });
-  if (spec.inline && sk) Object.assign(sk, { easy: fit(sk.easy, BUDGET.easy), medium: fit(sk.medium, BUDGET.medium) });
-  // Three challenge questions in one row, or two when they need drawing space.
-  const drawn = spec.d.items.slice(0, 3).some((it) => typeof it === 'object' && (it.draw || it.fig));
+  // Medium is the other way round: its first slot (page 3 of 6) is the big one, so a diagram round goes first there.
+  const figLead = (rounds) => { const k = rounds.findIndex((x) => x.fig); return six && k > 0 ? [rounds[k], ...rounds.filter((_, i) => i !== k)] : rounds; };
+  // A level with only one round: the round carries on in the second slot (as Round 2, same instruction).
+  const split = (rounds, [first]) => {
+    if (rounds.length !== 1 || rounds[0].fig) return rounds;
+    const x = rounds[0], per = x.items.some((it) => typeof it === 'object' && it.fig) ? 3 : x.work ? 2 : 1, n = Math.max(1, Math.floor(first / per)) * (x.cols || 4);
+    return x.items.length > n ? [{ ...x, items: x.items.slice(0, n), ans: x.ans.slice(0, n) }, { ...x, items: x.items.slice(n), ans: x.ans.slice(n) }] : rounds;
+  };
+  // With no second Medium slot, keep the one round that gives the most questions.
+  const best = (rounds, b) => [rounds.map((x) => (x.fig ? x : fit([x], b)[0])).sort((p, q) => q.items.length - p.items.length)[0]];
+  const fitM = (rounds, b) => { if (b[1] === 0) return best(rounds, b); const r = split(figLead(rounds), b); return r[0].fig ? r.map((x, i) => (i === 0 ? x : fit([r[0], x], b)[1])) : fit(r, b); };
+  if (spec.inline && sk && !sk.fitted) Object.assign(sk, { easy: fit(split(sk.easy, BUDGET.easy), BUDGET.easy), medium: fitM(sk.medium, BUDGET.medium), fitted: true });
   const D3 = { ...spec.d, items: spec.d.items.slice(0, drawn ? 2 : 3), cols: drawn ? 2 : 3 };
   const challenge = () => youDo(`<b class="lvl-word l3">Challenging</b> ${spec.d.text}<span class="count">${qn(D3.items.length)}</span>`, `${hint(h(2))}${setBody(D3.kind === 'short' ? { ...D3, kind: 'work' } : D3)}`, 'grow');
-  const inline = spec.inline && sk ? [
+  // 6-page version, for lessons whose diagrams need the room: the Easy drill gets a page of its own, the extension
+  // and exit ticket share page 5, and the summary page has a reflection box.
+  const inline6 = () => [
+    Lx.page('Start here · Easy', `
+      ${Lx.intro({ li: spec.li, sc: spec.sc, terms: spec.terms })}
+      ${Lx.notes('fixed')}
+      ${banner(1, `Easy · ${qn(sk.easy.reduce((t, x) => t + x.items.length, 0))}`)}
+      ${exBlock(1, ex[0], '', spec.exCols)}
+      ${drillZone(1, sk.easy, 0, h(0))}
+    `, { first: true }),
+    Lx.page('Easy', `
+      ${drillZone(1, sk.easy, 1)}
+    `),
+    Lx.page('Medium', `
+      ${banner(2, `Medium · ${qn(sk.medium.reduce((t, x) => t + x.items.length, 0))}`)}
+      ${exBlock(2, ex[1], 'tall', spec.exCols)}
+      ${drillZone(2, sk.medium, 0, h(1))}
+    `),
+    Lx.page('Medium · Challenging', `
+      ${drillZone(2, sk.medium, 1)}
+      ${banner(3, `Challenging · ${qn(D3.items.length)} · then try the extension`)}
+      ${exBlock(3, ex[2], '', spec.exCols)}
+      ${challenge()}
+    `),
+    Lx.page('Extension · Exit ticket', `
+      ${banner(4, 'Finished the challenge? Stretch yourself here.')}
+      ${ext}
+      ${exit}
+    `),
+    Lx.page('Summary · Reflection', `
+      ${summary()}
+      <div class="notes grow reflect"><span class="notes-label">My reflection: what did I learn today? Which question was hardest, and why?</span></div>
+      ${Lx.tearBack()}
+    `),
+  ];
+  const inline = spec.inline && sk && six ? inline6() : spec.inline && sk ? [
     Lx.page('Start here · Easy', `
       ${Lx.intro({ li: spec.li, sc: spec.sc, terms: spec.terms })}
       ${Lx.notes('fixed')}

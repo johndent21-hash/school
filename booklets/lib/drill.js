@@ -38,7 +38,7 @@ const kit = (seed) => {
   return { r, ri, nz, pick, shuffle, gen, round, list, N, B };
 };
 
-// The rounds of one lesson: skills[code](kit(code)).
-const make = (skills, code) => (skills && skills[code] ? skills[code](kit(`skill ${code}`)) : null);
+// The rounds of one lesson: skills[code](kit(code)). tag 'homework' gives the same kinds of questions with other numbers.
+const make = (skills, code, tag = 'skill') => (skills && skills[code] ? skills[code](kit(`${tag} ${code}`)) : null);
 
 module.exports = { kit, make, N, B };

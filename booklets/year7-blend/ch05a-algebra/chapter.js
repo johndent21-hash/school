@@ -10,7 +10,7 @@ const alw = (s) => s.replace(/\b([a-zA-Z])\b/g, '<i>$1</i>');
 const alD = (text, pairs, hw, cols = 4) => ({ text, cols, items: pairs.map((p) => alw(p[0])), ans: pairs.map((p) => al(p[1])), hw: [alw(hw[0]), al(hw[1]), hw[2]] });
 
 module.exports = blend(require('../../year7/ch05-algebra-equations/chapter.js'), {
-  fileName: 'Year7-Ch05A-Algebra-Lessons', art: 'elephant', skills: require('./skills'), pages: 4, accent: '#148f77',
+  fileName: 'Year7-Ch05A-Algebra-Lessons', art: 'elephant', skills: require('./skills'), inline: true, pages: 4, accent: '#148f77',
   only: ['5.01', '5.02', '5.03', '5.04', '5.05', '5.07', '5.08', '5.09'],
   chapter: { number: '5A', title: 'Algebra',
     goals: ['use the commutative, associative and distributive laws', 'use variables and algebraic notation', 'write expressions from words', 'substitute into expressions and formulas', 'add, subtract, multiply and divide algebraic terms'],

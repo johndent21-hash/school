@@ -102,6 +102,16 @@ const pick = (l) => {
 };
 const mix = (xs) => xs.map((x, i) => [((i * 7) % xs.length) + i / 100, x]).sort((a, b) => a[0] - b[0]).map((x) => x[1]);
 const tag = (code) => `<span class="hw-tag">Lesson ${code}</span>`;
+// The homework drill of one lesson: one row from the first plain round (no diagrams, no working boxes) of the Easy
+// practice, and one from the Medium practice.
+const drillFor = (sk) => {
+  if (!sk) return [];
+  const plainRound = (rounds) => (rounds || []).find((x) => !x.work && !x.fig && x.items.every((it) => typeof it === 'string' || (!it.fig && !it.draw)));
+  return [[1, plainRound(sk.easy)], [2, plainRound(sk.medium)]].filter(([, x]) => x).map(([lvl, x]) => {
+    const n = Math.min(x.cols || 4, 4);
+    return { lvl, x, items: x.items.slice(0, n), ans: x.ans.slice(0, n) };
+  });
+};
 const homework = (chapter, lessons) => {
   const picks = lessons.map(pick);
   const E = mix(picks.filter((p) => p.easy).map((p) => [p.easy[0], p.easy[1], p.code, p.easy[2]]));
@@ -117,17 +127,29 @@ const homework = (chapter, lessons) => {
       : q(n, `${label}${typeof t === 'object' ? t.t : t} ${tag(code)}${(typeof t === 'object' && t.fig) || fig ? `<div class="inline-fig">${(typeof t === 'object' && t.fig) || fig}</div>` : ''}`);
   };
   const title = `${chapter.title}: homework`;
-  const intro = `<div class="hw-intro"><b>Mixed revision homework.</b> These questions mix all the lessons in Chapter ${chapter.number}, from <b class="lvl-word l1">Easy</b> to <b class="lvl-word l3">Challenging</b>. Each one is tagged with its lesson, so you can look back at that lesson's summary if you get stuck. Show your working in the boxes.</div>`;
-  const per = 10, pages = [];
+  // Part 1, drill practice: a few quick questions on the core skill of every lesson (other numbers than in class).
+  const drill = lessons.map((l) => ({ l, rounds: drillFor(l.spec.hwSkills) })).filter((d) => d.rounds.length);
+  let dn = 0; const drillAns = [];
+  const block = ({ l, rounds }) => `<div class="hw-drill"><p class="hw-drill-h"><b>${l.code}</b> ${l.title}</p>${rounds.map(({ lvl, x, items, ans }) => {
+    const cells = items.map((it) => { drillAns.push(`${++dn}. ${ans.shift()} (${l.code})`); return `<div class="dq"><span class="q-num">${dn}</span><span class="q-text">${typeof it === 'object' ? it.t : it}</span><span class="ans-line"></span></div>`; }).join('');
+    return `<p class="drill-sub"><b class="lvl-word l${lvl} mini">${word[lvl]}</b> ${x.text.charAt(0).toUpperCase() + x.text.slice(1)}</p><div class="drill c${items.length}">${cells}</div>`;
+  }).join('')}</div>`;
+  const intro = `<div class="hw-intro"><b>Homework.</b> Part 1 is <b>drill practice</b>: quick questions on the main skill of each lesson in Chapter ${chapter.number}. Write each answer on its line. Part 2 is <b>mixed revision</b>, from <b class="lvl-word l1">Easy</b> to <b class="lvl-word l3">Challenging</b>. Each question is tagged with its lesson, so you can look back at that lesson's summary if you get stuck.</div>`;
+  const pages = [], perDrill = 5;
+  for (let i = 0; i < drill.length; i += perDrill) {
+    const from = dn + 1, html = drill.slice(i, i + perDrill).map(block).join('');
+    pages.push(mbPage(chapter, { title, section: `Homework · drill practice`, body: `${i === 0 ? intro : ''}${youDo(`Part 1, drill practice.<span class="count">questions ${from}–${dn}</span>`, `<div class="hw-drills">${html}</div>`, 'grow')}` }));
+  }
+  const per = 10, off = dn;
   for (let i = 0; i < all.length; i += per) {
     const part = all.slice(i, i + per);
-    const grid = `<div class="work-grid hw" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(${Math.ceil(per / 2)}, 1fr); grid-auto-flow: row">${part.map((it, k) => cell(it, i + k + 1)).join('')}</div>`;
-    pages.push(mbPage(chapter, { title, section: `Homework · page ${pages.length + 1}`, body: `${i === 0 ? intro : ''}${youDo(`mixed revision.<span class="count">questions ${i + 1}–${i + part.length} of ${all.length}</span>`, grid, 'grow')}` }));
+    const grid = `<div class="work-grid hw" style="grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(${Math.ceil(per / 2)}, 1fr); grid-auto-flow: row">${part.map((it, k) => cell(it, off + i + k + 1)).join('')}</div>`;
+    pages.push(mbPage(chapter, { title, section: `Homework · mixed revision`, body: `${!drill.length && i === 0 ? intro : ''}${youDo(`Part 2, mixed revision.<span class="count">questions ${off + i + 1}–${off + i + part.length}</span>`, grid, 'grow')}` }));
   }
   if (pages.length % 2 === 0) pages.push(mbPage(chapter, { title, section: 'Homework · extra space', body: youDo('extra working space. Write the question number next to your working.', '<div class="work-grid" style="grid-template-rows:1fr"><div class="q"><div class="box"></div></div></div>', 'grow') }));
-  let k = 0;
-  const answers = [['Answers (question, lesson)', all.map(([x, lvl]) => `${++k}. ${x[1]} (${word[lvl]}, ${x[2]})`)]];
-  return { pages: [cover(chapter, lessons, { kind: 'Homework booklet', sub: `Mixed revision of all ${lessons.length} lessons · ${all.length} questions`, list: false }), ...pages], answers };
+  let k = off;
+  const answers = [...(drillAns.length ? [['Part 1: drill practice (question, lesson)', drillAns]] : []), ['Part 2: mixed revision (question, lesson)', all.map(([x, lvl]) => `${++k}. ${x[1]} (${word[lvl]}, ${x[2]})`)]];
+  return { pages: [cover(chapter, lessons, { kind: 'Homework booklet', sub: `Drill practice and mixed revision of all ${lessons.length} lessons · ${off + all.length} questions`, list: false }), ...pages], answers };
 };
 
 module.exports = { cover, insideCover, homework };

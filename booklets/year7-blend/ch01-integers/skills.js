@@ -11,7 +11,7 @@ module.exports = {
       round('write an integer for each situation.', 18, () => { const [t, s] = pick(sit), n = ri(2, 90); return [t.replace('{n}', n), N(s * n)]; }, { cols: 3 }),
     ],
     medium: [
-      round('simplify. The opposite of the opposite is the number itself.', 20, () => { const n = nz(-30, 30), k = pick([1, 2, 3]); return [`${'−('.repeat(k - 1)}−${B(n)}${')'.repeat(k - 1)}`, N(k % 2 ? -n : n)]; }),
+      round('simplify. The opposite of the opposite is the number itself.', 20, () => { const n = ri(1, 60); return [`−(−${n})`, N(n)]; }),
       round('write an integer for the situation, then write its opposite.', 18, () => { const [t, s] = pick(sit), n = ri(2, 90); return [t.replace('{n}', n), `${N(s * n)}, ${N(-s * n)}`]; }, { cols: 3 }),
     ],
   }),
@@ -61,7 +61,7 @@ module.exports = {
       round('write the sign of the answer only: + or −.', 20, () => { const k = pick([2, 3, 4]); const xs = Array.from({ length: k }, () => nz(-9, 9)); return [xs.map(B).join(' × '), xs.reduce((p, x) => p * x, 1) > 0 ? '+' : '−']; }),
     ],
     medium: [
-      round('evaluate. Multiply two numbers at a time.', 18, () => { const a = nz(-6, 6), b = nz(-6, 6), c = nz(-5, 5); return [`${N(a)} × ${B(b)} × ${B(c)}`, N(a * b * c)]; }, { cols: 3 }),
+      round('evaluate. Multiply two numbers at a time.', 18, () => { const a = nz(-6, 6), b = nz(-6, 6), c = nz(-5, 5); return a > 0 && b > 0 && c > 0 ? ['', ''] : [`${N(a)} × ${B(b)} × ${B(c)}`, N(a * b * c)]; }, { cols: 3 }),
       round('find the missing number.', 20, () => { const a = nz(-9, 9), b = nz(-9, 9); return [`${N(a)} × ☐ = ${N(a * b)}`, N(b)]; }),
     ],
   }),

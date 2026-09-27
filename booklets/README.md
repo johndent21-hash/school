@@ -141,7 +141,11 @@ How it fits together:
   - `work` gives each question a working box.
   - `fig` shows a map, graph or number plane beside the questions.
 
-  With `inline: true` in the chapter file (Chapter 1 uses this), there are no extra pages: the drill rounds become the Easy and Medium questions of the 4-page lesson, each placed straight after its teacher example. Each round is cut to fit its space. Three Set D questions (two if they need drawing) and the extension round off the lesson.
+  Every chapter uses `inline: true`, so there are no extra pages. The drill rounds become the Easy and Medium questions of the lesson, each placed straight after its teacher example. Three Set D questions (two if they need drawing) and the extension round off the lesson.
+  - **4-page lessons:** page 1 Easy example and first round; page 2 the rest of Easy, the Medium example and its first round; page 3 the rest of Medium, the Challenging example, the challenge questions and the exit ticket; page 4 extension and summary.
+  - **6-page lessons:** Easy gets a page of its own, and the extension and exit ticket share page 5.
+  - **Fitting:** rounds are cut to a row budget for each slot. Where a lesson still doesn't fit, add `budget: { easy: [first, rest], medium: [first, rest] }` to its entry in `more`.
+  - **Homework:** each lesson's drill is also generated with other numbers (`hwSkills`). The homework booklet starts with a drill-practice part (one row of Easy and one of Medium for every lesson), then the mixed revision.
 
   `lib/drill.js` supplies the seeded random helpers (`round`, `list`, `ri`, `pick`, …), so every booklet builds the same each time and every answer is calculated. `lib/algebra.js` writes algebra neatly (italic pronumerals, collected like terms).
 - **`tools/mandelbrot.py`**: draws the artwork in the colours of the revision booklet covers: a periwinkle field, blue filaments and a charcoal set. Each booklet shows a different region of the set (`REGIONS`, named by `art` in the chapter file). Each region has three images in `assets/mandelbrot/`: `-cover` (the lesson booklet cover), `-hw` (a closer view for the homework cover) and `-band` (the page headers). The script needs Python 3 with `numpy` and `Pillow`. Run `python3 tools/mandelbrot.py <region>` after adding or changing a region.

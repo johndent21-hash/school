@@ -7,7 +7,7 @@ const D = (text, pairs, hw, cols = 3) => ({ text, cols, items: pairs.map((p) => 
 const pi1 = (x) => (Math.PI * x).toFixed(1);
 
 module.exports = blend(require('../../year7/ch08-area-volume/chapter.js'), {
-  fileName: 'Year7-Ch08-Area-and-volume-Lessons', art: 'dendrite', skills: require('./skills'), pages: 6,
+  fileName: 'Year7-Ch08-Area-and-volume-Lessons', art: 'dendrite', skills: require('./skills'), inline: true, pages: 6,
   more: {
     '8.01': { pages: 4, stems: ['Convert. Bigger unit to smaller: multiply.', 'Convert capacity and time.', 'Convert, then solve.'],
       drill: D('Quick drill: convert.', [['5 km to m', '5000 m'], ['350 cm to m', '3.5 m'], ['2.4 kg to g', '2400 g'], ['1500 mL to L', '1.5 L'], ['3 h to min', '180 min'], ['90 s to min', '1.5 min'], ['6 cm to mm', '60 mm'], ['4000 kg to t', '4 t']], ['2.5 L to mL', '2500 mL', 'Convert.'], 4) },

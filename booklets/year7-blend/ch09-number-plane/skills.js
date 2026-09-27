@@ -28,10 +28,11 @@ const rule = (m, c, N) => `y = ${m === 1 ? '' : m === -1 ? '−' : N(m)}x${c ? `
 const tableTxt = (xs, f, N) => `<span class="mini-table">x: ${xs.map(N).join(', ')}<br>y: ${xs.map((x) => N(f(x))).join(', ')}</span>`;
 
 module.exports = {
-  '9.01': ({ list, shuffle, ri }) => {
+  '9.01': ({ list, shuffle, ri, round }) => {
     const ps = shuffle(PLACES);
     return {
       easy: [
+        round('write the grid reference: the column letter first, then the row number.', 12, () => { const c = COLS[ri(0, 7)], r = ri(1, 6); return [`column ${c}, row ${r}`, `${c}${r}`]; }, { cols: 3 }),
         { ...list('use the map. What is at each grid reference?', ps.slice(0, 12).map(([n, c, r]) => [`${c}${r}`, n]), { cols: 2 }), fig: map },
         { ...list('write the grid reference of each place.', ps.slice(6, 18).map(([n, c, r]) => [n, `${c}${r}`]), { cols: 2 }), fig: map },
       ],
