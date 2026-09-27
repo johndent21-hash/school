@@ -44,7 +44,7 @@ const pool = (gen, n = 40) => { const seen = new Set(), out = []; for (let t = 0
 
 module.exports = ({ code, title }, content) => (chapter) => {
   // The room in a column is about 260 mm. Estimated heights (mm) decide how many questions fit.
-  const ROOM = 262, BUBBLE = 13, TAG = 5;
+  const ROOM = 258, BUBBLE = 13, TAG = 5;
   const lineCount = (t, chars) => Math.max(1, Math.ceil(plainText(t).length / chars));
   const hQuick = (it) => 3.2 + 4.2 * lineCount(it.q, 20);
   const hWork = (two) => (it) => 2.6 + 4.2 * lineCount(it.q, two ? 15 : 31) + Math.max(two ? 2 : 2, (it.lines || [1]).length) * 6.2;
