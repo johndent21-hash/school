@@ -191,9 +191,16 @@ const answersCss = `
   .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }
   .theme-mb .ans-block ol.multi { columns: 3; column-gap: 8mm; }
   .theme-mb .ans-block ol.multi li { break-inside: avoid; }
-  .theme-mb .ans-block { break-inside: auto; }`;
+  .theme-mb .ans-block { break-inside: auto; }
+  .ans-block ul.worked { list-style: none; padding: 0; columns: 3; column-gap: 7mm; }
+  .ans-block ul.worked li { break-inside: avoid; margin: 0 0 1.8mm; line-height: 1.3; }
+  .ans-block ul.worked .aw { color: #1a3fae; font-weight: 600; }
+  .ans-block ul.worked li b { display: inline-block; min-width: 7mm; }`;
 // Long lists (the skill drills) flow into columns in the blended series (see .theme-mb .ans-block ol.multi).
-const answerBlocks = (items) => items.map(([h, list]) => `<div class="ans-block"><h3>${h}</h3><ol${list.length > 10 ? ' class="multi"' : ''}>${list.map((a) => `<li>${a}</li>`).join('')}</ol></div>`).join('');
+// A list marked plain (worked solutions that carry their own labels) is shown without numbers, in two columns.
+const answerBlocks = (items) => items.map(([h, list]) => (list.plain
+  ? `<div class="ans-block"><h3>${h}</h3><ul class="worked">${list.map((a) => `<li>${a}</li>`).join('')}</ul></div>`
+  : `<div class="ans-block"><h3>${h}</h3><ol${list.length > 10 ? ' class="multi"' : ''}>${list.map((a) => `<li>${a}</li>`).join('')}</ol></div>`)).join('');
 const answersHtml = (heading, lessons, pageLabel) => `
   <div class="ans-header"><h1>${heading}</h1></div>
   <div class="answers">

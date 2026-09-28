@@ -146,4 +146,4 @@ module.exports = ({ code, title, numberLine, room }, content) => Object.assign((
 </section>`;
   return { code, title, pages: [page], answers: [['WE DO examples (teacher)', examples], ['Questions (in order: Easy, Medium, Challenging)', answers]] };
 }, { code, room: room || (numberLine ? 244 : 268) });
-module.exports.helpers = { bubble, scaffold, pool, plainText, viewBox };
+module.exports.helpers = { bubble, scaffold, blankLine, pool, plainText, viewBox };

@@ -769,3 +769,15 @@ ul.plain { list-style: none; padding-left: 0; }
 .cw .ff-n { font-size: 8pt; min-width: 5.2mm; height: 5.2mm; }
 .cw-set.you:not(.two) { display: flex; flex-direction: column; gap: 1.2mm; }
 .cw-set.you:not(.two) .cw-cell { flex: 1 1 auto; }
+/* calm worksheets: name line, level corner, check yourself, and darker tones that survive a black-and-white copier */
+.cw-name { flex: none; display: flex; align-items: flex-end; gap: 2mm; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--charcoal); }
+.cw-name i { flex: 1; border-bottom: 0.3mm solid var(--charcoal); height: 4.5mm; }
+.cw-name i.short { flex: 0 0 28mm; }
+.cw-how-h { display: flex; justify-content: space-between; align-items: baseline; }
+.cw-lvl { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.cw-lvl.l1 { color: #2e7d4f; } .cw-lvl.l2 { color: #9a6700; } .cw-lvl.l3 { color: #b0302a; }
+.cw-head .cw-lvl { flex: none; }
+.cw .ff-done { color: #1a3fae; }
+.cw-set.we { background: #e4e4e4; border: 0.3mm solid #9a978d; }
+.cw-check { flex: none; border: 0.4mm dashed var(--charcoal); border-radius: 1.2mm; padding: 0.8mm 1.6mm 1.2mm; }
+.cw-check-h { display: block; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); margin-bottom: 0.6mm; }

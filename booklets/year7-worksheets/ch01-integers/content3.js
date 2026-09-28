@@ -10,14 +10,14 @@ module.exports = {
   '1.04': { steps: [
     { title: 'Adding a positive',
       how: { text: '<p>Start at the first number.</p><p>Adding a positive number: move <b>right</b>.</p><p class="ex">−3 + 5: start at −3, move 5 right. Land on 2.</p>', fig: D.jumps({ min: -6, max: 6, start: -3, moves: [5], every: 1 }) },
-      rounds: [{ text: 'Draw the jump. Write where you land.',
+      rounds: [{ text: 'Draw the jump. Write where you land. The last one has no number line.',
         we: [{ q: '−2 + 4', ...nl(-8, 5, -2, [4]), lines: ['= 2'] }],
         you: [
           { q: '−4 + 3', ...nl(-8, 5, -4, [3]), lines: ['= −1'] },
           { q: '−5 + 2', ...nl(-8, 5, -5, [2]), lines: ['= −3'] },
           { q: '−6 + 4', ...nl(-8, 5, -6, [4]), lines: ['= −2'] },
           { q: '−3 + 7', ...nl(-8, 5, -3, [7]), lines: ['= 4'] },
-          { q: '−7 + 7', ...nl(-8, 5, -7, [7]), lines: ['= 0'] },
+          { q: '−7 + 7', lines: ['= 0'] },
         ] }] },
     { title: 'Adding a negative',
       how: { text: '<p>Adding a negative number: move <b>left</b>.</p><p>+ (−4) means the same as − 4.</p><p class="ex">3 + (−5) = 3 − 5 = −2</p>', fig: D.jumps({ min: -4, max: 5, start: 3, moves: [-5], every: 1 }) },
