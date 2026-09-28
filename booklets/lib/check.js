@@ -57,7 +57,13 @@ module.exports = () => {
       if (h && bx && r(h).bottom > r(bx).top + 0.5) out.push(`${pg}: question text runs into its answer box${label(qq)}`);
     });
     // 3c. Graphs must not be squashed below a readable size.
-    p.querySelectorAll('svg.graph').forEach((g) => { if (r(g).height > 0 && r(g).height / MM < 12 && !g.closest('.q-text')) out.push(`${pg}: a graph is squashed to ${(r(g).height / MM).toFixed(0)} mm${label(g)}`); });
+    // Two-page worksheet diagrams may be short (a number line), so they are checked by print scale instead: labels drawn at
+    // 3.3 units must print at least about 5 pt.
+    p.querySelectorAll('svg.graph').forEach((g) => {
+      if (!(r(g).height > 0)) return;
+      if (g.closest('.ws2') && g.closest('.ff-fig, .ff-rfig, .ff-how')) { const vb = g.viewBox.baseVal, s = Math.min(r(g).height / MM / vb.height, r(g).width / MM / vb.width); if (vb.height && s < 0.6) out.push(`${pg}: a diagram prints at ${(s * 100).toFixed(0)}% of its size${label(g)}`); return; }
+      if (r(g).height / MM < 12 && !g.closest('.q-text')) out.push(`${pg}: a graph is squashed to ${(r(g).height / MM).toFixed(0)} mm${label(g)}`);
+    });
 
     // 4. Enough room to write.
     p.querySelectorAll('.q .box').forEach((b) => {

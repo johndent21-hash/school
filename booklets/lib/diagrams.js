@@ -274,4 +274,110 @@ const prism = ({ pts, d = [10, -7], labels = [], m = 6 }) => {
 };
 const pointIn = ([x, y], poly) => { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const [xi, yi] = poly[i], [xj, yj] = poly[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
 
-module.exports = { fit, prism, numberLine, angle, rays, parallel, polygon, grid, plane, box, triPrism, circle, spinner, squares, fractionBar, drawSpace };
+
+// ---------- integer diagrams (number line jumps, thermometer, vertical scale, counters, calculator keys) ----------
+const minus = (v) => String(v).replace('-', '−');
+const RED = '#c0392b', YEL = '#f3dd8a', PINK = '#f2b8b0';
+const arrowHead = (x, y, ang, col) => { const a = 1.6, b = 0.9, c = Math.cos(ang), s = Math.sin(ang); return `<path d="M${f(x)},${f(y)} L${f(x - a * c + b * s)},${f(y - a * s - b * c)} L${f(x - a * c - b * s)},${f(y - a * s + b * c)} Z" fill="${col}"/>`; };
+
+// A number line with jumps: start at `start`, then each move (+5, −3) is a curved arrow above the line, labelled.
+// done: false shows only the start dot, for students to draw the jumps. end: false leaves the landing point unmarked.
+// arcs: [{ from, to, label }] draws other arcs (0 to 4 and 0 to −4 for opposites) as well as, or instead of, moves.
+const jumps = ({ min, max, start = null, moves = [], arcs = [], done = true, w = 56, every, end = true, marks = {} }) => {
+  let pos = start;
+  const all = done ? [...moves.map((m) => { const a = { from: pos, to: pos + m, label: (m > 0 ? '+' : '−') + Math.abs(m) }; pos += m; return a; }), ...arcs] : [];
+  const labelled = Object.values(marks).some((l) => l && l !== true);
+  const k = all.length, top = k ? 4.5 + 3.4 * k : labelled ? 4.5 : 2, y = top + 1, h = y + 6;
+  const x0 = 3.5, x1 = w - 3.5, sx = (v) => x0 + ((v - min) / (max - min)) * (x1 - x0);
+  const ev2 = every || ((max - min) / w > 0.24 ? 2 : 1);
+  let b = line(x0 - 2.5, y, x1 + 2.5, y, C.charcoal, 0.4) + `<path d="M${x0 - 2.5},${y} l1.8,-1 v2 z M${x1 + 2.5},${y} l-1.8,-1 v2 z" fill="${C.charcoal}"/>`;
+  for (let v = min; v <= max; v++) {
+    b += line(sx(v), y - (v === 0 ? 1.4 : 0.9), sx(v), y + (v === 0 ? 1.4 : 0.9), C.charcoal, v === 0 ? 0.45 : 0.3);
+    if ((v - min) % ev2 === 0 || (v === 0 && ev2 === 1)) b += T(sx(v), y + 4.3, minus(v), { size: 2.6, anchor: 'middle', weight: v === 0 ? 700 : 400 });
+  }
+  all.forEach(({ from, to, label }, i) => {
+    const a = sx(from), c = sx(to), peak = 3.5 + 3.4 * i, cy = y - 2 * peak, mx = (a + c) / 2;
+    b += `<path d="M${f(a)},${f(y - 0.6)} Q${f(mx)},${f(cy)} ${f(c)},${f(y - 0.6)}" fill="none" stroke="${C.blue}" stroke-width="0.4"/>`;
+    b += arrowHead(c, y - 0.6, Math.atan2(y - 0.6 - cy, c - mx), C.blue);
+    if (label) b += T(mx, y - peak - 0.9, label, { size: 2.6, anchor: 'middle', weight: 700, fill: C.blue });
+  });
+  Object.entries(marks).forEach(([v, lab]) => { b += dot(sx(+v), y, 1, C.charcoal); if (lab && lab !== true && !k) b += T(sx(+v), y - 2, lab, { size: 2.6, anchor: 'middle', weight: 700 }); });
+  if (start !== null) b += dot(sx(start), y, 1.1, C.blue);
+  if (done && end && moves.length) b += `<circle cx="${f(sx(pos))}" cy="${y}" r="1.2" fill="#fff" stroke="${RED}" stroke-width="0.6"/>`;
+  return svg(w, h, b);
+};
+
+// A thermometer from min to max (°C). value: the red liquid reaches it (null: empty, for students to shade).
+// arrows: [{ v, text }] points at readings from the left.
+const thermometer = ({ min = -10, max = 10, value = null, every = 5, unit = 1.6, arrows = [], w = 30 }) => {
+  const tx = w / 2 - 1, top = 3, len = (max - min) * unit, h = top + len + 8, sy = (v) => top + (max - v) * unit;
+  let b = `<rect x="${f(tx - 1.6)}" y="${top - 1.5}" width="3.2" height="${f(len + 3)}" rx="1.6" fill="#fff" stroke="${C.charcoal}" stroke-width="0.4"/>`
+    + `<circle cx="${f(tx)}" cy="${f(top + len + 4)}" r="2.8" fill="${RED}" stroke="${C.charcoal}" stroke-width="0.4"/>`;
+  if (value !== null) b += `<rect x="${f(tx - 0.9)}" y="${f(sy(value))}" width="1.8" height="${f(top + len + 2.5 - sy(value))}" fill="${RED}"/>`;
+  else b += `<rect x="${f(tx - 0.9)}" y="${f(top + len + 0.5)}" width="1.8" height="2" fill="${RED}"/>`;
+  for (let v = min; v <= max; v++) {
+    const big = v % every === 0;
+    b += line(tx + 1.6, sy(v), tx + (big ? 3.8 : 2.7), sy(v), C.charcoal, big ? 0.35 : 0.2);
+    if (big) b += T(tx + 4.6, sy(v) + 1, minus(v), { size: 2.6, weight: v === 0 ? 700 : 400 });
+  }
+  arrows.forEach(({ v, text: t }) => { b += line(tx - 7, sy(v), tx - 2.4, sy(v), C.blue, 0.4) + arrowHead(tx - 2, sy(v), 0, C.blue) + T(tx - 7.6, sy(v) + 1, t, { size: 2.6, anchor: 'end', weight: 700, fill: C.blue }); });
+  return svg(w, h, b);
+};
+
+// A vertical scale (heights above and below sea level, or the floors of a building).
+// kind: 'sea' shades water below 0, 'ground' shades the ground below 0 (basement levels). marks: [{ v, text, side }].
+const vscale = ({ min, max, every = 1, tick = 1, unit = 3, kind = 'sea', marks = [], w = 50, unitLabel = '' }) => {
+  const top = 3, len = (max - min) * unit, h = top + len + 3, ax = 14, sy = (v) => top + (max - v) * unit;
+  let b = '';
+  if (kind === 'sea') b += `<rect x="0" y="${f(sy(0))}" width="${w}" height="${f(h - sy(0))}" fill="#dbe6f7"/>` + `<path d="M0,${f(sy(0))} ${Array.from({ length: Math.ceil(w / 4) }, (_, i) => `q1,-0.9 2,0 q1,0.9 2,0`).join(' ')}" fill="none" stroke="${C.blue}" stroke-width="0.4"/>` + T(w - 1, sy(0) + 3.4, 'sea level', { size: 2.4, anchor: 'end', fill: C.blue, weight: 600 });
+  if (kind === 'ground') b += `<rect x="0" y="${f(sy(0) + unit / 2)}" width="${w}" height="${f(h - sy(0) - unit / 2)}" fill="#ece3d0"/>` + line(0, sy(0) + unit / 2, w, sy(0) + unit / 2, '#8a6d3b', 0.5) + T(w - 1, sy(0) + unit / 2 + 3, 'ground', { size: 2.4, anchor: 'end', fill: '#8a6d3b', weight: 600 });
+  b += line(ax, top - 1.5, ax, top + len + 1.5, C.charcoal, 0.4) + `<path d="M${ax},${top - 2.5} l-1,1.8 h2 z M${ax},${top + len + 2.5} l-1,-1.8 h2 z" fill="${C.charcoal}"/>`;
+  for (let v = min; v <= max; v += tick) {
+    const big = v % every === 0;
+    b += line(ax - (big ? 1.4 : 0.8), sy(v), ax + (big ? 1.4 : 0.8), sy(v), C.charcoal, 0.3);
+    if (big) b += T(ax - 2.2, sy(v) + 1, minus(v) + unitLabel, { size: 2.6, anchor: 'end', weight: v === 0 ? 700 : 400 });
+  }
+  marks.forEach(({ v, text: t }) => { b += dot(ax, sy(v), 1.1, RED) + line(ax + 1.6, sy(v), ax + 5, sy(v), RED, 0.3) + T(ax + 5.8, sy(v) + (v === 0 && kind === 'sea' ? -0.8 : 1), t, { size: 2.6, weight: 700, fill: C.ink }); });
+  return svg(w, h, b);
+};
+
+// Integer counters: yellow + counters on top, red − counters underneath. pairs: ring each zero pair (+ and − cancel).
+const counters = ({ pos = 0, neg = 0, pairs = false, cross = false }) => {
+  const n = Math.max(pos, neg, 1), s = 5, w = n * s + 4, h = 13;
+  let b = '';
+  const one = (x, y, p) => `<circle cx="${f(x)}" cy="${f(y)}" r="2" fill="${p ? YEL : PINK}" stroke="${C.charcoal}" stroke-width="0.35"/>` + T(x, y + 1.1, p ? '+' : '−', { size: 3.2, anchor: 'middle', weight: 700 });
+  for (let i = 0; i < pos; i++) b += one(4 + i * s, 3.5, true);
+  for (let i = 0; i < neg; i++) b += one(4 + i * s, 9.5, false);
+  const z = Math.min(pos, neg);
+  if (pairs) for (let i = 0; i < z; i++) {
+    b += `<rect x="${f(4 + i * s - 2.4)}" y="1.1" width="4.8" height="10.8" rx="2.4" fill="none" stroke="${C.blue}" stroke-width="0.35" stroke-dasharray="0.8 0.6"/>`;
+    if (cross) b += line(4 + i * s - 2.2, 11.4, 4 + i * s + 2.2, 1.6, C.blue, 0.35);
+  }
+  return svg(w, h, b);
+};
+
+// Equal groups of counters, for multiplying: groups of `each` counters (each < 0 gives − counters).
+const groups = ({ n, each }) => {
+  const k = Math.abs(each), gw = k * 4.6 + 2.2, w = n * (gw + 2) + 1, h = 8;
+  let b = '';
+  for (let g = 0; g < n; g++) {
+    const gx = 1 + g * (gw + 2);
+    b += `<rect x="${f(gx)}" y="0.6" width="${f(gw)}" height="6.8" rx="1.5" fill="none" stroke="${C.grey}" stroke-width="0.3" stroke-dasharray="0.9 0.6"/>`;
+    for (let i = 0; i < k; i++) { const x = gx + 3.4 + i * 4.6; b += `<circle cx="${f(x)}" cy="4" r="1.9" fill="${each > 0 ? YEL : PINK}" stroke="${C.charcoal}" stroke-width="0.3"/>` + T(x, 5.1, each > 0 ? '+' : '−', { size: 3, anchor: 'middle', weight: 700 }); }
+  }
+  return svg(w, h, b);
+};
+
+// Calculator keys in a row. A key written (−) is shaded: it is the negative key, not the subtract key.
+const keys = (list) => {
+  let x = 1, b = '';
+  list.forEach((k) => {
+    const kw = Math.max(5.2, String(k).length * 1.8 + 2.6);
+    b += `<rect x="${f(x)}" y="1" width="${f(kw)}" height="6" rx="1.2" fill="${k === '(−)' ? '#dbe6f7' : '#fff'}" stroke="${C.charcoal}" stroke-width="0.35"/>`
+      + `<rect x="${f(x)}" y="6.2" width="${f(kw)}" height="0.8" rx="0.4" fill="${C.charcoal}"/>` + T(x + kw / 2, 5.1, k, { size: 2.8, anchor: 'middle', weight: 700 });
+    x += kw + 1;
+  });
+  return svg(f(x), 8.5, b);
+};
+
+module.exports = { jumps, thermometer, vscale, counters, groups, keys, fit, prism, numberLine, angle, rays, parallel, polygon, grid, plane, box, triPrism, circle, spinner, squares, fractionBar, drawSpace };

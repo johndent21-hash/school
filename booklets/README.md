@@ -165,3 +165,21 @@ How it fits together:
   - `kinds: n` makes the kinds of question take turns.
   - `fig` on a question draws a diagram under it. `fig` on a round draws a map, graph or timetable that the whole round uses.
 - **Cover:** the worksheet booklet has its own cleaner cover. Chapter 1 also has a number line across the top of every page (`numberLine` in its chapter file).
+
+### Two-page lessons (Chapter 1)
+
+Chapter 1 now uses two pages a lesson: one double-sided sheet, since every lesson starts on an odd page. Its chapter file passes `twoPage: true` and uses `content2.js`. The one-page `content.js` is kept for reference.
+
+- **Steps:** each lesson has six steps (columns), three a page. Steps 1–2 are Easy, 3–4 Medium and 5–6 Challenging.
+- **HOW TO box:** each step opens with a heading and a HOW TO box that explains the method in full, with a picture (`how: { text, fig, fh }`).
+- **Rounds:** as before, with `mode: 'quick'` (answer lines) or `'work'` (working lines), `we` (the number of WE DO examples), `max` (the most YOU DO questions) and `min` (working lines).
+- **Worked pictures:** a question can have `figDone`, the same picture completed (the jumps drawn). It is shown when the question is shown worked.
+- **Filling:** YOU DO questions are shared out round-robin between a step's rounds. `room.json` holds `[page 1, page 2]` rooms.
+- **Template:** `lib/worksheet2.js`.
+- **Diagrams** (in `lib/diagrams.js`):
+  - `jumps`: a number line with arrows for moves or arcs
+  - `thermometer`
+  - `vscale`: heights above and below sea level, or the floors of a building
+  - `counters`: + and − counters with zero pairs
+  - `groups`: equal groups of counters
+  - `keys`: calculator keys

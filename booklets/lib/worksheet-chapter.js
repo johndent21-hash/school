@@ -4,7 +4,8 @@ const fs = require('fs'), path = require('path');
 const worksheet = require('./worksheet');
 const { kit } = require('./drill');
 
-module.exports = (dir, blended, content, { numberLine } = {}) => {
+// twoPage: the two-page lessons of lib/worksheet2.js (content gives six steps a lesson).
+module.exports = (dir, blended, content, { numberLine, twoPage } = {}) => {
   const file = path.join(dir, 'room.json');
   const rooms = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file)) : {};
   return {
@@ -14,7 +15,7 @@ module.exports = (dir, blended, content, { numberLine } = {}) => {
     fileName: blended.fileName.replace(/-Lessons$/, '-Worksheets'),
     lessons: blended.lessons.map(({ spec }) => {
       if (!content[spec.code]) throw new Error(`no worksheet content for ${spec.code}`);
-      return worksheet({ code: spec.code, title: spec.title, numberLine, room: rooms[spec.code] }, content[spec.code](kit(`worksheet ${spec.code}`)));
+      return (twoPage ? require('./worksheet2') : worksheet)({ code: spec.code, title: spec.title, numberLine, room: rooms[spec.code] }, content[spec.code](kit(`worksheet ${spec.code}`)));
     }),
   };
 };
