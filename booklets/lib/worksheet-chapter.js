@@ -15,6 +15,8 @@ module.exports = (dir, blended, content, { numberLine, twoPage } = {}) => {
     fileName: blended.fileName.replace(/-Lessons$/, '-Worksheets'),
     lessons: blended.lessons.map(({ spec }) => {
       if (!content[spec.code]) throw new Error(`no worksheet content for ${spec.code}`);
+      // A lesson written out in full ({ steps }) uses the calm template, lib/worksheet3.js.
+      if (content[spec.code].steps) return require('./worksheet3')({ code: spec.code, title: spec.title, numberLine }, content[spec.code].steps);
       return (twoPage ? require('./worksheet2') : worksheet)({ code: spec.code, title: spec.title, numberLine, room: rooms[spec.code] }, content[spec.code](kit(`worksheet ${spec.code}`)));
     }),
   };
