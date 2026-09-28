@@ -11,6 +11,7 @@ module.exports = (dir, blended, content, { numberLine, twoPage } = {}) => {
   return {
     ...blended,
     format: 'worksheet',
+    calm: Object.values(content).every((c) => c.steps), // every lesson written out in full (lib/worksheet3.js)
     homework: false,
     fileName: blended.fileName.replace(/-Lessons$/, '-Worksheets'),
     lessons: blended.lessons.map(({ spec }) => {

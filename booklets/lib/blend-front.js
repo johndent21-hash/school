@@ -79,9 +79,17 @@ const HOWTO_WS = `
       <div class="we"><span class="zone-pill">WE DO</span><span><b>Top of each column.</b> Your teacher works the examples on the board. <b>Copy every step</b> into the space.</span></div>
       <div class="you"><span class="zone-pill">YOU DO</span><span><b>The rest of the column.</b> Your turn. Column 1: answer on the line. Columns 2 and 3: show your working on the lines.</span></div>
     </div>`;
+// The calm two-page worksheets (lib/worksheet3.js): six steps a lesson on one double-sided sheet.
+const HOWTO_CALM = `
+    <div class="howto">
+      <div><span class="step">1</span><span>Each lesson is <b>one double-sided sheet</b> with six steps: <b class="lvl-word l1">Easy</b> steps 1–2, <b class="lvl-word l2">Medium</b> steps 3–4 and <b class="lvl-word l3">Challenging</b> steps 5–6. Write your name at the top.</span></div>
+      <div><span class="step">2</span><span>Each step starts with a <b>HOW TO</b> box and a worked example. The <b>speech bubble</b> tells you what to do.</span></div>
+      <div class="we"><span class="zone-pill">WE DO</span><span>Your teacher works these examples on the board. <b>Copy every step</b> onto the lines.</span></div>
+      <div class="you"><span class="zone-pill">YOU DO</span><span>Your turn. The first question is done for you, the next has the answer missing, then only the numbers are missing. Then it is all yours.</span></div>
+    </div>`;
 const insideCover = (chapter, lessons) => mbPage(chapter, { title: chapter.title, section: 'Start here', body: `
     <p class="section-title">How to use this booklet</p>
-    ${chapter.format === 'worksheet' ? HOWTO_WS : HOWTO}
+    ${chapter.calm ? HOWTO_CALM : chapter.format === 'worksheet' ? HOWTO_WS : HOWTO}
     <p class="section-title">Contents and progress tracker</p>
     <table class="contents tracker${lessons.length > 10 ? ' tight' : ''}">
       <tr><th>Lesson</th><th>Topic</th><th style="text-align:right">Page</th><th>Date</th><th style="text-align:center">Done</th></tr>

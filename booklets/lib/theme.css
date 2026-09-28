@@ -757,7 +757,7 @@ ul.plain { list-style: none; padding-left: 0; }
 .cw-cell { display: flex; flex-direction: column; min-width: 0; }
 .cw-qrow { display: flex; align-items: flex-start; gap: 1.5mm; }
 .cw-q { font-size: 10pt; line-height: 1.3; }
-.cw-set.two .cw-q { font-size: 9.8pt; }
+.cw-set.two .cw-q { font-size: 9.4pt; }
 .cw-fig { display: flex; justify-content: center; margin: 1mm 0 0; flex: none; }
 .cw-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
 .cw-how .cw-fig { margin-top: 0.8mm; }

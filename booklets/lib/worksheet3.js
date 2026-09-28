@@ -27,7 +27,7 @@ const blank = (l) => {
 const scaffold = (lines, level) => lines.map((l, i) => (level === 'full' ? l : level === 'answer' ? (i === lines.length - 1 ? blank(l) : l) : level === 'numbers' ? blank(l) : ''));
 
 const FADE = ['full', 'answer', 'numbers'];
-const figBox = (fig) => { if (!fig) return ''; const vb = viewBox(fig); return `<div class="cw-fig" style="height:${vb ? Math.min(30, vb[1] * Math.min(1.1, 56 / vb[0])).toFixed(1) : 20}mm">${fig}</div>`; };
+const figBox = (fig) => { if (!fig) return ''; if (/^<table/.test(fig)) return `<div class="cw-fig ff-tbl">${fig}</div>`; const vb = viewBox(fig); return `<div class="cw-fig" style="height:${vb ? Math.min(30, vb[1] * Math.min(1.1, 56 / vb[0])).toFixed(1) : 20}mm">${fig}</div>`; };
 
 // One question: number, question, picture, then the lines (worked, part-worked or blank).
 const cell = (label, it, level) => {
