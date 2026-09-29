@@ -32,14 +32,14 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
 
   const big = `<section class="ow-block ow-big">
     <div class="ow-words"><h4>Words</h4>${L.words.map(([t, d]) => `<p><b>${t}</b> ${d}</p>`).join('')}</div>
-    <div class="ow-idea"><h4>Big idea</h4>${L.big.text}</div><div class="ow-bigfigs">${(L.big.figs || []).map((f) => figBox(f, 13, 62)).join('')}</div></section>`;
+    <div class="ow-idea"><h4>Big idea</h4>${L.big.text}</div><div class="ow-bigfigs">${(L.big.figs || []).map((f) => figBox(f, L.big.fh || 13, 62)).join('')}</div></section>`;
 
   const pairs = L.pairs.map((p, k) => {
     w(`Example ${k + 1}`, p.ex.q, p.ex.lines);
     w(`Your turn ${k + 1}`, p.you.q, p.you.lines);
     if (p.why) notes.push(`<b>Why? (pair ${k + 1})</b> ${p.why.q}<br><span class="aw">${p.why.a}</span>`);
-    const exCell = `<div class="ow-ex"><span class="ow-lab">Example ${k + 1}</span><p class="ow-q">${p.ex.q}</p>${figBox(p.ex.figDone || p.ex.fig, 14, 72)}<div class="ow-ls">${lines(p.ex.lines, p.ex.lines)}</div>${p.why ? `<p class="ow-why"><b>Why?</b> ${p.why.q}</p><i class="ow-l why"></i>` : ''}</div>`;
-    const youCell = `<div class="ow-you"><span class="ow-lab">Your turn ${k + 1}</span><p class="ow-q">${p.you.q}</p>${figBox(p.you.fig, 14, 72)}<div class="ow-ls">${lines(p.you.lines, fade(p.you.lines, k))}</div></div>`;
+    const exCell = `<div class="ow-ex"><span class="ow-lab">Example ${k + 1}</span><p class="ow-q">${p.ex.q}</p>${figBox(p.ex.figDone || p.ex.fig, p.fh || 14, 72)}<div class="ow-ls">${lines(p.ex.lines, p.ex.lines)}</div>${p.why ? `<p class="ow-why"><b>Why?</b> ${p.why.q}</p><i class="ow-l why"></i>` : ''}</div>`;
+    const youCell = `<div class="ow-you"><span class="ow-lab">Your turn ${k + 1}</span><p class="ow-q">${p.you.q}</p>${figBox(p.you.fig, p.fh || 14, 72)}<div class="ow-ls">${lines(p.you.lines, fade(p.you.lines, k))}</div></div>`;
     return `<div class="ow-pair">${exCell}${youCell}</div>`;
   }).join('');
   const learn = `<section class="ow-block ow-learn"><h3><span class="ow-k">Learn it</span><em>Read each example. Then do the one beside it. Stuck? Look back at the example.</em></h3>${pairs}</section>`;
@@ -57,7 +57,7 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
   P.items.forEach((it, i) => w(`Pattern ${i + 1}`, it.q, it.a));
   w('Notice', P.notice, P.noticeA);
   const pattern = `<section class="ow-block ow-pattern"><h3><span class="ow-k">Spot the pattern</span><em>${P.text}</em></h3>
-    <div class="ow-pat-grid">${P.items.map((it, i) => `<p><b>${i + 1}</b> ${it.q} = <i class="ow-blank"></i></p>`).join('')}</div>
+    <div class="ow-pat-grid">${P.items.map((it, i) => `<p><b>${i + 1}</b> ${it.q}${/☐/.test(it.q) ? '&ensp;' : ' = '}<i class="ow-blank${/☐/.test(it.q) ? ' short' : ''}"></i></p>`).join('')}</div>
     <p class="ow-why"><b>What do you notice?</b> ${P.notice}</p><i class="ow-l why"></i><i class="ow-l why"></i></section>`;
 
   const mixed = `<section class="ow-block ow-mixed"><h3><span class="ow-k">Mixed practice</span><em>Today's skill mixed with earlier ones. Read each question carefully: they are not all the same kind.</em></h3>
@@ -83,4 +83,26 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
     pages: [page(0, doNow + think + big + learn + check), page(1, pattern + mixed + further + exit)],
     answers: [['Teacher notes', notes], ['Worked answers', worked]],
   };
+}, { code, pagesEach: 2 });
+
+// The chapter review: two pages of mixed questions from every lesson (interleaved and spaced), then a check list of
+// the lessons to go back to. items: [{ from, q, a, n? }], the first half on page 1.
+module.exports.review = ({ code, title, intro }, items) => Object.assign((chapter) => {
+  const worked = []; worked.plain = true;
+  const half = Math.ceil(items.length / 2);
+  const cells = (list, start) => list.map((m, i) => { worked.push(`<b>${start + i + 1}</b> ${m.q}<br><span class="aw">${m.a}</span>`); return `<div class="ow-mix-cell">${tag(m.from)}<p><b>${start + i + 1}</b> ${m.q}</p>${'<i class="ow-l"></i>'.repeat(m.n || 2)}</div>`; }).join('');
+  const lessons = [...new Set(items.map((m) => m.from))].sort();
+  const head = (k) => `<div class="ow-head"><h2><span>${code}</span>${title}${k ? '<em> (page 2)</em>' : ''}</h2><p>Year ${chapter.year} · Chapter ${chapter.number}: ${chapter.title}</p></div>
+    ${k ? '' : '<div class="cw-name"><span>Name</span><i></i><span>Class</span><i class="short"></i><span>Date</span><i class="short"></i></div>'}`;
+  const page = (k, body) => `
+<section class="page mb ws-page own">
+  <div class="ws-strip"></div>
+  <div class="content">${head(k)}${body}</div>
+  <footer class="page-foot"><span>Kingscliff High School · Year ${chapter.year} Mathematics</span><span class="pn">{{PN}}</span><span>Chapter ${chapter.number} · ${chapter.title}</span></footer>
+</section>`;
+  const block = (k, list, start) => `<section class="ow-block ow-mixed"><h3><span class="ow-k">Mixed review ${k}</span><em>${k === 'A' ? intro : 'Keep going. Each question says which lesson it comes from.'}</em></h3><div class="ow-mix-grid">${cells(list, start)}</div></section>`;
+  const track = `<section class="ow-block ow-exit"><h3><span class="ow-k">What next?</span><em>Mark your answers with your teacher. Tick each lesson where you got every question right.</em></h3>
+    <div class="ow-track">${lessons.map((l) => `<span><b>${l}</b><i></i></span>`).join('')}</div>
+    <p class="ow-rate">Not ticked? Go back to that lesson's Examples, then try its Exit ticket again.</p></section>`;
+  return { code, title, pages: [page(0, block('A', items.slice(0, half), 0)), page(1, block('B', items.slice(half), half) + track)], answers: [['Worked answers', worked]] };
 }, { code, pagesEach: 2 });

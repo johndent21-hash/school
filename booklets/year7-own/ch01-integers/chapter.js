@@ -1,5 +1,5 @@
 // Chapter 1 Integers, designed from the research (../DESIGN.md, lib/own.js). One double-sided sheet per lesson.
-// Only the lessons written in content.js are built (the pilot has 1.04 only).
+// Ten lessons, then a two-page chapter review of mixed questions.
 const blended = require('../../year7-blend/ch01-integers/chapter.js');
 const own = require('../../lib/own');
 const content = require('./content');
@@ -19,5 +19,8 @@ module.exports = {
   kindLabel: 'Learn it · Practise it',
   howto: HOWTO,
   fileName: 'Year7-Ch01-Integers-Booklet',
-  lessons: blended.lessons.filter(({ spec }) => content[spec.code]).map(({ spec }) => own({ code: spec.code, title: spec.title }, content[spec.code])),
+  lessons: [
+    ...blended.lessons.filter(({ spec }) => content[spec.code]).map(({ spec }) => own({ code: spec.code, title: spec.title }, content[spec.code])),
+    own.review({ code: 'Review', title: 'Chapter review', intro: 'No notes. Show your working. Calculator only where it says so.' }, content.REVIEW),
+  ],
 };

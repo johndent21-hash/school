@@ -856,3 +856,7 @@ ul.plain { list-style: none; padding-left: 0; }
 .ow-rate span { border: 0.3mm solid var(--charcoal); border-radius: 4mm; padding: 0.3mm 3mm; font-size: 8.5pt; }
 .own .nw { white-space: nowrap; }
 .ow-dn .ow-box { height: 8mm; }
+.ow-blank.short { flex: 0 0 12mm; }
+.ow-track { display: flex; flex-wrap: wrap; gap: 2mm 3mm; }
+.ow-track span { display: inline-flex; align-items: center; gap: 1.5mm; font-size: 9pt; }
+.ow-track i { display: inline-block; width: 5mm; height: 5mm; border: 0.3mm solid var(--charcoal); border-radius: 0.8mm; }

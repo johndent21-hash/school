@@ -166,7 +166,8 @@ Bofferding (2014, 2019) and others describe these:
 - A **"Think first"** starter opens lessons where a puzzle helps (e.g. 1.04: "The temperature is −3°C and rises 5°C. Where does it end up?"). It is followed by explicit teaching.
 - **Order of the chapter:** meaning of negatives, then order, then adding, subtracting, multiplying, dividing, order of operations, calculator, then problems.
 - **Every Do now** reaches back at least two lessons.
-- A **chapter review sheet** at the end: interleaved, with the same question types as the exit tickets.
+- A **chapter review sheet** at the end (two pages, 24 questions, mixed across all ten lessons, each tagged with its lesson). It ends with a **"What next?"** tick list: any lesson not ticked sends the student back to that lesson's Examples and Exit ticket.
+- **Built:** all ten lessons and the review (24 pages including the cover and how-to page). The answer booklet gives teacher notes and full worked answers for every lesson.
 
 ## 4. What should be tested with real students
 
