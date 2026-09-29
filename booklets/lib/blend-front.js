@@ -35,7 +35,7 @@ const worksheetCover = (chapter) => `
     <p class="wsc-year">Year ${chapter.year} Mathematics</p>
     <p class="wsc-chapter">Chapter ${chapter.number}</p>
     <h1>${chapter.title}</h1>
-    <p class="wsc-kind">Worksheets</p>
+    <p class="wsc-kind">${chapter.kindLabel || 'Worksheets'}</p>
   </div>
   <div class="wsc-big">${chapter.number}</div>
   <p class="wsc-credit">Artwork: ${ART[chapter.art] || ART['whole-set']}, part of the Mandelbrot set.</p>
@@ -89,7 +89,7 @@ const HOWTO_CALM = `
     </div>`;
 const insideCover = (chapter, lessons) => mbPage(chapter, { title: chapter.title, section: 'Start here', body: `
     <p class="section-title">How to use this booklet</p>
-    ${chapter.calm ? HOWTO_CALM : chapter.format === 'worksheet' ? HOWTO_WS : HOWTO}
+    ${chapter.howto ? chapter.howto : chapter.calm ? HOWTO_CALM : chapter.format === 'worksheet' ? HOWTO_WS : HOWTO}
     <p class="section-title">Contents and progress tracker</p>
     <table class="contents tracker${lessons.length > 10 ? ' tight' : ''}">
       <tr><th>Lesson</th><th>Topic</th><th style="text-align:right">Page</th><th>Date</th><th style="text-align:center">Done</th></tr>

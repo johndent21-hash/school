@@ -1,4 +1,6 @@
-/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Integers answers</title>
+<style>/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
 :root {
   --charcoal: #3d3b3c;
   --blue: #3f63be;
@@ -11,9 +13,9 @@
   --muted: #6b6a64;
   --tear-h: 64mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
 }
-@font-face { font-family: Lexend; font-weight: 400; src: url({{ASSETS}}/lexend-latin-400-normal.woff2); }
-@font-face { font-family: Lexend; font-weight: 600; src: url({{ASSETS}}/lexend-latin-600-normal.woff2); }
-@font-face { font-family: Lexend; font-weight: 700; src: url({{ASSETS}}/lexend-latin-700-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../assets/lexend-latin-700-normal.woff2); }
 
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -28,7 +30,7 @@ li { margin-bottom: 0.6mm; }
 
 /* ---------- page shell ---------- */
 .page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
-.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url({{ASSETS}}/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
+.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url(../../assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
 .page-head {
   position: absolute; top: 10mm; left: 12mm; right: 12mm;
   display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
@@ -224,7 +226,7 @@ li { margin-bottom: 0.6mm; }
 
 /* ---------- cover ---------- */
 .cover { background: var(--charcoal); }
-.cover-art { position: absolute; inset: 0; background: url({{ASSETS}}/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-art { position: absolute; inset: 0; background: url(../../assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
 .cover-spine {
   position: absolute; top: 0; bottom: 0; left: 0; width: 15mm; background: var(--blue);
   display: flex; align-items: center; justify-content: center; box-shadow: 0.8mm 0 0 var(--sand);
@@ -275,7 +277,7 @@ li { margin-bottom: 0.6mm; }
 .ack-box { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
 .ack-box h3 { color: var(--sand); font-size: 10pt; margin-bottom: 1mm; }
 .ack-box p { font-size: 8.5pt; margin-bottom: 2mm; }
-.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url({{ASSETS}}/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
+.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url(../../assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
 .section-title { font-size: 13pt; color: var(--charcoal); font-weight: 700; flex: none; }
 
 /* ---------- answers ---------- */
@@ -856,3 +858,21 @@ ul.plain { list-style: none; padding-left: 0; }
 .ow-rate span { border: 0.3mm solid var(--charcoal); border-radius: 4mm; padding: 0.3mm 3mm; font-size: 8.5pt; }
 .own .nw { white-space: nowrap; }
 .ow-dn .ow-box { height: 8mm; }
+:root { --accent: #c0392b; --mb-dark: url(../../assets/mandelbrot/antenna-band.jpg); }
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }
+  .ans-lesson { break-inside: auto; }
+  .ans-lesson h2 { break-inside: avoid; break-after: avoid; }
+  .ans-block { break-inside: avoid; }
+  .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }
+  .theme-mb .ans-block ol.multi { columns: 3; column-gap: 8mm; }
+  .theme-mb .ans-block ol.multi li { break-inside: avoid; }
+  .theme-mb .ans-block { break-inside: auto; }
+  .ans-block ul.worked { list-style: none; padding: 0; columns: 3; column-gap: 7mm; }
+  .ans-block ul.worked li { break-inside: avoid; margin: 0 0 1.8mm; line-height: 1.3; }
+  .ans-block ul.worked .aw { color: #1a3fae; font-weight: 600; }
+  .ans-block ul.worked li b { display: inline-block; min-width: 7mm; }</style></head><body class="theme-mb">
+  <div class="ans-header"><h1>Year 7 · Chapter 1 · Integers: answers (teacher copy)</h1></div>
+  <div class="answers">
+  <div class="ans-lesson"><h2>1.04 Adding integers <span class="ans-page">(booklet p. 3)</span></h2><div class="ans-block"><h3>Teacher notes</h3><ul class="worked"><li><b>Key misconception.</b> Treating −2 + 5 as "−(2 + 5)" (the symmetric error), and carrying "two negatives make a positive" over from multiplication into addition.</li><li><b>Why? (pair 1)</b> We moved right. Why?<br><span class="aw">We added a positive number (+3), and adding a positive moves right.</span></li><li><b>Why? (pair 2)</b> 2 − 5 also moves 5 left from 2. What does that tell you about 2 + (−5)?<br><span class="aw">2 + (−5) is the same as 2 − 5. Adding a negative is the same as subtracting.</span></li><li><b>Why? (pair 3)</b> Tom says −4 + (−3) = 7. What went wrong?<br><span class="aw">Tom used "two negatives make a positive". That rule is about multiplying, not adding. Adding a negative moves left, so −4 + (−3) = −7.</span></li><li><b>Check (hinge).</b> Work out&ensp;−2 + 5 Answer: <b>B</b>.<br>A (−7): added the sizes and kept the minus sign ("symmetric" error). Re-teach with Example 1 on the number line.<br>B (3): correct.<br>C (−3): moved the wrong way, or did 5 − 2 and kept the minus. Act it out: start at −2, walk 5 steps right.<br>D (7): ignored the negative sign. Check they read −2 as a place left of zero (Words box).</li><li><b>Next.</b> Most students B: go on to page 2. Students with A, C or D: a short re-teach at the board with Examples 1 and 2 on the number line (walk it out), then Your turn 1 and 2 again before page 2. Students who finish Mixed practice: Go further.</li><li><b>Think first.</b> Take answers without judging. Show a thermometer: start at −3, count up 5. Link to Example 1: the same move on a sideways number line.</li></ul></div><div class="ans-block"><h3>Worked answers</h3><ul class="worked"><li><b>Do now 1</b> −7 ☐ −2&ensp;Write &lt; or &gt;.<br><span class="aw">−7 &lt; −2</span></li><li><b>Do now 2</b> Order smallest to largest: 4, −6, 0, −1<br><span class="aw">−6, −1, 0, 4</span></li><li><b>Do now 3</b> What is the opposite of −9?<br><span class="aw">9</span></li><li><b>Do now 4</b> Start at −4. Move 6 right. Where do you land?<br><span class="aw">2</span></li><li><b>Think first</b> It is −3°C at 6 am. By noon it is 5°C warmer. What is the temperature at noon?<br><span class="aw">2°C</span></li><li><b>Example 1</b> −5 + 3<br><span class="aw">start at −5, move 3 right &ensp;·&ensp; = −2</span></li><li><b>Your turn 1</b> −6 + 4<br><span class="aw">start at −6, move 4 right &ensp;·&ensp; = −2</span></li><li><b>Example 2</b> 2 + (−5)<br><span class="aw">start at 2, move 5 left &ensp;·&ensp; = −3</span></li><li><b>Your turn 2</b> 3 + (−7)<br><span class="aw">start at 3, move 7 left &ensp;·&ensp; = −4</span></li><li><b>Example 3</b> −4 + (−3)<br><span class="aw">= −4 − 3 &ensp;·&ensp; = −7</span></li><li><b>Your turn 3</b> −2 + (−6)<br><span class="aw">= −2 − 6 &ensp;·&ensp; = −8</span></li><li><b>Pattern 1</b> −3 + 3<br><span class="aw">0</span></li><li><b>Pattern 2</b> −3 + 2<br><span class="aw">−1</span></li><li><b>Pattern 3</b> −3 + 1<br><span class="aw">−2</span></li><li><b>Pattern 4</b> −3 + 0<br><span class="aw">−3</span></li><li><b>Pattern 5</b> −3 + (−1)<br><span class="aw">−4</span></li><li><b>Pattern 6</b> −3 + (−2)<br><span class="aw">−5</span></li><li><b>Pattern 7</b> −3 + (−3)<br><span class="aw">−6</span></li><li><b>Pattern 8</b> −30 + (−30)<br><span class="aw">−60</span></li><li><b>Notice</b> What happens to the answer each time the number added goes down by 1?<br><span class="aw">The answer goes down by 1 too. Adding a negative carries on the pattern: it makes the answer smaller.</span></li><li><b>Mixed 1</b> −8 + 5<br><span class="aw">−3</span></li><li><b>Mixed 2</b> Which is larger: −8 or 5?<br><span class="aw">5</span></li><li><b>Mixed 3</b> 6 + (−9)<br><span class="aw">−3</span></li><li><b>Mixed 4</b> How far apart are −8 and 5?<br><span class="aw">13</span></li><li><b>Mixed 5</b> −7 + (−2)<br><span class="aw">−9</span></li><li><b>Mixed 6</b> What is the opposite of −12?<br><span class="aw">12</span></li><li><b>Mixed 7</b> −15 + 15<br><span class="aw">0</span></li><li><b>Mixed 8</b> −6 + ☐ = −1<br><span class="aw">☐ = 5</span></li><li><b>Mixed 9</b> A diver is at −12 m. She rises 5 m. Where is she now?<br><span class="aw">−12 + 5 = −7 m</span></li><li><b>Mixed 10</b> Order smallest to largest: <span class="nw">−3 + 4</span>, −3, <span class="nw">−3 + (−4)</span><br><span class="aw">−3 + (−4), −3, −3 + 4 (that is −7, −3, 1)</span></li><li><b>Go further 1</b> Always, sometimes or never true? "Adding a negative number makes the answer smaller." Explain.<br><span class="aw">Always. Adding a negative always moves left, so the answer is always smaller than the starting number.</span></li><li><b>Go further 2</b> Find two integers that add to −3. Then find two more, where one of them is positive.<br><span class="aw">e.g. −1 + (−2) = −3; e.g. 2 + (−5) = −3</span></li><li><b>Go further 3</b> Start at −4. Add 2, 6 and −5 in any order. Where do you finish? Does the order matter?<br><span class="aw">−4 + 2 + 6 + (−5) = −1. The order does not matter.</span></li><li><b>Exit 1</b> −7 + 3<br><span class="aw">−4</span></li><li><b>Exit 2</b> 4 + (−9)<br><span class="aw">−5</span></li><li><b>Exit 3</b> It is −6°C. It warms up 10°C. What is the temperature now?<br><span class="aw">−6 + 10 = 4°C</span></li></ul></div></div>
+  </div></body></html>
