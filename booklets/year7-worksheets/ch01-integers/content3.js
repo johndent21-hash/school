@@ -12,7 +12,7 @@ const dot = (min, max, v, label = true, every = 1) => D.jumps({ min, max, marks:
 const scale = (min, step, labels, ask) => D.numberLine({ min, max: min + 10 * step, step, blank: true, marks: { ...Object.fromEntries(labels.map((v) => [v, String(v).replace('-', '−')])), [ask]: '?' }, w: 56, h: 13 });
 const table = (head, rows) => `<table class="data-table"><tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
 // The "Is it right?" HOW TO, the same in every lesson.
-const judge = (ex) => ({ text: `<p>Work it out yourself first.</p><p>Then compare. Say yes or no, and give the right answer.</p><p class="ex">${ex}</p>` });
+const judge = (ex) => ({ text: `<p>Work it out yourself. Then say yes or no, with the right answer.</p><p class="ex">${ex}</p>` });
 
 module.exports = {
   '1.01': { steps: [
@@ -29,7 +29,7 @@ module.exports = {
         ] }] },
     { title: 'Integers in real life',
       how: { text: '<p>Below zero, down, a loss or spending: <b>negative</b>.</p><p>Above zero, up, a gain or saving: <b>positive</b>.</p><p class="ex">5 m below sea level: −5</p>' },
-      rounds: [{ text: 'Write an integer for each one.', two: true,
+      rounds: [{ text: 'Write an integer for each one.',
         we: [{ q: '3°C below zero', lines: ['= −3'] }],
         you: [
           { q: 'a gain of 4 kg', lines: ['= 4'] },
@@ -75,13 +75,13 @@ module.exports = {
           { q: '14 or −15', lines: ['distances: 14 and 15', 'further: −15'] },
         ] }] },
     { title: 'Is it right?',
-      how: judge('Kim says the opposite of −9 is 9. Yes, Kim is right.'),
+      how: judge('Kim says the opposite of −9 is 9. Both are 9 from 0. Yes, Kim is right.'),
       rounds: [{ text: 'Is it right? Explain your answer.',
         we: [{ q: 'Tom says −(−4) = −4. Is he right?', lines: ['= opposite of −4', '= 4', 'No. The answer is 4.'] }],
         you: [
           { q: 'Ali says −(+7) = 7. Is he right?', lines: ['= opposite of 7', '= −7', 'No. The answer is −7.'] },
           { q: 'Ben says −6 is further from 0 than 4. Is he right?', lines: ['distances: 6 and 4', '6 is more than 4', 'Yes. Ben is right.'] },
-          { q: 'Mia says the opposite of 0 is 0. Is she right?', lines: ['0 is not left or right of 0', 'so its opposite is itself', 'Yes. Mia is right.'] },
+          { q: 'Mia says the opposite of 0 is 0. Is she right?', lines: ['0 is 0 steps from 0', 'its opposite: 0', 'Yes. Mia is right.'] },
           { q: 'Jo says 10 m down and 10 m up are opposites. Is Jo right?', lines: ['down: −10, up: 10', 'same distance, other side', 'Yes. Jo is right.'] },
         ] }] },
   ] },
@@ -96,7 +96,7 @@ module.exports = {
           { q: 'Where is R?', fig: dot(-8, 6, 3, 'R', 2), lines: ['R is at 3'] },
           { q: 'Where is S?', fig: dot(-8, 6, -7, 'S', 2), lines: ['S is at −7'] },
           { q: 'Where is T?', fig: dot(-8, 6, 5, 'T', 2), lines: ['T is at 5'] },
-          { q: 'Which integer is 3 right of −5?', lines: ['land on −2'] },
+          { q: 'Which integer is between −8 and −6?', lines: ['it is −7'] },
         ] }] },
     { title: 'Moving left and right',
       how: { text: '<p>Move <b>right</b>: the number gets larger.</p><p>Move <b>left</b>: the number gets smaller.</p><p class="ex">Start at 2, move 5 left. Land on −3.</p>', fig: D.jumps({ min: -5, max: 5, start: 2, moves: [-5], every: 1 }) },
@@ -191,12 +191,12 @@ module.exports = {
     { title: 'Comparing temperatures',
       how: { text: '<p>Colder is <b>lower</b> on the thermometer: a smaller number.</p><p class="ex">−8°C is colder than −3°C.</p>', fig: D.thermometer({ min: -10, max: 0, value: -3, unit: 1.3, every: 5, arrows: [{ v: -3, text: '−3°C' }, { v: -8, text: '−8°C' }], w: 36 }) },
       rounds: [{ text: 'Which is colder (or warmer)? Picture the thermometer.',
-        we: [{ q: 'Which is colder: −4°C or −9°C?', lines: ['−9 is left of −4', 'colder: −9°C'] }],
+        we: [{ q: 'Which is colder: −4°C or −9°C?', lines: ['−9 is lower than −4', 'colder: −9°C'] }],
         you: [
-          { q: 'Which is colder: −2°C or −6°C?', lines: ['−6 is left of −2', 'colder: −6°C'] },
-          { q: 'Which is colder: 3°C or −1°C?', lines: ['−1 is left of 3', 'colder: −1°C'] },
-          { q: 'Which is warmer: −10°C or −7°C?', lines: ['−7 is right of −10', 'warmer: −7°C'] },
-          { q: 'Which is colder: −21°C or −12°C?', lines: ['−21 is left of −12', 'colder: −21°C'] },
+          { q: 'Which is colder: −2°C or −6°C?', lines: ['−6 is lower than −2', 'colder: −6°C'] },
+          { q: 'Which is colder: 3°C or −1°C?', lines: ['−1 is lower than 3', 'colder: −1°C'] },
+          { q: 'Which is warmer: −10°C or −7°C?', lines: ['−7 is higher than −10', 'warmer: −7°C'] },
+          { q: 'Which is colder: −21°C or −12°C?', lines: ['−21 is lower than −12', 'colder: −21°C'] },
         ] }] },
     { title: 'Simplify, then compare',
       how: { text: '<p>Simplify any −(−n) or −(+n) first.</p><p>Then compare.</p><p class="ex">−(−2) ☐ −5 becomes 2 ☐ −5, so &gt;.</p>' },
@@ -216,7 +216,7 @@ module.exports = {
         we: [{ q: 'Tom says −9 is larger than −4. Is he right?', lines: ['−9 is left of −4', 'so −9 is smaller', 'No. −4 is larger.'] }],
         you: [
           { q: 'Mia says −1 &gt; −10. Is she right?', lines: ['−1 is right of −10', 'so −1 is larger', 'Yes. Mia is right.'] },
-          { q: 'Ben says −20°C is colder than −2°C. Is he right?', lines: ['−20 is left of −2', 'so −20°C is colder', 'Yes. Ben is right.'] },
+          { q: 'Ben says −20°C is colder than −2°C. Is he right?', lines: ['−20 is lower than −2', 'so −20°C is colder', 'Yes. Ben is right.'] },
           { q: 'Ali says −5, −7, 0, 2 is in ascending order. Is he right?', lines: ['smallest: −7', '−7, −5, 0, 2', 'No. It is −7, −5, 0, 2.'] },
           { q: 'Jo says −(−6) &lt; −6. Is Jo right?', lines: ['−(−6) = 6', '6 is right of −6', 'No. −(−6) &gt; −6.'] },
         ] }] },
@@ -279,13 +279,13 @@ module.exports = {
           { q: 'A diver is at −18&nbsp;m. She swims up 7&nbsp;m, then down 4&nbsp;m. Where is she now?', lines: ['−18 + 7 + (−4)', '= −11 + (−4)', '= −15 m'] },
         ] }] },
     { title: 'Is it right?',
-      how: { text: '<p>Work it out yourself first.</p><p>Then compare. Say yes or no, and give the right answer.</p><p class="ex">Kim says 3 + (−5) = −2.<br>3 − 5 = −2. Yes, Kim is right.</p>' },
+      how: judge('Kim says 3 + (−5) = −2. 3 − 5 = −2. Yes, Kim is right.'),
       rounds: [{ text: 'Is it right? Explain your answer.',
         we: [{ q: 'Tom says −6 + 2 = −8. Is he right?', lines: ['start at −6, move 2 right', '= −4', 'No. The answer is −4.'] }],
         you: [
           { q: 'Mia says −8 + 5 = −13. Is she right?', lines: ['start at −8, move 5 right', '= −3', 'No. The answer is −3.'] },
           { q: 'Ben says −7 + 3 + (−3) = −7. Is he right?', lines: ['3 + (−3) is a zero pair', '−7 + 0 = −7', 'Yes. Ben is right.'] },
-          { q: 'Ali says −4 + ☐ = 2 means ☐ = −2. Is he right?', lines: ['from −4 to 2 is 6 right', '☐ = 6', 'No. ☐ is 6, not −2.'] },
+          { q: 'Ali says 6 + (−9) = 3. Is he right?', lines: ['9 − 6 = 3', '− has more: −3', 'No. The answer is −3.'] },
           { q: 'Jo says adding always makes a number bigger. Is Jo right?', lines: ['4 + (−6) = −2', '−2 is smaller than 4', 'No. It can get smaller.'] },
         ] }] },
   ] },
@@ -336,7 +336,7 @@ module.exports = {
           { q: '10 − (−2) − 15', lines: ['= 10 + 2 − 15', '= 12 − 15', '= −3'] },
         ] }] },
     { title: 'Change and difference',
-      how: { text: '<p>Change = new − old. Difference = higher − lower.</p><p class="ex">From −4°C to 6°C: 6 − (−4) = 6 + 4 = 10. A rise of 10°C.</p>' },
+      how: { text: '<p>Change = new − old. A negative change is a fall.</p><p>Difference = higher − lower.</p><p class="ex">From −4°C to 6°C: 6 − (−4) = 6 + 4 = 10. A rise of 10°C.</p>' },
       rounds: [{ text: 'Write a subtraction. Then answer the question.',
         we: [{ q: 'It was −3°C, then 5°C. How much did it rise?', lines: ['5 − (−3)', '= 5 + 3', '= 8°C'] }],
         you: [
@@ -419,14 +419,14 @@ module.exports = {
           { q: 'A lift at level 3 goes down 2 floors, 5 times. Which level is it on now?', lines: ['5 × (−2) = −10', '3 + (−10)', '= level −7'] },
         ] }] },
     { title: 'Is it right?',
-      how: judge('Kim says −4 × (−5) = 20. Same signs: +. Yes, Kim is right.'),
+      how: judge('Kim says −4 × (−5) = 20. Same signs: +. 4 × 5 = 20. Yes, Kim is right.'),
       rounds: [{ text: 'Is it right? Explain your answer.',
         we: [{ q: 'Tom says −3 × 6 = 18. Is he right?', lines: ['different signs: −', '= −18', 'No. The answer is −18.'] }],
         you: [
           { q: 'Mia says −7 × (−2) = −14. Is she right?', lines: ['same signs: +', '= 14', 'No. The answer is 14.'] },
           { q: 'Ben says −4 × ☐ = 28 means ☐ = −7. Is he right?', lines: ['−4 × (−7)', '= 28', 'Yes. Ben is right.'] },
-          { q: 'Ali says (−5)<sup>2</sup> = −25. Is he right?', lines: ['= −5 × (−5)', '= 25', 'No. The answer is 25.'] },
-          { q: 'Jo says −2 × (−3) × (−4) is positive. Is Jo right?', lines: ['3 negatives: odd, so −', '= −24', 'No. It is −24.'] },
+          { q: 'Ali says 3 × (−2) × (−5) = −30. Is he right?', lines: ['3 × (−2) = −6', '−6 × (−5) = 30', 'No. The answer is 30.'] },
+          { q: 'Jo says −2 × (−3) × (−4) is positive. Is Jo right?', lines: ['−2 × (−3) = 6', '6 × (−4) = −24', 'No. It is −24.'] },
         ] }] },
   ] },
 
@@ -455,7 +455,7 @@ module.exports = {
         ] }] },
     { title: 'Missing numbers',
       how: { text: '<p>Use the opposite operation.</p><p class="ex">☐ ÷ (−3) = 5, so ☐ = 5 × (−3) = −15.</p><p class="ex">−24 ÷ ☐ = 6, so ☐ = −24 ÷ 6 = −4.</p>' },
-      rounds: [{ text: 'Find the missing number. Use the opposite operation.', two: true,
+      rounds: [{ text: 'Find the missing number. Use the opposite operation.',
         we: [{ q: '☐ ÷ 2 = −4', lines: ['☐ = −4 × 2', '☐ = −8'] }, { q: '−20 ÷ ☐ = 5', lines: ['☐ = −20 ÷ 5', '☐ = −4'] }],
         you: [
           { q: '☐ ÷ 3 = −6', lines: ['☐ = −6 × 3', '☐ = −18'] },
@@ -485,7 +485,7 @@ module.exports = {
           { q: 'A share price fell $56 over 8 days, the same each day. What was the change each day?', lines: ['−56 ÷ 8', '= −$7 each day'] },
         ] }] },
     { title: 'Is it right?',
-      how: judge('Kim says −18 ÷ (−3) = 6. Same signs: +. Yes, Kim is right.'),
+      how: judge('Kim says −18 ÷ (−3) = 6. Same signs: +. 18 ÷ 3 = 6. Yes, Kim is right.'),
       rounds: [{ text: 'Is it right? Explain your answer.',
         we: [{ q: 'Tom says −24 ÷ 6 = 4. Is he right?', lines: ['different signs: −', '= −4', 'No. The answer is −4.'] }],
         you: [
@@ -498,7 +498,7 @@ module.exports = {
 
   '1.08': { steps: [
     { title: 'The order',
-      how: { text: '<p>1. Brackets. 2. × and ÷, left to right. 3. + and −, left to right.</p><p class="ex">−3 + 4 × 2 = −3 + 8 = 5</p>' },
+      how: { text: '<p>1. Brackets first.</p><p>2. × and ÷, left to right.</p><p>3. + and −, left to right.</p><p class="ex">−3 + 4 × 2 = −3 + 8 = 5</p>' },
       rounds: [{ text: 'Do the × or ÷ first. Then the + or −.', two: true,
         we: [{ q: '−5 + 2 × 3', lines: ['= −5 + 6', '= 1'] }],
         you: [
@@ -519,7 +519,7 @@ module.exports = {
           { q: '(−3 − 2) × 4', lines: ['= −5 × 4', '= −20'] },
           { q: '(−8 + 2) ÷ 3', lines: ['= −6 ÷ 3', '= −2'] },
           { q: '−2 × (5 − 9)', lines: ['= −2 × (−4)', '= 8'] },
-          { q: '(−9 − 6) ÷ (−5)', lines: ['= −15 ÷ (−5)', '= 3'] },
+          { q: '(−9 − 6) ÷ 5', lines: ['= −15 ÷ 5', '= −3'] },
         ] }] },
     { title: '× and ÷ before + and −',
       how: { text: '<p>Do every × and ÷ first. Then + and −, left to right.</p><p class="ex">−10 ÷ 2 + 3 × (−4) = −5 + (−12) = −17</p>' },
@@ -532,7 +532,7 @@ module.exports = {
           { q: '−3 × (−4) − 20 ÷ (−5)', lines: ['= 12 − (−4)', '= 12 + 4', '= 16'] },
         ] }] },
     { title: 'Left to right',
-      how: { text: '<p>Same rank? Work from <b>left to right</b>.</p><p class="ex">−12 ÷ 3 × 2 = −4 × 2 = −8</p><p class="ex">5 − 8 + 4 = −3 + 4 = 1</p>' },
+      how: { text: '<p>Same rank? Work from <b>left to right</b>.</p><p>The same goes for + and −.</p><p class="ex">−12 ÷ 3 × 2 = −4 × 2 = −8</p>' },
       rounds: [{ text: 'Work from left to right.',
         we: [{ q: '−20 ÷ 5 × 2', lines: ['= −4 × 2', '= −8'] }, { q: '3 − 7 + 2', lines: ['= −4 + 2', '= −2'] }],
         you: [
@@ -566,7 +566,7 @@ module.exports = {
 
   '1.09': { steps: [
     { title: 'The (−) key',
-      how: { text: '<p>Use <b>(−)</b> for a negative number. Use <b>−</b> to subtract.</p><p class="ex">−35 + 12 = −23. Press:</p>', fig: D.keys(['(−)', '3', '5', '+', '1', '2', '=']) },
+      how: { text: '<p>Use <b>(−)</b> for a negative number. Use <b>−</b> to subtract.</p><p>Got a <b>+/−</b> key instead? Press it after the number.</p><p class="ex">−35 + 12 = −23. Press:</p>', fig: D.keys(['(−)', '3', '5', '+', '1', '2', '=']) },
       rounds: [{ text: 'Write the keys you press. Then the answer.', two: true,
         we: [{ q: '−48 + 25', lines: ['(−) 48 + 25 =', '= −23'] }],
         you: [
@@ -634,14 +634,13 @@ module.exports = {
   '1.10': { steps: [
     { title: 'Temperature',
       how: { text: '<p>A rise is +. A fall is −.</p><p class="ex">−5°C, then a rise of 8°C: −5 + 8 = 3°C.</p>', fig: D.thermometer({ min: -10, max: 5, value: 3, unit: 1.2, every: 5, arrows: [{ v: 3, text: 'after' }, { v: -5, text: 'before' }], w: 36 }) },
-      rounds: [{ text: 'Write a sum. Then the new temperature.', two: true,
+      rounds: [{ text: 'Write a sum. Then the new temperature.',
         we: [{ q: '−6°C, rises 4°C', lines: ['−6 + 4', '= −2°C'] }],
         you: [
           { q: '−3°C, rises 9°C', lines: ['−3 + 9', '= 6°C'] },
           { q: '2°C, falls 5°C', lines: ['2 − 5', '= −3°C'] },
           { q: '−1°C, falls 6°C', lines: ['−1 − 6', '= −7°C'] },
           { q: '−8°C, rises 8°C', lines: ['−8 + 8', '= 0°C'] },
-          { q: '−10°C, falls 4°C', lines: ['−10 − 4', '= −14°C'] },
           { q: '−12°C, rises 15°C', lines: ['−12 + 15', '= 3°C'] },
         ] }] },
     { title: 'Above and below sea level',
@@ -651,7 +650,7 @@ module.exports = {
         you: [
           { q: 'A boat at 0 m and a diver at −12 m', lines: ['0 − (−12)', '= 12 m'] },
           { q: 'A cliff top at 30 m and a diver at −8 m', lines: ['30 − (−8)', '= 38 m'] },
-          { q: 'A plane at 150 m and a submarine at −60 m', lines: ['150 − (−60)', '= 210 m'] },
+          { q: 'A lighthouse top at 45 m and a diver at −20 m', lines: ['45 − (−20)', '= 65 m'] },
           { q: 'A diver at −5 m and a wreck at −22 m', lines: ['−5 − (−22)', '= 17 m'] },
           { q: 'A bird at 42 m and a shark at −37 m', lines: ['42 − (−37)', '= 79 m'] },
         ] }] },
@@ -683,19 +682,28 @@ module.exports = {
         you: [
           { q: 'A diver at −30 m rises 4 m a minute for 6 minutes. Where is she?', lines: ['4 × 6 = 24, −30 + 24', '= −6 m'] },
           { q: 'It is 5°C. It cools 3°C an hour for 4 hours. How cold is it now?', lines: ['4 × (−3) = −12, 5 + (−12)', '= −7°C'] },
-          { q: 'A win scores +3, a loss −2. A team wins 4 and loses 7. What is its score?', lines: ['12 + 7 × (−2) = 12 + (−14)', '= −2'] },
+          { q: 'A win scores +3, a loss −2. A team wins 4 and loses 7. What is its score?', lines: ['4 × 3 + 7 × (−2) = 12 + (−14)', '= −2'] },
           { q: 'Sam has $50 and pays $12 a week for 6 weeks. What is the balance?', lines: ['6 × 12 = 72, 50 − 72', '= −$22'] },
         ] }] },
     { title: 'Is it right?',
-      how: judge('Kim says −4°C, up 6°C, is 2°C. −4 + 6 = 2. Yes.'),
+      how: judge('Kim says −4°C, then a rise of 6°C, is 2°C. −4 + 6 = 2. Yes, Kim is right.'),
       rounds: [{ text: 'Is it right? Explain your answer.',
         we: [{ q: 'Tom says level −3, up 5 floors, is level −8. Is he right?', lines: ['−3 + 5', '= 2', 'No. It is at level 2.'] }],
         you: [
           { q: 'Mia says 12 m and −9 m are 3 m apart. Is she right?', lines: ['12 − (−9)', '= 21', 'No. They are 21 m apart.'] },
           { q: 'Ben says −$20, then $35 in, leaves $15. Is he right?', lines: ['−20 + 35', '= 15', 'Yes. Ben is right.'] },
           { q: 'Ali says 3°C, falling 8°C, gives −5°C. Is he right?', lines: ['3 − 8', '= −5', 'Yes. Ali is right.'] },
-          { q: 'Jo says a score of −4 is better than −9. Is Jo right?', lines: ['−4 is right of −9', 'so −4 is larger', 'Yes. Jo is right.'] },
+          { q: 'Jo says it is warmer at −4°C than at −9°C. Is Jo right?', lines: ['−4 is higher than −9', 'so −4°C is warmer', 'Yes. Jo is right.'] },
         ] }] },
   ] },
 
 };
+
+// "Check yourself": one last question at the end of step 6 with no scaffold at all, only where it fits without
+// crowding the column (tried in every lesson; only these fit).
+const CHECKS = {
+  '1.02': { q: 'Which integer is halfway between −9 and 3?', lines: ['= −3'] },
+  '1.09': { q: '(−37 − 89) × (−15)', lines: ['= 1 890'] },
+};
+Object.entries(CHECKS).forEach(([code, check]) => { module.exports[code].steps[5].check = check; });
+

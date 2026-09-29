@@ -27,7 +27,7 @@ A bubble also says when the number lines stop: "The last one has no number line.
 | Zero pairs | A + and a − make a **zero pair**. They cancel out. So take the difference. The sign with more wins. | `9 − 4 = 5` / `− has more: −5` |
 | Three or more numbers | Add from left to right, one jump at a time. | `= 5 + (−7)` / `= −2` |
 | Subtracting a negative | Subtracting a negative: move **right**. − (−3) means the same as + 3. | `= 5 + 3` / `= 8` |
-| Comparing | The number further **right** is larger. Colder means **lower**. | `−9 is left of −4` / `larger: −4` / `symbol: <` |
+| Comparing | The number further **right** is larger. Colder means **lower**. | `−9 is left of −4` / `larger: −4` / `symbol: <`; on a thermometer `−9 is lower than −4` / `colder: −9°C` |
 | Ordering | **Ascending**: smallest to largest. **Descending**: largest to smallest. | `smallest: −4` / `−4, −1, 0, 3` |
 | Distance between | Count the steps. Across 0? Count to 0, then on from 0. | `3 to 0, 5 from 0` / `= 8` |
 | Scales | The step is the difference between two labels ÷ the gaps between them. | `10 ÷ 5 = 2, step 2` / `? = 8` |
@@ -42,14 +42,15 @@ A bubble also says when the number lines stop: "The last one has no number line.
 | Change and difference | Change = new − old. Difference = higher − lower. | `5 − (−3)` / `= 5 + 3` / `= 8°C` |
 | Averages | Average = total ÷ how many. | `total: −12` / `= −12 ÷ 4` / `= −3` |
 | Order of operations | Brackets first. Then × and ÷, left to right. Then + and −, left to right. | one step a line, starting with `=` |
-| Calculator keys | Use **(−)** for a negative number. Use **−** to subtract. Brackets around a negative after × or ÷. | `(−) 48 + 25 =` / `= −23` |
+| Calculator keys | Use **(−)** for a negative number. Use **−** to subtract. (A **+/−** key: press it after the number.) Brackets around a negative after × or ÷. | `(−) 48 + 25 =` / `= −23` |
 | Brackets on a calculator | Press ( and ) for brackets. | `bracket: −15` / `= −90` |
 | Estimating | Round to the nearest 10, then check on the calculator. | `≈ −40 × 20 = −800` / `= −819` |
 | Money | Money in is +. Money out is −. Below $0 means you owe money. | `30 − 45` / `= −$15` |
 | Several steps | One number sentence a step. | `2 × 5 = 10` / `−6 + 10` / `= 4°C` |
 | Stories | Up, rises and gains are **positive**. Down, falls and spending are **negative**. | `−4 + 9` / `= 5°C` |
+| Between | "Between" does not include the end numbers. | `it is −7` |
 | Missing numbers | How far is it from the first number to the answer, and which way? Right is +. Left is −. | `6 to the right` / `☐ = 6` |
-| Is it right? | Work it out yourself first. Then compare. Say yes or no, and give the right answer. | working, then `No. The answer is −3.` or `Yes. Ben is right.` |
+| Is it right? | Work it out yourself. Then say yes or no, with the right answer. | working, then `No. The answer is −3.` or `Yes. Ben is right.` |
 
 ## Rules for writing
 
