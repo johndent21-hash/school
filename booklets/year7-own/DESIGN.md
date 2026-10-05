@@ -22,7 +22,7 @@ This booklet series is designed from the research on how students learn mathemat
 - Every new idea is taught through **example–problem pairs**: an example on the left, a matched "your turn" on the right.
 - The example is printed **blank**. The teacher models it live, thinking aloud, and students copy the working. The full working is in the answer booklet.
 - The pairs fade: the first "your turn" has its steps started for you, the last one is blank.
-- One **Explain** prompt is attached to each example. It asks one clear question about the key step, and the answer line starts a sentence for the student (e.g. "Subtracting is adding …").
+- One **Explain** prompt follows each example: one clear question about the key step, and students tick the better of two reasons. One reason is correct; the other is a common wrong idea (see section 5).
 - Spotting mistakes appears only late in a lesson ("Is it right?"), once the correct method is secure. It is never used to teach the method.
 
 ### Explicit instruction, and problem solving before instruction
@@ -62,6 +62,7 @@ This booklet series is designed from the research on how students learn mathemat
   - **12 on today's skill**: short drill questions first (easy to harder), then today's skill in context.
   - **3 from earlier lessons**, spread through the set and marked "from 1.0x". They are look-alikes where possible. For example, in 1.06, −7 + (−3) from 1.04 sits near −7 × (−3).
   - This keeps the focus on today's lesson, while the Do now and the chapter review do most of the spaced revision.
+  - A strip of all 15 answers, in a mixed-up order, closes the block so students can check as they go.
 - The chapter ends with a **mixed review** sheet.
 
 ### Variation theory and intelligent practice
@@ -118,7 +119,7 @@ Bofferding (2014, 2019) and others describe these:
 **On the page:**
 - Page 1 ends with a **Check (hinge question)**: four options.
 - The teacher notes say what each wrong option means, and what to do next.
-- Page 2 ends with a **three-question exit ticket** and a confidence rating.
+- Page 2 ends with a **three-question exit ticket** and the student's marked score (not a confidence rating: see section 5).
 
 ### Differentiation without separate sheets
 
@@ -151,9 +152,9 @@ Bofferding (2014, 2019) and others describe these:
 | 1 | **Learn it**: 3 example–problem pairs (examples modelled live), faded, with an Explain prompt | worked examples, fading, self-explanation | 15 min |
 | 1 | **Check**: hinge question, multiple choice | formative assessment, misconceptions | 2 min |
 | 2 | **Spot the pattern**: minimally different sequence and a "notice" prompt | variation | 8 min |
-| 2 | **Mixed practice**: 15 questions, about 80% today's skill and 20% earlier lessons | practice to fluency, interleaving | 12 min |
+| 2 | **Mixed practice**: 15 questions, about 80% today's skill and 20% earlier lessons, with a mixed-up answer bank | practice to fluency, interleaving, feedback | 12 min |
 | 2 | **Go further**: reasoning for students who are flying | challenge without acceleration | as time allows |
-| 2 | **Exit ticket**: 3 questions and a confidence rating | formative assessment | 4 min |
+| 2 | **Exit ticket**: 3 questions, then the marked score | formative assessment, calibration | 4 min |
 
 **Design rules**
 - Single-column blocks with generous writing space.
@@ -202,6 +203,37 @@ The look is designed to help students find their way. It also stays calm and cop
 - Delayed retention (after 2–4 weeks) on interleaved chapter-review items, compared with a class using the Freefall-style sheets.
 - Whether the Explain prompts are actually answered, or skipped.
 
+## 5. Evidence appraisal (second pass): what the data actually support
+
+Each principle was re-checked against its strongest studies. Each was judged on:
+- **Design:** randomised, or correlational?
+- **Setting:** real classrooms, or a lab?
+- **Measure:** a delayed test, or immediate performance?
+- **Comparison:** a fair one?
+- **Replication:** repeated independently?
+- **Inflation:** effect sizes inflated by small samples or by tests the researchers wrote themselves?
+
+Ratings: **Strong** (act on it), **Mixed** (use with care), **Weak** (cut, or keep only because it costs almost nothing).
+
+| Principle | Best evidence, and its quality | Rating | What it means for the booklet |
+|---|---|---|---|
+| Retrieval practice (Do now, review) | Yang et al. 2021: 222 classroom studies, g ≈ 0.50. Agarwal et al. 2021: 50 classroom experiments, almost all positive. Many real-classroom RCTs with delayed tests. | **Strong** | Keep the Do now and the chapter review. |
+| Spacing and interleaving | Rohrer et al. 2020: cluster RCT, 54 Year 7 classes, unannounced delayed test, d = 0.83. Rohrer & Taylor 2006: spaced practice gave large gains at 4 weeks. | **Strong** | Keep the earlier-lesson questions in Mixed practice, and keep them as look-alikes that make students tell problem types apart. |
+| Overlearning (many same-skill problems in one sitting) | Rohrer & Taylor 2006: 9 vs 3 problems in one session made no difference at 1 or 4 weeks (college students, one task type). | **Weak** for retention | The 12 same-lesson questions are for accuracy today, not memory. They vary in form, and the skill comes back in the next Do nows and the review. That is where retention is built. |
+| Worked examples, with fading | Barbieri et al. 2023: 55 studies, g = 0.48, robust variance estimation, held for both acquisition and practice. Fading and expertise reversal: Renkl & Atkinson; Kalyuga. | **Strong**, for printed examples that students study | The examples are modelled live (your choice). To keep it close to the research conditions, every example now has a short "say this" think-aloud script in the teacher notes. Your turn still fades. |
+| Self-explanation prompts | Rittle-Johnson et al. 2017 (maths meta-analysis): small-to-moderate effects, measured immediately. Thin evidence for delayed or classroom effects. Stronger when explanations are scaffolded. Barbieri et al. 2023: adding self-explanation prompts to worked examples *reduced* their benefit. McEldoon et al. 2012: helped low-prior-knowledge learners more than extra practice, time for time. Aleven & Koedinger 2002 (classroom): explanations chosen from a menu worked well. | **Mixed** | Explain is now **choose the better reason** (one correct reason vs one common wrong idea). It scaffolds a good explanation, takes seconds rather than minutes, and gives the teacher a misconception check. Each sits in its own strip under the pair, so the example area stays clear. |
+| Pre-questions / "Think first" | Pan & Carpenter 2023 (review): pretesting reliably helps if the correct answer is studied afterwards. Productive failure (Sinha & Kapur 2021) reports large effects, but they depend on high-fidelity design and often weak comparison conditions. Ashman, Kalyuga & Sweller 2020 (randomised): teaching first was about 50% better for complex material. | **Mixed** for discovery; **Strong** for short pre-questions with feedback | Kept as a short pre-question in all ten lessons, decided lesson by lesson (each is a single idea that one example answers). Each now names the example that gives the answer ("Check it in Example 1"). The teacher notes say to come back to it. 1.03 now asks the misconception directly: "So which number is smaller?" |
+| Feedback | Kluger & DeNisi 1996: d = 0.41 overall, but over a third of feedback interventions *lowered* performance. Feedback about the task helps; feedback about the self does not. Wisniewski et al. 2020: d ≈ 0.48, very varied. | **Strong** for task feedback, if well designed | Mixed practice now ends with a **mixed-up answer bank**: immediate, task-level, and it doesn't give away which answer goes with which question. |
+| Formative assessment (Check, Exit ticket) | Black & Wiliam 1998 claimed 0.4 to 0.7, but did no meta-analysis. Kingston & Nash 2011: about 0.20, itself criticised. | **Mixed**, low cost | Keep the hinge question and exit ticket, with every wrong option tied to one misconception (1.03 option D fixed). Don't over-claim them. |
+| Self-rating of confidence ("Not yet / Nearly / Got it") | Low achievers are reliably overconfident; children's calibration is poor (e.g. Rinne & Mazzocco 2014). | **Weak** | Replaced with the **marked score** (After marking: _ / 3). Judging by evidence also trains calibration. |
+| Guided notes / cloze Big idea | Konrad et al. 2009 (meta-analysis): guided notes improve recall, mainly in small studies, with the clearest gains for students who struggle. | **Mixed**, low cost | Kept. |
+| Comparing cases (Spot the pattern) | Alfieri et al. 2013: 57 experiments, d ≈ 0.50. Stating the principle **after** the comparison helps most. | **Strong** | Kept. The "What do you notice?" answer in the teacher notes is the rule to state after the comparison. |
+| Spatial contiguity, split attention | Ginns 2006 (meta-analysis): integrated layouts beat separated ones. | **Strong** | The answer space sits directly under each question, and the Explain strip sits right under its pair. |
+| Learning intentions, icons, colour | Little direct evidence either way. | **Weak**, no cost | Kept for navigation only. Nothing depends on them. |
+| Growth mindset add-ons, learning styles | Sisk et al. 2018: mindset interventions d ≈ 0.08. Learning styles: no support in controlled tests. | **Weak** | Deliberately left out. |
+
+**Integer-specific note.** There are few controlled trials comparing number lines with counters. The number line was kept because it is the model in the syllabus, and it covers all four operations and ordering consistently.
+
 ## References
 
 - Abedi, J., & Lord, C. (2001). The language factor in mathematics tests. *Applied Measurement in Education, 14*(3).
@@ -229,3 +261,15 @@ The look is designed to help students find their way. It also stays calm and cop
 - Vig, R., Murray, E., & Star, J. R. (2014). Model breaking points conceptualized. *Educational Psychology Review, 26* (verify).
 - Watson, A., & Mason, J. (2006). Seeing an exercise as a single mathematical object: Using variation to structure sense-making. *Mathematical Thinking and Learning, 8*(2).
 - Wiliam, D. (2011). *Embedded Formative Assessment.* Solution Tree.
+- Aleven, V., & Koedinger, K. R. (2002). An effective metacognitive strategy: Learning by doing and explaining with a computer-based Cognitive Tutor. *Cognitive Science, 26*(2).
+- Alfieri, L., Nokes-Malach, T. J., & Schunn, C. D. (2013). Learning through case comparisons: A meta-analytic review. *Educational Psychologist, 48*(2).
+- Ashman, G., Kalyuga, S., & Sweller, J. (2020). Problem-solving or explicit instruction: Which should go first when element interactivity is high? *Educational Psychology Review, 32*.
+- Kingston, N., & Nash, B. (2011). Formative assessment: A meta-analysis and a call for research. *Educational Measurement: Issues and Practice, 30*(4).
+- Kluger, A. N., & DeNisi, A. (1996). The effects of feedback interventions on performance. *Psychological Bulletin, 119*(2).
+- Konrad, M., Joseph, L. M., & Eveleigh, E. (2009). A meta-analytic review of guided notes. *Education and Treatment of Children, 32*(3).
+- McEldoon, K. L., Durkin, K. L., & Rittle-Johnson, B. (2012). Is self-explanation worth the time? A comparison to additional practice. *British Journal of Educational Psychology, 83*(4).
+- Pan, S. C., & Carpenter, S. K. (2023). Prequestioning and pretesting effects: A review. *Educational Psychology Review, 35*.
+- Rinne, L. F., & Mazzocco, M. M. M. (2014). Knowing right from wrong in mental arithmetic judgments: Calibration of confidence predicts the development of accuracy. *PLoS ONE, 9*(7).
+- Sisk, V. F., Burgoyne, A. P., Sun, J., Butler, J. L., & Macnamara, B. N. (2018). To what extent and under which circumstances are growth mind-sets important to academic achievement? *Psychological Science, 29*(4).
+- Wisniewski, B., Zierer, K., & Hattie, J. (2020). The power of feedback revisited: A meta-analysis of educational feedback research. *Frontiers in Psychology, 10*.
+- Yang, C., Luo, L., Vadillo, M. A., Yu, R., & Shanks, D. R. (2021). Testing (quizzing) boosts classroom learning: A systematic and meta-analytic review. *Psychological Bulletin, 147*(4).

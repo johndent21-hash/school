@@ -91,14 +91,14 @@ const cover = (chapter, lessons) => `
 
 const KEY = [
   ['donow', 'Do now', 'Start straight away, from memory.'],
-  ['think', 'Think first', 'A puzzle before the lesson. It is fine to be unsure.'],
+  ['think', 'Think first', 'Have a go before the lesson. An example gives the answer.'],
   ['idea', 'Words and Big idea', 'Fill in the Big idea with your teacher.'],
-  ['talk', 'Explain', 'Say why a step works, then write it down.'],
+  ['talk', 'Explain', 'Tick the better reason. Be ready to say why.'],
   ['check', 'Check', 'Everyone answers, so your teacher knows who is ready.'],
   ['pattern', 'Spot the pattern', 'One thing changes each time. Watch the answers.'],
-  ['practice', 'Mixed practice', 'Mostly today\'s skill, plus a few earlier questions.'],
+  ['practice', 'Mixed practice', 'Mostly today\'s skill. Check with the mixed-up answers.'],
   ['further', 'Go further', 'Finished? Questions that make you think harder.'],
-  ['exit', 'Exit ticket', 'Three questions on your own. Then rate how you went.'],
+  ['exit', 'Exit ticket', 'Three questions on your own. Then your marked score.'],
 ];
 
 // A small, numbered times-table circle for the inside cover: 10 points, each joined to the point twice its number.

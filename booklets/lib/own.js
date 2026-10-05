@@ -1,9 +1,10 @@
 // Year 7 booklets designed from the research (see year7-own/DESIGN.md). One lesson is one double-sided A4 sheet.
-//   Page 1, learn it:    Do now (retrieval) · Think first (optional) · Words + Big idea (a cloze, filled in with the
-//                        teacher) · Learn it (three example → your turn pairs: the example is blank, for the teacher
-//                        to model live; each has an Explain prompt) · Check (hinge question)
+//   Page 1, learn it:    Do now (retrieval) · Think first (a pre-question, answered by one of the examples) · Words +
+//                        Big idea (a cloze, filled in with the teacher) · Learn it (three example → your turn pairs:
+//                        the example is blank, for the teacher to model live; each has an Explain prompt: choose the
+//                        reason) · Check (hinge question)
 //   Page 2, practise it: Spot the pattern (minimal variation) · Mixed practice (about 80% today's skill, 20% earlier
-//                        lessons, marked) · Go further · Exit ticket
+//                        lessons, marked, with a mixed-up answer bank) · Go further · Exit ticket (marked score)
 // Look and feel: lib/circles.js. A lesson file gives the data; this file lays it out. A "Your turn" fades from the
 // structure given (numbers blank), to the first line given, to blank.
 const { blankLine, viewBox } = require('./worksheet').helpers;
@@ -23,6 +24,13 @@ const from = (t) => (t ? `<span class="tc-from">from ${t}</span>` : '');
 const gap = (w) => `<span class="tc-gap" style="width:${Math.max(13, w.replace(/<[^>]+>|&[a-z]+;/g, 'x').length * 2.3).toFixed(1)}mm"></span>`;
 const cloze = (t) => t.replace(/\[\[(.+?)\]\]/g, (_, w) => gap(w));
 const filled = (t) => t.replace(/\[\[(.+?)\]\]/g, (_, w) => `<u><b>${w}</b></u>`);
+// Explain: two reasons to choose from (one right, one a common wrong idea). Choosing a reason scaffolds a good explanation
+// in far less time than writing one (see DESIGN.md). The right one is A or B about equally often.
+const reasons = (why) => ({ opts: why.opts, letter: 'AB'[why.right] });
+// The answer bank: each Mixed practice answer in its shortest form (the last step of the working, or m.k), in a fixed
+// shuffled order, so students can check themselves without seeing which answer belongs to which question.
+const short = (m) => m.k || String(m.a).replace(/&lt;/g, '<').replace(/&gt;/g, '>').split(/; |, so | = /).pop().replace(/^☐ = /, '').replace(/ \(.*\)$/, '').trim().replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const bank = (items) => { const ks = items.map(short), order = ks.map((_, i) => i).sort((a, b) => ((a * 7 + 3) % ks.length) - ((b * 7 + 3) % ks.length)); return order.map((i) => `<i>${ks[i]}</i>`).join(''); };
 const plain = (t) => String(t).replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, ' ');
 // Typesetting: never leave a short last word (like "3?") alone on a line, and never split a list of numbers.
 const list = (t) => t.replace(/(?:−?\d+(?:°C)?, )+−?\d+(?:°C)?/g, (m) => `<span class="nw">${m}</span>`);
@@ -59,7 +67,7 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
   const doNow = `<section class="tc-block tc-dn">${head('donow', 'Do now', 'From memory. No notes.')}
     <div class="tc-dn-grid">${L.doNow.map((d, i) => { w(`Do now ${i + 1}`, d.q, d.a); return `<div class="tc-dn-cell"><p><b class="tc-n">${i + 1}</b> ${keep(d.q)}</p><i class="tc-box">${from(d.from)}</i></div>`; }).join('')}</div></section>`;
 
-  const think = L.think ? (w('Think first', L.think.q, L.think.a), `<section class="tc-block tc-think"><div class="tc-think-row">${head('think', 'Think first', 'Have a go.')}<p>${keep(L.think.q)}</p><i class="tc-box wide"></i></div></section>`) : '';
+  const think = L.think ? (w('Think first', L.think.q, L.think.a), `<section class="tc-block tc-think"><div class="tc-think-row">${head('think', 'Think first', 'Have a go.')}<p>${keep(L.think.q)}</p><div class="tc-think-a"><i class="tc-box wide"></i><span>Check it in Example ${L.think.ex}.</span></div></div></section>`) : '';
 
   notes.push(`<b>Big idea (fill in together).</b> ${filled(L.big.text)}`);
   const big = `<section class="tc-block tc-big">
@@ -69,20 +77,22 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
   const pairs = L.pairs.map((p, k) => {
     w(`Example ${k + 1} (model this)`, p.ex.q, p.ex.lines);
     w(`Your turn ${k + 1}`, p.you.q, p.you.lines);
-    notes.push(`<b>Explain ${k + 1}.</b> ${p.why.q}<br><span class="aw">${p.why.a}</span>`);
-    const exCell = `<div class="tc-ex"><span class="tc-lab">${TC.icon('board', 'tc-lic')}Example ${k + 1}</span><p class="tc-q">${keep(p.ex.q)}</p>${figBox(p.ex.fig, p.fh || 14, 70)}<div class="tc-ls">${lines(p.ex.lines.length)}</div>
-      <p class="tc-why"><b>${TC.icon('talk', 'tc-wic')}Explain</b><span>${keep(p.why.q)}</span></p><i class="tc-l why"><span>${p.why.s}</span></i></div>`;
+    const why = reasons(p.why);
+    notes.push(`<b>Example ${k + 1}: say this.</b> ${p.ex.say}`);
+    notes.push(`<b>Explain ${k + 1}.</b> ${p.why.q} Answer: <b>${why.letter}</b>.<br><span class="aw">${p.why.a}</span>`);
+    const exCell = `<div class="tc-ex"><span class="tc-lab">${TC.icon('board', 'tc-lic')}Example ${k + 1}</span><p class="tc-q">${keep(p.ex.q)}</p>${figBox(p.ex.fig, p.fh || 14, 70)}<div class="tc-ls">${lines(p.ex.lines.length)}</div></div>`;
+    const explain = `<div class="tc-explain"><p class="tc-why"><b>${TC.icon('talk', 'tc-wic')}Explain</b><span>${keep(p.why.q)}</span></p><div class="tc-reasons">${why.opts.map((o, j) => `<p><i class="tc-tick"></i><b>${'AB'[j]}</b> ${keep(o)}</p>`).join('')}</div></div>`;
     const youCell = `<div class="tc-you"><span class="tc-lab">${TC.icon('pencil', 'tc-lic')}Your turn ${k + 1}</span><p class="tc-q">${keep(p.you.q)}</p>${figBox(p.you.fig, p.fh || 14, 70)}<div class="tc-ls">${lines(p.you.lines.length, fade(p.you.lines, k))}</div></div>`;
-    return `<div class="tc-pair">${exCell}<div class="tc-arrow"><span>➜</span></div>${youCell}</div>`;
+    return `<div class="tc-pair">${exCell}<div class="tc-arrow"><span>➜</span></div>${youCell}${explain}</div>`;
   }).join('');
-  const learn = `<section class="tc-block tc-learn">${head('learn', 'Learn it', 'Your teacher works through each example with you: copy the working. Then try your turn beside it.')}${pairs}</section>`;
+  const learn = `<section class="tc-block tc-learn">${head('learn', 'Learn it', 'Copy your teacher\'s working for each example, then try your turn. Explain: tick the better reason.')}${pairs}</section>`;
 
   const opts = ['A', 'B', 'C', 'D'];
   const H = L.hinge;
   notes.unshift(`<b>Key misconception.</b> ${L.teacher.misconception}`);
   notes.push(`<b>Check (hinge).</b> ${H.q} Answer: <b>${H.answer}</b>.<br>${opts.map((o, i) => `${o} (${H.options[i]}): ${H.why[o]}`).join('<br>')}`);
   notes.push(`<b>Next.</b> ${L.teacher.next}`);
-  if (L.think) notes.push(`<b>Think first.</b> ${L.teacher.think}`);
+  if (L.think) notes.push(`<b>Think first.</b> ${L.teacher.think} Come back to it straight after Example ${L.think.ex}: a pre-question helps only when students then see the right answer.`);
   const check = `<section class="tc-block tc-check">${head('check', 'Check', 'Everyone answers. Circle one letter, then hold it up.')}<div class="tc-check-row"><p>${H.q}</p>${H.options.map((o, i) => `<span class="tc-opt"><b>${opts[i]}</b>${o}</span>`).join('')}</div></section>`;
 
   // ---------- page 2: practise it ----------
@@ -96,14 +106,15 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
   // Mixed practice: about four in five questions on today's skill (short drill first, then in context), and about one
   // in five from earlier lessons, spread through and marked "from 1.0x".
   const mixed = `<section class="tc-block tc-prac">${head('practice', 'Mixed practice', 'Mostly today\'s skill. Questions marked "from" are from earlier lessons. Show your working.')}
-    <div class="tc-mix">${L.mixed.map((m, i) => { w(`Mixed ${i + 1}`, m.q, m.a); return `<div class="tc-mix-cell ${m.from ? 'old' : ''}"><p><b class="tc-n">${i + 1}</b> ${keep(m.q)}</p><i class="tc-l">${from(m.from)}</i></div>`; }).join('')}</div></section>`;
+    <div class="tc-mix">${L.mixed.map((m, i) => { w(`Mixed ${i + 1}`, m.q, m.a); return `<div class="tc-mix-cell ${m.from ? 'old' : ''}"><p><b class="tc-n">${i + 1}</b> ${keep(m.q)}</p><i class="tc-l">${from(m.from)}</i></div>`; }).join('')}</div>
+    <div class="tc-bank"><b>Check your answers</b> <em>All 15 answers, in a mixed-up order.</em><span>${bank(L.mixed)}</span></div></section>`;
 
   const further = `<section class="tc-block tc-further">${head('further', 'Go further', 'Finished? Try these. Explain your thinking.')}
     ${L.further.map((f, i) => { w(`Go further ${i + 1}`, f.q, f.a); return `<div class="tc-fur"><p><b class="tc-n">${i + 1}</b> ${keep(f.q)}</p>${'<i class="tc-l"></i>'.repeat(f.n || 2)}</div>`; }).join('')}</section>`;
 
   const exit = `<section class="tc-block tc-exit">${head('exit', 'Exit ticket', 'On your own. Hand it in.')}
     <div class="tc-exit-grid">${L.exit.map((e, i) => { w(`Exit ${i + 1}`, e.q, e.a); return `<div class="tc-exit-cell"><p><b class="tc-n">${i + 1}</b> ${keep(e.q)}</p><i class="tc-box"></i></div>`; }).join('')}</div>
-    <p class="tc-rate">Today I can ${L.canDo}. <span>Not yet</span><span>Nearly</span><span>Got it</span></p></section>`;
+    <p class="tc-rate">Today I can ${L.canDo}. <span class="tc-score">After marking: <i></i> / 3</span></p></section>`;
 
   return {
     code, title,
