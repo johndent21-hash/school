@@ -60,7 +60,7 @@ def cover_pdf(term, path):
 
 def term_sessions(term):
     wk1 = samples.TERMS[term]()
-    rest, seqs = gen.generated_sessions(term)
+    rest, seqs = gen.generated_sessions(term, wk1)
     return wk1 + rest, seqs
 
 
@@ -84,8 +84,8 @@ def build(term, outdir):
                     "/Subject": "Year 9 formula warm-ups: 30 sessions, 150 questions"})
     with open(out, "wb") as fh:
         w.write(fh)
-    key = [{"week": s.week, "session": s.session, "q": i + 1, "formula": q.formula, "answer": q.answer,
-            "question": q.text} for s in sessions for i, q in enumerate(s.qs)]
+    key = [{"week": s.week, "session": s.session, "q": i + 1, "family": q.fam, "formula": q.formula,
+            "answer": q.answer, "question": q.text} for s in sessions for i, q in enumerate(s.qs)]
     json.dump(key, open(os.path.join(HERE, f"answers_term{term}.json"), "w"), indent=1, ensure_ascii=False)
     return out, rounds, seqs, sessions
 

@@ -15,7 +15,7 @@ def check(sessions, art="plain"):
     r = HTML(string=doc, base_url=wu.HERE).render()
     problems = []
     for pi, pg in enumerate(r.pages):
-        rows, qcells = [], []
+        rows, qcells, qheads = [], [], []
 
         def walk(b):
             el = getattr(b, "element", None)
@@ -24,6 +24,8 @@ def check(sessions, art="plain"):
                 rows.append(b)
             if cls == "q" and b.element_tag == "div":
                 qcells.append(b)
+            if cls == "qh" and b.element_tag == "div":
+                qheads.append(b)
             for ch in getattr(b, "children", []) or []:
                 walk(ch)
         walk(pg._page_box)
@@ -48,10 +50,24 @@ def check(sessions, art="plain"):
             bx1 = max(a[2] for a in acc); by1 = max(a[3] for a in acc)
             spare_b = (y1 - by1) * PX
             spare_r = (x1 - bx1) * PX
-            flag = "  <-- OVERFLOW" if spare_b < 1.2 or spare_r < 0.5 or (bx0 - x0) * PX < -0.1 else ""
+            # a figure too tall for its cell makes the flex layout squeeze the question text's box, so
+            # the text's last line is drawn over the figure: the drawn lines must fit inside their box
+            lines = []
+
+            def lb(b):
+                if type(b).__name__ == "LineBox":
+                    lines.append(b)
+                    return
+                for ch in getattr(b, "children", []) or []:
+                    lb(ch)
+            lb(qheads[qi])
+            text_bot = max(ln.position_y + ln.height for ln in lines)
+            spare_t = (qheads[qi].position_y + qheads[qi].margin_height() - text_bot) * PX
+            flag = "  <-- OVERFLOW" if spare_b < 1.2 or spare_r < 0.5 or (bx0 - x0) * PX < -0.1 or spare_t < -0.2 else ""
             if flag:
                 problems.append((pi + 1, qi + 1))
-            print(f"S{pi + 1} Q{qi + 1}: bottom spare {spare_b:5.1f} mm, right spare {spare_r:5.1f} mm{flag}")
+            print(f"S{pi + 1} Q{qi + 1}: bottom spare {spare_b:5.1f} mm, right spare {spare_r:5.1f} mm, "
+                  f"text fits {spare_t:5.1f} mm{flag}")
     return problems
 
 

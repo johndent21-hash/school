@@ -3,6 +3,7 @@
   "week": 1,
   "session": 1,
   "q": 1,
+  "family": "ang_poly",
   "formula": "ang_poly",
   "answer": "1080°",
   "question": "Find the sum of the interior angles of this octagon."
@@ -11,6 +12,7 @@
   "week": 1,
   "session": 1,
   "q": 2,
+  "family": "circ",
   "formula": "c_circ_r",
   "answer": "44.0 cm",
   "question": "Find the circumference of this circle, correct to 1 decimal place."
@@ -19,6 +21,7 @@
   "week": 1,
   "session": 1,
   "q": 3,
+  "family": "v_prism",
   "formula": "v_prism",
   "answer": "140 cm³",
   "question": "The shaded face has an area of 20 cm². Find the volume of the prism."
@@ -27,6 +30,7 @@
   "week": 1,
   "session": 1,
   "q": 4,
+  "family": "pct_qty",
   "formula": "pct_qty",
   "answer": "$84",
   "question": "Calculate."
@@ -35,6 +39,7 @@
   "week": 1,
   "session": 1,
   "q": 5,
+  "family": "linear",
   "formula": "linear",
   "answer": "13",
   "question": "Find the value of <i>y</i> when <i>x</i> = 5."
@@ -43,6 +48,7 @@
   "week": 1,
   "session": 2,
   "q": 1,
+  "family": "ang_ext",
   "formula": "ang_ext",
   "answer": "113",
   "question": "Find the value of <i>x</i>."
@@ -51,6 +57,7 @@
   "week": 1,
   "session": 2,
   "q": 2,
+  "family": "a_tri",
   "formula": "a_tri",
   "answer": "54 cm²",
   "question": "Find the area of this triangle."
@@ -59,6 +66,7 @@
   "week": 1,
   "session": 2,
   "q": 3,
+  "family": "sa_tri",
   "formula": "sa_tri",
   "answer": "336 cm²",
   "question": "Find the surface area of this triangular prism."
@@ -67,6 +75,7 @@
   "week": 1,
   "session": 2,
   "q": 4,
+  "family": "pct_change",
   "formula": "pct_change",
   "answer": "15%",
   "question": "Find the percentage decrease in price."
@@ -75,6 +84,7 @@
   "week": 1,
   "session": 2,
   "q": 5,
+  "family": "range",
   "formula": "range",
   "answer": "1.8 s",
   "question": "Find the range of these race times."
@@ -83,6 +93,7 @@
   "week": 1,
   "session": 3,
   "q": 1,
+  "family": "ang_quad",
   "formula": "ang_quad",
   "answer": "75",
   "question": "Find the value of <i>x</i>."
@@ -91,6 +102,7 @@
   "week": 1,
   "session": 3,
   "q": 2,
+  "family": "a_kite",
   "formula": "a_kite",
   "answer": "35 cm²",
   "question": "Find the area of this rhombus."
@@ -99,6 +111,7 @@
   "week": 1,
   "session": 3,
   "q": 3,
+  "family": "v_cyl",
   "formula": "v_cyl",
   "answer": "251.3 cm³",
   "question": "Find the volume of this cylinder, correct to 1 decimal place."
@@ -107,6 +120,7 @@
   "week": 1,
   "session": 3,
   "q": 4,
+  "family": "profit",
   "formula": "profit",
   "answer": "$25 loss",
   "question": "Find the loss made on this sale."
@@ -115,6 +129,7 @@
   "week": 1,
   "session": 3,
   "q": 5,
+  "family": "prob_not",
   "formula": "prob_not",
   "answer": "5/8",
   "question": "Find the probability of not winning."
@@ -123,254 +138,286 @@
   "week": 2,
   "session": 1,
   "q": 1,
-  "formula": "pyth_hyp",
-  "answer": "25 cm",
-  "question": "Find the length of the hypotenuse, <i>c</i>."
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "9.2 m",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
  },
  {
   "week": 2,
   "session": 1,
   "q": 2,
+  "family": "a_para",
   "formula": "a_para",
-  "answer": "60 cm²",
+  "answer": "45 m²",
   "question": "Find the area of this parallelogram."
  },
  {
   "week": 2,
   "session": 1,
   "q": 3,
-  "formula": "v_rect",
-  "answer": "120 cm³",
-  "question": "Find the volume of this rectangular prism."
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "879.6 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
  },
  {
   "week": 2,
   "session": 1,
   "q": 4,
-  "formula": "distrib",
-  "answer": "x² + 3x",
-  "question": "Expand."
+  "family": "pct_orig",
+  "formula": "pct_orig",
+  "answer": "80",
+  "question": "Find the number."
  },
  {
   "week": 2,
   "session": 1,
   "q": 5,
+  "family": "mean",
   "formula": "mean",
-  "answer": "6",
-  "question": "Find the mean of these scores."
+  "answer": "3",
+  "question": "Find the mean of these lengths."
  },
  {
   "week": 2,
   "session": 2,
   "q": 1,
-  "formula": "pyth_short",
-  "answer": "16 cm",
+  "family": "ang_par",
+  "formula": "ang_corr",
+  "answer": "52°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 2,
   "session": 2,
   "q": 2,
+  "family": "a_rect",
   "formula": "a_rect",
-  "answer": "80 cm²",
+  "answer": "28.8 cm²",
   "question": "Find the area of this rectangle."
  },
  {
   "week": 2,
   "session": 2,
   "q": 3,
-  "formula": "sa_rect",
-  "answer": "67 cm²",
-  "question": "Find the surface area of this prism."
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "72 cm³",
+  "question": "Find the volume of this rectangular prism."
  },
  {
   "week": 2,
   "session": 2,
   "q": 4,
-  "formula": "scale",
-  "answer": "2.4",
-  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "−2x − 12",
+  "question": "Expand."
  },
  {
   "week": 2,
   "session": 2,
   "q": 5,
+  "family": "gradient",
   "formula": "gradient",
-  "answer": "−1/2",
+  "answer": "3",
   "question": "Find the gradient of line AB."
  },
  {
   "week": 2,
   "session": 3,
   "q": 1,
-  "formula": "ang_tri",
-  "answer": "81°",
+  "family": "ang_line",
+  "formula": "ang_straight",
+  "answer": "48°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 2,
   "session": 3,
   "q": 2,
+  "family": "a_circle",
   "formula": "a_circle",
-  "answer": "78.5 cm²",
+  "answer": "63.6 m²",
   "question": "Find the area of this circle, correct to 1 decimal place."
  },
  {
   "week": 2,
   "session": 3,
   "q": 3,
-  "formula": "v_cyl",
-  "answer": "197.9 cm³",
-  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+  "family": "sa_rect",
+  "formula": "sa_rect",
+  "answer": "144 cm²",
+  "question": "Find the surface area of this prism."
  },
  {
   "week": 2,
   "session": 3,
   "q": 4,
+  "family": "speed",
   "formula": "speed",
-  "answer": "15 km/h",
-  "question": "A cyclist travels from A to B. Find the average speed in km/h."
+  "answer": "8 m/s",
+  "question": "A runner travels from A to B. Find the average speed."
  },
  {
   "week": 2,
   "session": 3,
   "q": 5,
+  "family": "prob",
   "formula": "prob",
-  "answer": "5/12",
-  "question": "One marble is chosen at random from this bag. Find the probability that it is green."
+  "answer": "1/2",
+  "question": "A letter is chosen at random from this word. Find <i>P</i>(A)."
  },
  {
   "week": 3,
   "session": 1,
   "q": 1,
-  "formula": "ang_poly",
-  "answer": "140°",
-  "question": "Find the size of each interior angle of this regular nonagon."
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "9.8 cm",
+  "question": "Find <i>c</i>, correct to 1 decimal place."
  },
  {
   "week": 3,
   "session": 1,
   "q": 2,
-  "formula": "a_semi",
-  "answer": "127.2 m²",
-  "question": "Find the area of this semicircle, correct to 1 decimal place."
+  "family": "a_semi",
+  "formula": "a_sector",
+  "answer": "50.3 cm²",
+  "question": "Find the area of this sector, correct to 1 decimal place."
  },
  {
   "week": 3,
   "session": 1,
   "q": 3,
-  "formula": "sa_tri",
-  "answer": "171 cm²",
-  "question": "Find the surface area of this triangular prism."
+  "family": "capacity",
+  "formula": "cap_cyl_m3",
+  "answer": "6283.2 L",
+  "question": "Find the capacity of this tank in litres, correct to 1 decimal place."
  },
  {
   "week": 3,
   "session": 1,
   "q": 4,
-  "formula": "idx_div",
-  "answer": "4^4",
-  "question": "Write as a single power."
+  "family": "pct_incdec",
+  "formula": "pct_inc",
+  "answer": "3,936",
+  "question": "Find the new population of the town."
  },
  {
   "week": 3,
   "session": 1,
   "q": 5,
+  "family": "linear",
   "formula": "linear",
-  "answer": "10",
-  "question": "Find the value of <i>y</i> when <i>x</i> = −4."
+  "answer": "7",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 6."
  },
  {
   "week": 3,
   "session": 2,
   "q": 1,
-  "formula": "ang_ext",
-  "answer": "67°",
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "48°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 3,
   "session": 2,
   "q": 2,
+  "family": "a_trap",
   "formula": "a_trap",
-  "answer": "45 cm²",
+  "answer": "66 cm²",
   "question": "Find the area of this trapezium."
  },
  {
   "week": 3,
   "session": 2,
   "q": 3,
-  "formula": "v_rect",
-  "answer": "120 m³",
-  "question": "Find the volume of this rectangular prism."
+  "family": "sa_tri",
+  "formula": "sa_tri",
+  "answer": "300 cm²",
+  "question": "Find the surface area of this triangular prism."
  },
  {
   "week": 3,
   "session": 2,
   "q": 4,
-  "formula": "pct_qty",
-  "answer": "43 kg",
-  "question": "Calculate."
+  "family": "scale",
+  "formula": "scale",
+  "answer": "2.5",
+  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
  },
  {
   "week": 3,
   "session": 2,
   "q": 5,
+  "family": "prob_not",
   "formula": "prob_not",
-  "answer": "3/4",
+  "answer": "7/12",
   "question": "Find the probability that the counter is not red."
  },
  {
   "week": 3,
   "session": 3,
   "q": 1,
-  "formula": "ang_tri",
-  "answer": "70°",
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "112°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 3,
   "session": 3,
   "q": 2,
+  "family": "a_tri",
   "formula": "a_tri",
-  "answer": "56 m²",
-  "question": "Find the area of this triangle."
+  "answer": "7.5 m",
+  "question": "The area of this triangle is 18.75 m². Find <i>x</i>."
  },
  {
   "week": 3,
   "session": 3,
   "q": 3,
-  "formula": "v_prism",
-  "answer": "97.5 cm³",
-  "question": "The shaded face has an area of 15 cm². Find the volume of the prism."
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "5 m",
+  "question": "The volume of this rectangular prism is 100 m³. Find <i>x</i>."
  },
  {
   "week": 3,
   "session": 3,
   "q": 4,
-  "formula": "distrib",
-  "answer": "6x + 10",
-  "question": "Expand."
+  "family": "idx",
+  "formula": "idx_mult",
+  "answer": "10^7",
+  "question": "Write as a single power."
  },
  {
   "week": 3,
   "session": 3,
   "q": 5,
+  "family": "prob",
   "formula": "prob",
-  "answer": "1/3",
-  "question": "A fair die is rolled. Find the probability of rolling a number less than 3."
+  "answer": "1/2",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is green."
  },
  {
   "week": 4,
   "session": 1,
   "q": 1,
-  "formula": "pyth_hyp",
-  "answer": "14.2 cm",
-  "question": "Find <i>c</i>, correct to 1 decimal place."
+  "family": "ang_par",
+  "formula": "ang_alt",
+  "answer": "107.5°",
+  "question": "Find the value of <i>x</i>."
  },
  {
   "week": 4,
   "session": 1,
   "q": 2,
+  "family": "a_kite",
   "formula": "a_kite",
   "answer": "22.5 cm²",
   "question": "Find the area of this rhombus."
@@ -379,598 +426,673 @@
   "week": 4,
   "session": 1,
   "q": 3,
-  "formula": "sa_rect",
-  "answer": "126 cm²",
-  "question": "Find the surface area of this prism."
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "320.4 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
  },
  {
   "week": 4,
   "session": 1,
   "q": 4,
+  "family": "profit",
   "formula": "profit",
-  "answer": "$14.50 loss",
-  "question": "Find the loss made on this sale."
+  "answer": "$7.60 profit",
+  "question": "Find the profit made on this sale."
  },
  {
   "week": 4,
   "session": 1,
   "q": 5,
+  "family": "mean",
   "formula": "mean",
-  "answer": "10",
-  "question": "Find the mean of these scores."
+  "answer": "69",
+  "question": "Find the mean of these marks."
  },
  {
   "week": 4,
   "session": 2,
   "q": 1,
-  "formula": "pyth_short",
-  "answer": "4 m",
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "48°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 4,
   "session": 2,
   "q": 2,
+  "family": "a_rect",
   "formula": "a_rect",
-  "answer": "67.5 cm²",
-  "question": "Find the area of this rectangle."
+  "answer": "9 cm",
+  "question": "The area of this rectangle is 45 cm². Find <i>x</i>."
  },
  {
   "week": 4,
   "session": 2,
   "q": 3,
-  "formula": "sa_tri",
-  "answer": "520 cm²",
-  "question": "Find the surface area of this triangular prism."
+  "family": "capacity",
+  "formula": "cap_rect_ml",
+  "answer": "600 mL",
+  "question": "Find the capacity of this container in millilitres."
  },
  {
   "week": 4,
   "session": 2,
   "q": 4,
-  "formula": "speed",
-  "answer": "20 km/h",
-  "question": "A cyclist travels from A to B. Find the average speed."
+  "family": "pct_incdec",
+  "formula": "pct_dec",
+  "answer": "$38.99",
+  "question": "Find the sale price, to the nearest cent."
  },
  {
   "week": 4,
   "session": 2,
   "q": 5,
+  "family": "range",
   "formula": "range",
-  "answer": "0.27 m",
-  "question": "Find the range of these heights."
+  "answer": "23",
+  "question": "Find the range of these scores."
  },
  {
   "week": 4,
   "session": 3,
   "q": 1,
-  "formula": "ang_quad",
-  "answer": "112°",
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "115°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 4,
   "session": 3,
   "q": 2,
+  "family": "a_circle",
   "formula": "a_circle",
-  "answer": "63.6 m²",
+  "answer": "113.1 cm²",
   "question": "Find the area of this circle, correct to 1 decimal place."
  },
  {
   "week": 4,
   "session": 3,
   "q": 3,
-  "formula": "v_rect",
-  "answer": "36 cm³",
-  "question": "Find the volume of this rectangular prism."
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "8 cm",
+  "question": "The shaded face has an area of 12 cm² and the volume is 96 cm³. Find <i>x</i>."
  },
  {
   "week": 4,
   "session": 3,
   "q": 4,
-  "formula": "idx_div",
-  "answer": "y^5",
-  "question": "Simplify."
+  "family": "scale",
+  "formula": "scale",
+  "answer": "0.25",
+  "question": "The large rectangle is reduced to make the small one. Find the scale factor."
  },
  {
   "week": 4,
   "session": 3,
   "q": 5,
+  "family": "gradient",
   "formula": "gradient",
-  "answer": "−3",
+  "answer": "−1",
   "question": "Find the gradient of line AB."
  },
  {
   "week": 5,
   "session": 1,
   "q": 1,
-  "formula": "ang_tri",
-  "answer": "66°",
-  "question": "Find the value of <i>x</i>."
+  "family": "ang_poly",
+  "formula": "ang_poly",
+  "answer": "1800°",
+  "question": "Find the sum of the interior angles of this dodecagon."
  },
  {
   "week": 5,
   "session": 1,
   "q": 2,
+  "family": "a_trap",
   "formula": "a_trap",
-  "answer": "36 cm²",
+  "answer": "32 m²",
   "question": "Find the area of this trapezium."
  },
  {
   "week": 5,
   "session": 1,
   "q": 3,
+  "family": "sa_rect",
   "formula": "sa_rect",
-  "answer": "98 cm²",
+  "answer": "130 m²",
   "question": "Find the surface area of this prism."
  },
  {
   "week": 5,
   "session": 1,
   "q": 4,
-  "formula": "scale",
-  "answer": "2.5",
-  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
+  "family": "pct_change",
+  "formula": "pct_change",
+  "answer": "25% increase",
+  "question": "Find the percentage increase in visitors."
  },
  {
   "week": 5,
   "session": 1,
   "q": 5,
+  "family": "prob",
   "formula": "prob",
-  "answer": "7/10",
-  "question": "One marble is chosen at random from this bag. Find the probability that it is black."
+  "answer": "1/3",
+  "question": "A fair die is rolled. Find the probability of rolling a number less than 3."
  },
  {
   "week": 5,
   "session": 2,
   "q": 1,
-  "formula": "ang_poly",
-  "answer": "120°",
-  "question": "Find the size of each interior angle of this regular hexagon."
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "13.2 cm",
+  "question": "Find <i>c</i>, correct to 1 decimal place."
  },
  {
   "week": 5,
   "session": 2,
   "q": 2,
+  "family": "a_semi",
   "formula": "a_semi",
-  "answer": "39.3 m²",
+  "answer": "14.1 cm²",
   "question": "Find the area of this semicircle, correct to 1 decimal place."
  },
  {
   "week": 5,
   "session": 2,
   "q": 3,
+  "family": "v_cyl",
   "formula": "v_cyl",
-  "answer": "235.6 m³",
+  "answer": "502.7 m³",
   "question": "Find the volume of this cylinder, correct to 1 decimal place."
  },
  {
   "week": 5,
   "session": 2,
   "q": 4,
-  "formula": "pct_change",
-  "answer": "20% increase",
-  "question": "Find the percentage increase in price."
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "6x + 10",
+  "question": "Expand."
  },
  {
   "week": 5,
   "session": 2,
   "q": 5,
+  "family": "mean",
   "formula": "mean",
-  "answer": "9.4",
-  "question": "Find the mean of these masses."
+  "answer": "6",
+  "question": "Find the mean of these scores."
  },
  {
   "week": 5,
   "session": 3,
   "q": 1,
+  "family": "pyth_short",
   "formula": "pyth_short",
-  "answer": "8.5 m",
-  "question": "Find <i>x</i>, correct to 1 decimal place."
+  "answer": "16 cm",
+  "question": "Find the value of <i>x</i>."
  },
  {
   "week": 5,
   "session": 3,
   "q": 2,
+  "family": "a_para",
   "formula": "a_para",
-  "answer": "42 cm²",
-  "question": "Find the area of this parallelogram."
+  "answer": "6 cm",
+  "question": "The area of this parallelogram is 54 cm². Find <i>x</i>."
  },
  {
   "week": 5,
   "session": 3,
   "q": 3,
-  "formula": "v_prism",
-  "answer": "120 cm³",
-  "question": "The shaded face has an area of 20 cm². Find the volume of the prism."
- },
- {
-  "week": 5,
-  "session": 3,
-  "q": 4,
-  "formula": "idx_mult",
-  "answer": "m^8",
-  "question": "Simplify."
- },
- {
-  "week": 5,
-  "session": 3,
-  "q": 5,
-  "formula": "range",
-  "answer": "11°C",
-  "question": "Find the range of these temperatures."
- },
- {
-  "week": 6,
-  "session": 1,
-  "q": 1,
-  "formula": "pyth_hyp",
-  "answer": "7.5 cm",
-  "question": "Find the length of the hypotenuse, <i>c</i>."
- },
- {
-  "week": 6,
-  "session": 1,
-  "q": 2,
-  "formula": "c_circ_r",
-  "answer": "56.5 cm",
-  "question": "Find the circumference of this circle, correct to 1 decimal place."
- },
- {
-  "week": 6,
-  "session": 1,
-  "q": 3,
+  "family": "sa_tri",
   "formula": "sa_tri",
   "answer": "84 cm²",
   "question": "Find the surface area of this triangular prism."
  },
  {
+  "week": 5,
+  "session": 3,
+  "q": 4,
+  "family": "pct_qty",
+  "formula": "pct_qty",
+  "answer": "$5.20",
+  "question": "Calculate."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 5,
+  "family": "range",
+  "formula": "range",
+  "answer": "22 cm",
+  "question": "Find the range of these heights."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 1,
+  "family": "ang_line",
+  "formula": "ang_point",
+  "answer": "118°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 2,
+  "family": "circ",
+  "formula": "c_circ_d",
+  "answer": "31.8 m",
+  "question": "The circumference of this circle is 100 m. Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 3,
+  "family": "capacity",
+  "formula": "cap_rect_m3",
+  "answer": "4800 L",
+  "question": "Find the capacity of this tank in litres."
+ },
+ {
   "week": 6,
   "session": 1,
   "q": 4,
-  "formula": "distrib",
-  "answer": "3x + 15",
-  "question": "Expand."
+  "family": "idx",
+  "formula": "idx_zero",
+  "answer": "1",
+  "question": "Simplify."
  },
  {
   "week": 6,
   "session": 1,
   "q": 5,
+  "family": "gradient",
   "formula": "gradient",
-  "answer": "3",
+  "answer": "−2",
   "question": "Find the gradient of line AB."
  },
  {
   "week": 6,
   "session": 2,
   "q": 1,
-  "formula": "ang_ext",
-  "answer": "71°",
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "109°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 6,
   "session": 2,
   "q": 2,
+  "family": "a_tri",
   "formula": "a_tri",
-  "answer": "52.5 cm²",
+  "answer": "76.5 cm²",
   "question": "Find the area of this triangle."
  },
  {
   "week": 6,
   "session": 2,
   "q": 3,
-  "formula": "v_rect",
-  "answer": "36 cm³",
-  "question": "Find the volume of this rectangular prism."
+  "family": "sa_rect",
+  "formula": "sa_rect",
+  "answer": "82 cm²",
+  "question": "Find the surface area of this prism."
  },
  {
   "week": 6,
   "session": 2,
   "q": 4,
+  "family": "speed",
   "formula": "speed",
-  "answer": "70 km/h",
-  "question": "A bus travels from A to B. Find the average speed."
+  "answer": "240 km",
+  "question": "A car travels from A to B at an average speed of 80 km/h. Find <i>x</i>."
  },
  {
   "week": 6,
   "session": 2,
   "q": 5,
+  "family": "linear",
   "formula": "linear",
-  "answer": "7",
-  "question": "Find the value of <i>y</i> when <i>x</i> = 6."
+  "answer": "5",
+  "question": "Find the value of <i>y</i> when <i>x</i> = −1."
  },
  {
   "week": 6,
   "session": 3,
   "q": 1,
-  "formula": "ang_quad",
-  "answer": "60°",
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "66°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 6,
   "session": 3,
   "q": 2,
+  "family": "a_semi",
   "formula": "a_semi",
-  "answer": "9.8 cm²",
+  "answer": "31.8 m²",
   "question": "Find the area of this semicircle, correct to 1 decimal place."
  },
  {
   "week": 6,
   "session": 3,
   "q": 3,
-  "formula": "sa_rect",
-  "answer": "168 cm²",
-  "question": "Find the surface area of this prism."
+  "family": "v_cyl",
+  "formula": "v_cyl",
+  "answer": "56.5 m³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
  },
  {
   "week": 6,
   "session": 3,
   "q": 4,
-  "formula": "scale",
-  "answer": "0.4",
-  "question": "The large rectangle is reduced to make the small one. Find the scale factor."
+  "family": "pct_orig",
+  "formula": "pct_orig",
+  "answer": "$80",
+  "question": "Find the original price of the jacket."
  },
  {
   "week": 6,
   "session": 3,
   "q": 5,
+  "family": "prob_not",
   "formula": "prob_not",
-  "answer": "7/12",
-  "question": "Find the probability that the counter is not red."
+  "answer": "0.64",
+  "question": "Find the probability that the marble is not blue."
  },
  {
   "week": 7,
   "session": 1,
   "q": 1,
+  "family": "ang_poly",
   "formula": "ang_poly",
-  "answer": "2340°",
-  "question": "Find the sum of the interior angles of this 15-sided polygon."
+  "answer": "144°",
+  "question": "Find the size of each interior angle of this regular decagon."
  },
  {
   "week": 7,
   "session": 1,
   "q": 2,
+  "family": "a_circle",
   "formula": "a_circle",
-  "answer": "113.1 cm²",
+  "answer": "63.6 m²",
   "question": "Find the area of this circle, correct to 1 decimal place."
  },
  {
   "week": 7,
   "session": 1,
   "q": 3,
-  "formula": "v_cyl",
-  "answer": "384.8 cm³",
-  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "70 cm³",
+  "question": "The shaded face has an area of 20 cm². Find the volume of the prism."
  },
  {
   "week": 7,
   "session": 1,
   "q": 4,
+  "family": "pct_qty",
   "formula": "pct_qty",
-  "answer": "93 kg",
+  "answer": "12 m",
   "question": "Calculate."
  },
  {
   "week": 7,
   "session": 1,
   "q": 5,
+  "family": "mean",
   "formula": "mean",
-  "answer": "30",
-  "question": "Find the mean of these scores."
+  "answer": "2",
+  "question": "Find the mean of these times."
  },
  {
   "week": 7,
   "session": 2,
   "q": 1,
-  "formula": "ang_tri",
-  "answer": "51°",
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "116°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 7,
   "session": 2,
   "q": 2,
+  "family": "a_para",
   "formula": "a_para",
-  "answer": "56 m²",
+  "answer": "42 cm²",
   "question": "Find the area of this parallelogram."
  },
  {
   "week": 7,
   "session": 2,
   "q": 3,
-  "formula": "v_prism",
-  "answer": "81 cm³",
-  "question": "The shaded face has an area of 18 cm². Find the volume of the prism."
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "36 cm³",
+  "question": "Find the volume of this rectangular prism."
  },
  {
   "week": 7,
   "session": 2,
   "q": 4,
+  "family": "pct_change",
   "formula": "pct_change",
   "answer": "15% decrease",
-  "question": "Find the percentage decrease in visitors."
+  "question": "Find the percentage decrease in price."
  },
  {
   "week": 7,
   "session": 2,
   "q": 5,
+  "family": "gradient",
   "formula": "gradient",
-  "answer": "1/2",
+  "answer": "2",
   "question": "Find the gradient of line AB."
  },
  {
   "week": 7,
   "session": 3,
   "q": 1,
-  "formula": "pyth_hyp",
-  "answer": "8.5 m",
-  "question": "Find <i>c</i>, correct to 1 decimal place."
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "4 m",
+  "question": "Find the value of <i>x</i>."
  },
  {
   "week": 7,
   "session": 3,
   "q": 2,
+  "family": "a_rect",
   "formula": "a_rect",
-  "answer": "28.8 cm²",
+  "answer": "51 cm²",
   "question": "Find the area of this rectangle."
  },
  {
   "week": 7,
   "session": 3,
   "q": 3,
-  "formula": "sa_tri",
-  "answer": "168 cm²",
-  "question": "Find the surface area of this triangular prism."
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "245.0 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
  },
  {
   "week": 7,
   "session": 3,
   "q": 4,
-  "formula": "profit",
-  "answer": "$12.25 loss",
-  "question": "Find the loss made on this sale."
+  "family": "pct_orig",
+  "formula": "pct_orig",
+  "answer": "$80",
+  "question": "Find the original price of the jacket."
  },
  {
   "week": 7,
   "session": 3,
   "q": 5,
+  "family": "prob_not",
   "formula": "prob_not",
-  "answer": "0.875",
-  "question": "Find the probability that the flight is not delayed."
+  "answer": "0.65",
+  "question": "Find the probability that the team does not win."
  },
  {
   "week": 8,
   "session": 1,
   "q": 1,
-  "formula": "ang_quad",
-  "answer": "124°",
-  "question": "Find the value of <i>x</i>."
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "8.5 m",
+  "question": "Find <i>c</i>, correct to 1 decimal place."
  },
  {
   "week": 8,
   "session": 1,
   "q": 2,
+  "family": "a_trap",
   "formula": "a_trap",
-  "answer": "66 cm²",
+  "answer": "36 cm²",
   "question": "Find the area of this trapezium."
  },
  {
   "week": 8,
   "session": 1,
   "q": 3,
-  "formula": "v_rect",
-  "answer": "64 cm³",
-  "question": "Find the volume of this rectangular prism."
+  "family": "sa_tri",
+  "formula": "sa_tri",
+  "answer": "432 cm²",
+  "question": "Find the surface area of this triangular prism."
  },
  {
   "week": 8,
   "session": 1,
   "q": 4,
-  "formula": "distrib",
-  "answer": "6x − 15",
-  "question": "Expand."
+  "family": "speed",
+  "formula": "speed",
+  "answer": "4 km/h",
+  "question": "A walker travels from A to B. Find the average speed."
  },
  {
   "week": 8,
   "session": 1,
   "q": 5,
+  "family": "prob",
   "formula": "prob",
-  "answer": "1/2",
-  "question": "One marble is chosen at random from this bag. Find the probability that it is green."
+  "answer": "5/6",
+  "question": "A fair die is rolled. Find the probability of rolling a number greater than 1."
  },
  {
   "week": 8,
   "session": 2,
   "q": 1,
-  "formula": "ang_ext",
-  "answer": "115°",
+  "family": "ang_par",
+  "formula": "ang_coint",
+  "answer": "137°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 8,
   "session": 2,
   "q": 2,
+  "family": "a_kite",
   "formula": "a_kite",
-  "answer": "40 cm²",
+  "answer": "30 cm²",
   "question": "Find the area of this kite."
  },
  {
   "week": 8,
   "session": 2,
   "q": 3,
-  "formula": "sa_rect",
-  "answer": "144 cm²",
-  "question": "Find the surface area of this prism."
+  "family": "capacity",
+  "formula": "cap_rect_l",
+  "answer": "60 L",
+  "question": "Find the capacity of this tank in litres."
  },
  {
   "week": 8,
   "session": 2,
   "q": 4,
-  "formula": "scale",
-  "answer": "0.25",
-  "question": "The large rectangle is reduced to make the small one. Find the scale factor."
+  "family": "idx",
+  "formula": "idx_div",
+  "answer": "k^6",
+  "question": "Simplify."
  },
  {
   "week": 8,
   "session": 2,
   "q": 5,
+  "family": "range",
   "formula": "range",
-  "answer": "112",
-  "question": "Find the range of these visitor numbers."
+  "answer": "11°C",
+  "question": "Find the range of these temperatures."
  },
  {
   "week": 8,
   "session": 3,
   "q": 1,
-  "formula": "pyth_short",
-  "answer": "24 cm",
+  "family": "ang_line",
+  "formula": "ang_vert",
+  "answer": "115°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 8,
   "session": 3,
   "q": 2,
+  "family": "circ",
   "formula": "c_circ_r",
-  "answer": "15.7 m",
+  "answer": "40.8 cm",
   "question": "Find the circumference of this circle, correct to 1 decimal place."
  },
  {
   "week": 8,
   "session": 3,
   "q": 3,
-  "formula": "v_cyl",
-  "answer": "113.1 cm³",
-  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "180 m³",
+  "question": "The shaded face has an area of 20 m². Find the volume of the prism."
  },
  {
   "week": 8,
   "session": 3,
   "q": 4,
-  "formula": "speed",
-  "answer": "8 m/s",
-  "question": "A runner travels from A to B. Find the average speed."
+  "family": "pct_incdec",
+  "formula": "pct_inc",
+  "answer": "$72.24",
+  "question": "Find the new price."
  },
  {
   "week": 8,
   "session": 3,
   "q": 5,
+  "family": "linear",
   "formula": "linear",
-  "answer": "4",
-  "question": "Find the value of <i>y</i> when <i>x</i> = 3."
+  "answer": "13",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 4."
  },
  {
   "week": 9,
   "session": 1,
   "q": 1,
-  "formula": "ang_tri",
-  "answer": "70°",
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "110°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 9,
   "session": 1,
   "q": 2,
+  "family": "a_tri",
   "formula": "a_tri",
   "answer": "39 cm²",
   "question": "Find the area of this triangle."
@@ -979,174 +1101,196 @@
   "week": 9,
   "session": 1,
   "q": 3,
-  "formula": "v_prism",
-  "answer": "100 cm³",
-  "question": "The shaded face has an area of 20 cm². Find the volume of the prism."
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "127.2 m²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
  },
  {
   "week": 9,
   "session": 1,
   "q": 4,
-  "formula": "pct_qty",
-  "answer": "$16",
-  "question": "Calculate."
+  "family": "scale",
+  "formula": "scale",
+  "answer": "0.25",
+  "question": "The large rectangle is reduced to make the small one. Find the scale factor."
  },
  {
   "week": 9,
   "session": 1,
   "q": 5,
+  "family": "prob_not",
   "formula": "prob_not",
-  "answer": "0.6",
-  "question": "Find the probability that it does not rain."
+  "answer": "2/9",
+  "question": "Find the probability that the target is not hit."
  },
  {
   "week": 9,
   "session": 2,
   "q": 1,
-  "formula": "pyth_hyp",
-  "answer": "13.2 cm",
-  "question": "Find <i>c</i>, correct to 1 decimal place."
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "12.7 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
  },
  {
   "week": 9,
   "session": 2,
   "q": 2,
+  "family": "a_trap",
   "formula": "a_trap",
-  "answer": "29.75 cm²",
+  "answer": "45 cm²",
   "question": "Find the area of this trapezium."
  },
  {
   "week": 9,
   "session": 2,
   "q": 3,
-  "formula": "sa_tri",
-  "answer": "108 m²",
-  "question": "Find the surface area of this triangular prism."
+  "family": "v_cyl",
+  "formula": "v_cyl",
+  "answer": "235.6 m³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
  },
  {
   "week": 9,
   "session": 2,
   "q": 4,
-  "formula": "idx_mult",
-  "answer": "10^7",
-  "question": "Write as a single power."
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "12a − 6",
+  "question": "Expand."
  },
  {
   "week": 9,
   "session": 2,
   "q": 5,
+  "family": "mean",
   "formula": "mean",
-  "answer": "2",
-  "question": "Find the mean of these times."
+  "answer": "9.4",
+  "question": "Find the mean of these masses."
  },
  {
   "week": 9,
   "session": 3,
   "q": 1,
-  "formula": "ang_poly",
-  "answer": "1800°",
-  "question": "Find the sum of the interior angles of this dodecagon."
+  "family": "ang_line",
+  "formula": "ang_vert",
+  "answer": "124°",
+  "question": "Find the value of <i>x</i>."
  },
  {
   "week": 9,
   "session": 3,
   "q": 2,
+  "family": "a_kite",
   "formula": "a_kite",
-  "answer": "20 m²",
+  "answer": "40 cm²",
   "question": "Find the area of this kite."
  },
  {
   "week": 9,
   "session": 3,
   "q": 3,
-  "formula": "sa_rect",
-  "answer": "122 m²",
-  "question": "Find the surface area of this prism."
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "90 cm³",
+  "question": "Find the volume of this rectangular prism."
  },
  {
   "week": 9,
   "session": 3,
   "q": 4,
+  "family": "profit",
   "formula": "profit",
-  "answer": "$7.60 profit",
-  "question": "Find the profit made on this sale."
+  "answer": "$12.25 loss",
+  "question": "Find the loss made on this sale."
  },
  {
   "week": 9,
   "session": 3,
   "q": 5,
+  "family": "range",
   "formula": "range",
-  "answer": "23",
-  "question": "Find the range of these scores."
+  "answer": "0.27 m",
+  "question": "Find the range of these heights."
  },
  {
   "week": 10,
   "session": 1,
   "q": 1,
-  "formula": "ang_quad",
-  "answer": "109°",
-  "question": "Find the value of <i>x</i>."
+  "family": "ang_poly",
+  "formula": "ang_poly",
+  "answer": "150°",
+  "question": "Find the size of each interior angle of this regular dodecagon."
  },
  {
   "week": 10,
   "session": 1,
   "q": 2,
+  "family": "a_circle",
   "formula": "a_circle",
-  "answer": "113.1 cm²",
+  "answer": "78.5 cm²",
   "question": "Find the area of this circle, correct to 1 decimal place."
  },
  {
   "week": 10,
   "session": 1,
   "q": 3,
-  "formula": "v_prism",
-  "answer": "60 m³",
-  "question": "The shaded face has an area of 15 m². Find the volume of the prism."
+  "family": "sa_rect",
+  "formula": "sa_rect",
+  "answer": "98 cm²",
+  "question": "Find the surface area of this prism."
  },
  {
   "week": 10,
   "session": 1,
   "q": 4,
-  "formula": "pct_change",
-  "answer": "25% increase",
-  "question": "Find the percentage increase in price."
+  "family": "speed",
+  "formula": "speed",
+  "answer": "90 km/h",
+  "question": "A car travels from A to B. Find the average speed."
  },
  {
   "week": 10,
   "session": 1,
   "q": 5,
+  "family": "gradient",
   "formula": "gradient",
-  "answer": "−2",
+  "answer": "3/4",
   "question": "Find the gradient of line AB."
  },
  {
   "week": 10,
   "session": 2,
   "q": 1,
-  "formula": "ang_ext",
-  "answer": "48°",
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "50°",
   "question": "Find the value of <i>x</i>."
  },
  {
   "week": 10,
   "session": 2,
   "q": 2,
+  "family": "circ",
   "formula": "c_circ_d",
-  "answer": "25.1 cm",
+  "answer": "56.5 cm",
   "question": "Find the circumference of this circle, correct to 1 decimal place."
  },
  {
   "week": 10,
   "session": 2,
   "q": 3,
-  "formula": "v_rect",
-  "answer": "54 cm³",
-  "question": "Find the volume of this rectangular prism."
+  "family": "capacity",
+  "formula": "cap_cyl_ml",
+  "answer": "461.8 mL",
+  "question": "Find the capacity of this container in millilitres, correct to 1 decimal place."
  },
  {
   "week": 10,
   "session": 2,
   "q": 4,
+  "family": "idx",
   "formula": "idx_pow",
   "answer": "n^12",
   "question": "Simplify."
@@ -1155,48 +1299,54 @@
   "week": 10,
   "session": 2,
   "q": 5,
+  "family": "prob",
   "formula": "prob",
-  "answer": "2/11",
-  "question": "A letter is chosen at random from this word. Find <i>P</i>(M)."
+  "answer": "1/2",
+  "question": "A fair die is rolled. Find the probability of rolling an even number."
  },
  {
   "week": 10,
   "session": 3,
   "q": 1,
-  "formula": "pyth_short",
-  "answer": "9.7 cm",
-  "question": "Find <i>x</i>, correct to 1 decimal place."
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "72°",
+  "question": "Find the value of <i>x</i>."
  },
  {
   "week": 10,
   "session": 3,
   "q": 2,
-  "formula": "a_semi",
-  "answer": "14.1 cm²",
-  "question": "Find the area of this semicircle, correct to 1 decimal place."
+  "family": "a_semi",
+  "formula": "a_sector",
+  "answer": "44.2 cm²",
+  "question": "Find the area of this quadrant, correct to 1 decimal place."
  },
  {
   "week": 10,
   "session": 3,
   "q": 3,
-  "formula": "v_cyl",
-  "answer": "445.3 cm³",
-  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "414.7 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
  },
  {
   "week": 10,
   "session": 3,
   "q": 4,
-  "formula": "distrib",
-  "answer": "5x − 20",
-  "question": "Expand."
+  "family": "profit",
+  "formula": "profit",
+  "answer": "$14.50 loss",
+  "question": "Find the loss made on this sale."
  },
  {
   "week": 10,
   "session": 3,
   "q": 5,
+  "family": "linear",
   "formula": "linear",
   "answer": "4",
-  "question": "Find the value of <i>y</i> when <i>x</i> = 4."
+  "question": "Find the value of <i>y</i> when <i>x</i> = 3."
  }
 ]

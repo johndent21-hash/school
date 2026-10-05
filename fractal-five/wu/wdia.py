@@ -52,6 +52,12 @@ def _lab(f, p, q, text, inside, unknown=False, off=9):
                  size=FS, weight=700 if unknown else None)
 
 
+def _k(lab):
+    """Text style for a figure label: a label holding a pronumeral (<i>) is the unknown and is set
+    in bold deeper blue; every other label stays charcoal (so existing figures are unchanged)."""
+    return {"color": bdia.BLUE, "weight": 700} if "<i>" in str(lab) else {"color": bdia.INK}
+
+
 # ---------------------------------------------------------------- Pythagoras --
 def rt_tri(a, b, legs=("", ""), hyp="", unknown=None, orient=0, W=300, H=124):
     """Right-angled triangle, horizontal leg a and vertical leg b (to scale).
@@ -75,8 +81,11 @@ def rt_tri(a, b, legs=("", ""), hyp="", unknown=None, orient=0, W=300, H=124):
 
 
 # ------------------------------------------------------------------- areas --
-def tri_height(base, apex_x, height, base_lab, h_lab, W=300, H=124):
-    """Triangle on a horizontal base with its perpendicular height dashed."""
+def tri_height(base, apex_x, height, base_lab, h_lab, W=300, H=124, clear=False):
+    """Triangle on a horizontal base with its perpendicular height dashed.
+    clear=True (generated weeks): the height label goes to the first spot beside the dashed line,
+    mid-height first, then lower down or on the other side, that keeps clear of every side; the
+    default keeps the original placement (the approved Week 1 figures)."""
     A, B, C, Ft = (0, 0), (base, 0), (apex_x, height), (apex_x, 0)
     T, _ = fitter([A, B, C], W, H, pad=15)
     a, b, c, ft = T(A), T(B), T(C), T(Ft)
@@ -84,14 +93,30 @@ def tri_height(base, apex_x, height, base_lab, h_lab, W=300, H=124):
     f.poly([a, b, c], sw=1.5)
     f.line(c, ft, bdia.OUT, 1.2, dash="4 3")
     f.right_angle(ft, b, c, s=7)
-    _lab(f, a, b, base_lab, c)
-    f.text((ft[0] + 7, (c[1] + ft[1]) / 2), h_lab, size=FS, anchor="start", color=bdia.INK)
-    return recolour(f.svg())
+    _lab(f, a, b, base_lab, c, "<i>" in base_lab)
+    if not clear:
+        f.text((ft[0] + 7, (c[1] + ft[1]) / 2), h_lab, size=FS, anchor="start", **_k(h_lab))
+        return recolour(f.svg())
+    room = _Room(margin=4.0)
+    for p, q in ((a, b), (b, c), (c, a), (c, ft)):
+        room.seg(p, q)
+    room.seg((ft[0], ft[1] - 7), (ft[0] + 7, ft[1] - 7))
+    room.seg((ft[0] + 7, ft[1] - 7), (ft[0] + 7, ft[1]))
+    tw, th = 0.6 * FS * len(re.sub(r"<[^>]+>", "", h_lab)), 0.78 * FS
+    for side, fy in ((1, 0.5), (1, 0.42), (1, 0.35), (-1, 0.5), (-1, 0.42), (-1, 0.35), (1, 0.28), (-1, 0.28)):
+        y = ft[1] + fy * (c[1] - ft[1])
+        x0 = ft[0] + 7 if side > 0 else ft[0] - 7 - tw
+        if room.ok((x0, y - th / 2, x0 + tw, y + th / 2)):
+            f.text((ft[0] + 7 * side, y), h_lab, size=FS, anchor="start" if side > 0 else "end", **_k(h_lab))
+            return recolour(f.svg())
+    raise AssertionError("no clear spot for the height label")
 
 
-def trapezium(bottom, top, height, top_x, labs, W=300, H=118):
+def trapezium(bottom, top, height, top_x, labs, W=300, H=118, clear=False):
     """Trapezium with parallel sides horizontal; dashed height from the top-left vertex.
-    labs = (top label, bottom label, height label)."""
+    labs = (top label, bottom label, height label). clear=True (generated weeks) slides each
+    parallel-side arrow along its side until it is clear of the side's label and the dashed height;
+    the default keeps the arrows mid-side (the approved Week 1 figures)."""
     A, B = (0, 0), (bottom, 0)
     C, D = (top_x + top, height), (top_x, height)
     T, _ = fitter([A, B, C, D], W, H, pad=16, padx=20)
@@ -106,8 +131,21 @@ def trapezium(bottom, top, height, top_x, labs, W=300, H=118):
     _lab(f, a, b, labs[1], cen)
     f.text((ft[0] + 7, (d[1] + ft[1]) / 2), labs[2], size=FS, anchor="start", color=bdia.INK)
     # parallel-side arrows
+    room = _Room(margin=3.0, gap=3.0)
+    if clear:
+        room.seg(d, ft)
+        room.seg((ft[0], ft[1] - 7), (ft[0] + 7, ft[1] - 7))
+        room.seg((ft[0] + 7, ft[1] - 7), (ft[0] + 7, ft[1]))
+        for p, q, lab_, sgn in ((d, c, labs[0], -1), (a, b, labs[1], 1)):    # as side_label places them
+            room.take(_tbox(((p[0] + q[0]) / 2, p[1] + 9 * sgn), lab_))
     for p, q in ((d, c), (a, b)):
-        mx = p[0] + 0.5 * (q[0] - p[0])
+        for t in ((0.5,) if not clear else (0.5, 0.64, 0.36, 0.74, 0.26, 0.82, 0.18, 0.88, 0.12, 0.92, 0.08)):
+            mx = p[0] + t * (q[0] - p[0])
+            ok = mx - 3 > p[0] + 5 and mx + 2.5 < q[0] - 5 and room.ok((mx - 4, p[1] - 4.2, mx + 3.5, p[1] + 4.2))
+            if not clear or ok:
+                break
+        else:
+            raise AssertionError("no clear spot for a parallel-side arrow")
         f.poly([(mx - 3, p[1] - 3.2), (mx + 2.5, p[1]), (mx - 3, p[1] + 3.2)], close=False,
                stroke=bdia.OUT, sw=1.2)
     return recolour(f.svg())
@@ -122,7 +160,7 @@ def circle_r(label, R=46, W=150, H=112):
     f.dot(c, r=2.4, fill=bdia.INK)
     tw = 0.6 * FS * len(re.sub(r"<[^>]+>", "", label))
     x = min(c[0] + R / 2, c[0] + R - 5 - tw / 2)      # long labels slide inward, clear of the rim
-    f.text((x, c[1] - 9), label, size=FS, color=bdia.INK)
+    f.text((x, c[1] - 9), label, size=FS, **_k(label))
     return recolour(f.svg())
 
 
@@ -141,10 +179,10 @@ def box(l, w, h, labs, W=300, H=124, k=0.55, ang=35):
     for a, b in (("A", "E"), ("E", "F"), ("E", "H")):
         f.line(Q[a], Q[b], bdia.OUT, 1.0, dash="4 3")
     L, Wd, Hd = labs
-    f.text(((Q["A"][0] + Q["B"][0]) / 2, Q["A"][1] + 13), L, size=FS)
+    f.text(((Q["A"][0] + Q["B"][0]) / 2, Q["A"][1] + 13), L, size=FS, **_k(L))
     mx, my = (Q["B"][0] + Q["F"][0]) / 2, (Q["B"][1] + Q["F"][1]) / 2
-    f.text((mx + 7, my + 6), Wd, size=FS, anchor="start")
-    f.text((Q["A"][0] - 7, (Q["A"][1] + Q["D"][1]) / 2), Hd, size=FS, anchor="end")
+    f.text((mx + 7, my + 6), Wd, size=FS, anchor="start", **_k(Wd))
+    f.text((Q["A"][0] - 7, (Q["A"][1] + Q["D"][1]) / 2), Hd, size=FS, anchor="end", **_k(Hd))
     return recolour(f.svg())
 
 
@@ -185,7 +223,7 @@ def prism_area(face, depth, area_lab, len_lab, W=300, H=108, k=0.8, ang=20, lab_
     i = max(vis, key=lambda t: (Fq[t][1], Fq[t][0]))
     a, b = Fq[i], Bq[i]
     mx, my = (a[0] + b[0]) / 2, (a[1] + b[1]) / 2
-    f.text((mx + 6, my + 11), len_lab, size=FS, anchor="start")
+    f.text((mx + 6, my + 11), len_lab, size=FS, anchor="start", **_k(len_lab))
     return recolour(f.svg())
 
 
@@ -210,8 +248,8 @@ def cylinder(r, h, r_lab, h_lab, W=230, H=112, ry_k=0.3, dia=False):
     else:
         f.line((cx, top), (cx + rx, top), bdia.OUT, 1.5)
     f.dot((cx, top), r=2.3, fill=bdia.INK)
-    f.text((cx + rx + 7, top - 1), r_lab, size=FS, anchor="start")
-    f.text((cx + rx + 7, (top + bot) / 2 + ry / 2), h_lab, size=FS, anchor="start")
+    f.text((cx + rx + 7, top - 1), r_lab, size=FS, anchor="start", **_k(r_lab))
+    f.text((cx + rx + 7, (top + bot) / 2 + ry / 2), h_lab, size=FS, anchor="start", **_k(h_lab))
     return recolour(f.svg())
 
 
@@ -266,8 +304,10 @@ def _angle(f, V, P1, P2, lab, r=19, size=FS):
 
 
 # ------------------------------------------------------------ number plane --
-def plane_line(p1, p2, names=("A", "B"), xr=(0, 4), yr=(0, 5), u=17, W=None, H=None):
-    """Small first-quadrant number plane with a line through two labelled points."""
+def plane_line(p1, p2, names=("A", "B"), xr=(0, 4), yr=(0, 5), u=17, W=None, H=None, clear=False):
+    """Small first-quadrant number plane with a line through two labelled points.
+    clear=True (generated weeks): an axis number beside a point that sits on that axis moves out a
+    little, clear of the point's dot."""
     x0, x1 = xr
     y0, y1 = yr
     padl, padb, padt, padr = 18, 16, 12, 14
@@ -284,10 +324,12 @@ def plane_line(p1, p2, names=("A", "B"), xr=(0, 4), yr=(0, 5), u=17, W=None, H=N
     f.arrow((X(x0), Y(y0)), (X(x0), Y(y1) - 9), stroke=INK, sw=1.1, head=5)
     f.text((X(x1) + 12, Y(y0) + 1), "<i>x</i>", size=11, anchor="start", color=INK)
     f.text((X(x0) - 1, Y(y1) - 15), "<i>y</i>", size=11, color=INK)
+    on_x = {px for px, py in (p1, p2) if py == y0} if clear else set()
+    on_y = {py for px, py in (p1, p2) if px == x0} if clear else set()
     for gx in range(x0 + 1, x1 + 1):
-        f.text((X(gx), Y(y0) + 9), str(gx), size=9.5, color=MUTED)
+        f.text((X(gx), Y(y0) + (12 if gx in on_x else 9)), str(gx), size=9.5, color=MUTED)
     for gy in range(y0 + 1, y1 + 1):
-        f.text((X(x0) - 7, Y(gy)), str(gy), size=9.5, color=MUTED)
+        f.text((X(x0) - (10.5 if gy in on_y else 7), Y(gy)), str(gy), size=9.5, color=MUTED)
     f.text((X(x0) - 6, Y(y0) + 8), "0", size=9.5, color=MUTED)
     # the line, clipped to the grid
     (ax, ay), (bx, by) = p1, p2
@@ -343,8 +385,8 @@ def journey(dist_lab, time_lab, W=270, H=74):
     for x, nm in ((xa, "A"), (xb, "B")):
         f.circle((x, y), 4.2, fill=FILL, stroke=OUT, sw=1.6)
         f.text((x, y + 15), nm, size=FS, color=MUTED)
-    f.text(((xa + xb) / 2, y - 12), dist_lab, size=FS + 1, color=INK)
-    f.text(((xa + xb) / 2, y + 15), time_lab, size=FS + 1, color=INK)
+    f.text(((xa + xb) / 2, y - 12), dist_lab, size=FS + 1, **_k(dist_lab))
+    f.text(((xa + xb) / 2, y + 15), time_lab, size=FS + 1, **_k(time_lab))
     return recolour(f.svg())
 
 
@@ -441,8 +483,8 @@ def parallelogram(base, height, off, labs, W=300, H=118):
     f.poly([a, b, c, d], sw=1.5)
     f.line(d, ft, bdia.OUT, 1.2, dash="4 3")
     f.right_angle(ft, b, d, s=7)
-    _lab(f, a, b, labs[0], centroid([a, b, c, d]))
-    f.text((ft[0] + 7, (d[1] + ft[1]) / 2), labs[1], size=FS, anchor="start")
+    _lab(f, a, b, labs[0], centroid([a, b, c, d]), "<i>" in labs[0])
+    f.text((ft[0] + 7, (d[1] + ft[1]) / 2), labs[1], size=FS, anchor="start", **_k(labs[1]))
     return recolour(f.svg())
 
 
@@ -453,7 +495,7 @@ def circle_d(label, R=46, W=150, H=112):
     f.circle(c, R, sw=1.5)
     f.line((c[0] - R, c[1]), (c[0] + R, c[1]), bdia.OUT, 1.5)
     f.dot(c, r=2.4, fill=bdia.INK)
-    f.text((c[0], c[1] - 10), label, size=FS)
+    f.text((c[0], c[1] - 10), label, size=FS, **_k(label))
     return recolour(f.svg())
 
 
@@ -647,6 +689,350 @@ def rect(l, w, labs, W=300, H=112):
     f = Fig(W, H)
     f.rect(a[0], b[1], b[0] - a[0], a[1] - b[1], sw=1.5)
     f.right_angle(a, (b[0], a[1]), (a[0], b[1]), s=7)
-    f.text(((a[0] + b[0]) / 2, a[1] + 13), labs[0], size=FS)
-    f.text((b[0] + 7, (a[1] + b[1]) / 2), labs[1], size=FS, anchor="start")
+    f.text(((a[0] + b[0]) / 2, a[1] + 13), labs[0], size=FS, **_k(labs[0]))
+    f.text((b[0] + 7, (a[1] + b[1]) / 2), labs[1], size=FS, anchor="start", **_k(labs[1]))
     return recolour(f.svg())
+
+
+# ======================================================== angle relationships ==
+# Every label in these figures is placed by _Room: the figure registers each line, arc and
+# arrowhead it draws, and a label only goes where its whole box keeps a clear margin from all
+# of them and from every other label (AssertionError if no such spot exists).
+def _pt_box(p, b):
+    dx = max(b[0] - p[0], 0.0, p[0] - b[2])
+    dy = max(b[1] - p[1], 0.0, p[1] - b[3])
+    return math.hypot(dx, dy)
+
+
+def _pt_seg(p, a, b):
+    ax, ay = b[0] - a[0], b[1] - a[1]
+    L2 = ax * ax + ay * ay
+    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((p[0] - a[0]) * ax + (p[1] - a[1]) * ay) / L2))
+    return math.hypot(p[0] - a[0] - t * ax, p[1] - a[1] - t * ay)
+
+
+def _cross(a, b, c, d):
+    def o(p, q, r):
+        return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+    return o(a, b, c) * o(a, b, d) < 0 and o(c, d, a) * o(c, d, b) < 0
+
+
+def _seg_box(a, b, box):
+    """Distance between segment ab and box (x0, y0, x1, y1); 0 if they meet."""
+    if _pt_box(a, box) == 0 or _pt_box(b, box) == 0:
+        return 0.0
+    x0, y0, x1, y1 = box
+    cs = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    if any(_cross(a, b, cs[i], cs[(i + 1) % 4]) for i in range(4)):
+        return 0.0
+    return min([_pt_box(a, box), _pt_box(b, box)] + [_pt_seg(c, a, b) for c in cs])
+
+
+def _tbox(c, lab, size=FS):
+    """Conservative box of a centred label (Open Sans: digits ~0.57 em, so 0.6 em per character)."""
+    tw, th = 0.6 * size * len(re.sub(r"<[^>]+>", "", lab)), 0.78 * size
+    return (c[0] - tw / 2, c[1] - th / 2, c[0] + tw / 2, c[1] + th / 2)
+
+
+class _Room:
+    def __init__(self, margin=4.5, gap=4.0):
+        self.segs, self.boxes, self.m, self.gap = [], [], margin, gap
+
+    def seg(self, p, q):
+        self.segs.append((p, q))
+
+    def arc(self, c, r, t0, t1, n=40):
+        """Arc of radius r about c from screen angle t0 to t1 (radians, either direction)."""
+        pts = [(c[0] + r * math.cos(t0 + (t1 - t0) * k / n), c[1] + r * math.sin(t0 + (t1 - t0) * k / n))
+               for k in range(n + 1)]
+        for p, q in zip(pts, pts[1:]):
+            self.seg(p, q)
+
+    def ok(self, box):
+        if any(_seg_box(a, b, box) < self.m for a, b in self.segs):
+            return False
+        g = self.gap
+        return all(box[2] + g < o[0] or o[2] + g < box[0] or box[3] + g < o[1] or o[3] + g < box[1]
+                   for o in self.boxes)
+
+    def take(self, box):
+        self.boxes.append(box)
+
+
+def _screen_angle(p, q):
+    return math.atan2(q[1] - p[1], q[0] - p[0])
+
+
+def _wedge_mark(f, room, V, t1, t2, lab, r=17, right=False, Lmax=110, others=()):
+    """Mark the angle at V swept anticlockwise ON THE PAGE from direction t1 to t2 (math angles in
+    degrees, y up), which may be reflex. Draws the arc (or a right-angle square), then puts the
+    label on the bisector, as close to V as the room allows. Returns the label centre.
+    others: other vertices in the figure; the label must sit clearly nearer V than any of them,
+    so it cannot be read as belonging to another crossing."""
+    unknown = "<i>" in lab
+    col = bdia.BLUE if unknown else bdia.OUT
+    sweep = (t2 - t1) % 360
+    a1, a2 = math.radians(t1), math.radians(t1 + sweep)
+    P1 = (V[0] + r * math.cos(a1), V[1] - r * math.sin(a1))
+    P2 = (V[0] + r * math.cos(a2), V[1] - r * math.sin(a2))
+    if right:
+        s = 8
+        u1 = (math.cos(a1), -math.sin(a1))
+        u2 = (math.cos(a2), -math.sin(a2))
+        A = (V[0] + s * u1[0], V[1] + s * u1[1])
+        B = (A[0] + s * u2[0], A[1] + s * u2[1])
+        C = (V[0] + s * u2[0], V[1] + s * u2[1])
+        f.poly([A, B, C], close=False, stroke=bdia.OUT, sw=1.0)
+        room.seg(A, B)
+        room.seg(B, C)
+        rr = s * 1.5
+    else:
+        big = 1 if sweep > 180 else 0
+        # screen y is down, so an anticlockwise sweep on the page is sweep-flag 0
+        f.path(f"M{_f(P1[0])},{_f(P1[1])} A{r},{r} 0 {big} 0 {_f(P2[0])},{_f(P2[1])}", stroke=col, sw=1.1)
+        for k in range(25):
+            t = a1 + (a2 - a1) * k / 24
+            f._ext(V[0] + r * math.cos(t), V[1] - r * math.sin(t))
+        room.arc(V, r, -a1, -a2)
+        rr = r
+    if not lab:
+        return None
+    mid = math.radians(t1 + sweep / 2)
+    half = math.radians(sweep / 2)
+    # try the bisector first, then directions fanning out towards the arms
+    for frac_ in (0, 0.2, -0.2, 0.4, -0.4, 0.55, -0.55):
+        th = mid + frac_ * half
+        d = (math.cos(th), -math.sin(th))
+        L = rr + 5
+        while L < Lmax:
+            c = (V[0] + L * d[0], V[1] + L * d[1])
+            box = _tbox(c, lab)
+            near = all(math.hypot(c[0] - o[0], c[1] - o[1]) > math.hypot(c[0] - V[0], c[1] - V[1]) + 12
+                       for o in others)
+            if near and room.ok(box):
+                room.take(box)
+                f.text(c, lab, size=FS, color=bdia.BLUE if unknown else bdia.INK, weight=700 if unknown else None)
+                return c
+            L += 0.5
+    raise AssertionError(f"no clear spot for angle label {lab!r}")
+
+
+def _check_deg(lab, value):
+    m = re.fullmatch(r"(\d+(?:\.\d+)?)°", re.sub(r"<[^>]+>", "", lab))
+    if m:
+        assert abs(float(m.group(1)) - value) < 0.01, (lab, value)
+
+
+def _dir(t):
+    """Unit vector on the page for math angle t (degrees, anticlockwise, y up)."""
+    return math.cos(math.radians(t)), -math.sin(math.radians(t))
+
+
+def angles_line(parts, labs, W=300, H=124, below=False):
+    """Angles on a straight line: a horizontal line through O with rays drawn at the exact
+    cumulative angles. parts (degrees, summing to 180) are measured from the right-hand arm,
+    anticlockwise (clockwise if below). labs = one label per part."""
+    assert abs(sum(parts) - 180) < 1e-9 and len(parts) == len(labs)
+    half = W / 2 - 8
+    rho = min(H - 26, 0.78 * half)
+    O = (W / 2, H - 13) if not below else (W / 2, 13)
+    sg = -1 if below else 1
+    f = Fig(W, H)
+    room = _Room()
+    E1, E2 = (O[0] + half, O[1]), (O[0] - half, O[1])
+    f.line(E2, E1, bdia.OUT, 1.5)
+    room.seg(E2, E1)
+    cum = [0.0]
+    for a in parts:
+        cum.append(cum[-1] + a)
+    for t in cum[1:-1]:
+        u = _dir(sg * t)
+        P = (O[0] + rho * u[0], O[1] + rho * u[1])
+        f.line(O, P, bdia.OUT, 1.5)
+        room.seg(O, P)
+    f.dot(O, r=2.4, fill=bdia.INK)
+    for i, (a, lab) in enumerate(zip(parts, labs)):
+        _check_deg(lab, a)
+        t1, t2 = (cum[i], cum[i + 1]) if not below else (-cum[i + 1], -cum[i])
+        _wedge_mark(f, room, O, t1, t2, lab, r=17 if a >= 35 else 24)
+    return recolour(f.svg())
+
+
+def angles_point(parts, labs, W=300, H=124, rot=90):
+    """Angles at a point: rays from O at the exact cumulative angles (starting at math angle rot),
+    reaching out to an ellipse that fits the cell. parts sum to 360, each under 180."""
+    assert abs(sum(parts) - 360) < 1e-9 and all(a < 180 for a in parts)
+    b = H / 2 - 4
+    a_ = min(W / 2 - 8, 1.9 * b)
+    O = (W / 2, H / 2)
+    f = Fig(W, H)
+    room = _Room()
+    cum = [rot]
+    for a in parts[:-1]:
+        cum.append(cum[-1] + a)
+    for t in cum:
+        u = _dir(t)
+        rho = 1 / math.sqrt((u[0] / a_) ** 2 + (u[1] / b) ** 2)
+        P = (O[0] + rho * u[0], O[1] + rho * u[1])
+        f.line(O, P, bdia.OUT, 1.5)
+        room.seg(O, P)
+    f.dot(O, r=2.4, fill=bdia.INK)
+    for i, (a, lab) in enumerate(zip(parts, labs)):
+        _check_deg(lab, a)
+        _wedge_mark(f, room, O, cum[i], cum[i] + a, lab, r=15 if a >= 40 else 22)
+    return recolour(f.svg())
+
+
+def vert_opp(theta, labs, W=300, H=124, tilt=0):
+    """Two straight lines crossing at O. The angle theta between them is marked on the right and
+    its vertically opposite angle on the left. labs = (right label, left label)."""
+    b = H / 2 - 4
+    a_ = min(W / 2 - 8, 2.2 * b)
+    O = (W / 2, H / 2)
+    d1, d2 = tilt - theta / 2, tilt + theta / 2
+    f = Fig(W, H)
+    room = _Room()
+    for t in (d1, d2):
+        u = _dir(t)
+        rho = 1 / math.sqrt((u[0] / a_) ** 2 + (u[1] / b) ** 2)
+        P, Q_ = (O[0] + rho * u[0], O[1] + rho * u[1]), (O[0] - rho * u[0], O[1] - rho * u[1])
+        f.line(Q_, P, bdia.OUT, 1.5)
+        room.seg(Q_, P)
+    f.dot(O, r=2.4, fill=bdia.INK)
+    for lab in labs:
+        _check_deg(lab, theta)
+    r = 16 if theta >= 40 else 24
+    _wedge_mark(f, room, O, d1, d2, labs[0], r=r)
+    _wedge_mark(f, room, O, d1 + 180, d2 + 180, labs[1], r=r)
+    return recolour(f.svg())
+
+
+# quadrant of an angle at a crossing: arms (horizontal direction, transversal direction)
+_QUAD = {"UR": (0, "up"), "UL": (180, "up"), "LL": (180, "down"), "LR": (0, "down")}
+
+
+def par_angle(theta, quad):
+    """Size of the angle in quadrant quad where a transversal at theta degrees meets a horizontal line."""
+    return theta if quad in ("UR", "LL") else 180 - theta
+
+
+def parallel(theta, marks, W=300, H=126):
+    """Two horizontal parallel lines (arrowheads) cut by a transversal at theta degrees to the
+    right-hand direction. marks = [(vertex 'T' or 'B', quadrant 'UR'/'UL'/'LL'/'LR', label), ...];
+    every numeric label is checked against the drawn angle."""
+    g = 60.0                                  # gap between the parallel lines
+    s_ = math.sin(math.radians(theta))
+    ext = (H - 4 - g) / 2 / s_                # transversal runs this far past each line
+    dx = g / math.tan(math.radians(theta))    # horizontal offset from B up to T
+    yT, yB = (H - g) / 2, (H + g) / 2
+    xB = W / 2 - dx / 2
+    T, B = (xB + dx, yT), (xB, yB)
+    u = _dir(theta)
+    top = (T[0] + ext * u[0], T[1] + ext * u[1])
+    bot = (B[0] - ext * u[0], B[1] - ext * u[1])
+    f = Fig(W, H)
+    room = _Room()
+    for y in (yT, yB):
+        f.line((6, y), (W - 6, y), bdia.OUT, 1.5)
+        room.seg((6, y), (W - 6, y))
+    f.line(bot, top, bdia.OUT, 1.5)
+    room.seg(bot, top)
+    V = {"T": T, "B": B}
+    for vx, quad, lab in marks:
+        _check_deg(lab, par_angle(theta, quad))
+        hz, tr = _QUAD[quad]
+        td = theta if tr == "up" else theta + 180
+        # the wedge between the horizontal arm and the transversal arm, swept anticlockwise
+        a, b_ = (hz, td) if (td - hz) % 360 < 180 else (td, hz)
+        _wedge_mark(f, room, V[vx], a, b_, lab, r=16 if par_angle(theta, quad) >= 40 else 23,
+                    others=[V[o] for o in "TB" if o != vx])
+    # arrowheads: both lines, same direction, on the side away from the transversal, clear of labels
+    mid = (T[0] + B[0]) / 2
+    xs = [W * k / 40 for k in range(3, 38)]
+    xs.sort(key=lambda x: -abs(x - mid))
+    for x in xs:
+        heads = []
+        for y in (yT, yB):
+            tip = (x + 2.6, y)
+            heads.append([(x - 2.6, y - 3.4), tip, (x - 2.6, y + 3.4)])
+        hb = [(min(p[0] for p in h) - 1, min(p[1] for p in h) - 1, max(p[0] for p in h) + 1, max(p[1] for p in h) + 1)
+              for h in heads]
+        # (each arrowhead sits on its own line, so it is checked against the labels and transversal only)
+        lab_room = _Room(margin=6, gap=4)
+        lab_room.boxes = room.boxes
+        lab_room.seg(bot, top)
+        if all(lab_room.ok(b) for b in hb) and all(abs(x - V[v][0]) > 28 for v in "TB"):
+            for h in heads:
+                f.poly(h, close=False, stroke=bdia.OUT, sw=1.3)
+            break
+    else:
+        raise AssertionError("no clear spot for the parallel arrowheads")
+    return recolour(f.svg())
+
+
+def sector(theta, r_lab, W=300, H=118, Rmax=118):
+    """Sector of angle theta degrees, to scale, with the angle marked at the centre (a square for
+    90 degrees) and the radius labelled beside one straight edge, outside the sector."""
+    best = None
+    for p0 in (0, 90, 180, 270, 90 - theta / 2, 270 - theta / 2, -theta / 2):
+        ts = [p0 + theta * k / 60 for k in range(61)]
+        pts = [(0.0, 0.0)] + [(math.cos(math.radians(t)), math.sin(math.radians(t))) for t in ts]
+        w = max(p[0] for p in pts) - min(p[0] for p in pts)
+        h = max(p[1] for p in pts) - min(p[1] for p in pts)
+        R = min((W - 70) / w, (H - 14) / h, Rmax)
+        score = R + (6 if p0 == 0 else 0)
+        if best is None or score > best[0] + 1e-9:
+            best = (score, R, p0, pts)
+    _, R, p0, pts = best
+    x0 = min(p[0] for p in pts)
+    y1 = max(p[1] for p in pts)
+    w = max(p[0] for p in pts) - x0
+    h = y1 - min(p[1] for p in pts)
+    O = (W / 2 - (x0 + w / 2) * R, H / 2 + (y1 - h / 2) * R)
+    E1 = (O[0] + R * math.cos(math.radians(p0)), O[1] - R * math.sin(math.radians(p0)))
+    E2 = (O[0] + R * math.cos(math.radians(p0 + theta)), O[1] - R * math.sin(math.radians(p0 + theta)))
+    big = 1 if theta > 180 else 0
+    f = Fig(W, H)
+    room = _Room()
+    f.path(f"M{_f(O[0])},{_f(O[1])} L{_f(E1[0])},{_f(E1[1])} A{_f(R)},{_f(R)} 0 {big} 0 "
+           f"{_f(E2[0])},{_f(E2[1])} Z", fill=FILL, sw=1.5)
+    for k in range(61):
+        t = math.radians(p0 + theta * k / 60)
+        f._ext(O[0] + R * math.cos(t), O[1] - R * math.sin(t), 1)
+    f._ext(*O)
+    room.seg(O, E1)
+    room.seg(O, E2)
+    room.arc(O, R, -math.radians(p0), -math.radians(p0 + theta), n=80)
+    f.dot(O, r=2.4, fill=bdia.INK)
+    # radius label first: beside the edge whose outward side has room, mid-way along it
+    placed = False
+    for E, side in ((E1, -1), (E2, 1)):
+        ux, uy = unit(O, E)
+        nx, ny = side * uy, -side * ux               # outward normal (away from the sector)
+        for t in (0.5, 0.6, 0.4, 0.7):
+            for off in (9, 11, 13, 15):
+                mx, my = O[0] + t * (E[0] - O[0]), O[1] + t * (E[1] - O[1])
+                tw = 0.6 * FS * len(re.sub(r"<[^>]+>", "", r_lab))
+                k = off + 0.5 * tw * abs(nx) + 0.39 * FS * abs(ny)
+                c = (mx + k * nx, my + k * ny)
+                box = _tbox(c, r_lab)
+                if room.ok(box):
+                    room.take(box)
+                    f.text(c, r_lab, size=FS, **_k(r_lab))
+                    placed = True
+                    break
+            if placed:
+                break
+        if placed:
+            break
+    assert placed, "no clear spot for the radius label"
+    if abs(theta - 90) < 1e-9:
+        _wedge_mark(f, room, O, p0, p0 + theta, "", right=True)
+    else:
+        _wedge_mark(f, room, O, p0, p0 + theta, f"{nfmt(theta)}°", r=17 if theta >= 40 else 26,
+                    Lmax=R - 4)
+    return recolour(f.svg())
+
+
+def nfmt(v):
+    return str(int(v)) if abs(v - round(v)) < 1e-9 else f"{v:g}"
