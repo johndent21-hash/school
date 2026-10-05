@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><title>Decimals answers</title>
+<style>/* Year 7 booklet series. Theme colours are taken from Marni Tuala's artwork. */
+:root {
+  --charcoal: #3d3b3c;
+  --blue: #3f63be;
+  --blue-soft: #e6ecf8;
+  --sand: #c2bea8;
+  --sand-soft: #f3f1ea;
+  --we-soft: #f1f1f1;
+  --line: #d8d4c4;
+  --ink: #26292e;
+  --muted: #6b6a64;
+  --tear-h: 64mm; /* height of the tear-off zone; identical on the exit ticket page and its back */
+}
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../assets/lexend-latin-400-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../assets/lexend-latin-600-normal.woff2); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../assets/lexend-latin-700-normal.woff2); }
+
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.5pt; line-height: 1.3; }
+b { font-weight: 600; }
+h1, h2, h3 { margin: 0; color: var(--charcoal); }
+h3 { font-size: 10.5pt; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 4.5mm; }
+li { margin-bottom: 0.6mm; }
+
+/* ---------- page shell ---------- */
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
+.art-strip { position: absolute; top: 0; left: 0; right: 0; height: 8mm; background: url(../../assets/marni-tuala-artwork.jpg) center 44% / 100% auto no-repeat var(--charcoal); }
+.page-head {
+  position: absolute; top: 10mm; left: 12mm; right: 12mm;
+  display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted);
+  border-bottom: 0.35mm solid var(--sand); padding-bottom: 1mm;
+}
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.content { position: absolute; top: 17mm; bottom: 11mm; left: 12mm; right: 12mm; display: flex; flex-direction: column; gap: 2.4mm; }
+.page-foot { position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6mm; display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f; }
+.page-foot .pn {
+  width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; flex: none;
+  display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 7.5pt;
+  box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--sand); margin: 0 4mm;
+}
+.grow { flex: 1 1 0; min-height: 0; }
+
+/* ---------- lesson opening ---------- */
+.lesson-title { display: flex; align-items: center; gap: 4mm; flex: none; }
+.lesson-badge {
+  flex: none; width: 17mm; height: 17mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 0.8mm #fff, 0 0 0 1.6mm var(--sand);
+}
+.lesson-badge span { font-size: 6pt; text-transform: uppercase; letter-spacing: 0.08em; }
+.lesson-badge b { font-size: 11pt; font-weight: 700; margin-top: 0.6mm; }
+.lesson-title h1 { font-size: 19pt; line-height: 1.1; flex: 1; }
+.date-line { display: flex; align-items: flex-end; gap: 2mm; width: 45mm; font-weight: 600; font-size: 9pt; }
+.date-line i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.li-sc { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; }
+.card { background: var(--sand-soft); border-radius: 2.5mm; padding: 2.5mm 4mm; border-top: 1.2mm solid var(--sand); }
+.card-sub { font-size: 8.5pt; color: var(--muted); margin-bottom: 0.8mm; }
+.ticks { list-style: none; padding-left: 0; }
+.ticks li { position: relative; padding-left: 5mm; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 0.8mm; width: 2.6mm; height: 2.6mm; border: 0.35mm solid var(--charcoal); border-radius: 0.6mm; }
+.terms-head { display: flex; gap: 3mm; align-items: baseline; flex: none; margin-bottom: -1mm; }
+.terms-head span { font-size: 8.5pt; color: var(--muted); }
+.terms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.terms.n2 { grid-template-columns: repeat(2, 1fr); }
+.terms.n1 { grid-template-columns: 1fr; }
+.term { display: flex; flex-direction: column; }
+.term-name { align-self: flex-start; background: var(--sand); color: var(--charcoal); font-weight: 700; padding: 0.6mm 3mm; border-radius: 1.5mm; }
+.term i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.notes { border: 0.4mm solid var(--sand); border-radius: 2.5mm; position: relative; min-height: 22mm; }
+.notes-label { position: absolute; top: 1.5mm; left: 3mm; font-weight: 600; font-size: 8.5pt; color: var(--muted); }
+
+/* ---------- banners and level dots (neutral colours: charcoal means WE DO, blue means YOU DO) ---------- */
+.banner { display: flex; align-items: center; gap: 3mm; padding: 1.6mm 4mm; border-radius: 2mm; background: var(--sand); color: var(--charcoal); flex: none; }
+.banner.summary { background: var(--sand-soft); border: 0.35mm solid var(--sand); }
+.banner-title { font-size: 11.5pt; font-weight: 700; }
+.banner-note { margin-left: auto; font-size: 8.5pt; color: var(--charcoal); }
+.lvl-dots { display: inline-flex; gap: 1mm; vertical-align: middle; }
+.lvl-dots i { width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.9mm var(--sand); }
+.banner .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--sand), 0 0 0 0.9mm #fff; }
+
+/* ---------- WE DO (charcoal) and YOU DO (blue) zones ---------- */
+.zone { border: 0.8mm solid; border-radius: 3mm; padding: 1.8mm 2.5mm 2.5mm; display: flex; flex-direction: column; gap: 1.8mm; flex: none; min-height: 0; }
+.zone.grow { flex: 1 1 0; }
+.zone.fill { height: 100%; }
+.zone.fill > .col { flex: 1; }
+.zone.we { border-color: var(--charcoal); background: var(--we-soft); }
+.zone.you { border-color: var(--blue); background: var(--blue-soft); }
+.zone-head { display: flex; align-items: center; gap: 2.5mm; flex: none; }
+.zone-pill { flex: none; font-weight: 700; font-size: 9pt; letter-spacing: 0.08em; color: #fff; padding: 0.8mm 3mm; border-radius: 1.5mm; }
+.zone.we .zone-pill, .legend-item.we .zone-pill { background: var(--charcoal); }
+.zone.you .zone-pill, .legend-item.you .zone-pill, .you-pill { background: var(--blue); }
+.zone-text { font-size: 8.5pt; font-weight: 600; }
+.zone.we .zone-text { color: var(--charcoal); }
+.zone.you .zone-text { color: var(--blue); }
+.zone.we .box, .zone.we .grid-paper, .zone.we .sl.template table { border-color: var(--charcoal); }
+.zone.you .box, .zone.you .grid-paper, .zone.you .sl.template table { border-color: var(--blue); }
+.zone.we .q-num.ex { background: var(--charcoal); border-color: var(--charcoal); color: #fff; }
+.zone.you .q-num { background: #fff; border-color: var(--blue); color: var(--blue); }
+.zone .graph-card { background: #fff; }
+
+/* ---------- layout helpers ---------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; flex: none; min-height: 0; }
+.split.grow { flex: 1 1 0; }
+.split.wide-left { grid-template-columns: 1.4fr 1fr; }
+.split.wide-right { grid-template-columns: 1fr 1.4fr; }
+.split3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; flex: none; }
+.col { display: flex; flex-direction: column; gap: 2mm; min-height: 0; }
+.graph-card { border: 0.35mm solid var(--line); border-radius: 2mm; padding: 1.5mm; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; }
+.graph { width: 100%; height: auto; display: block; font-family: Lexend, sans-serif; }
+.graph-card.narrow .graph { width: 80%; }
+.sym { width: 3.4mm; height: 3.4mm; vertical-align: -0.6mm; }
+.given { background: #fff; border: 0.3mm solid var(--line); border-radius: 1.5mm; padding: 1.5mm 3mm; font-size: 9.5pt; flex: none; }
+.given b { color: var(--charcoal); }
+
+/* ---------- questions and boxes (plain boxes, no ruled lines) ---------- */
+.box { border: 0.45mm solid var(--sand); border-radius: 1.8mm; background: #fff; }
+.q { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.q .box { flex: 1 1 0; min-height: 6mm; }
+.q-head { display: flex; gap: 2mm; align-items: baseline; }
+.q-num {
+  flex: none; min-width: 5.5mm; height: 5.5mm; padding: 0 1.2mm; border-radius: 3mm;
+  background: var(--sand-soft); border: 0.3mm solid var(--sand); color: var(--charcoal);
+  display: inline-flex; align-items: center; justify-content: center; gap: 1.2mm; font-weight: 700; font-size: 8pt;
+}
+.q-num.ex { padding: 0 2.5mm; }
+.q-text { font-size: 9.5pt; }
+.col > .example, .col > .q { flex: 1 1 0; }
+.ex-row .example .box { height: 14mm; flex: none; }
+.ex-row.tall .example .box { height: 22mm; }
+.draw-area { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.draw-area > .graph, .draw-area > .graph-card { flex: none; }
+.draw-area .template { background: #fff; border-radius: 1.8mm; }
+
+.qs { display: grid; grid-template-columns: 6mm 1fr 20mm; gap: 2mm; align-items: center; font-size: 9pt; }
+.qs .box { height: 7mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 34mm; }
+.short-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, auto); gap: 1.6mm 6mm; flex: none; }
+.short-grid.fill { flex: 1 1 0; grid-template-rows: repeat(5, 1fr); align-items: center; }
+.short-list { display: grid; grid-template-rows: repeat(10, 1fr); gap: 0.6mm; }
+.short-list .qs .box { height: 100%; min-height: 5.6mm; }
+.short-grid .qs .q-text, .short-list .qs .q-text { font-size: 9pt; }
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: column; grid-template-rows: repeat(5, 1fr); gap: 2mm 5mm; flex: 1 1 0; min-height: 0; }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.work-grid.r4 { grid-template-rows: repeat(4, 1fr); }
+.work-grid.r2 { grid-template-rows: repeat(2, 1fr); }
+.work-grid .q-text { font-size: 9pt; }
+.stack { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 0; min-height: 0; }
+.stack > .q { flex: 1 1 0; }
+
+/* ---------- drawing templates ---------- */
+.grid-paper {
+  flex: 1 1 0; min-height: 30mm; position: relative; border: 0.45mm solid var(--sand); border-radius: 1.8mm;
+  background-color: #fff;
+  background-image: linear-gradient(to right, #dcd9cc 0.2mm, transparent 0.2mm), linear-gradient(to bottom, #dcd9cc 0.2mm, transparent 0.2mm);
+  background-size: 5mm 5mm; background-position: -0.1mm -0.1mm;
+}
+.grid-label { position: absolute; top: 1mm; right: 2mm; font-size: 7.5pt; color: var(--muted); background: #fff; padding: 0 1mm; }
+.sl { display: flex; flex-direction: column; gap: 0.8mm; }
+.sl-title { font-weight: 600; font-size: 9pt; text-align: center; }
+.sl table { border-collapse: collapse; font-size: 10pt; }
+.sl th { font-size: 8pt; color: var(--muted); font-weight: 600; padding: 0.6mm 2.5mm; text-align: left; border-bottom: 0.3mm solid var(--line); }
+.sl td { padding: 0.8mm 2.5mm; letter-spacing: 0.05em; }
+.sl td.stem { text-align: right; border-right: 0.5mm solid var(--charcoal); font-weight: 600; width: 10mm; }
+.sl th:first-child { text-align: right; border-right: 0.5mm solid var(--charcoal); }
+.sl-key { font-size: 8pt; color: var(--muted); }
+.sl.b2b td.leaf.l, .sl.b2b th.l { text-align: right; }
+.sl.b2b td.stem, .sl.b2b th:nth-child(2) { border-left: 0.5mm solid var(--charcoal); text-align: center; }
+.sl.b2b th:first-child { border-right: none; }
+.sl.template { flex: 1 1 0; min-height: 0; }
+.sl.template table { flex: 1 1 0; width: 100%; border: 0.45mm solid var(--sand); border-radius: 1.8mm; border-collapse: separate; border-spacing: 0; background: #fff; }
+.sl.template td { border-bottom: 0.25mm dotted var(--line); }
+.sl.template td.stem { width: 16mm; }
+.sl.b2b.template td.stem { width: 16mm; }
+.data-table { border-collapse: collapse; font-size: 9pt; background: #fff; }
+.data-table th, .data-table td { border: 0.3mm solid var(--line); padding: 1mm 2.5mm; text-align: center; }
+.data-table th { background: var(--sand-soft); font-weight: 600; }
+.data-table.blank td { height: 7mm; min-width: 11mm; }
+
+/* ---------- worked examples ---------- */
+.worked { border: 0.45mm solid var(--sand); border-radius: 2.5mm; padding: 2.5mm 3mm; display: flex; flex-direction: column; gap: 1.5mm; background: #fff; }
+.worked-head { display: flex; align-items: center; gap: 2mm; color: var(--charcoal); }
+.worked-q { padding: 1.5mm 2mm; background: var(--sand-soft); border-radius: 1.5mm; }
+.steps { padding-left: 4.5mm; }
+.steps li::marker { color: var(--charcoal); font-weight: 700; }
+.worked-a { padding: 1.2mm 2mm; background: var(--sand-soft); border: 0.3mm solid var(--sand); border-radius: 1.5mm; margin-top: auto; }
+.worked .graph-card { border: none; padding: 0; }
+.ext { min-height: 0; }
+.ext .worked { font-size: 9.5pt; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; font-size: 8.5pt; flex: none; }
+.summary-grid.g2 { grid-template-columns: repeat(2, 1fr); flex: 1 1 0; min-height: 0; font-size: 9pt; }
+.summary-grid .worked { padding: 2mm 2.5mm; }
+.steps-card { grid-column: 1 / -1; background: var(--sand-soft); border-radius: 2.5mm; padding: 2mm 4mm; display: flex; gap: 4mm; align-items: baseline; font-size: 9pt; }
+.steps-card ol { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5mm 6mm; flex: 1; }
+.diagram { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+.diagram .graph { width: auto; height: 100%; max-height: 42mm; }
+
+/* ---------- tear-off exit ticket ---------- */
+.tear-space { flex: none; height: var(--tear-h); }
+.tear-zone { position: absolute; left: 0; right: 0; bottom: 0; height: var(--tear-h); display: flex; flex-direction: column; gap: 2mm; }
+.cut-line { border-top: 0.55mm dashed var(--charcoal); text-align: center; height: 0; margin: 1.5mm -12mm 2mm; }
+.cut-line span { position: relative; top: -2.6mm; background: #fff; padding: 0 3mm; font-size: 8pt; color: var(--muted); }
+.exit-head { display: flex; align-items: center; gap: 4mm; }
+.exit-head h2 { font-size: 14pt; color: var(--blue); white-space: nowrap; }
+.exit-head p { font-size: 9pt; }
+.name-lines { display: flex; gap: 3mm; font-weight: 600; font-size: 9pt; margin-left: auto; width: 74mm; }
+.name-lines > div { display: flex; align-items: flex-end; gap: 2mm; flex: 1; }
+.name-lines > .short { flex: 0 0 24mm; }
+.name-lines i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 4.5mm; }
+.exit-body { flex: 1; display: grid; grid-template-columns: 56mm repeat(3, 1fr); gap: 3mm; min-height: 0; }
+.exit-body.no-graph { grid-template-columns: repeat(3, 1fr); }
+.exit-graph { justify-content: center; }
+.exit-graph .sl table { font-size: 9pt; }
+.exit-q { border: 0.45mm solid var(--blue); background: var(--blue-soft); border-radius: 2.5mm; padding: 2mm; }
+.exit-q .q-head { flex-direction: column; gap: 1.2mm; min-height: 17mm; }
+.exit-q .q-num { background: var(--blue); color: #fff; border-color: var(--blue); padding: 0 2.5mm; height: 6mm; }
+.exit-q .q-num .lvl-dots i { box-shadow: 0 0 0 0.5mm var(--blue), 0 0 0 0.9mm #fff; }
+.exit-q .q-text { font-size: 9pt; }
+.exit-q .box { border-color: var(--blue); }
+.tear-zone.back .blank-note { flex: 1; display: flex; align-items: center; justify-content: center; color: #b3b0a3; font-size: 9pt; }
+
+/* ---------- cover ---------- */
+.cover { background: var(--charcoal); }
+.cover-art { position: absolute; inset: 0; background: url(../../assets/marni-tuala-artwork.jpg) center / cover no-repeat; }
+.cover-spine {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 15mm; background: var(--blue);
+  display: flex; align-items: center; justify-content: center; box-shadow: 0.8mm 0 0 var(--sand);
+}
+.cover-spine span { transform: rotate(-90deg); white-space: nowrap; color: #fff; font-weight: 700; letter-spacing: 0.2em; font-size: 11pt; }
+.cover-series { position: absolute; top: 12mm; left: 24mm; right: 12mm; display: flex; justify-content: space-between; align-items: center; }
+.cover-series span { background: rgba(255,255,255,0.95); color: var(--charcoal); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 10pt; padding: 2mm 4mm; border-radius: 2mm; }
+.cover-panel {
+  position: absolute; left: 24mm; right: 12mm; top: 70mm; padding: 9mm 11mm 10mm;
+  background: rgba(255,255,255,0.96); border-radius: 5mm; box-shadow: 0 0 0 1.4mm var(--sand);
+}
+.cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cover .logo { height: 22mm; display: block; }
+.chapter-badge {
+  width: 34mm; height: 34mm; border-radius: 50%; background: var(--blue); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;
+  box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--blue);
+}
+.chapter-badge span { font-size: 8pt; letter-spacing: 0.14em; text-transform: uppercase; }
+.chapter-badge b { font-size: 30pt; font-weight: 700; margin-top: 1mm; }
+.cover-kicker { margin-top: 3mm; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--blue); font-size: 12pt; }
+.cover h1 { font-size: 38pt; line-height: 1.05; margin: 1mm 0 3mm; color: var(--charcoal); }
+.cover-lessons { display: grid; grid-template-columns: 1fr 1fr; gap: 1mm 6mm; font-size: 9pt; margin-bottom: 7mm; padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; }
+.cover-lessons b { color: var(--blue); margin-right: 1.5mm; }
+.cover-fields { display: flex; flex-direction: column; gap: 5mm; }
+.cover-fields div { display: flex; align-items: flex-end; gap: 3mm; font-weight: 600; }
+.cover-fields span { width: 20mm; }
+.cover-fields i { flex: 1; border-bottom: 0.4mm solid var(--charcoal); height: 6mm; }
+.cover-credit { position: absolute; bottom: 8mm; right: 12mm; background: rgba(255,255,255,0.95); padding: 2mm 4mm; border-radius: 2mm; font-size: 9pt; }
+
+/* ---------- inside cover ---------- */
+.howto { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 4mm; flex: none; }
+.howto > div { display: flex; gap: 3mm; align-items: flex-start; padding: 2.5mm 3mm; border-radius: 2.5mm; background: var(--sand-soft); font-size: 9pt; }
+.howto .step { flex: none; width: 6mm; height: 6mm; border-radius: 50%; background: var(--charcoal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 8.5pt; }
+.howto > div.we { background: var(--we-soft); border: 0.8mm solid var(--charcoal); }
+.howto > div.you { background: var(--blue-soft); border: 0.8mm solid var(--blue); }
+.howto .zone-pill { align-self: flex-start; }
+.howto > div.we .zone-pill { background: var(--charcoal); }
+.howto > div.you .zone-pill { background: var(--blue); }
+.contents { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.contents th { text-align: left; font-size: 8.5pt; color: var(--muted); font-weight: 600; padding: 1mm 2mm; border-bottom: 0.35mm solid var(--sand); }
+.contents td { padding: 1.6mm 2mm; border-bottom: 0.25mm solid var(--line); }
+.contents td.code { font-weight: 700; color: var(--blue); width: 14mm; }
+.contents td.pg { text-align: right; width: 14mm; font-weight: 600; }
+.contents td.tick { width: 16mm; text-align: center; }
+.contents td.tick i { display: inline-block; width: 4mm; height: 4mm; border: 0.35mm solid var(--charcoal); border-radius: 0.8mm; }
+.goals { columns: 2; column-gap: 8mm; font-size: 9pt; }
+.ack-box { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
+.ack-box h3 { color: var(--sand); font-size: 10pt; margin-bottom: 1mm; }
+.ack-box p { font-size: 8.5pt; margin-bottom: 2mm; }
+.ack-art { width: 30mm; align-self: stretch; flex: none; border-radius: 2mm; background: url(../../assets/marni-tuala-artwork.jpg) 78% 42% / 260% auto no-repeat; }
+.section-title { font-size: 13pt; color: var(--charcoal); font-weight: 700; flex: none; }
+
+/* ---------- answers ---------- */
+.answers { columns: 2; column-gap: 8mm; }
+.ans-lesson { break-inside: avoid-column; }
+.ans-lesson h2 { font-size: 12pt; color: var(--blue); margin: 2mm 0 1mm; break-after: avoid; }
+.ans-block { break-inside: avoid; margin-bottom: 2mm; }
+.ans-block h3 { font-size: 9.5pt; margin-bottom: 0.6mm; }
+.ans-block li { font-size: 8.5pt; margin-bottom: 0.2mm; }
+.answers-flow .page { height: auto; min-height: 297mm; overflow: visible; }
+
+/* ---------- shared tweaks ---------- */
+.zone.grow > .ex-row, .zone.grow > .split.grow { flex: 1 1 0; min-height: 0; }
+.zone.grow > .ex-row .example .box { height: auto; flex: 1 1 0; }
+.exit-q .q-num .lvl-dots i { background: #fff; }
+.q.draw .draw-area .grid-paper { min-height: 30mm; }
+.zone .col > .graph-card { flex: none; }
+.summary-grid.g2 .worked { font-size: 9.5pt; }
+.summary-grid.g2 .diagram .graph { max-height: 40mm; width: auto; }
+.summary-grid .diagram { min-height: 0; }
+.template-card { background: #fff; border: 0.45mm solid var(--sand); border-radius: 1.8mm; padding: 1mm 1.5mm; flex: 1 1 auto; display: flex; align-items: flex-end; }
+.zone.you .template-card { border-color: var(--blue); }
+.zone.we .template-card { border-color: var(--charcoal); }
+.template-card .graph { width: 100%; }
+.work-grid.c3 { grid-template-columns: repeat(3, 1fr); }
+.work-grid.r3 { grid-template-rows: repeat(3, 1fr); }
+.q.draw .data-table { width: 100%; }
+.draw-area { flex: 1 1 auto; }
+.summary-grid.g2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.summary-grid.g2 .worked { min-height: 0; overflow: hidden; }
+.worked .diagram { flex: 1 1 0; min-height: 0; }
+.worked .diagram .graph { height: 100%; width: auto; max-width: 100%; max-height: 44mm; }
+.stack > .q.draw { flex: none; }
+.summary-grid:not(.g2) .diagram { flex: 1 0 16mm; }
+.summary-grid:not(.g2) .diagram .graph { max-height: 22mm; }
+.sl.template td { height: 6.5mm; }
+.graph-card .sl { align-self: center; }
+.worked .sl table { font-size: 9pt; }
+/* stem-and-leaf templates: fixed row heights, never stretched */
+.sl.template { flex: none; }
+.sl.template table { flex: none; height: auto; }
+.sl.template th { height: 5.5mm; }
+.sl.template td { height: 7.5mm; }
+.col > .q.draw { flex: none; }
+.tip { padding: 2mm 3mm; background: var(--sand-soft); border-left: 1.2mm solid var(--sand); border-radius: 1mm; }
+.q-text .data-table { margin-top: 1mm; }
+.lesson-title h1 { font-size: 17pt; }
+.notes { min-height: 18mm; }
+.sl.b2b.template td.leaf { width: 45%; }
+.terms .term-name { white-space: nowrap; }
+.notes.fixed { flex: none; height: 26mm; }
+.zone.fill .example .box { min-height: 10mm; }
+.stack > .q { min-height: 18mm; }
+.qs.wide-box { grid-template-columns: 6mm 1fr 38mm; }
+
+/* ================= roomier layout rules (override earlier values) ================= */
+/* WE DO panels next to a graph grow with their content instead of being squeezed to the graph's height */
+.zone.fill { height: auto; }
+.zone.fill .example { flex: 1 1 auto; }
+.zone.fill .example .box, .col > .example .box { min-height: 22mm; flex: 1 1 auto; }
+.ex-row .example .box { height: 24mm; }
+.ex-row.tall .example .box { height: 34mm; }
+/* short answers: fixed, comfortable rows */
+.qs { gap: 2.5mm; }
+.qs .box, .short-list .qs .box { height: 8.5mm; min-height: 8.5mm; }
+.short-list { grid-template-rows: none; grid-auto-rows: auto; gap: 1.8mm; align-content: start; }
+.short-grid { gap: 2.2mm 6mm; }
+/* full-working questions: never smaller than 16 mm */
+.q .box { min-height: 16mm; }
+.work-grid { gap: 3mm 5mm; }
+.grid-paper { min-height: 45mm; }
+.notes { min-height: 30mm; }
+.summary-page { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3mm; font-size: 9.5pt; }
+.summary-page .worked { min-height: 0; }
+.summary-page .diagram .graph { max-height: 38mm; }
+.content > .steps-card { flex: none; }
+.work-grid { flex: 1 1 auto; }
+.zone.grow > .work-grid { flex: 1 1 0; }
+
+/* short-answer lists beside a graph: spread the rows over the height of the graph */
+.split > .short-list { align-content: space-between; }
+/* a question is never shorter than its text plus its minimum box; drawing questions fill spare space */
+.q { min-height: auto; }
+.zone.grow > .q.draw, .col > .q.draw.grow { flex: 1 1 0; }
+.zone.grow > .q.draw .grid-paper { flex: 1 1 0; }
+.graph-card.wide-graph { flex: 1 1 0; min-height: 0; }
+.graph-card.wide-graph .graph { height: 100%; width: auto; max-width: 100%; }
+.zone.grow > .short-grid { flex: none; }
+.graph-card.wide-graph { flex: none; }
+.graph-card.wide-graph .graph { width: 118mm; height: auto; }
+.zone.grow > .short-grid { flex: 1 1 0; align-items: center; }
+.ex-row.grow-ex { flex: 1 1 0; display: flex; flex-direction: column; min-height: 0; }
+.ex-row.grow-ex .example { flex: 1 1 0; }
+.ex-row.grow-ex .example .box { height: auto; flex: 1 1 0; }
+/* only grid paper grows to fill space; tables and number lines keep their natural size */
+.zone.grow > .q.draw:not(:has(.grid-paper)) { flex: none; }
+.q.draw:not(:has(.grid-paper)) .draw-area { flex: none; }
+.draw-area .template-card { flex: none; }
+.split.grow-row { flex: 1 1 0; min-height: 0; }
+.split.grow-row .example .box { height: auto; flex: 1 1 0; }
+.zone.grow > .split.grow-row { flex: 1 1 0; }
+
+/* ---------- standalone lesson booklets ---------- */
+.chapter-badge.lesson b { font-size: 21pt; }
+.cover-progress { display: flex; align-items: center; gap: 2mm; margin: -1mm 0 5mm; font-size: 9pt; font-weight: 600; color: var(--muted); }
+.cover-progress span { margin-right: 2mm; }
+.cover-progress i { width: 4mm; height: 4mm; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0.5mm var(--sand); }
+.cover-progress i.done { background: var(--sand); }
+.cover-progress i.on { background: var(--blue); box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1.2mm var(--blue); }
+.cover-learn { padding: 3mm 4mm; background: var(--sand-soft); border-radius: 2.5mm; margin-bottom: 7mm; font-size: 10pt; }
+.cover-learn ul { margin-top: 1.5mm; }
+.bys-top { display: flex; align-items: center; gap: 6mm; flex: none; }
+.need { display: flex; align-items: center; gap: 2mm; flex: none; }
+.need b { margin-right: 1mm; }
+.need span { padding: 1mm 3mm; border-radius: 10mm; background: var(--sand-soft); border: 0.35mm solid var(--sand); font-size: 9pt; font-weight: 600; }
+.outcome { font-size: 8.5pt; color: var(--muted); }
+.ack-box:not(.grow) .ack-art { height: 30mm; }
+.map-we, .map-you { display: inline-block; font-size: 7pt; font-weight: 700; letter-spacing: 0.06em; color: #fff; padding: 0.2mm 1.6mm; border-radius: 1mm; margin-right: 0.8mm; vertical-align: 0.3mm; }
+.map-we { background: var(--charcoal); }
+.map-you { background: var(--blue); }
+
+/* ---------- chapter accent colour (set per chapter in chapter.js) ---------- */
+.cover-spine { background: var(--accent); }
+.chapter-badge { background: var(--accent); box-shadow: 0 0 0 1.4mm #fff, 0 0 0 2.6mm var(--sand), 0 0 0 3.8mm #fff, 0 0 0 4.6mm var(--accent); }
+.cover-kicker { color: var(--accent); }
+.lesson-badge { background: var(--accent); }
+.page-head { border-bottom: 0.7mm solid var(--accent); }
+.page-head .sec { color: var(--accent); }
+.ch-chip { display: inline-block; background: var(--accent); color: #fff; font-weight: 700; font-size: 7.5pt; padding: 0.2mm 2mm; border-radius: 1mm; margin-right: 2mm; }
+.contents td.code { color: var(--accent); }
+.cover-lessons b { color: var(--accent); }
+.inline-fig { margin-top: 1mm; }
+.inline-fig .graph { width: auto; max-width: 100%; height: auto; max-height: 34mm; }
+.set-fig { flex: none; }
+.set-fig .graph { width: auto; max-width: 100%; max-height: 52mm; }
+.cover-lessons { grid-template-columns: 1fr 1fr; font-size: 8.5pt; }
+.fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: 0.85em; line-height: 1.05; margin: 0 0.4mm; }
+.fr sup { border-bottom: 0.25mm solid currentColor; padding: 0 0.4mm; }
+.fr sub, .fr sup { vertical-align: baseline; font-size: 1em; }
+.notes.fixed { height: 20mm; }
+.summary-grid .worked { font-size: 8.5pt; }
+/* Inline and set diagrams show at their natural (mm) size, never stretched. */
+.inline-fig .graph, .set-fig .graph { width: min(var(--w, 100%), 100%); max-width: 100%; }
+.q-head .q-text { min-width: 0; flex: 1 1 auto; }
+.q-head { align-items: flex-start; }
+.q.side .side-row { display: flex; gap: 2mm; flex: 1 1 0; min-height: 18mm; align-items: stretch; }
+.q.side .side-fig { flex: none; display: flex; align-items: center; justify-content: center; max-width: 55%; }
+.q.side .side-fig .graph { width: auto; height: auto; max-height: 22mm; max-width: 100%; }
+.q.side .box { flex: 1 1 0; min-width: 12mm; min-height: 0; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 34mm); max-width: 100%; height: auto; max-height: 22mm; }
+.example .inline-fig .graph { max-height: 26mm; }
+/* Diagrams beside a box show at natural size so labels stay readable (about 8pt). */
+.q.side .side-fig { max-width: 60%; }
+.q.side .side-fig .graph { width: min(var(--w, 30mm), 100%); max-height: none; }
+.q.side .side-row { flex: 1 1 auto; min-height: 0; }
+.example .inline-fig .graph { max-height: 22mm; }
+.q.side .side-row { align-items: flex-start; }
+.q.side .side-fig { flex: 0 0 55%; max-width: 55%; }
+.q.side .side-fig .graph { width: 100%; max-width: calc(var(--w, 30mm) * 1.4); }
+.q.side .box { align-self: stretch; }
+.contents.tight td { padding: 1mm 2mm; }
+.fr { font-size: 0.95em; }
+.q.side .side-fig .graph { max-height: 26mm; }
+/* First page of a lesson is the tightest: keep its diagrams a little smaller. */
+.lesson-first .q.side .side-fig .graph { max-height: 21mm; }
+.lesson-first .example .inline-fig .graph { max-height: 19mm; }
+.lesson-first .q.side .side-row { min-height: 0; }
+.tgrid .graph { max-height: 31mm; }
+/* Transformation grids fill the space the question has. */
+.q.draw .draw-area { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.draw-area > .template-card.tgrid { flex: 1 1 auto; min-height: 30mm; display: flex; }
+.tgrid .graph { flex: 1 1 auto; width: 100%; height: auto; max-height: none; aspect-ratio: auto !important; }
+.q.draw:has(.tgrid) .draw-area { flex: 1 1 auto; }
+.draw-area > .template-card.tgrid { align-items: center; justify-content: center; }
+.tgrid .graph { flex: none; width: 100%; height: auto; max-height: 100%; aspect-ratio: var(--ar) !important; }
+/* Recurring decimal: a dot above the digit. */
+.rec { position: relative; display: inline-block; }
+.rec::before { content: ''; position: absolute; left: 50%; top: -0.12em; width: 0.2em; height: 0.2em; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
+/* Number planes to draw on: fixed heights by where they sit, so square planes never overrun a page. */
+.template-card.tplane { display: flex; align-items: center; justify-content: center; flex: 1 1 auto; }
+.tplane .graph { height: 40mm; width: auto; max-width: 100%; aspect-ratio: var(--ar); }
+.zone.grow .tplane .graph { height: 48mm; }
+.ex-row .tplane .graph, .lesson-first .tplane .graph { height: 30mm; }
+.ex-row .tplane .graph { height: 34mm; }
+.lesson-first .zone.grow .tplane .graph { height: 36mm; }
+/* A big diagram on the left with its short questions listed on the right. */
+.fig-side { display: grid; grid-template-columns: 58% 1fr; gap: 3mm; flex: 1 1 auto; min-height: 0; align-items: center; }
+.fig-side .set-fig .graph { max-height: 60mm; }
+.fig-side .short-list { display: flex; flex-direction: column; gap: 2.2mm; }
+.fig-side .short-list .qs { display: grid; grid-template-columns: auto 1fr 26mm; align-items: center; gap: 2mm; }
+.fig-side .short-list .box { height: 8.5mm; }
+/* In a panel that fills the page, the questions beside a diagram get full working boxes. */
+.zone.grow .fig-side { align-items: stretch; }
+.zone.grow .fig-side > .set-fig { align-self: center; }
+.zone.grow .fig-side .short-list .qs { flex: 1 1 0; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; }
+.zone.grow .fig-side .short-list .box { grid-column: 1 / -1; height: auto; min-height: 9mm; }
+.zone.grow .fig-side .short-list { height: 100%; }
+.zone.grow .fig-side .short-list .qs { align-items: stretch; }
+.zone.grow .fig-side .short-list .qs .q-text { align-self: center; }
+
+/* ===================== Mandelbrot theme (blended series) ===================== */
+.page.mb .content { top: 18mm; }
+.mb-band {
+  position: absolute; top: 0; left: 0; right: 0; height: 14.5mm; display: flex; align-items: center; gap: 4mm; padding: 0 12mm 0 10mm; color: #fff;
+  background: linear-gradient(90deg, var(--charcoal) 38%, rgba(61,59,60,0.55) 70%, rgba(61,59,60,0.1)), var(--mb-dark) right center / auto 100% no-repeat, var(--charcoal);
+  border-bottom: 0.9mm solid var(--accent);
+}
+.mb-logo { height: 9mm; background: #fff; border-radius: 1.2mm; padding: 0.8mm 1.5mm; flex: none; }
+.mb-titles { display: flex; flex-direction: column; gap: 0.3mm; min-width: 0; }
+.mb-kicker { font-size: 6.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: #d9d6cc; font-weight: 600; }
+.mb-title { font-size: 11pt; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mb-title b { color: #fff; background: var(--accent); padding: 0 1.6mm; border-radius: 1mm; margin-right: 1mm; font-weight: 700; }
+.mb-sec { margin-left: auto; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.92); color: var(--charcoal); padding: 1mm 2.5mm; border-radius: 1mm; flex: none; }
+.theme-mb .page-foot .pn { box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--accent); }
+.theme-mb .lesson-badge { background: var(--accent); }
+.theme-mb .banner { border-left: 1.6mm solid var(--accent); }
+
+/* cover */
+.mb-cover { background: #fff; }
+.mbc-band { position: absolute; top: 0; left: 0; right: 0; height: 64mm; background: var(--charcoal); color: #fff; display: flex; gap: 6mm; padding: 10mm 12mm 8mm 22mm; }
+.mbc-logo { height: 20mm; background: #fff; border-radius: 2mm; padding: 2mm 3mm; flex: none; }
+.mbc-titles { flex: 1; min-width: 0; }
+.mbc-kicker { font-size: 8pt; letter-spacing: 0.24em; text-transform: uppercase; color: #d9d6cc; font-weight: 600; }
+.mbc-titles h1 { color: #fff; font-size: 24pt; margin: 2mm 0 1.5mm; line-height: 1.1; }
+.mbc-titles h1 span { color: var(--accent); filter: brightness(1.45) saturate(0.9); }
+.mbc-sub { font-size: 9pt; color: #e8e6df; }
+.mbc-outcome { margin-top: 3mm; font-size: 7.5pt; color: #cfccc2; border-left: 0.8mm solid var(--accent); padding-left: 2.5mm; }
+.mbc-outcome b { color: #fff; }
+.mbc-name { width: 46mm; flex: none; background: #fff; color: var(--charcoal); border-radius: 2mm; padding: 3mm 4mm; display: flex; flex-direction: column; gap: 1mm; align-self: flex-start; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+.mbc-name i { display: block; border-bottom: 0.3mm solid var(--line); height: 6mm; margin-bottom: 1.5mm; }
+.mbc-spine { position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: var(--accent); }
+.mbc-body { position: absolute; top: 74mm; left: 22mm; right: 12mm; display: flex; gap: 8mm; align-items: flex-start; }
+.mbc-badge { flex: none; width: 46mm; height: 46mm; border-radius: 50%; background: var(--accent); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 0 2mm #fff, 0 0 0 3mm var(--accent); }
+.mbc-badge span { font-size: 10pt; letter-spacing: 0.25em; text-transform: uppercase; font-weight: 600; }
+.mbc-badge b { font-size: 44pt; line-height: 1; font-weight: 700; }
+.mbc-lessons { flex: 1; display: flex; flex-direction: column; gap: 1.6mm; font-size: 10pt; }
+.mbc-lessons div { padding: 1.4mm 3mm; border-radius: 1.5mm; background: var(--sand-soft); border-left: 1.2mm solid var(--accent); }
+.mbc-lessons b { color: var(--accent); margin-right: 2.5mm; }
+.mbc-art { position: absolute; left: 10mm; right: 0; bottom: 0; height: 62mm; background: center / cover no-repeat; }
+
+/* inside cover */
+.tracker td.date { width: 26mm; border-bottom: 0.25mm solid var(--line); }
+.mb-ack { display: flex; gap: 5mm; background: var(--charcoal); color: #fff; border-radius: 3mm; padding: 4mm 5mm; align-items: center; }
+.mb-ack h3 { color: #fff; font-size: 10pt; margin-bottom: 1mm; }
+.mb-ack p { font-size: 8.5pt; margin-bottom: 2mm; color: #e8e6df; }
+.mb-ack-art { width: 44mm; align-self: stretch; flex: none; border-radius: 2mm; background: 30% center / cover no-repeat; }
+.theme-mb .contents td.code, .theme-mb .howto .step { color: var(--accent); }
+.theme-mb .howto .step { background: var(--accent); color: #fff; }
+
+/* level words: Easy / Medium / Challenging */
+.lvl-word { display: inline-block; padding: 0 1.8mm; border-radius: 1mm; color: #fff; font-weight: 700; margin-right: 1mm; font-size: 0.92em; }
+.lvl-word.l1 { background: #2e8b57; }
+.lvl-word.l2 { background: #c98a00; }
+.lvl-word.l3 { background: #c0392b; }
+.zone-text .count { float: right; font-size: 7.5pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-left: 3mm; }
+.zone-head .zone-text { flex: 1; }
+
+/* hint strip inside a YOU DO panel */
+.hint { display: flex; gap: 2.5mm; align-items: baseline; background: #fff; border-left: 1mm solid var(--blue); border-radius: 1mm; padding: 1mm 2.5mm; font-size: 8.5pt; flex: none; }
+.hint b { color: var(--blue); text-transform: uppercase; font-size: 7pt; letter-spacing: 0.12em; }
+
+/* WE DO example with parts a, b, c */
+.ex-head { display: flex; gap: 2.5mm; align-items: baseline; flex: none; }
+.ex-stem { font-weight: 600; font-size: 10pt; }
+.ex-parts { display: grid; gap: 2.5mm 4mm; grid-template-columns: repeat(2, 1fr); flex: 1 1 auto; min-height: 0; }
+.ex-parts.n1 { grid-template-columns: 1fr; }
+.ex-parts.n3 { grid-template-columns: repeat(3, 1fr); }
+.ex-parts.n4 { grid-template-columns: repeat(2, 1fr); }
+.ex-part { display: flex; flex-direction: column; gap: 1mm; min-height: 0; }
+.ex-part .q-head { align-items: flex-start; }
+.part-l { flex: none; width: 5.5mm; height: 5.5mm; border-radius: 50%; background: var(--charcoal); color: #fff; font-weight: 700; font-size: 8.5pt; display: flex; align-items: center; justify-content: center; }
+.ex-part .box.teacher { height: 22mm; flex: 1 1 auto; position: relative; }
+.ex-part .box.teacher span { position: absolute; right: 2mm; bottom: 1mm; font-size: 6.5pt; color: #b3b0a6; }
+.ex-zone.grow .ex-part .box.teacher, .ex-zone.tall .ex-part .box.teacher { height: 30mm; }
+.ex-zone.grow { display: flex; flex-direction: column; }
+.ex-zone.grow .ex-parts { flex: 1 1 0; }
+.ex-part .draw-area { flex: 1 1 auto; display: flex; flex-direction: column; }
+.ex-part .inline-fig .graph { max-height: 24mm; }
+
+/* quick drill */
+.drill { display: grid; gap: 1.6mm 4mm; flex: 1 1 auto; align-content: space-evenly; }
+.drill.c2 { grid-template-columns: repeat(2, 1fr); }
+.drill.c3 { grid-template-columns: repeat(3, 1fr); }
+.drill.c4 { grid-template-columns: repeat(4, 1fr); }
+.dq { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 1.8mm; align-items: baseline; }
+.dq .q-text { font-size: 9pt; }
+.dq .ans-line { grid-column: 2; border-bottom: 0.3mm solid #9aa6c8; height: 6mm; }
+.zone.drill-zone { flex: 1 1 auto; }
+
+/* homework */
+.hw-intro { background: var(--sand-soft); border-left: 1.2mm solid var(--accent); border-radius: 1.5mm; padding: 2.5mm 4mm; font-size: 9pt; flex: none; }
+.hw-tag { display: inline-block; font-size: 6.5pt; color: var(--muted); border: 0.25mm solid var(--line); border-radius: 1mm; padding: 0 1mm; margin-left: 1mm; vertical-align: middle; }
+.work-grid.hw { grid-auto-rows: 1fr; flex: 1 1 0; }
+ul.plain { list-style: none; padding-left: 0; }
+.summary-grid.tall { flex: 1 1 0; }
+.hw-lead { display: block; font-size: 7.5pt; color: var(--muted); font-style: italic; }
+.mbc-art { height: 100mm; }
+.mbc-body { bottom: 104mm; }
+.box.teacher.split-cols { display: grid; grid-template-columns: 1fr 1fr; }
+.box.teacher.split-cols > div { padding: 1mm 2mm; font-size: 7pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.box.teacher.split-cols > div + div { border-left: 0.3mm dashed var(--line); }
+.mbc-titles h1 span { filter: none; color: color-mix(in srgb, var(--accent) 45%, white); }
+.drill-sub { grid-column: 1 / -1; font-size: 8.5pt; font-weight: 600; color: var(--blue); margin-top: 0.5mm; border-top: 0.3mm dashed #b8c3e0; padding-top: 1mm; }
+.ex-body { display: grid; grid-template-columns: 46% 1fr; gap: 3mm; flex: 1 1 auto; min-height: 0; }
+.ex-body .ex-parts { grid-template-columns: 1fr; }
+.ex-fig { display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 1.5mm; padding: 1mm; }
+.ex-fig .graph { width: 100%; height: auto; max-height: 58mm; }
+.ex-fig .sl, .ex-fig table { font-size: 8.5pt; }
+.theme-mb .zone.grow .tplane .graph { height: 64mm; }
+.mbc-titles h1.long { font-size: 19pt; }
+.lvl-word.mini { font-size: 6.5pt; padding: 0 1.2mm; margin-right: 1.5mm; vertical-align: 1px; }
+
+/* Mandelbrot art in the colours of the revision booklets: header band art fades in from the charcoal */
+.mb-band { background: linear-gradient(90deg, var(--charcoal) 42%, rgba(61,59,60,0.7) 62%, rgba(61,59,60,0.05) 88%), var(--mb-dark) right center / auto 100% no-repeat, var(--charcoal); }
+.mb-ack-art { background-position: center; }
+
+/* Skill drill pages */
+.howto > div.skill { grid-column: 1 / -1; background: #eef1fb; border: 0.8mm dashed var(--blue); }
+.howto > div.skill .zone-pill { background: var(--blue); }
+.banner.drill-b { background: #e4e9f8; border-left: 1.6mm solid var(--blue); }
+.drill-tag { background: var(--blue); color: #fff; font-weight: 700; font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.6mm 2.2mm; border-radius: 1mm; }
+.zone.skill-zone { display: flex; flex-direction: column; }
+.drill-score { display: flex; gap: 5mm; align-items: baseline; background: #fff; border-radius: 1.5mm; padding: 1.4mm 3mm; font-size: 8.5pt; font-weight: 600; flex: none; }
+.drill-score i { display: inline-block; width: 16mm; border-bottom: 0.3mm solid #9aa6c8; margin-left: 1mm; }
+.drill-score .note { margin-left: auto; font-weight: 400; font-size: 7.5pt; color: var(--muted); }
+.round { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; gap: 1mm; }
+.round + .round { border-top: 0.4mm dashed #b8c3e0; padding-top: 1.5mm; }
+.round-h { display: flex; gap: 2.5mm; align-items: baseline; font-size: 9pt; flex: none; }
+.round-h b { color: #fff; background: var(--charcoal); border-radius: 1mm; padding: 0.2mm 2mm; font-size: 8pt; letter-spacing: 0.06em; text-transform: uppercase; }
+.round-h span { font-weight: 600; color: var(--blue); }
+.round .drill { flex: 1 1 auto; align-content: space-evenly; }
+.dq.work { grid-template-rows: auto 1fr; align-items: start; }
+.dq.work .box { grid-column: 1 / -1; min-height: 11mm; height: 100%; background: #fff; }
+.drill-score > span { white-space: nowrap; }
+.drill-score .note { white-space: normal; }
+.round .drill.work { align-content: stretch; grid-auto-rows: 1fr; }
+.dq.work .box { min-height: 14mm; }
+.dq .inline-fig { margin-top: 0.5mm; }
+.dq .inline-fig .graph { max-height: 22mm; max-width: 100%; width: auto; }
+.round { flex: 1 1 auto; }
+.dq .inline-fig .graph { max-height: 30mm; }
+.drill.c5 { grid-template-columns: repeat(5, 1fr); }
+.drill.c6 { grid-template-columns: repeat(6, 1fr); }
+.theme-mb .howto > div { padding: 2mm 3mm; }
+.theme-mb .howto { gap: 2mm 4mm; }
+.round-body { display: grid; grid-template-columns: auto 1fr; gap: 4mm; flex: 1 1 auto; align-items: center; }
+.round-fig { background: #fff; border-radius: 1.5mm; padding: 1.5mm; }
+.round-fig .graph { width: auto; height: auto; max-height: 78mm; max-width: 92mm; display: block; }
+.round-body .drill { height: 100%; }
+.round-fig { width: 84mm; }
+.round-fig .graph { width: 100%; max-width: none; }
+/* homework drill practice */
+.hw-drills { display: flex; flex-direction: column; gap: 2mm; flex: 1 1 auto; justify-content: space-between; }
+.hw-drill { background: #fff; border-radius: 1.5mm; padding: 1.5mm 3mm 2mm; }
+.hw-drill-h { font-size: 9pt; font-weight: 600; margin-bottom: 0.5mm; }
+.hw-drill-h b { color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 1.5mm; margin-right: 1mm; }
+.hw-drill .drill-sub { border-top: none; padding-top: 0.5mm; margin-top: 0.5mm; font-weight: 500; color: var(--charcoal); }
+.hw-drill .drill { gap: 1mm 4mm; }
+.hw-drill .dq .ans-line { height: 5.5mm; }
+/* inline drill: a little tighter so the practice fits beside the examples */
+.skill-zone .dq .ans-line { height: 5mm; }
+.skill-zone .drill { gap: 1.2mm 4mm; }
+
+/* ===================== Three-column worksheets (lib/worksheet.js) ===================== */
+.page.mb.ws-page .content { top: 7mm; gap: 1.5mm; }
+.ws-strip { position: absolute; top: 0; left: 0; right: 0; height: 4.5mm; background: linear-gradient(90deg, var(--charcoal) 30%, rgba(61,59,60,0.2) 80%, rgba(61,59,60,0)), var(--mb-dark) right center / auto 100% no-repeat, var(--charcoal); border-bottom: 0.7mm solid var(--accent); }
+.ws-title { display: flex; align-items: baseline; justify-content: space-between; gap: 4mm; flex: none; border-bottom: 0.3mm solid #cfccc2; padding-bottom: 0.8mm; }
+.ws-title h2 { white-space: nowrap; font-size: 14pt; margin: 0; text-decoration: underline; text-underline-offset: 1mm; text-decoration-thickness: 0.3mm; }
+.ws-title h2 span { display: inline-block; text-decoration: none; background: var(--accent); color: #fff; font-size: 10pt; padding: 0 1.6mm; border-radius: 1mm; margin-right: 2mm; vertical-align: 1.5px; }
+.ws-title p { font-size: 6.5pt; color: #9a978d; letter-spacing: 0.05em; text-transform: uppercase; }
+.ff-frame { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); border: 0.8mm solid var(--charcoal); }
+.ff-col { display: flex; flex-direction: column; gap: 1mm; min-height: 0; min-width: 0; padding: 1.2mm 2mm 1.5mm; overflow: hidden; }
+.ff-col + .ff-col { border-left: 0.6mm solid var(--charcoal); }
+.ff-level { display: flex; align-items: center; justify-content: space-between; font-size: 7pt; color: var(--muted); flex: none; }
+.ff-level .lvl-word { font-size: 7.5pt; }
+.ff-talk { display: flex; align-items: center; gap: 1mm; flex: none; margin-top: 0.8mm; }
+.ff-bubble { flex: 1; position: relative; background: #fff; border: 0.35mm solid var(--charcoal); border-radius: 2mm; padding: 1mm 2mm; font-size: 8.3pt; line-height: 1.25; box-shadow: 0.5mm 0.5mm 0 var(--charcoal); }
+.ff-talk .ff-bubble::after { content: ''; position: absolute; top: 45%; width: 2.4mm; height: 2.4mm; background: #fff; border: 0.35mm solid var(--charcoal); border-width: 0 0 0.35mm 0.35mm; }
+.ff-talk.left .ff-bubble::after { right: -1.45mm; transform: rotate(-135deg); }
+.ff-talk.right .ff-bubble::after { left: -1.45mm; transform: rotate(45deg); }
+.ff-mascot { width: 11mm; height: 8mm; flex: none; }
+.ff-tag { display: flex; align-items: center; gap: 1.5mm; font-size: 7pt; color: var(--muted); flex: none; }
+.ff-tag .zone-pill { font-size: 6.5pt; padding: 0.2mm 1.6mm; }
+.ff-tag.we .zone-pill { background: var(--charcoal); }
+.ff-tag.you .zone-pill { background: var(--blue); }
+.ff-set { display: grid; gap: 0.8mm 2.5mm; flex: none; }
+.ff-set.two { grid-template-columns: 1fr 1fr; }
+.ff-set.we { background: var(--we-soft); border-radius: 1mm; padding: 0.8mm 1.2mm; }
+.ff-n { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 4.8mm; height: 4.8mm; padding: 0 0.6mm; border: 0.3mm solid #8a877e; font-size: 7.5pt; font-weight: 600; color: var(--charcoal); background: #fff; }
+.ff-q { font-size: 9pt; line-height: 1.25; min-width: 0; }
+.ff-set.two .ff-q { font-size: 8.5pt; }
+.ff-row { display: grid; grid-template-columns: auto 1fr 17mm; gap: 1.5mm; align-items: center; min-height: 6.6mm; }
+.ff-a { border-bottom: 0.35mm solid var(--charcoal); height: 5mm; display: flex; align-items: flex-end; justify-content: center; }
+.ff-done { color: #2451c9; font-weight: 600; font-size: 8.5pt; font-family: 'Lexend', sans-serif; }
+.ff-done.part { font-weight: 500; }
+.ff-cell { display: grid; grid-template-columns: auto 1fr; column-gap: 1.2mm; align-content: start; min-width: 0; }
+.ff-cell .ff-l { grid-column: 1 / -1; }
+.ff-l { display: flex; align-items: flex-end; height: 6.2mm; border-bottom: 0.3mm solid var(--charcoal); font-style: normal; overflow: hidden; padding-left: 1mm; }
+.ff-l .ff-done { white-space: nowrap; padding-bottom: 0.4mm; }
+.ff-set.two .ff-done { font-size: 7.8pt; }
+.ws-nl { flex: none; display: flex; align-items: center; gap: 2mm; border: 0.4mm solid var(--charcoal); border-radius: 1.5mm; padding: 0.5mm 2mm; background: #fff; }
+.ws-nl span { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1.1; }
+.ws-nl svg.graph { flex: 1; width: auto; height: 13mm; }
+/* worksheet booklet cover */
+.wsc { background: #fff; overflow: hidden; }
+.wsc-art { position: absolute; top: 70mm; left: 0; right: 0; bottom: 0; background: 70% 30% / cover no-repeat; }
+.wsc-top { position: absolute; top: 12mm; left: 16mm; right: 16mm; display: flex; justify-content: space-between; align-items: flex-start; }
+.wsc-logo { height: 19mm; }
+.wsc-name { width: 58mm; display: grid; grid-template-columns: auto 1fr; gap: 3mm 2mm; align-items: end; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.wsc-name i { border-bottom: 0.3mm solid #b9b6ab; height: 5mm; }
+.wsc-titles { position: absolute; top: 42mm; left: 16mm; right: 16mm; }
+.wsc-year { font-size: 11pt; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--charcoal); }
+.wsc-chapter { font-size: 18pt; font-weight: 700; color: var(--accent); margin-top: 3mm; letter-spacing: 0.02em; }
+.wsc-titles h1 { font-size: 58pt; line-height: 1; margin: 0.5mm 0 0; color: var(--charcoal); letter-spacing: -0.01em; }
+.wsc-kind { display: inline-block; margin-top: 4mm; font-size: 9pt; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: #fff; background: var(--charcoal); padding: 1mm 3mm; border-radius: 1mm; }
+.wsc-big { position: absolute; left: 12mm; bottom: 6mm; font-size: 190pt; font-weight: 700; line-height: 0.8; color: #fff; opacity: 0.9; text-shadow: 0 1mm 4mm rgba(30,30,60,0.35); }
+.wsc-credit { position: absolute; right: 10mm; bottom: 6mm; width: 90mm; text-align: right; font-size: 7pt; color: #fff; text-shadow: 0 0 1.5mm rgba(0,0,0,0.7); }
+.ff-set.fill { flex: 1 1 auto; align-content: space-between; }
+/* worksheet diagrams */
+.ff-fig { display: flex; align-items: center; justify-content: center; margin: 0.6mm 0 0.3mm; grid-column: 1 / -1; min-height: 0; }
+.ff-fig > svg.graph, .ff-rfig > svg.graph { width: 100% !important; height: 100% !important; max-width: 100%; max-height: 100%; aspect-ratio: auto !important; }
+.ff-fig .data-table, .ff-rfig .data-table { font-size: 7.5pt; }
+.ff-rfig { flex: none; display: flex; align-items: center; justify-content: center; background: #fff; border: 0.3mm solid #cfccc2; border-radius: 1mm; padding: 0.8mm; overflow: hidden; }
+.ff-rfig .sl { font-size: 8pt; }
+.ff-fcell { display: grid; grid-template-columns: auto 1fr; column-gap: 1.2mm; align-content: start; min-width: 0; }
+.ff-fcell .ff-a { grid-column: 1 / -1; height: 5.5mm; margin: 0 1mm; }
+.ff-set.figs { gap: 1.5mm 2.5mm; }
+.ff-frow { display: grid; grid-template-columns: auto 1fr 17mm; gap: 1.5mm; align-items: center; }
+.ff-frow .ff-q { grid-column: 2 / -1; }
+.ff-frow .ff-fig { grid-column: 2; margin: 0; }
+.ff-frow .ff-a { grid-column: 3; align-self: end; margin-bottom: 1mm; }
+.ff-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.ff-l.long .ff-done { font-size: 7pt; }
+/* worksheet diagrams: labels a little larger so they read clearly when a diagram is scaled down */
+.page:not(.ws2) .ff-fig svg text, .page:not(.ws2) .ff-rfig svg text { font-size: 3.3px; font-weight: 600; }
+.ws2 .ff-fig svg text, .ws2 .ff-rfig svg text { font-weight: 600; }
+.ff-l:has(.fr) { height: 8.4mm; }
+.ff-l .fr { font-size: 0.95em; }
+.ff-rfig .sl table { font-size: 9pt; }
+.ff-rfig .sl td.leaf { letter-spacing: 0.08em; }
+.ff-rfig .data-table { font-size: 7pt; width: 100%; table-layout: fixed; }
+.ff-rfig .data-table th, .ff-rfig .data-table td { padding: 0.5mm 0.6mm; white-space: nowrap; }
+/* two-page worksheets (lib/worksheet2.js) */
+.ws2 .ws-title h2 em { font-style: normal; font-weight: 400; font-size: 10pt; color: var(--muted); text-decoration: none; }
+.ff-step { display: flex; align-items: baseline; gap: 1.5mm; flex: none; border-bottom: 0.4mm solid var(--charcoal); padding-bottom: 0.6mm; }
+.ff-stepn { flex: none; font-size: 8pt; color: #fff; background: var(--charcoal); padding: 0.2mm 1.5mm; border-radius: 1mm; letter-spacing: 0.04em; }
+.ff-stept { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 9.5pt; line-height: 1.15; color: var(--charcoal); }
+.ff-how { flex: none; background: #fbf7ea; border: 0.35mm solid #d8cfae; border-left: 1.2mm solid var(--accent); border-radius: 1mm; padding: 0.9mm 1.8mm 1mm; font-size: 8pt; line-height: 1.3; }
+.ff-how-h { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.ff-how p { margin: 0.4mm 0 0; }
+.ff-how b { color: var(--charcoal); }
+.ff-how .ff-fig { margin: 0.8mm 0 0; }
+.ff-how .ff-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.ff-tbl { height: auto; }
+.ff-tbl .data-table { font-size: 7.5pt; width: auto; margin: 0 auto; }
+.ff-tbl .data-table th, .ff-tbl .data-table td { padding: 0.3mm 2.5mm; }
+/* calm two-page worksheets (lib/worksheet3.js), modelled on the Freefall sheets */
+.cw .ff-col { gap: 1.4mm; padding: 1.6mm 2.4mm 2mm; }
+.cw-head { display: flex; align-items: baseline; gap: 1.5mm; flex: none; border-bottom: 0.35mm solid var(--charcoal); padding-bottom: 0.8mm; }
+.cw-stepn { flex: none; font-size: 7.5pt; font-weight: 700; color: #fff; background: var(--charcoal); padding: 0.2mm 1.4mm; border-radius: 0.8mm; }
+.cw-title { flex: 1; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 9.5pt; line-height: 1.15; color: var(--charcoal); }
+.cw-head .lvl-word { flex: none; font-size: 6.5pt; }
+.cw-how { flex: none; border: 0.3mm solid #cfccc2; border-left: 1mm solid var(--accent); border-radius: 1mm; padding: 1mm 2mm 1.2mm; font-size: 8.8pt; line-height: 1.35; background: #fff; }
+.cw-how-h { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.cw-how p { margin: 0.3mm 0 0; }
+.cw-how .ex { color: #2451c9; font-family: 'Lexend', sans-serif; font-weight: 600; }
+.cw .ff-talk { margin-top: 1mm; }
+.cw .ff-bubble { font-size: 8.8pt; }
+.cw-tag { flex: none; display: flex; }
+.cw-tag .zone-pill { font-size: 6.5pt; padding: 0.2mm 1.6mm; }
+.cw-tag .zone-pill.we { background: var(--charcoal); }
+.cw-tag .zone-pill.you { background: var(--blue); }
+.cw-set { display: grid; gap: 1.2mm 3mm; }
+.cw-set.two { grid-template-columns: 1fr 1fr; }
+.cw-set.we { flex: none; background: var(--we-soft); border-radius: 1mm; padding: 1mm 1.4mm; }
+.cw-set.you { flex: 1 0 auto; grid-auto-rows: 1fr; }
+.cw-set.you .cw-lines { flex: 1 1 auto; display: flex; flex-direction: column; }
+.cw-set.you .cw-l { flex: 1 1 auto; min-height: 8.4mm; max-height: 13mm; height: auto; }
+.cw-cell { display: flex; flex-direction: column; min-width: 0; }
+.cw-qrow { display: flex; align-items: flex-start; gap: 1.5mm; }
+.cw-q { font-size: 10pt; line-height: 1.3; }
+.cw-set.two .cw-q { font-size: 9.4pt; }
+.cw-fig { display: flex; justify-content: center; margin: 1mm 0 0; flex: none; }
+.cw-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.cw-how .cw-fig { margin-top: 0.8mm; }
+.cw .cw-fig svg text { font-weight: 600; }
+.cw-lines { padding-top: 1.5mm; }
+.cw-l { display: flex; align-items: flex-end; height: 8.4mm; border-bottom: 0.3mm solid var(--charcoal); font-style: normal; padding-left: 1mm; overflow: hidden; }
+.cw-l .ff-done { white-space: nowrap; padding-bottom: 0.5mm; font-size: 9pt; }
+.cw-set.two .cw-l .ff-done { font-size: 8.5pt; }
+.cw .ff-n { font-size: 8pt; min-width: 5.2mm; height: 5.2mm; }
+.cw-set.you:not(.two) { display: flex; flex-direction: column; gap: 1.2mm; }
+.cw-set.you:not(.two) .cw-cell { flex: 1 1 auto; }
+/* calm worksheets: name line, level corner, check yourself, and darker tones that survive a black-and-white copier */
+.cw-name { flex: none; display: flex; align-items: flex-end; gap: 2mm; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--charcoal); }
+.cw-name i { flex: 1; border-bottom: 0.3mm solid var(--charcoal); height: 4.5mm; }
+.cw-name i.short { flex: 0 0 28mm; }
+.cw-how-h { display: flex; justify-content: space-between; align-items: baseline; }
+.cw-lvl { font-size: 6.5pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.cw-lvl.l1 { color: #2e7d4f; } .cw-lvl.l2 { color: #9a6700; } .cw-lvl.l3 { color: #b0302a; }
+.cw-head .cw-lvl { flex: none; }
+.cw .ff-done { color: #1a3fae; }
+.cw-set.we { background: #e4e4e4; border: 0.3mm solid #9a978d; }
+.cw-check { flex: none; border: 0.4mm dashed var(--charcoal); border-radius: 1.2mm; padding: 0.8mm 1.6mm 1.2mm; }
+.cw-check-h { display: block; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal); margin-bottom: 0.6mm; }
+/* ===================== Times-table circles theme (lib/circles.js, lib/own.js, year7-own/) =====================
+   Charcoal ink, one chapter colour (teal: --c deep, --cm main, --ct tint) and a warm accent used sparingly.
+   Colour is always a second signal: labels, icons and borders carry the meaning on a black-and-white copy. */
+.tc, .tc-inside, .tc-cover { --ink2: #23272e; --c: #0b5f5b; --cm: #127c76; --ct: #e5f2f0; --cl: #79bdb6; --acc: #d98e2b; --accd: #9a5a0c; --acct: #fbf1e2; --rule: #d3d9d7; --soft: #f3f5f4; --mute: #5b6168; }
+.tc .content, .tc-inside .content { left: 12mm; right: 12mm; bottom: 11mm; gap: 1.5mm; }
+.tc.p1 .content { top: 26.5mm; }
+.tc.p2 .content { top: 17mm; }
+.tc-inside .content { top: 17mm; }
+/* opener band: a new exercise starts here */
+.tc-open { position: absolute; top: 0; left: 0; right: 0; height: 23.5mm; display: grid; grid-template-columns: 40mm 1fr 56mm; background: var(--ct); border-bottom: 0.9mm solid var(--c); }
+.tc-num { position: relative; overflow: hidden; background: var(--ink2); color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 0 0 0.6mm 10mm; }
+.tc-num span { font-size: 6.8pt; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: #9fd3c7; position: relative; z-index: 1; }
+.tc-num b { font-size: 25pt; font-weight: 700; line-height: 1; letter-spacing: -0.01em; position: relative; z-index: 1; }
+.tc-num b.word { font-size: 16pt; }
+.tc-numcircle { position: absolute; right: -8mm; top: 50%; transform: translateY(-50%); width: 30mm; height: 30mm; opacity: 0.85; }
+.tc-num::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #23272e 30%, rgba(35, 39, 46, 0.25) 75%, rgba(35, 39, 46, 0)); }
+.tc-tt { padding: 2.6mm 4mm 2.4mm 5mm; display: flex; flex-direction: column; justify-content: center; gap: 0.8mm; min-width: 0; }
+.tc-kick { font-size: 6.8pt; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c); font-weight: 700; }
+.tc-tt h1 { font-size: 20pt; line-height: 1.05; color: var(--ink2); letter-spacing: -0.01em; }
+.tc-tt h1.long { font-size: 16pt; }
+.tc-goal { font-size: 9pt; color: #3a3f46; }
+.tc-goal b { color: var(--c); }
+.tc-name { align-self: center; margin-right: 12mm; display: grid; grid-template-columns: auto 1fr; gap: 2.4mm 2mm; align-items: end; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); }
+.tc-name i { border-bottom: 0.3mm solid #8b9196; height: 4.2mm; }
+/* progress through the chapter: lessons done filled, this lesson labelled */
+.tc-prog { position: absolute; left: 40mm; right: 12mm; bottom: -3.3mm; height: 2.4mm; display: flex; gap: 0.8mm; align-items: center; }
+.tc-prog span { flex: 1; height: 1.1mm; border-radius: 0.6mm; background: #c9d3d1; position: relative; }
+.tc-prog span.done { background: var(--cl); }
+.tc-prog span.on { height: 2.4mm; background: var(--ink2); }
+.tc-prog span.on b { position: absolute; inset: 0; color: #fff; font-size: 5pt; display: flex; align-items: center; justify-content: center; letter-spacing: 0.06em; }
+/* page 2 band */
+.tc-slim { position: absolute; top: 0; left: 0; right: 0; height: 13mm; display: flex; align-items: stretch; background: var(--ct); border-bottom: 0.9mm solid var(--c); }
+.tc-code { background: var(--ink2); color: #fff; font-size: 15pt; font-weight: 700; display: flex; align-items: center; padding: 0 5mm 0.6mm 10mm; min-width: 40mm; }
+.tc-slim-t { display: flex; align-items: baseline; gap: 3mm; padding: 0 4mm 0.8mm 5mm; align-self: center; }
+.tc-slim-t b { font-size: 13pt; color: var(--ink2); }
+.tc-slim-t span { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c); }
+.tc-slim .tc-prog { bottom: -3.3mm; }
+.tc-inside .tc-slim .tc-code { font-size: 13pt; }
+/* edge tab, to find a lesson by flicking: right edge on a front page, left edge on a back page */
+.tc-tab { position: absolute; right: 0; width: 8.5mm; height: 19.5mm; border-radius: 2mm 0 0 2mm; display: flex; align-items: center; justify-content: center; background: var(--c); }
+.tc-tab.back { right: auto; left: 0; border-radius: 0 2mm 2mm 0; }
+.tc-tab span { color: #fff; font-size: 7pt; font-weight: 700; transform: rotate(90deg); white-space: nowrap; letter-spacing: 0.04em; }
+.tc-tab.back span { transform: rotate(-90deg); }
+/* footer: page number in a circle */
+.tc-foot { position: absolute; bottom: 3.5mm; left: 12mm; right: 12mm; height: 6.5mm; display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #868c91; }
+.tc-pn { width: 6.6mm; height: 6.6mm; border-radius: 50%; background: var(--ink2); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 7.2pt; box-shadow: 0 0 0 0.5mm #fff, 0 0 0 0.8mm var(--cm); }
+/* blocks */
+.tc-block { flex: none; border-radius: 2mm; padding: 1.1mm 2.4mm 1.4mm; border: 0.3mm solid var(--rule); background: #fff; }
+.tc-h { display: flex; align-items: center; gap: 1.6mm; margin: 0 0 0.9mm; font-weight: 400; }
+.tc-icw { flex: none; width: 5mm; height: 5mm; border-radius: 50%; background: var(--c); color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+.tc-ic { width: 3.2mm; height: 3.2mm; }
+.tc-h > span { font-size: 9pt; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--c); }
+.tc-h em { font-style: normal; font-size: 8pt; color: var(--mute); }
+.tc-block p { font-size: 9.8pt; line-height: 1.35; margin: 0; }
+.tc-n { display: inline-flex; min-width: 4.8mm; height: 4.8mm; border: 0.3mm solid #8b9196; border-radius: 0.8mm; font-size: 7.5pt; font-weight: 700; align-items: center; justify-content: center; margin-right: 0.8mm; vertical-align: 0.5px; background: #fff; color: var(--ink2); }
+.tc-box { position: relative; display: block; border: 0.3mm solid #8b9196; border-radius: 1mm; height: 8mm; margin-top: 1mm; background: #fff; }
+.tc-box.wide { flex: 0 0 45mm; height: 9mm; margin: 0; }
+.tc-l { position: relative; display: flex; align-items: flex-end; height: 7.4mm; border-bottom: 0.3mm solid var(--ink2); font-style: normal; padding-left: 1mm; }
+.tc-l b { color: #2f3640; font-weight: 600; font-size: 9.5pt; padding-bottom: 0.6mm; white-space: nowrap; }
+.tc-l.why { height: 6mm; }
+.tc-l.why span { font-size: 8.5pt; color: #8b9196; padding-bottom: 0.7mm; }
+.tc-learn .tc-l { height: 6.4mm; }
+.tc-from { position: absolute; right: 0.8mm; top: 0.8mm; font-size: 6.3pt; font-weight: 700; letter-spacing: 0.04em; color: var(--accd); border: 0.3mm solid var(--acc); border-radius: 0.8mm; padding: 0 1mm; margin: 0.3mm 0 0 1mm; background: var(--acct); line-height: 1.5; }
+.tc .nw { white-space: nowrap; }
+.tc-fig { display: flex; justify-content: center; margin-top: 1mm; }
+.tc-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.tc .tc-fig svg text { font-weight: 600; }
+/* do now and think first */
+.tc-dn { background: var(--soft); border-color: transparent; }
+.tc-dn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; }
+.tc-dn-cell { display: flex; flex-direction: column; }
+.tc-dn-cell p { font-size: 9.3pt; }
+.tc-dn-cell .tc-box { margin-top: auto; height: 7.2mm; }
+.tc-dn-cell p { margin-bottom: 1mm !important; }
+.tc-think { border: 0.35mm dashed var(--cm); }
+.tc-think-row { display: flex; gap: 3mm; align-items: center; }
+.tc-think-row .tc-h { margin: 0; flex: none; }
+.tc-think-row p { flex: 1; }
+.tc-think-row em { font-style: normal; font-size: 8pt; color: var(--mute); }
+/* words and big idea (a cloze) */
+.tc-big { display: grid; grid-template-columns: 48mm 1fr; gap: 0; padding: 0; overflow: hidden; }
+.tc-words { background: var(--soft); padding: 1.1mm 2.4mm 1.2mm; }
+.tc-words p { font-size: 8.6pt; margin-bottom: 0.5mm; }
+.tc-idea { padding: 1.1mm 2.4mm 1.2mm 3.4mm; border-left: 1.4mm solid var(--c); }
+.tc-idea-h { font-size: 7pt !important; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c); margin-bottom: 0.2mm !important; }
+.tc-idea-h em { font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 8pt; color: var(--mute); margin-left: 1.5mm; }
+.tc-cloze { font-size: 10pt !important; font-weight: 600; color: var(--ink2); line-height: 1.72 !important; }
+.tc-gap { display: inline-block; height: 1em; border-bottom: 0.35mm solid var(--ink2); vertical-align: -0.25em; margin: 0 0.4mm; background: #fff; }
+.tc-bigfigs { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+.tc-bigfigs .tc-fig:only-child { grid-column: 1 / -1; }
+/* learn it: example (teacher models it) → your turn */
+.tc-learn { flex: 1 1 auto; display: flex; flex-direction: column; gap: 1.6mm; }
+.tc-learn .tc-h { margin-bottom: 0; }
+.tc-pair { flex: 1 1 auto; display: grid; grid-template-columns: 1fr 5mm 1fr; }
+.tc-ex { background: var(--ct); border-radius: 1.6mm; padding: 1.2mm 2.2mm 1.4mm; display: flex; flex-direction: column; }
+.tc-you { background: #fff; border: 0.6mm solid var(--ink2); border-radius: 1.6mm; padding: 1mm 2.2mm 1.2mm; display: flex; flex-direction: column; }
+.tc-lab { align-self: flex-start; display: inline-flex; align-items: center; gap: 1.2mm; font-size: 7pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 3mm; padding: 0.4mm 2.2mm 0.4mm 1.4mm; }
+.tc-ex .tc-lab { background: #fff; color: var(--c); border: 0.3mm solid var(--c); }
+.tc-you .tc-lab { background: var(--ink2); color: #fff; }
+.tc-lic { width: 3.4mm; height: 3.4mm; }
+.tc-arrow { display: flex; align-items: center; justify-content: center; color: var(--ink2); font-size: 11pt; }
+.tc-q { font-size: 10.5pt !important; font-weight: 600; color: var(--ink2); margin-top: 0.8mm !important; }
+.tc-ls { margin-top: auto; }
+.tc-ex .tc-l { border-bottom-color: #7fa9a5; }
+.tc-why { font-size: 8.8pt !important; line-height: 1.38 !important; margin-top: 1.4mm !important; }
+.tc-why > b { display: inline-flex; margin-right: 1.2mm; vertical-align: 0.2mm; align-items: center; gap: 0.8mm; font-size: 6.6pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accd); background: #fff; border: 0.3mm solid var(--acc); border-radius: 2.5mm; padding: 0 1.6mm 0 1mm; }
+.tc-wic { width: 3mm; height: 3mm; }
+/* check */
+.tc-check { border: 0.7mm solid var(--ink2); }
+.tc-check-row { display: flex; align-items: center; gap: 2.5mm; flex-wrap: wrap; }
+.tc-check-row p { flex: 1; font-weight: 600; font-size: 10.5pt !important; color: var(--ink2); }
+.tc-opt { display: inline-flex; align-items: center; gap: 1.5mm; border: 0.3mm solid var(--ink2); border-radius: 5mm; padding: 1mm 3mm 1mm 1mm; font-size: 10pt; }
+.tc-opt b { display: inline-flex; width: 5.5mm; height: 5.5mm; border-radius: 50%; border: 0.3mm solid var(--ink2); align-items: center; justify-content: center; font-size: 8pt; }
+/* page 2 */
+.tc-pattern { background: var(--soft); border-color: transparent; }
+.tc-pat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4mm 4mm; margin-bottom: 0.6mm; }
+.tc-pat-grid p { display: flex; align-items: flex-end; gap: 1mm; font-size: 10pt !important; white-space: nowrap; }
+.tc-blank { display: inline-block; flex: 1 1 auto; min-width: 7mm; border-bottom: 0.3mm solid var(--ink2); height: 6mm; }
+.tc-blank.short { flex: 0 0 9mm; }
+.tc-notice { font-size: 9pt !important; margin-top: 1mm !important; }
+.tc-notice b { color: var(--c); }
+.tc-prac { flex: 1 1 auto; display: flex; flex-direction: column; }
+.tc-mix { flex: 1 1 auto; display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: auto; align-content: stretch; gap: 1.6mm 5mm; }
+.tc-mix-cell { display: flex; flex-direction: column; min-height: 0; }
+.tc-mix-cell p { font-size: 9.8pt; }
+.tc-mix-cell > .tc-l { margin-top: auto; height: 6.4mm; }
+.tc-further { border: 0.35mm dotted var(--ink2); }
+.tc-fur + .tc-fur { margin-top: 1mm; }
+.tc-exit { border: 0.7mm solid var(--ink2); }
+.tc-exit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.tc-exit-cell { display: flex; flex-direction: column; }
+.tc-exit-cell .tc-box { height: 10.5mm; margin-top: auto; }
+.tc-rate { margin-top: 1.4mm !important; font-size: 8.8pt !important; display: flex; align-items: center; gap: 2.5mm; flex-wrap: wrap; }
+.tc-rate span { border: 0.3mm solid var(--ink2); border-radius: 4mm; padding: 0.3mm 3mm; font-size: 8.5pt; }
+/* review */
+.tc-rev-grid { flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 2mm 6mm; }
+.tc-rev-cell { display: flex; flex-direction: column; border-left: 1mm solid var(--cl); padding-left: 2mm; }
+.tc-rev-cell > .tc-l:first-of-type { margin-top: auto; }
+.tc-chip { float: right; font-size: 6.5pt; font-weight: 700; color: #fff; background: var(--c); border-radius: 0.8mm; padding: 0 1.2mm; margin-left: 1mm; line-height: 1.6; }
+.tc-track { display: flex; flex-wrap: wrap; gap: 2mm 3.5mm; }
+.tc-track span { display: inline-flex; align-items: center; gap: 1.2mm; font-size: 9pt; }
+.tc-track b { background: var(--c); color: #fff; border-radius: 1mm; padding: 0 1.4mm; font-size: 8pt; }
+.tc-track i { display: inline-block; width: 5mm; height: 5mm; border: 0.3mm solid var(--ink2); border-radius: 0.8mm; }
+/* cover: charcoal, with the 2 times table on a circle */
+.tc-cover { background: #22262c; color: #fff; overflow: hidden; }
+.tcc-label { position: absolute; top: 11mm; left: 14mm; right: 14mm; height: 24mm; background: #fff; border-radius: 2.5mm; display: flex; align-items: center; justify-content: space-between; padding: 0 6mm 0 5mm; }
+.tcc-logo { height: 17mm; }
+.tcc-name { width: 92mm; display: grid; grid-template-columns: auto 1fr auto 1fr; gap: 3.2mm 2mm; align-items: end; font-size: 7pt; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #5b6168; }
+.tcc-name i { border-bottom: 0.3mm solid #9aa1a6; height: 5mm; }
+.tcc-name i:first-of-type { grid-column: 2 / 5; }
+.tcc-art { position: absolute; top: 99mm; left: 50%; transform: translateX(-50%); width: 158mm; height: 158mm; }
+.tcc-big { width: 100%; height: 100%; }
+.tcc-titles { position: absolute; top: 48mm; left: 16mm; right: 16mm; }
+.tcc-year { font-size: 10.5pt; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: #9fd3c7; }
+.tcc-ch { font-size: 18pt; font-weight: 700; margin-top: 3mm; color: #e9a54a; }
+.tcc-titles h1 { font-size: 62pt; line-height: 1; margin-top: 0.5mm; color: #fff; letter-spacing: -0.015em; }
+.tcc-sub { margin-top: 3.5mm; font-size: 9.5pt; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #c9d0d4; }
+.tcc-sub span { color: #59616c; margin: 0 1.2mm; }
+.tcc-row { position: absolute; left: 14mm; right: 14mm; bottom: 17mm; display: flex; justify-content: space-between; }
+.tcc-row div { display: flex; flex-direction: column; align-items: center; gap: 1.2mm; }
+.tcc-badge { width: 11mm; height: 11mm; }
+.tcc-row b { font-size: 7pt; color: #9fd3c7; letter-spacing: 0.04em; }
+.tcc-credit { position: absolute; left: 16mm; right: 16mm; bottom: 8mm; font-size: 7.5pt; color: #9aa1a6; text-align: center; }
+/* inside cover */
+.tci-top { display: grid; grid-template-columns: 1fr 68mm; gap: 6mm; align-items: start; }
+.tci-lead { font-size: 10.3pt; }
+.tci-learn { display: grid; grid-template-columns: 1fr 8mm 1fr; margin-top: 2mm; }
+.tci-demo p { font-size: 9pt; margin-top: 1mm; }
+.tci-arrow { display: flex; align-items: center; justify-content: center; font-size: 14pt; font-weight: 700; color: var(--ink2); }
+.tci-key { display: grid; grid-template-columns: 1fr; gap: 1mm; margin-top: 2mm; }
+.tci-key div { display: flex; gap: 2mm; align-items: flex-start; }
+.tci-key p { font-size: 8.6pt; }
+.tci-key .tc-icw { background: var(--ink2); }
+.tci-map { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-top: 4.5mm; }
+.tci-map > div { border: 0.35mm solid var(--ink2); border-radius: 1mm; padding: 1.2mm; display: flex; flex-direction: column; gap: 0.8mm; height: 80mm; position: relative; }
+.tci-map > div::before { content: attr(data-p); position: absolute; top: -4.2mm; left: 0; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); }
+.tci-map span { display: flex; align-items: center; justify-content: center; text-align: center; font-size: 6.3pt; font-weight: 700; border-radius: 0.8mm; background: var(--soft); color: var(--ink2); padding: 0.4mm; line-height: 1.1; border: 0.25mm solid var(--rule); }
+.tci-map span.band { background: var(--ink2); color: #fff; border-color: var(--ink2); }
+.tci-map span.pair { background: none; border: 0; padding: 0; gap: 1mm; display: grid; grid-template-columns: 1fr 1fr; }
+.tci-map span.pair i { font-style: normal; display: flex; align-items: center; justify-content: center; border-radius: 0.8mm; height: 100%; }
+.tci-map span.pair i:first-child { background: var(--ct); }
+.tci-map span.pair i:last-child { border: 0.45mm solid var(--ink2); background: #fff; }
+.tci-h { font-size: 12pt; margin-top: 1.6mm; color: var(--ink2); border-bottom: 0.4mm solid var(--ink2); padding-bottom: 0.6mm; }
+.tci-contents { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.tci-contents th { text-align: left; font-size: 7pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); padding: 0.4mm 1mm; }
+.tci-contents td { padding: 0.85mm 1mm; border-bottom: 0.25mm solid #e1e6e4; vertical-align: middle; }
+.tci-contents td.bd { width: 7mm; padding: 0.3mm 0; }
+.tci-badge { width: 5.2mm; height: 5.2mm; display: block; }
+.tci-contents .pg { text-align: right; width: 12mm; }
+.tci-contents .date { width: 32mm; }
+.tci-contents .tick { width: 12mm; text-align: center; }
+.tci-contents .tick i { display: inline-block; width: 4mm; height: 4mm; border: 0.3mm solid var(--ink2); border-radius: 0.8mm; vertical-align: middle; }
+.tci-chip { display: inline-block; min-width: 10mm; text-align: center; color: #fff; font-weight: 700; font-size: 7.8pt; border-radius: 1mm; padding: 0.2mm 1.2mm; background: var(--c); }
+.tci-goals { columns: 2; column-gap: 8mm; font-size: 9pt; }
+.tci-about { margin-top: auto; display: grid; grid-template-columns: 36mm 1fr; gap: 5mm; align-items: center; background: var(--soft); border-radius: 2mm; padding: 3mm 4mm; }
+.tci-how { width: 36mm; height: 36mm; }
+.tci-about h3 { font-size: 10pt; margin-top: 0.8mm; color: var(--ink2); }
+.tci-about p { font-size: 8.5pt; }
+.tc-mix-cell .tc-from, .tc-l .tc-from { top: auto; bottom: 0.9mm; right: 0; }
+.tc-num > span, .tc-num > b { z-index: 2; }
+.tc-pat-grid.wide { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 10mm; }
+.tc-pat-grid.wide .tc-blank { flex: 0 0 30mm; }
+/* ===================== Mixed-practice worksheets (lib/mixed.js, year7-mixed/) =====================
+   One WE DO box across the top of page 1, then three clean columns a page. Each question stands on its own; questions
+   from earlier lessons carry a "from 2.03" tag (outlined, so it survives a black-and-white copy). */
+.mx .content { gap: 1.6mm; }
+.mx-ex { flex: none; display: grid; grid-template-columns: 15mm minmax(0, 1fr); gap: 2mm; border: 0.6mm solid var(--charcoal); border-radius: 1.6mm; background: #e9e9e9; padding: 1.6mm 2mm 1.8mm 1.8mm; }
+.mx-ex-side { display: flex; flex-direction: column; gap: 1.6mm; font-size: 7pt; line-height: 1.25; color: var(--charcoal); }
+.mx-ex-side .zone-pill { background: var(--charcoal); font-size: 7pt; padding: 0.4mm 0; text-align: center; }
+.mx-ex-main { display: flex; flex-direction: column; gap: 1.4mm; min-height: 0; min-width: 0; }
+.mx-idea { flex: none; font-size: 9.8pt; line-height: 1.3; }
+.mx-idea b { color: #fff; background: var(--charcoal); font-weight: 600; font-size: 7.5pt; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2mm 1.4mm; border-radius: 0.8mm; margin-right: 1.5mm; vertical-align: 1px; }
+.mx-ex-row { flex: 1 1 0; min-height: 0; display: grid; gap: 0 2.4mm; }
+.mx .nw { white-space: nowrap; }
+.mx-ex-cell { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: #fff; border: 0.3mm solid #9a978d; border-radius: 1mm; padding: 1.2mm 1.8mm 1mm; }
+.mx-ex-space { flex: 1 1 0; min-height: 6mm; margin-top: 1mm; background: repeating-linear-gradient(to top, #b9b6ab 0, #b9b6ab 0.25mm, transparent 0.25mm, transparent 8mm); }
+.mx-frame { border-width: 0.7mm; }
+.mx .ff-col { gap: 1.2mm; padding: 1.4mm 2.2mm 1.6mm; }
+.mx-colh { flex: none; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.35mm solid var(--charcoal); padding-bottom: 0.9mm; font-size: 7pt; color: var(--muted); }
+.mx-colh .lvl-word { font-size: 7.5pt; }
+.mx-list { flex: 1 1 0; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 2mm; padding-top: 0.6mm; }
+.mx-row { flex: 1 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 3mm; }
+.mx-row.pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.mx-q { display: flex; flex-direction: column; min-width: 0; }
+.mx-qrow { display: flex; align-items: flex-start; gap: 1.5mm; }
+.mx-qrow .ff-n { margin-top: 0.2mm; }
+.mx-qt { font-size: 9.6pt; line-height: 1.32; min-width: 0; }
+.mx-ex-cell .mx-qt { font-size: 9.8pt; }
+.mx-ls { flex: 1 0 auto; display: flex; flex-direction: column; padding-top: 0.4mm; }
+.mx-l { flex: 1 0 6.8mm; max-height: 10mm; display: flex; align-items: flex-end; justify-content: space-between; gap: 1mm; border-bottom: 0.3mm solid var(--charcoal); font-style: normal; padding: 0 0 0.6mm 1mm; overflow: hidden; }
+.mx-l .ff-done { white-space: nowrap; font-size: 9pt; color: #1a3fae; overflow: hidden; text-overflow: clip; }
+.mx-from { margin-left: auto; flex: none; font-size: 6.4pt; font-weight: 600; font-style: normal; letter-spacing: 0.02em; color: #6b4a00; border: 0.3mm solid #b58a2a; background: #fbf3dc; border-radius: 0.8mm; padding: 0 1mm; white-space: nowrap; line-height: 1.5; }
+.mx-fig { display: flex; justify-content: center; margin: 1mm 0 0.2mm; flex: none; }
+.mx-fig > svg.graph { height: 100% !important; width: auto !important; max-width: 100%; }
+.mx-fig svg text { font-weight: 600; }
+.mx-fig.html { height: auto; }
+.mx-q.draw .mx-fig { margin-bottom: 1.5mm; }
+.mx-qrow .mx-from { align-self: flex-start; margin-top: 0.4mm; }
+.mx-fig .data-table { font-size: 8pt; width: auto; margin: 0 auto; }
+.mx-fig .data-table th, .mx-fig .data-table td { padding: 0.3mm 2mm; }
+.ans-from { font-style: normal; font-size: 7pt; color: #6b4a00; }
+.howto .mx-from { display: inline-block; vertical-align: 1px; }
+:root { --accent: #d63384; --mb-dark: url(../../assets/mandelbrot/double-spiral-band.jpg); }
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  .ans-header h1 { font-size: 14pt; margin-bottom: 3mm; border-bottom: 0.5mm solid var(--sand); padding-bottom: 2mm; }
+  .ans-lesson { break-inside: auto; }
+  .ans-lesson h2 { break-inside: avoid; break-after: avoid; }
+  .ans-block { break-inside: avoid; }
+  .ans-page { font-size: 8.5pt; color: var(--muted); font-weight: 400; }
+  .theme-mb .ans-block ol.multi { columns: 3; column-gap: 8mm; }
+  .theme-mb .ans-block ol.multi li { break-inside: avoid; }
+  .theme-mb .ans-block { break-inside: auto; }
+  .ans-block ul.worked { list-style: none; padding: 0; columns: 3; column-gap: 7mm; }
+  .ans-block ul.worked li { break-inside: avoid; margin: 0 0 1.8mm; line-height: 1.3; }
+  .ans-block ul.worked .aw { color: #1a3fae; font-weight: 600; }
+  .ans-block ul.worked li b { display: inline-block; min-width: 7mm; }
+  .answers:has(.ans-mx) { columns: 1; }
+  .ans-block ul.worked.ans-mx, .ans-block ul.worked.ans-ex { display: block; border: 0; border-radius: 0; padding: 0; }
+  .ans-block ul.worked.ans-mx { columns: 4; column-gap: 5mm; }
+  .ans-block ul.worked.ans-mx li { margin: 0 0 0.9mm; line-height: 1.25; font-size: 8pt; }
+  .ans-block ul.worked.ans-mx li b { min-width: 5.5mm; }
+  .ans-block ul.worked.ans-ex li { font-size: 8.3pt; }</style></head><body class="theme-mb">
+  <div class="ans-header"><h1>Year 7 · Chapter 7 · Decimals: answers (teacher copy)</h1></div>
+  <div class="answers">
+  <div class="ans-lesson"><h2>7.01 Ordering decimals <span class="ans-page">(booklet p. 3)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> Which is larger: 0.7 or 0.65?<br><span class="aw">0.70 and 0.65 &ensp;·&ensp; larger: 0.7</span></li><li><b>E2</b> Order from smallest to largest: 2.3, 2.03, 2.33, 2.303<br><span class="aw">2.300, 2.030, 2.330, 2.303 &ensp;·&ensp; 2.03, 2.3, 2.303, 2.33</span></li><li><b>E3</b> Write &lt; or &gt;: 4.09 ☐ 4.1<br><span class="aw">4.09 and 4.10 &ensp;·&ensp; 4.09 &lt; 4.1</span></li></ul></div><div class="ans-block"><h3>Questions (39 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">0.79</span></li><li><b>2</b> <span class="aw">1 tenths (0.1)</span></li><li><b>3</b> <span class="aw">6.56 &gt; 6.4</span></li><li><b>4</b> <span class="aw">0.79</span></li><li><b>5</b> <span class="aw">1 tenths (0.1)</span></li><li><b>6</b> <span class="aw">6.01 &lt; 6.4</span></li><li><b>7</b> <span class="aw">0.76</span></li><li><b>8</b> <span class="aw">3 thousandths (0.003)</span></li><li><b>9</b> <span class="aw"><i>b</i> − 6</span> <em class="ans-from">5.04</em></li><li><b>10</b> <span class="aw">1 thousandths (0.001)</span></li><li><b>11</b> <span class="aw">3.29 &lt; 3.5</span></li><li><b>12</b> <span class="aw">0.18</span></li><li><b>13</b> <span class="aw"><span class="fr"><sup>8</sup><sub>15</sub></span></span> <em class="ans-from">4.12</em></li><li><b>14</b> <span class="aw">2.030, 2.330, 2.300, 2.303 · 2.03, 2.3, 2.303, 2.33</span></li><li><b>15</b> <span class="aw">4 hundredths (0.04)</span></li><li><b>16</b> <span class="aw">6.76 &lt; 6.9</span></li><li><b>17</b> <span class="aw">77.2</span> <em class="ans-from">4.11</em></li><li><b>18</b> <span class="aw">0.7</span></li><li><b>19</b> <span class="aw">9.707, 9.070, 9.700, 9.770 · 9.07, 9.7, 9.707, 9.77</span></li><li><b>20</b> <span class="aw">0.040, 0.500, 0.940, 0.762 · 0.94, 0.762, 0.5, 0.04</span></li><li><b>21</b> <span class="aw">x = 135</span> <em class="ans-from">6.07</em></li><li><b>22</b> <span class="aw">e.g. 0.45</span></li><li><b>23</b> <span class="aw">7.040, 7.404, 7.440, 7.400 · 7.04, 7.4, 7.404, 7.44</span></li><li><b>24</b> <span class="aw">8 × <i>b</i> × <i>t</i></span> <em class="ans-from">5.03</em></li><li><b>25</b> <span class="aw">0.594, 0.010, 0.100, 0.620 · 0.62, 0.594, 0.1, 0.01</span></li><li><b>26</b> <span class="aw">e.g. 0.25</span></li><li><b>27</b> <span class="aw">0.070, 0.170, 0.800, 0.795 · 0.8, 0.795, 0.17, 0.07</span></li><li><b>28</b> <span class="aw">e.g. 0.75</span></li><li><b>29</b> <span class="aw">0</span> <em class="ans-from">6.03</em></li><li><b>30</b> <span class="aw">9.050, 9.505, 9.550, 9.500 · 9.05, 9.5, 9.505, 9.55</span></li><li><b>31</b> <span class="aw">= 4<i>m</i> × 9<i>y</i> · = 36<i>m</i><i>y</i> cm²</span> <em class="ans-from">5.08</em></li><li><b>32</b> <span class="aw">distances: 0.1, 0.01, 0.1, 0.01 · closest: 2.01</span></li><li><b>33</b> <span class="aw">0.150, 0.495, 0.090, 0.300 · 0.495, 0.3, 0.15, 0.09</span></li><li><b>34</b> <span class="aw"><i>x</i> = 20</span> <em class="ans-from">5.10</em></li><li><b>35</b> <span class="aw">e.g. 0.15</span></li><li><b>36</b> <span class="aw">mirror image: each corner the same distance from the line, on the other side</span> <em class="ans-from">6.01</em></li><li><b>37</b> <span class="aw">distances: 0.01, 0.1, 0.01, 0.1 · closest: 2.01</span></li><li><b>38</b> <span class="aw">No. 0.3 = 0.30, and 30 &gt; 35.</span></li><li><b>39</b> <span class="aw">19</span> <em class="ans-from">5.13</em></li><li><b>40</b> <span class="aw">−0.9, −0.7, 0, 0.3</span></li><li><b>41</b> <span class="aw">= 41 + 59 + 33 + 29 · = 100 + 62 · = 162</span> <em class="ans-from">5.01</em></li><li><b>42</b> <span class="aw">distances: 0.1, 0.04, 0.05, 0.1 · closest: 5.04</span></li><li><b>43</b> <span class="aw">No. 0.4 = 0.40, and 40 &gt; 38.</span></li><li><b>44</b> <span class="aw">equilateral</span> <em class="ans-from">6.05</em></li><li><b>45</b> <span class="aw">−0.36, −0.3, 0, 0.2</span></li><li><b>46</b> <span class="aw"><i>P</i> = 2 × 9 + 2 × 10 · <i>P</i> = 38</span> <em class="ans-from">5.05</em></li><li><b>47</b> <span class="aw">−0.9, −0.39, 0, 0.6</span></li><li><b>48</b> <span class="aw">distances: 0.1, 0.1, 0.01, 0.01 · closest: 2.01</span></li><li><b>49</b> <span class="aw">a = 100</span> <em class="ans-from">6.09</em></li><li><b>50</b> <span class="aw">e.g. 0.65</span></li><li><b>51</b> <span class="aw">first image on the other side of the line; second image 2 squares below it</span> <em class="ans-from">6.02</em></li><li><b>52</b> <span class="aw">−0.88, −0.1, 0, 0.5</span></li><li><b>53</b> <span class="aw">distances: 0.09, 0.1, 0.01, 0.1 · closest: 0.99</span></li><li><b>54</b> <span class="aw"><i>a</i></span> <em class="ans-from">5.07</em></li><li><b>55</b> <span class="aw">e.g. 0.55</span></li><li><b>56</b> <span class="aw">360° ÷ 5 · = 72°</span> <em class="ans-from">6.04</em></li></ul></div></div><div class="ans-lesson"><h2>7.02 Decimals and fractions <span class="ans-page">(booklet p. 5)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> Write 0.45 as a fraction in simplest form.<br><span class="aw">= <span class="fr"><sup>45</sup><sub>100</sub></span> &ensp;·&ensp; = <span class="fr"><sup>9</sup><sub>20</sub></span></span></li><li><b>E2</b> Write <span class="fr"><sup>3</sup><sub>5</sub></span> as a decimal.<br><span class="aw">= <span class="fr"><sup>6</sup><sub>10</sub></span> &ensp;·&ensp; = 0.6</span></li><li><b>E3</b> Write 2.125 as a mixed numeral.<br><span class="aw">= 2 <span class="fr"><sup>125</sup><sub>1000</sub></span> &ensp;·&ensp; = 2<span class="fr"><sup>1</sup><sub>8</sub></span></span></li></ul></div><div class="ans-block"><h3>Questions (40 on today's skill, 16 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw"><span class="fr"><sup>1</sup><sub>10</sub></span></span></li><li><b>2</b> <span class="aw">0.28</span></li><li><b>3</b> <span class="aw">0.378</span></li><li><b>4</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span></span></li><li><b>5</b> <span class="aw">0.15</span></li><li><b>6</b> <span class="aw">0.718</span></li><li><b>7</b> <span class="aw"><span class="fr"><sup>1</sup><sub>5</sub></span></span></li><li><b>8</b> <span class="aw">0.14</span></li><li><b>9</b> <span class="aw">9 thousandths (0.009)</span> <em class="ans-from">7.01</em></li><li><b>10</b> <span class="aw">0.99</span></li><li><b>11</b> <span class="aw">0.472</span></li><li><b>12</b> <span class="aw"><span class="fr"><sup>7</sup><sub>10</sub></span></span></li><li><b>13</b> <span class="aw"><i>m</i> − 9</span> <em class="ans-from">5.04</em></li><li><b>14</b> <span class="aw">= <span class="fr"><sup>54</sup><sub>100</sub></span> · = <span class="fr"><sup>27</sup><sub>50</sub></span></span></li><li><b>15</b> <span class="aw">0.48</span></li><li><b>16</b> <span class="aw">0.024</span></li><li><b>17</b> <span class="aw"><span class="fr"><sup>3</sup><sub>2</sub></span></span> <em class="ans-from">4.01</em></li><li><b>18</b> <span class="aw"><span class="fr"><sup>3</sup><sub>10</sub></span></span></li><li><b>19</b> <span class="aw">= <span class="fr"><sup>65</sup><sub>100</sub></span> · = <span class="fr"><sup>13</sup><sub>20</sub></span></span></li><li><b>20</b> <span class="aw">= <span class="fr"><sup>15</sup><sub>100</sub></span> · = 0.15</span></li><li><b>21</b> <span class="aw">e.g. 0.35</span> <em class="ans-from">7.01</em></li><li><b>22</b> <span class="aw">= 8 <span class="fr"><sup>71</sup><sub>100</sub></span> · = 8<span class="fr"><sup>71</sup><sub>100</sub></span></span></li><li><b>23</b> <span class="aw">= <span class="fr"><sup>72</sup><sub>100</sub></span> · = <span class="fr"><sup>18</sup><sub>25</sub></span></span></li><li><b>24</b> <span class="aw">1</span> <em class="ans-from">6.03</em></li><li><b>25</b> <span class="aw">= <span class="fr"><sup>75</sup><sub>100</sub></span> · = 0.75</span></li><li><b>26</b> <span class="aw">= 1 <span class="fr"><sup>58</sup><sub>100</sub></span> · = 1<span class="fr"><sup>29</sup><sub>50</sub></span></span></li><li><b>27</b> <span class="aw">= <span class="fr"><sup>40</sup><sub>100</sub></span> · = 0.4</span></li><li><b>28</b> <span class="aw">= 2 <span class="fr"><sup>45</sup><sub>100</sub></span> · = 2<span class="fr"><sup>9</sup><sub>20</sub></span></span></li><li><b>29</b> <span class="aw">1<span class="fr"><sup>2</sup><sub>3</sub></span></span> <em class="ans-from">4.01</em></li><li><b>30</b> <span class="aw">= <span class="fr"><sup>2</sup><sub>100</sub></span> · = <span class="fr"><sup>1</sup><sub>50</sub></span></span></li><li><b>31</b> <span class="aw">7.060, 7.660, 7.606, 7.600 · 7.06, 7.6, 7.606, 7.66</span> <em class="ans-from">7.01</em></li><li><b>32</b> <span class="aw">= <span class="fr"><sup>375</sup><sub>1000</sub></span> · = <span class="fr"><sup>3</sup><sub>8</sub></span></span></li><li><b>33</b> <span class="aw">= <span class="fr"><sup>25</sup><sub>100</sub></span> · = 0.25</span></li><li><b>34</b> <span class="aw">= 19 + 81 + 15 + 79 · = 100 + 94 · = 194</span> <em class="ans-from">5.01</em></li><li><b>35</b> <span class="aw">= 8 <span class="fr"><sup>46</sup><sub>100</sub></span> · = 8<span class="fr"><sup>23</sup><sub>50</sub></span></span></li><li><b>36</b> <span class="aw"><span class="fr"><sup>5</sup><sub>6</sub></span></span> <em class="ans-from">4.01</em></li><li><b>37</b> <span class="aw">= <span class="fr"><sup>78</sup><sub>100</sub></span> · = <span class="fr"><sup>39</sup><sub>50</sub></span></span></li><li><b>38</b> <span class="aw">= <span class="fr"><sup>875</sup><sub>1000</sub></span> · = <span class="fr"><sup>7</sup><sub>8</sub></span></span></li><li><b>39</b> <span class="aw">0.48, 0.5, 0.6 · 0.48, <span class="fr"><sup>1</sup><sub>2</sub></span>, <span class="fr"><sup>3</sup><sub>5</sub></span></span></li><li><b>40</b> <span class="aw">0.900, 0.833, 0.430, 0.020 · 0.9, 0.833, 0.43, 0.02</span> <em class="ans-from">7.01</em></li><li><b>41</b> <span class="aw">No. 0.3 = <span class="fr"><sup>3</sup><sub>10</sub></span>, but <span class="fr"><sup>1</sup><sub>3</sub></span> = 0.333…</span></li><li><b>42</b> <span class="aw">121</span> <em class="ans-from">5.05</em></li><li><b>43</b> <span class="aw">= <span class="fr"><sup>25</sup><sub>1000</sub></span> · = <span class="fr"><sup>1</sup><sub>40</sub></span></span></li><li><b>44</b> <span class="aw">0.8, 0.7, 0.75 · 0.7, <span class="fr"><sup>3</sup><sub>4</sub></span>, <span class="fr"><sup>4</sup><sub>5</sub></span></span></li><li><b>45</b> <span class="aw"><span class="fr"><sup>9</sup><sub>4</sub></span></span> <em class="ans-from">4.01</em></li><li><b>46</b> <span class="aw">= <span class="fr"><sup>125</sup><sub>1000</sub></span> · = <span class="fr"><sup>1</sup><sub>8</sub></span></span></li><li><b>47</b> <span class="aw">e.g. 0.25</span> <em class="ans-from">7.01</em></li><li><b>48</b> <span class="aw">0.75, 0.8, 0.7 · 0.7, <span class="fr"><sup>3</sup><sub>4</sub></span>, <span class="fr"><sup>4</sup><sub>5</sub></span></span></li><li><b>49</b> <span class="aw">= <span class="fr"><sup>625</sup><sub>1000</sub></span> · = <span class="fr"><sup>5</sup><sub>8</sub></span></span></li><li><b>50</b> <span class="aw">obtuse-angled · scalene (no equal angles)</span> <em class="ans-from">6.05</em></li><li><b>51</b> <span class="aw">= 6 <span class="fr"><sup>36</sup><sub>100</sub></span> · = 6<span class="fr"><sup>9</sup><sub>25</sub></span></span></li><li><b>52</b> <span class="aw">1<span class="fr"><sup>1</sup><sub>4</sub></span></span> <em class="ans-from">4.01</em></li><li><b>53</b> <span class="aw">0.8, 0.75, 0.7 · 0.7, <span class="fr"><sup>3</sup><sub>4</sub></span>, <span class="fr"><sup>4</sup><sub>5</sub></span></span></li><li><b>54</b> <span class="aw">= <span class="fr"><sup>64</sup><sub>1000</sub></span> · = <span class="fr"><sup>8</sup><sub>125</sub></span></span></li><li><b>55</b> <span class="aw">2.010, 2.101, 2.100, 2.110 · 2.01, 2.1, 2.101, 2.11</span> <em class="ans-from">7.01</em></li><li><b>56</b> <span class="aw">= 3 <span class="fr"><sup>1</sup><sub>100</sub></span> · = 3<span class="fr"><sup>1</sup><sub>100</sub></span></span></li></ul></div></div><div class="ans-lesson"><h2>7.03 Adding and subtracting decimals <span class="ans-page">(booklet p. 7)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> 3.45 + 2.8<br><span class="aw">3.45 + 2.80 &ensp;·&ensp; = 6.25</span></li><li><b>E2</b> 7 − 2.36<br><span class="aw">7.00 − 2.36 &ensp;·&ensp; = 4.64</span></li><li><b>E3</b> A $20 note pays for a $13.85 meal. Find the change.<br><span class="aw">20.00 − 13.85 &ensp;·&ensp; = $6.15</span></li></ul></div><div class="ans-block"><h3>Questions (49 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">17.4</span></li><li><b>2</b> <span class="aw">3.9</span></li><li><b>3</b> <span class="aw">15.85</span></li><li><b>4</b> <span class="aw">19.1</span></li><li><b>5</b> <span class="aw">1</span></li><li><b>6</b> <span class="aw">13.97</span></li><li><b>7</b> <span class="aw">6.8</span></li><li><b>8</b> <span class="aw">5.3</span></li><li><b>9</b> <span class="aw">1 thousandths (0.001)</span> <em class="ans-from">7.01</em></li><li><b>10</b> <span class="aw">8.71</span></li><li><b>11</b> <span class="aw">4.8</span></li><li><b>12</b> <span class="aw">2</span></li><li><b>13</b> <span class="aw">11.25</span></li><li><b>14</b> <span class="aw">12.1</span></li><li><b>15</b> <span class="aw">8.5</span></li><li><b>16</b> <span class="aw">11.45</span></li><li><b>17</b> <span class="aw">1.8</span></li><li><b>18</b> <span class="aw">8.24</span></li><li><b>19</b> <span class="aw">5.6</span></li><li><b>20</b> <span class="aw">4 × 27 = 108 · 80 + 28 = 108</span> <em class="ans-from">5.02</em></li><li><b>21</b> <span class="aw">3.35 + 1.80 · = 5.15</span></li><li><b>22</b> <span class="aw">5.3</span></li><li><b>23</b> <span class="aw">7.27</span></li><li><b>24</b> <span class="aw">0.02</span> <em class="ans-from">7.02</em></li><li><b>25</b> <span class="aw">10</span></li><li><b>26</b> <span class="aw">2.53 + 3.30 · = 5.83</span></li><li><b>27</b> <span class="aw">2</span></li><li><b>28</b> <span class="aw">6.58 + 6.90 · = 13.48</span></li><li><b>29</b> <span class="aw">14.00 − 2.28 · = 11.72</span></li><li><b>30</b> <span class="aw">e.g. 0.85</span> <em class="ans-from">7.01</em></li><li><b>31</b> <span class="aw">20.00 − 2.07 · = $17.93</span></li><li><b>32</b> <span class="aw">2.82 + 7.30 · = 10.12</span></li><li><b>33</b> <span class="aw">a = 65</span> <em class="ans-from">6.06</em></li><li><b>34</b> <span class="aw">8.00 − 2.88 · = 5.12</span></li><li><b>35</b> <span class="aw">50.00 − 2.12 · = $47.88</span></li><li><b>36</b> <span class="aw">10.00 − 2.02 · = 7.98</span></li><li><b>37</b> <span class="aw">20.00 − 3.06 · = $16.94</span></li><li><b>38</b> <span class="aw">0.195</span> <em class="ans-from">7.02</em></li><li><b>39</b> <span class="aw">2.59 + 1.30 · = 3.89</span></li><li><b>40</b> <span class="aw">8.060, 8.606, 8.660, 8.600 · 8.06, 8.6, 8.606, 8.66</span> <em class="ans-from">7.01</em></li><li><b>41</b> <span class="aw">6.00 + 2.30 + 8.00 · = 16.3</span></li><li><b>42</b> <span class="aw">4.00 − 2.07 · = 1.93</span></li><li><b>43</b> <span class="aw">= 34 + 66 + 30 + 37 · = 100 + 67 · = 167</span> <em class="ans-from">5.01</em></li><li><b>44</b> <span class="aw">50.00 − 15.16 · = $34.84</span></li><li><b>45</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span></span> <em class="ans-from">7.02</em></li><li><b>46</b> <span class="aw">8.07 + 2.40 · = 10.47</span></li><li><b>47</b> <span class="aw">3.20 + 8.15 + 3.00 · = 14.35</span></li><li><b>48</b> <span class="aw">4.56 + 4.97 = 9.53 · 9.53 − 5 = 4.53 km</span></li><li><b>49</b> <span class="aw">0.865, 0.700, 0.860, 0.010 · 0.865, 0.86, 0.7, 0.01</span> <em class="ans-from">7.01</em></li><li><b>50</b> <span class="aw">☐ = 17.38 − 8.31 · ☐ = 9.07</span></li><li><b>51</b> <span class="aw"><i>n</i> = 3</span> <em class="ans-from">5.12</em></li><li><b>52</b> <span class="aw">line up the decimal points · 7.30 + 5.88 = 13.18</span></li><li><b>53</b> <span class="aw">4.70 + 8.58 + 3.00 · = 16.28</span></li><li><b>54</b> <span class="aw">0.94</span> <em class="ans-from">7.02</em></li><li><b>55</b> <span class="aw">2.55 + 4.18 = 6.73 · 6.73 − 5 = 1.73 km</span></li><li><b>56</b> <span class="aw">e.g. 0.15</span> <em class="ans-from">7.01</em></li><li><b>57</b> <span class="aw">3.93 + 4.11 = 8.04 · 8.04 − 5 = 3.04 km</span></li><li><b>58</b> <span class="aw">☐ = 10.54 − 2.33 · ☐ = 8.21</span></li><li><b>59</b> <span class="aw">11<i>p</i> = 231 · <i>p</i> = 21: 21 pencils</span> <em class="ans-from">5.13</em></li><li><b>60</b> <span class="aw">line up the decimal points · 7.80 + 8.60 = 16.4</span></li><li><b>61</b> <span class="aw">0.724</span> <em class="ans-from">7.02</em></li><li><b>62</b> <span class="aw">2.90 + 6.12 + 1.00 · = 10.02</span></li><li><b>63</b> <span class="aw">50.00 − 17.20 · = $32.80</span></li><li><b>64</b> <span class="aw">7.909, 7.990, 7.900, 7.090 · 7.09, 7.9, 7.909, 7.99</span> <em class="ans-from">7.01</em></li><li><b>65</b> <span class="aw">4.51 + 2.01 = 6.52 · 6.52 − 5 = 1.52 km</span></li><li><b>66</b> <span class="aw"><i>b</i> − 6</span> <em class="ans-from">5.04</em></li></ul></div></div><div class="ans-lesson"><h2>7.04 Multiplying and dividing by powers of 10 <span class="ans-page">(booklet p. 9)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> 3.47 × 100<br><span class="aw">digits 2 places left &ensp;·&ensp; = 347</span></li><li><b>E2</b> 52.6 ÷ 1000<br><span class="aw">digits 3 places right &ensp;·&ensp; = 0.0526</span></li><li><b>E3</b> Change 4.5 kg to grams.<br><span class="aw">1 kg = 1000 g &ensp;·&ensp; 4.5 × 1000 = 4 500 g</span></li></ul></div><div class="ans-block"><h3>Questions (49 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">6 910</span></li><li><b>2</b> <span class="aw">9.64</span></li><li><b>3</b> <span class="aw">0.14</span></li><li><b>4</b> <span class="aw">89.2</span></li><li><b>5</b> <span class="aw">0.0702</span></li><li><b>6</b> <span class="aw">0.6</span></li><li><b>7</b> <span class="aw">48.8</span></li><li><b>8</b> <span class="aw">0.23</span></li><li><b>9</b> <span class="aw">5.1</span> <em class="ans-from">7.03</em></li><li><b>10</b> <span class="aw">2.1</span></li><li><b>11</b> <span class="aw">573</span></li><li><b>12</b> <span class="aw">0.0898</span></li><li><b>13</b> <span class="aw">0.15</span></li><li><b>14</b> <span class="aw">13.1</span></li><li><b>15</b> <span class="aw">4.2</span></li><li><b>16</b> <span class="aw">0.37</span></li><li><b>17</b> <span class="aw">6.61</span></li><li><b>18</b> <span class="aw">0.21</span></li><li><b>19</b> <span class="aw">76.8</span></li><li><b>20</b> <span class="aw">4 right, 3 up</span> <em class="ans-from">6.01</em></li><li><b>21</b> <span class="aw">1 km = 1 000 m · 9.7 × 1 000 = 9 700 m</span></li><li><b>22</b> <span class="aw">0.0901</span></li><li><b>23</b> <span class="aw">0.28</span></li><li><b>24</b> <span class="aw">680</span> <em class="ans-from">3.02</em></li><li><b>25</b> <span class="aw">874</span></li><li><b>26</b> <span class="aw">1 km = 1 000 m · 0.34 × 1 000 = 340 m</span></li><li><b>27</b> <span class="aw">0.0605</span></li><li><b>28</b> <span class="aw">1 kg = 1 000 g · 8.97 × 1 000 = 8 970 g</span></li><li><b>29</b> <span class="aw">100 cm = 1 m · 32 ÷ 100 = 0.32 m</span></li><li><b>30</b> <span class="aw">= <span class="fr"><sup>62</sup><sub>100</sub></span> · = 0.62</span> <em class="ans-from">7.02</em></li><li><b>31</b> <span class="aw">100</span></li><li><b>32</b> <span class="aw">1 L = 1 000 mL · 2.83 × 1 000 = 2 830 mL</span></li><li><b>33</b> <span class="aw">a = 120</span> <em class="ans-from">6.09</em></li><li><b>34</b> <span class="aw">10 mm = 1 cm · 630 ÷ 10 = 63 cm</span></li><li><b>35</b> <span class="aw">100</span></li><li><b>36</b> <span class="aw">10 mm = 1 cm · 210 ÷ 10 = 21 cm</span></li><li><b>37</b> <span class="aw">1 000</span></li><li><b>38</b> <span class="aw">7 thousandths (0.007)</span> <em class="ans-from">7.01</em></li><li><b>39</b> <span class="aw">1 cm = 10 mm · 3.08 × 10 = 30.8 mm</span></li><li><b>40</b> <span class="aw">20.00 − 2.06 · = $17.94</span> <em class="ans-from">7.03</em></li><li><b>41</b> <span class="aw">☐ = 95 ÷ 1 000 · ☐ = 0.095</span></li><li><b>42</b> <span class="aw">10 mm = 1 cm · 254 ÷ 10 = 25.4 cm</span></li><li><b>43</b> <span class="aw">18 ÷ 6 = 3 · = 3<i>x</i></span> <em class="ans-from">5.09</em></li><li><b>44</b> <span class="aw">10</span></li><li><b>45</b> <span class="aw">560</span> <em class="ans-from">3.02</em></li><li><b>46</b> <span class="aw">1 cm = 10 mm · 8.75 × 10 = 87.5 mm</span></li><li><b>47</b> <span class="aw">☐ = 3.3 ÷ 100 · ☐ = 0.033</span></li><li><b>48</b> <span class="aw">= 4 250 ÷ 1000 · = 4.25</span></li><li><b>49</b> <span class="aw">= 4 <span class="fr"><sup>26</sup><sub>100</sub></span> · = 4<span class="fr"><sup>13</sup><sub>50</sub></span></span> <em class="ans-from">7.02</em></li><li><b>50</b> <span class="aw">1000 pens: $1 500 · 10 pens: $15.00</span></li><li><b>51</b> <span class="aw"><i>m</i> − 7</span> <em class="ans-from">5.04</em></li><li><b>52</b> <span class="aw">☐ = 79 ÷ 1 000 · ☐ = 0.079</span></li><li><b>53</b> <span class="aw">= 3 780 ÷ 1000 · = 3.78</span></li><li><b>54</b> <span class="aw">8.24 &lt; 8.7</span> <em class="ans-from">7.01</em></li><li><b>55</b> <span class="aw">1000 pens: $5 370 · 10 pens: $53.70</span></li><li><b>56</b> <span class="aw">1.18 + 7.30 · = 8.48</span> <em class="ans-from">7.03</em></li><li><b>57</b> <span class="aw">= 9 440 ÷ 1000 · = 9.44</span></li><li><b>58</b> <span class="aw">1000 pens: $8 110 · 10 pens: $81.10</span></li><li><b>59</b> <span class="aw">= 5<i>c</i> + 4<i>t</i> + 5<i>c</i> + 4<i>t</i> · = 10<i>c</i> + 8<i>t</i></span> <em class="ans-from">5.07</em></li><li><b>60</b> <span class="aw">☐ = 89 ÷ 1 000 · ☐ = 0.089</span></li><li><b>61</b> <span class="aw">= 40 × 6 + 4 × 6 · = 240 + 24 · = 264</span> <em class="ans-from">3.02</em></li><li><b>62</b> <span class="aw">10</span></li><li><b>63</b> <span class="aw">= 6 980 ÷ 1000 · = 6.98</span></li><li><b>64</b> <span class="aw">= <span class="fr"><sup>56</sup><sub>100</sub></span> · = <span class="fr"><sup>14</sup><sub>25</sub></span></span> <em class="ans-from">7.02</em></li><li><b>65</b> <span class="aw">1000 pens: $6 840 · 10 pens: $68.40</span></li><li><b>66</b> <span class="aw">a full turn: back where it started</span> <em class="ans-from">6.02</em></li></ul></div></div><div class="ans-lesson"><h2>7.05 Using a known product <span class="ans-page">(booklet p. 11)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> Given 36 × 7 = 252, find 3.6 × 7.<br><span class="aw">1 decimal place &ensp;·&ensp; = 25.2</span></li><li><b>E2</b> Given 36 × 7 = 252, find 0.36 × 0.7.<br><span class="aw">2 + 1 = 3 decimal places &ensp;·&ensp; = 0.252</span></li><li><b>E3</b> Given 252 ÷ 7 = 36, find 25.2 ÷ 7.<br><span class="aw">25.2 is 252 ÷ 10 &ensp;·&ensp; = 3.6</span></li></ul></div><div class="ans-block"><h3>Questions (40 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">27.9</span></li><li><b>2</b> <span class="aw">13.5</span></li><li><b>3</b> <span class="aw">0.63</span></li><li><b>4</b> <span class="aw">23.4</span></li><li><b>5</b> <span class="aw">10.5</span></li><li><b>6</b> <span class="aw">1.2</span></li><li><b>7</b> <span class="aw">13.5</span></li><li><b>8</b> <span class="aw">24.6</span></li><li><b>9</b> <span class="aw">0.176</span> <em class="ans-from">7.04</em></li><li><b>10</b> <span class="aw">7.5</span></li><li><b>11</b> <span class="aw">2.4</span></li><li><b>12</b> <span class="aw">31.2</span></li><li><b>13</b> <span class="aw">equilateral</span> <em class="ans-from">6.05</em></li><li><b>14</b> <span class="aw">1 + 1 = 2 decimal places · = 1.11</span></li><li><b>15</b> <span class="aw">13.2</span></li><li><b>16</b> <span class="aw">3.42</span></li><li><b>17</b> <span class="aw">2.3</span> <em class="ans-from">7.03</em></li><li><b>18</b> <span class="aw">15.5</span></li><li><b>19</b> <span class="aw">1 + 1 = 2 decimal places · = 0.98</span></li><li><b>20</b> <span class="aw">21.5 = 215 ÷ 10 · = 4.3</span></li><li><b>21</b> <span class="aw">0.391, 0.850, 0.900, 0.050 · 0.9, 0.85, 0.391, 0.05</span> <em class="ans-from">7.01</em></li><li><b>22</b> <span class="aw">2 decimal places · = 18.13</span></li><li><b>23</b> <span class="aw">1 + 1 = 2 decimal places · = 2.88</span></li><li><b>24</b> <span class="aw">= <span class="fr"><sup>12</sup><sub>100</sub></span> · = 0.12</span> <em class="ans-from">7.02</em></li><li><b>25</b> <span class="aw">28.8 = 288 ÷ 10 · = 3.6</span></li><li><b>26</b> <span class="aw">2 decimal places · = 16.25</span></li><li><b>27</b> <span class="aw">10.2 = 102 ÷ 10 · = 3.4</span></li><li><b>28</b> <span class="aw">2 decimal places · = 22.2</span></li><li><b>29</b> <span class="aw">49</span> <em class="ans-from">5.05</em></li><li><b>30</b> <span class="aw">1 + 1 = 2 decimal places · = 1.68</span></li><li><b>31</b> <span class="aw">6.1 &lt; 6.3</span> <em class="ans-from">7.01</em></li><li><b>32</b> <span class="aw">1 + 2 = 3 decimal places · = 1.014</span></li><li><b>33</b> <span class="aw">25.8 = 258 ÷ 10 · = 4.3</span></li><li><b>34</b> <span class="aw">4.8</span> <em class="ans-from">7.04</em></li><li><b>35</b> <span class="aw">2 decimal places · = 5.19</span></li><li><b>36</b> <span class="aw">50.00 − 1.56 · = $48.44</span> <em class="ans-from">7.03</em></li><li><b>37</b> <span class="aw">1 + 1 = 2 decimal places · = 0.6</span></li><li><b>38</b> <span class="aw">1 + 2 = 3 decimal places · = 0.486</span></li><li><b>39</b> <span class="aw">×10 and ÷10 cancel · = 156</span></li><li><b>40</b> <span class="aw">first: 4<i>t</i> · = 4<i>t</i> + 11</span> <em class="ans-from">5.04</em></li><li><b>41</b> <span class="aw">= 8 ÷ 5 · = 1.6</span></li><li><b>42</b> <span class="aw">0.428</span> <em class="ans-from">7.02</em></li><li><b>43</b> <span class="aw">1 + 2 = 3 decimal places · = 0.85</span></li><li><b>44</b> <span class="aw">×10 and ÷10 cancel · = 437</span></li><li><b>45</b> <span class="aw">2.900, 2.990, 2.090, 2.909 · 2.09, 2.9, 2.909, 2.99</span> <em class="ans-from">7.01</em></li><li><b>46</b> <span class="aw">= 24 ÷ 6 · = 4</span></li><li><b>47</b> <span class="aw">1 m = 100 cm · 5.53 × 100 = 553 cm</span> <em class="ans-from">7.04</em></li><li><b>48</b> <span class="aw">×10 and ÷10 cancel · = 550</span></li><li><b>49</b> <span class="aw">= 8 ÷ 4 · = 2</span></li><li><b>50</b> <span class="aw"><i>n</i><sup>2</sup></span> <em class="ans-from">5.03</em></li><li><b>51</b> <span class="aw">1 + 2 = 3 decimal places · = 0.336</span></li><li><b>52</b> <span class="aw">3 hundredths (0.03)</span> <em class="ans-from">7.01</em></li><li><b>53</b> <span class="aw">2 decimal places · = 35.2</span></li><li><b>54</b> <span class="aw">×10 and ÷10 cancel · = 368</span></li><li><b>55</b> <span class="aw">16.8</span> <em class="ans-from">7.03</em></li><li><b>56</b> <span class="aw">= 12.4 ÷ 4 · = 3.1</span></li><li><b>57</b> <span class="aw">= <span class="fr"><sup>34</sup><sub>100</sub></span> · = <span class="fr"><sup>17</sup><sub>50</sub></span></span> <em class="ans-from">7.02</em></li></ul></div></div><div class="ans-lesson"><h2>7.06 Multiplying decimals <span class="ans-page">(booklet p. 13)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> 0.3 × 0.4<br><span class="aw">3 × 4 = 12, 2 decimal places &ensp;·&ensp; = 0.12</span></li><li><b>E2</b> 2.5 × 1.2<br><span class="aw">25 × 12 = 300, 2 decimal places &ensp;·&ensp; = 3.00 = 3</span></li><li><b>E3</b> 4.6 × 0.3<br><span class="aw">46 × 3 = 138, 2 decimal places &ensp;·&ensp; = 1.38</span></li></ul></div><div class="ans-block"><h3>Questions (49 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">0.5</span></li><li><b>2</b> <span class="aw">0.4</span></li><li><b>3</b> <span class="aw">38.4</span></li><li><b>4</b> <span class="aw">5.4</span></li><li><b>5</b> <span class="aw">0.12</span></li><li><b>6</b> <span class="aw">12.2</span></li><li><b>7</b> <span class="aw">3.6</span></li><li><b>8</b> <span class="aw">0.03</span></li><li><b>9</b> <span class="aw">9.3</span> <em class="ans-from">7.05</em></li><li><b>10</b> <span class="aw">7.5</span></li><li><b>11</b> <span class="aw">0.9</span></li><li><b>12</b> <span class="aw">0.35</span></li><li><b>13</b> <span class="aw">9.6</span></li><li><b>14</b> <span class="aw">6.4</span></li><li><b>15</b> <span class="aw">0.45</span></li><li><b>16</b> <span class="aw">62.4</span></li><li><b>17</b> <span class="aw">0.06</span></li><li><b>18</b> <span class="aw">23.1</span></li><li><b>19</b> <span class="aw">4.9</span></li><li><b>20</b> <span class="aw">62.1</span> <em class="ans-from">4.11</em></li><li><b>21</b> <span class="aw">26 × 3 = 78, 2 decimal places · = 0.78</span></li><li><b>22</b> <span class="aw">0.81</span></li><li><b>23</b> <span class="aw">20.7</span></li><li><b>24</b> <span class="aw">3.39</span> <em class="ans-from">7.04</em></li><li><b>25</b> <span class="aw">2.5</span></li><li><b>26</b> <span class="aw">71 × 5 = 355, 2 decimal places · = 3.55</span></li><li><b>27</b> <span class="aw">0.16</span></li><li><b>28</b> <span class="aw">31 × 7 = 217, 2 decimal places · = 2.17</span></li><li><b>29</b> <span class="aw">793 × 4 = 3172, 2 decimal places · = 31.72</span></li><li><b>30</b> <span class="aw">0.494, 0.500, 0.210, 0.040 · 0.5, 0.494, 0.21, 0.04</span> <em class="ans-from">7.01</em></li><li><b>31</b> <span class="aw">11 × 18 = 198 · = 1.98 m²</span></li><li><b>32</b> <span class="aw">0.8 × 0.8 · = 0.64</span></li><li><b>33</b> <span class="aw">17.00 − 1.38 · = 15.62</span> <em class="ans-from">7.03</em></li><li><b>34</b> <span class="aw">92 × 4 = 368, 2 decimal places · = 3.68</span></li><li><b>35</b> <span class="aw">456 × 4 = 1824, 2 decimal places · = 18.24</span></li><li><b>36</b> <span class="aw">148 × 9 = 1332, 2 decimal places · = 13.32</span></li><li><b>37</b> <span class="aw">47 × 15 = 705 · = 7.05 m²</span></li><li><b>38</b> <span class="aw">a = 75</span> <em class="ans-from">6.06</em></li><li><b>39</b> <span class="aw">0.4 × 0.4 · = 0.16</span></li><li><b>40</b> <span class="aw">0.61</span> <em class="ans-from">7.02</em></li><li><b>41</b> <span class="aw">40 × 9 = 360, 2 decimal places · = 3.6</span></li><li><b>42</b> <span class="aw">4.8 × 5.70 = 27.36 · ≈ $27.36</span></li><li><b>43</b> <span class="aw">2.52</span> <em class="ans-from">7.05</em></li><li><b>44</b> <span class="aw">552 × 3 = 1656, 2 decimal places · = 16.56</span></li><li><b>45</b> <span class="aw">10</span> <em class="ans-from">7.04</em></li><li><b>46</b> <span class="aw">24 × 11 = 264 · = 2.64 m²</span></li><li><b>47</b> <span class="aw">1.4 × 2.09 = 2.926 · ≈ $2.93</span></li><li><b>48</b> <span class="aw">75 × 73 = 5475, 3 decimal places · = 5.475</span></li><li><b>49</b> <span class="aw">360° ÷ 3 · = 120°</span> <em class="ans-from">6.04</em></li><li><b>50</b> <span class="aw">Smaller: multiplying by 0.9, which is less than 1, makes it smaller (0.72).</span></li><li><b>51</b> <span class="aw">10.55</span> <em class="ans-from">7.03</em></li><li><b>52</b> <span class="aw">3.6 × 8.07 = 29.052 · ≈ $29.05</span></li><li><b>53</b> <span class="aw">12 × 14 = 168, 3 decimal places · = 0.168</span></li><li><b>54</b> <span class="aw">e.g. 0.15</span> <em class="ans-from">7.01</em></li><li><b>55</b> <span class="aw">Smaller: multiplying by 0.4, which is less than 1, makes it smaller (1).</span></li><li><b>56</b> <span class="aw">1 + 1 = 2 decimal places · = 1.7</span> <em class="ans-from">7.05</em></li><li><b>57</b> <span class="aw">16 × 45 = 720, 3 decimal places · = 0.72</span></li><li><b>58</b> <span class="aw">Smaller: multiplying by 0.3, which is less than 1, makes it smaller (0.18).</span></li><li><b>59</b> <span class="aw">40 cm</span> <em class="ans-from">6.10</em></li><li><b>60</b> <span class="aw">3.3 × 5.72 = 18.876 · ≈ $18.88</span></li><li><b>61</b> <span class="aw">0.876</span> <em class="ans-from">7.02</em></li><li><b>62</b> <span class="aw">0.7 × 0.7 · = 0.49</span></li><li><b>63</b> <span class="aw">29 × 27 = 783, 3 decimal places · = 0.783</span></li><li><b>64</b> <span class="aw">328</span> <em class="ans-from">7.04</em></li><li><b>65</b> <span class="aw">Smaller: multiplying by 0.5, which is less than 1, makes it smaller (0.2).</span></li><li><b>66</b> <span class="aw">2.99 + 3.00 · = 5.99</span> <em class="ans-from">7.03</em></li></ul></div></div><div class="ans-lesson"><h2>7.07 Dividing decimals by whole numbers <span class="ans-page">(booklet p. 15)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> 8.4 ÷ 4<br><span class="aw">8 ÷ 4 = 2, 4 tenths ÷ 4 = 1 tenth &ensp;·&ensp; = 2.1</span></li><li><b>E2</b> 7.5 ÷ 6<br><span class="aw">7.50 ÷ 6 &ensp;·&ensp; = 1.25</span></li><li><b>E3</b> $14.70 is shared by 3 people. How much each?<br><span class="aw">14.70 ÷ 3 &ensp;·&ensp; = $4.90</span></li></ul></div><div class="ans-block"><h3>Questions (49 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">1.8</span></li><li><b>2</b> <span class="aw">6.84</span></li><li><b>3</b> <span class="aw">0.7</span></li><li><b>4</b> <span class="aw">4.5</span></li><li><b>5</b> <span class="aw">2.47</span></li><li><b>6</b> <span class="aw">0.2</span></li><li><b>7</b> <span class="aw">6.7</span></li><li><b>8</b> <span class="aw">8.51</span></li><li><b>9</b> <span class="aw">0.56</span> <em class="ans-from">7.06</em></li><li><b>10</b> <span class="aw">0.8</span></li><li><b>11</b> <span class="aw">6.9</span></li><li><b>12</b> <span class="aw">8.04</span></li><li><b>13</b> <span class="aw">0.3</span></li><li><b>14</b> <span class="aw">7.6</span></li><li><b>15</b> <span class="aw">1.2</span></li><li><b>16</b> <span class="aw">0.4</span></li><li><b>17</b> <span class="aw">6.84</span></li><li><b>18</b> <span class="aw">0.1</span></li><li><b>19</b> <span class="aw">9.3</span></li><li><b>20</b> <span class="aw">square</span> <em class="ans-from">6.08</em></li><li><b>21</b> <span class="aw">7.400 ÷ 5 · = 1.48</span></li><li><b>22</b> <span class="aw">5.19</span></li><li><b>23</b> <span class="aw">0.3</span></li><li><b>24</b> <span class="aw">5</span> <em class="ans-from">3.03</em></li><li><b>25</b> <span class="aw">6.2</span></li><li><b>26</b> <span class="aw">8.900 ÷ 4 · = 2.225</span></li><li><b>27</b> <span class="aw">6.19</span></li><li><b>28</b> <span class="aw">3.000 ÷ 4 · = 0.75</span></li><li><b>29</b> <span class="aw">42.30 ÷ 5 · = $8.46</span></li><li><b>30</b> <span class="aw">0.050, 0.800, 0.240, 0.861 · 0.861, 0.8, 0.24, 0.05</span> <em class="ans-from">7.01</em></li><li><b>31</b> <span class="aw">divide each place in turn · = 3.16</span></li><li><b>32</b> <span class="aw">6.900 ÷ 4 · = 1.725</span></li><li><b>33</b> <span class="aw">14.1 = 141 ÷ 10 · = 4.7</span> <em class="ans-from">7.05</em></li><li><b>34</b> <span class="aw">12.52 ÷ 2 · = $6.26</span></li><li><b>35</b> <span class="aw">divide each place in turn · = 1.769</span></li><li><b>36</b> <span class="aw">44.04 ÷ 6 · = $7.34</span></li><li><b>37</b> <span class="aw">divide each place in turn · = 4.474</span></li><li><b>38</b> <span class="aw">6 × 39 = 234 · 180 + 54 = 234</span> <em class="ans-from">5.02</em></li><li><b>39</b> <span class="aw">6.100 ÷ 4 · = 1.525</span></li><li><b>40</b> <span class="aw">0.56</span> <em class="ans-from">7.02</em></li><li><b>41</b> <span class="aw">total: 31.6 · 31.6 ÷ 4 = 7.9</span></li><li><b>42</b> <span class="aw">20.22 ÷ 6 · = $3.37</span></li><li><b>43</b> <span class="aw">2.32</span> <em class="ans-from">7.04</em></li><li><b>44</b> <span class="aw">divide each place in turn · = 3.106</span></li><li><b>45</b> <span class="aw">49 × 14 = 686 · = 6.86 m²</span> <em class="ans-from">7.06</em></li><li><b>46</b> <span class="aw">2.600 ÷ 8 · = 0.325</span></li><li><b>47</b> <span class="aw">total: 29 · 29 ÷ 4 = 7.25</span></li><li><b>48</b> <span class="aw">4.4 ÷ 8 · = 0.55 m</span></li><li><b>49</b> <span class="aw">y + 70 = 125 · y = 55°</span> <em class="ans-from">6.07</em></li><li><b>50</b> <span class="aw">☐ = 6.88 ÷ 8 · ☐ = 0.86</span></li><li><b>51</b> <span class="aw">5</span> <em class="ans-from">3.03</em></li><li><b>52</b> <span class="aw">total: 13.4 · 13.4 ÷ 4 = 3.35</span></li><li><b>53</b> <span class="aw">3.4 ÷ 5 · = 0.68 m</span></li><li><b>54</b> <span class="aw">10.00 − 2.48 · = 7.52</span> <em class="ans-from">7.03</em></li><li><b>55</b> <span class="aw">☐ = 6.3 ÷ 9 · ☐ = 0.7</span></li><li><b>56</b> <span class="aw">2 decimal places · = 14.49</span> <em class="ans-from">7.05</em></li><li><b>57</b> <span class="aw">1.7 ÷ 4 · = 0.425 m</span></li><li><b>58</b> <span class="aw">☐ = 7.92 ÷ 9 · ☐ = 0.88</span></li><li><b>59</b> <span class="aw">23.2</span> <em class="ans-from">4.11</em></li><li><b>60</b> <span class="aw">total: 26.6 · 26.6 ÷ 4 = 6.65</span></li><li><b>61</b> <span class="aw">4.24 &lt; 4.6</span> <em class="ans-from">7.01</em></li><li><b>62</b> <span class="aw">divide each place in turn · = 4.436</span></li><li><b>63</b> <span class="aw">2.9 ÷ 5 · = 0.58 m</span></li><li><b>64</b> <span class="aw">0.03</span> <em class="ans-from">7.04</em></li><li><b>65</b> <span class="aw">☐ = 1.71 ÷ 9 · ☐ = 0.19</span></li><li><b>66</b> <span class="aw">0.8 × 0.8 · = 0.64</span> <em class="ans-from">7.06</em></li></ul></div></div><div class="ans-lesson"><h2>7.08 Dividing by a decimal <span class="ans-page">(booklet p. 17)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> 4.8 ÷ 0.6<br><span class="aw">× 10: 48 ÷ 6 &ensp;·&ensp; = 8</span></li><li><b>E2</b> 1.25 ÷ 0.05<br><span class="aw">× 100: 125 ÷ 5 &ensp;·&ensp; = 25</span></li><li><b>E3</b> How many 0.3 L cups can be filled from 2.4 L?<br><span class="aw">2.4 ÷ 0.3 = 24 ÷ 3 &ensp;·&ensp; = 8 cups</span></li></ul></div><div class="ans-block"><h3>Questions (48 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">80</span></li><li><b>2</b> <span class="aw">4</span></li><li><b>3</b> <span class="aw">70</span></li><li><b>4</b> <span class="aw">14</span></li><li><b>5</b> <span class="aw">6</span></li><li><b>6</b> <span class="aw">30</span></li><li><b>7</b> <span class="aw">50</span></li><li><b>8</b> <span class="aw">8</span></li><li><b>9</b> <span class="aw">4.37</span> <em class="ans-from">7.07</em></li><li><b>10</b> <span class="aw">15</span></li><li><b>11</b> <span class="aw">90</span></li><li><b>12</b> <span class="aw">2</span></li><li><b>13</b> <span class="aw">74</span></li><li><b>14</b> <span class="aw">30</span></li><li><b>15</b> <span class="aw">5</span></li><li><b>16</b> <span class="aw">21</span></li><li><b>17</b> <span class="aw">8</span></li><li><b>18</b> <span class="aw">51</span></li><li><b>19</b> <span class="aw">15</span></li><li><b>20</b> <span class="aw">9</span> <em class="ans-from">5.05</em></li><li><b>21</b> <span class="aw">× 10: 234 ÷ 9 · = 26</span></li><li><b>22</b> <span class="aw">7</span></li><li><b>23</b> <span class="aw">79</span></li><li><b>24</b> <span class="aw">0.21</span> <em class="ans-from">7.06</em></li><li><b>25</b> <span class="aw">20</span></li><li><b>26</b> <span class="aw">× 10: 184 ÷ 8 · = 23</span></li><li><b>27</b> <span class="aw">9</span></li><li><b>28</b> <span class="aw">× 10: 104 ÷ 8 · = 13</span></li><li><b>29</b> <span class="aw">× 100: 114 ÷ 6 · = 19</span></li><li><b>30</b> <span class="aw">0.838, 0.600, 0.430, 0.060 · 0.838, 0.6, 0.43, 0.06</span> <em class="ans-from">7.01</em></li><li><b>31</b> <span class="aw">2.5 ÷ 0.5 · = 5 cups</span></li><li><b>32</b> <span class="aw">× 10: 120 ÷ 5 · = 24</span></li><li><b>33</b> <span class="aw">31.5 = 315 ÷ 10 · = 3.5</span> <em class="ans-from">7.05</em></li><li><b>34</b> <span class="aw">× 100: 81 ÷ 3 · = 27</span></li><li><b>35</b> <span class="aw">4.8 ÷ 0.4 · = 12 cups</span></li><li><b>36</b> <span class="aw">× 100: 84 ÷ 3 · = 28</span></li><li><b>37</b> <span class="aw">1.6 ÷ 0.2 · = 8 cups</span></li><li><b>38</b> <span class="aw">7 right, 1 down</span> <em class="ans-from">6.01</em></li><li><b>39</b> <span class="aw">× 10: 72 ÷ 3 · = 24</span></li><li><b>40</b> <span class="aw">0.92</span> <em class="ans-from">7.02</em></li><li><b>41</b> <span class="aw">× 10: 84 ÷ 14 · = 6</span></li><li><b>42</b> <span class="aw">× 100: 54 ÷ 6 · = 9</span></li><li><b>43</b> <span class="aw">0.7</span> <em class="ans-from">7.07</em></li><li><b>44</b> <span class="aw">3.5 ÷ 0.5 · = 7 cups</span></li><li><b>45</b> <span class="aw">31 × 34 = 1054 · = 10.54 m²</span> <em class="ans-from">7.06</em></li><li><b>46</b> <span class="aw">× 10: 130 ÷ 13 · = 10</span></li><li><b>47</b> <span class="aw">Larger: dividing by a number less than 1 gives more (30).</span></li><li><b>48</b> <span class="aw"><span class="fr"><sup><i>x</i></sup><sub>6</sub></span> = 5 · <i>x</i> = 5 × 6 = 30</span> <em class="ans-from">5.12</em></li><li><b>49</b> <span class="aw">1.40 ÷ 0.07 = 140 ÷ 7 · = 20 pencils</span></li><li><b>50</b> <span class="aw">0.57</span> <em class="ans-from">7.05</em></li><li><b>51</b> <span class="aw">× 10: 275 ÷ 25 · = 11</span></li><li><b>52</b> <span class="aw">Larger: dividing by a number less than 1 gives more (24).</span></li><li><b>53</b> <span class="aw">16.00 − 1.13 · = 14.87</span> <em class="ans-from">7.03</em></li><li><b>54</b> <span class="aw">1.80 ÷ 0.15 = 180 ÷ 15 · = 12 pencils</span></li><li><b>55</b> <span class="aw">3.600 ÷ 4 · = 0.9</span> <em class="ans-from">7.07</em></li><li><b>56</b> <span class="aw">Larger: dividing by a number less than 1 gives more (40).</span></li><li><b>57</b> <span class="aw">0.88 ÷ 0.08 = 88 ÷ 8 · = 11 pencils</span></li><li><b>58</b> <span class="aw">2</span> <em class="ans-from">6.04</em></li><li><b>59</b> <span class="aw">× 10: 48 ÷ 16 · = 3</span></li><li><b>60</b> <span class="aw">3.3</span> <em class="ans-from">7.04</em></li><li><b>61</b> <span class="aw">3.2 ÷ 0.4 · = 8 cups</span></li><li><b>62</b> <span class="aw">Larger: dividing by a number less than 1 gives more (10).</span></li><li><b>63</b> <span class="aw">3.2</span> <em class="ans-from">7.06</em></li><li><b>64</b> <span class="aw">0.75 ÷ 0.15 = 75 ÷ 15 · = 5 pencils</span></li><li><b>65</b> <span class="aw">1 + 1 = 2 decimal places · = 2.72</span> <em class="ans-from">7.05</em></li></ul></div></div><div class="ans-lesson"><h2>7.09 Fractions to decimals <span class="ans-page">(booklet p. 19)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> Write <span class="fr"><sup>3</sup><sub>8</sub></span> as a decimal.<br><span class="aw">3.000 ÷ 8 &ensp;·&ensp; = 0.375</span></li><li><b>E2</b> Write <span class="fr"><sup>2</sup><sub>3</sub></span> as a decimal.<br><span class="aw">2.000 ÷ 3 = 0.666… &ensp;·&ensp; = 0.<span class="rec">6</span></span></li><li><b>E3</b> Write <span class="fr"><sup>5</sup><sub>11</sub></span> as a decimal.<br><span class="aw">5 ÷ 11 = 0.4545… &ensp;·&ensp; = 0.<span class="rec">4</span><span class="rec">5</span></span></li></ul></div><div class="ans-block"><h3>Questions (40 on today's skill, 17 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">0.375</span></li><li><b>2</b> <span class="aw">0.1<span class="rec">6</span></span></li><li><b>3</b> <span class="aw"><span class="fr"><sup>1</sup><sub>3</sub></span></span></li><li><b>4</b> <span class="aw">0.75</span></li><li><b>5</b> <span class="aw">0.<span class="rec">6</span></span></li><li><b>6</b> <span class="aw"><span class="fr"><sup>1</sup><sub>9</sub></span></span></li><li><b>7</b> <span class="aw">0.5</span></li><li><b>8</b> <span class="aw">0.8<span class="rec">3</span></span></li><li><b>9</b> <span class="aw">0.08</span> <em class="ans-from">7.02</em></li><li><b>10</b> <span class="aw">0.<span class="rec">1</span></span></li><li><b>11</b> <span class="aw"><span class="fr"><sup>2</sup><sub>3</sub></span></span></li><li><b>12</b> <span class="aw">0.8</span></li><li><b>13</b> <span class="aw">equilateral</span> <em class="ans-from">6.05</em></li><li><b>14</b> <span class="aw">7 ÷ 8 · = 0.875</span></li><li><b>15</b> <span class="aw">0.<span class="rec">3</span></span></li><li><b>16</b> <span class="aw">0.95</span></li><li><b>17</b> <span class="aw">8.89</span> <em class="ans-from">7.07</em></li><li><b>18</b> <span class="aw">14 ÷ 25 · = 0.56</span></li><li><b>19</b> <span class="aw">5 ÷ 8 · = 0.625</span></li><li><b>20</b> <span class="aw">1 ÷ 3 = 0.33333… · = 0.<span class="rec">3</span></span></li><li><b>21</b> <span class="aw">0.800, 0.100, 0.579, 0.020 · 0.8, 0.579, 0.1, 0.02</span> <em class="ans-from">7.01</em></li><li><b>22</b> <span class="aw"><span class="fr"><sup>1</sup><sub>8</sub></span> = 0.125 · = 2.125</span></li><li><b>23</b> <span class="aw">1 ÷ 8 · = 0.125</span></li><li><b>24</b> <span class="aw">× 100: 64 ÷ 8 · = 8</span> <em class="ans-from">7.08</em></li><li><b>25</b> <span class="aw">5 ÷ 11 = 0.45455… · = 0.<span class="rec">4</span><span class="rec">5</span></span></li><li><b>26</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span> = 0.4 · = 3.4</span></li><li><b>27</b> <span class="aw">1 ÷ 11 = 0.09091… · = 0.<span class="rec">0</span><span class="rec">9</span></span></li><li><b>28</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span> = 0.4 · = 5.4</span></li><li><b>29</b> <span class="aw">a = 75</span> <em class="ans-from">6.06</em></li><li><b>30</b> <span class="aw">6 ÷ 25 · = 0.24</span></li><li><b>31</b> <span class="aw">7.1</span> <em class="ans-from">7.03</em></li><li><b>32</b> <span class="aw">0.<span class="rec">6</span> = 0.666… · larger: 0.67</span></li><li><b>33</b> <span class="aw">1 ÷ 6 = 0.16667… · = 0.1<span class="rec">6</span></span></li><li><b>34</b> <span class="aw">0.32</span> <em class="ans-from">7.06</em></li><li><b>35</b> <span class="aw"><span class="fr"><sup>3</sup><sub>4</sub></span> = 0.75 · = 3.75</span></li><li><b>36</b> <span class="aw">= 8 <span class="fr"><sup>37</sup><sub>100</sub></span> · = 8<span class="fr"><sup>37</sup><sub>100</sub></span></span> <em class="ans-from">7.02</em></li><li><b>37</b> <span class="aw">1 ÷ 16 · = 0.0625</span></li><li><b>38</b> <span class="aw">0.<span class="rec">1</span> = 0.111… · larger: 0.<span class="rec">1</span></span></li><li><b>39</b> <span class="aw">0.3, 0.33, 0.375, 0.333… · 0.3, 0.33, <span class="fr"><sup>1</sup><sub>3</sub></span>, <span class="fr"><sup>3</sup><sub>8</sub></span></span></li><li><b>40</b> <span class="aw"><span class="fr"><sup><i>a</i></sup><sub>4</sub></span> × 4 = 5 × 4 · <i>a</i> = 20</span> <em class="ans-from">5.11</em></li><li><b>41</b> <span class="aw">1 ÷ 7 = 0.142857143… · 6 digits repeat</span></li><li><b>42</b> <span class="aw">0.3</span> <em class="ans-from">7.07</em></li><li><b>43</b> <span class="aw">0.<span class="rec">3</span> = 0.333… · larger: 0.<span class="rec">3</span></span></li><li><b>44</b> <span class="aw">3 ÷ 7 = 0.428571429… · 6 digits repeat</span></li><li><b>45</b> <span class="aw">1 000 mL = 1 L · 345 ÷ 1 000 = 0.345 L</span> <em class="ans-from">7.04</em></li><li><b>46</b> <span class="aw">2 ÷ 7 = 0.285714286… · 6 digits repeat</span></li><li><b>47</b> <span class="aw">2.4 ÷ 0.4 · = 6 cups</span> <em class="ans-from">7.08</em></li><li><b>48</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span> = 0.4 · = 1.4</span></li><li><b>49</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span> = 0.4 · = 2.4</span></li><li><b>50</b> <span class="aw"><i>m</i><sup>2</sup></span> <em class="ans-from">5.03</em></li><li><b>51</b> <span class="aw"><span class="fr"><sup>1</sup><sub>4</sub></span> = 0.25 · = 3.25</span></li><li><b>52</b> <span class="aw">14.4</span> <em class="ans-from">7.05</em></li><li><b>53</b> <span class="aw"><span class="fr"><sup>5</sup><sub>8</sub></span> = 0.625 · = 2.625</span></li><li><b>54</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span> = 0.4 · = 4.4</span></li><li><b>55</b> <span class="aw">52.8</span> <em class="ans-from">7.06</em></li><li><b>56</b> <span class="aw"><span class="fr"><sup>1</sup><sub>4</sub></span> = 0.25 · = 2.25</span></li><li><b>57</b> <span class="aw">= <span class="fr"><sup>45</sup><sub>100</sub></span> · = <span class="fr"><sup>9</sup><sub>20</sub></span></span> <em class="ans-from">7.02</em></li></ul></div></div><div class="ans-lesson"><h2>7.10 Rounding decimals <span class="ans-page">(booklet p. 21)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> Round 3.476 to 2 decimal places.<br><span class="aw">third place is 6: round up &ensp;·&ensp; ≈ 3.48</span></li><li><b>E2</b> Round 12.849 to 1 decimal place.<br><span class="aw">second place is 4: leave it &ensp;·&ensp; ≈ 12.8</span></li><li><b>E3</b> Round <span class="fr"><sup>5</sup><sub>7</sub></span> to 3 decimal places.<br><span class="aw">5 ÷ 7 = 0.71428… &ensp;·&ensp; ≈ 0.714</span></li></ul></div><div class="ans-block"><h3>Questions (40 on today's skill, 16 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">34.6</span></li><li><b>2</b> <span class="aw">29</span></li><li><b>3</b> <span class="aw">2.39</span></li><li><b>4</b> <span class="aw">74.3</span></li><li><b>5</b> <span class="aw">70</span></li><li><b>6</b> <span class="aw">2.14</span></li><li><b>7</b> <span class="aw">98.6</span></li><li><b>8</b> <span class="aw">25</span></li><li><b>9</b> <span class="aw">0.<span class="rec">1</span></span> <em class="ans-from">7.09</em></li><li><b>10</b> <span class="aw">12</span></li><li><b>11</b> <span class="aw">2.44</span></li><li><b>12</b> <span class="aw">88.3</span></li><li><b>13</b> <span class="aw">52 cm</span> <em class="ans-from">6.10</em></li><li><b>14</b> <span class="aw">look at place 2: 1 · ≈ 1.0</span></li><li><b>15</b> <span class="aw">23</span></li><li><b>16</b> <span class="aw">5.72</span></li><li><b>17</b> <span class="aw">200</span> <em class="ans-from">3.01</em></li><li><b>18</b> <span class="aw">24.4</span></li><li><b>19</b> <span class="aw">look at place 2: 7 · ≈ 8.3</span></li><li><b>20</b> <span class="aw">$2.77</span></li><li><b>21</b> <span class="aw">0.330, 0.580, 0.500, 0.030 · 0.58, 0.5, 0.33, 0.03</span> <em class="ans-from">7.01</em></li><li><b>22</b> <span class="aw">2 ÷ 3 = 0.6667… · ≈ 0.67</span></li><li><b>23</b> <span class="aw">look at place 4: 6 · ≈ 6.597</span></li><li><b>24</b> <span class="aw">× 100: 36 ÷ 9 · = 4</span> <em class="ans-from">7.08</em></li><li><b>25</b> <span class="aw">$9.40</span></li><li><b>26</b> <span class="aw">5 ÷ 6 = 0.8333… · ≈ 0.83</span></li><li><b>27</b> <span class="aw">$5.62</span></li><li><b>28</b> <span class="aw">5 ÷ 11 = 0.4545… · ≈ 0.45</span></li><li><b>29</b> <span class="aw">a = 110</span> <em class="ans-from">6.06</em></li><li><b>30</b> <span class="aw">look at place 2: 6 · ≈ 2.2</span></li><li><b>31</b> <span class="aw">0.62</span> <em class="ans-from">7.02</em></li><li><b>32</b> <span class="aw">75 ÷ 7 = 10.7143… · ≈ $10.71</span></li><li><b>33</b> <span class="aw">$6.19</span></li><li><b>34</b> <span class="aw">4.94</span> <em class="ans-from">7.07</em></li><li><b>35</b> <span class="aw">1 ÷ 6 = 0.1667… · ≈ 0.17</span></li><li><b>36</b> <span class="aw"><span class="fr"><sup>2</sup><sub>5</sub></span> = 0.4 · = 3.4</span> <em class="ans-from">7.09</em></li><li><b>37</b> <span class="aw">look at place 2: 2 · ≈ 3.0</span></li><li><b>38</b> <span class="aw">45 ÷ 7 = 6.4286… · ≈ $6.43</span></li><li><b>39</b> <span class="aw">6.75</span></li><li><b>40</b> <span class="aw">3 kg = 3000 g · <span class="fr"><sup>100</sup><sub>3000</sub></span> = <span class="fr"><sup>1</sup><sub>30</sub></span></span> <em class="ans-from">4.12</em></li><li><b>41</b> <span class="aw">65 · 65.1, 65.14</span></li><li><b>42</b> <span class="aw">7 000</span> <em class="ans-from">3.01</em></li><li><b>43</b> <span class="aw">59 ÷ 3 = 19.6667… · ≈ $19.67</span></li><li><b>44</b> <span class="aw">4.75</span></li><li><b>45</b> <span class="aw">11.00 − 2.54 · = 8.46</span> <em class="ans-from">7.03</em></li><li><b>46</b> <span class="aw">58 · 58.1, 58.09</span></li><li><b>47</b> <span class="aw">7.95</span></li><li><b>48</b> <span class="aw">27 · 26.8, 26.80</span></li><li><b>49</b> <span class="aw">56<i>a</i><i>c</i></span> <em class="ans-from">5.08</em></li><li><b>50</b> <span class="aw">65 ÷ 6 = 10.8333… · ≈ $10.83</span></li><li><b>51</b> <span class="aw">0.0841</span> <em class="ans-from">7.04</em></li><li><b>52</b> <span class="aw">1 ÷ 7 = 0.1429… · ≈ 0.14</span></li><li><b>53</b> <span class="aw">7.05</span></li><li><b>54</b> <span class="aw">0.2</span> <em class="ans-from">7.07</em></li><li><b>55</b> <span class="aw">33 · 33.2, 33.25</span></li><li><b>56</b> <span class="aw">13 ÷ 40 · = 0.325</span> <em class="ans-from">7.09</em></li></ul></div></div><div class="ans-lesson"><h2>7.11 Decimals and money <span class="ans-page">(booklet p. 23)</span></h2><div class="ans-block"><h3>Examples (model these live)</h3><ul class="worked ans-ex"><li><b>E1</b> Find the total: $4.85 + $12.40 + $0.95<br><span class="aw">4.85 + 12.40 + 0.95 &ensp;·&ensp; = $18.20</span></li><li><b>E2</b> Find the change from $50 for $37.65.<br><span class="aw">50.00 − 37.65 &ensp;·&ensp; = $12.35</span></li><li><b>E3</b> Find the cost of 3.5 kg of apples at $4.20 per kg.<br><span class="aw">3.5 × 4.20 &ensp;·&ensp; = $14.70</span></li></ul></div><div class="ans-block"><h3>Questions (36 on today's skill, 15 from earlier lessons)</h3><ul class="worked ans-mx"><li><b>1</b> <span class="aw">$17.37</span></li><li><b>2</b> <span class="aw">$2.59</span></li><li><b>3</b> <span class="aw">$6.70</span></li><li><b>4</b> <span class="aw">$17.14</span></li><li><b>5</b> <span class="aw">$6.88</span></li><li><b>6</b> <span class="aw">$8.70</span></li><li><b>7</b> <span class="aw">$14.42</span></li><li><b>8</b> <span class="aw">$5.70</span></li><li><b>9</b> <span class="aw">2.7</span> <em class="ans-from">7.03</em></li><li><b>10</b> <span class="aw">$4.10</span></li><li><b>11</b> <span class="aw">$8.85</span></li><li><b>12</b> <span class="aw">$13.89</span></li><li><b>13</b> <span class="aw"><i>k</i> = 30</span> <em class="ans-from">5.10</em></li><li><b>14</b> <span class="aw">9 × 9.80 · = $88.20</span></li><li><b>15</b> <span class="aw">$16.43</span></li><li><b>16</b> <span class="aw">$3.70</span></li><li><b>17</b> <span class="aw">68</span> <em class="ans-from">7.10</em></li><li><b>18</b> <span class="aw">$11.72</span></li><li><b>19</b> <span class="aw">4 × 6.85 · = $27.40</span></li><li><b>20</b> <span class="aw">total: $19.77 · change: $30.23</span></li><li><b>21</b> <span class="aw">0.050, 0.100, 0.624, 0.650 · 0.65, 0.624, 0.1, 0.05</span> <em class="ans-from">7.01</em></li><li><b>22</b> <span class="aw">4 × 4.20 = 16.8 · ≈ $16.80</span></li><li><b>23</b> <span class="aw">9 × 6.92 · = $62.28</span></li><li><b>24</b> <span class="aw">4 ÷ 9 = 0.44444… · = 0.<span class="rec">4</span></span> <em class="ans-from">7.09</em></li><li><b>25</b> <span class="aw">total: $14.49 · change: $35.51</span></li><li><b>26</b> <span class="aw">total: $25.02 · change: $24.98</span></li><li><b>27</b> <span class="aw">1.9 × 1.20 = 2.28 · ≈ $2.28</span></li><li><b>28</b> <span class="aw"><i>b</i> − 12</span> <em class="ans-from">5.04</em></li><li><b>29</b> <span class="aw">3 × 3.46 · = $10.38</span></li><li><b>30</b> <span class="aw">0.61</span> <em class="ans-from">7.02</em></li><li><b>31</b> <span class="aw">23.18 ÷ 6 = 3.8633… · ≈ $3.86 each; 6 × 3.86 = $23.16</span></li><li><b>32</b> <span class="aw">total: $13.01 · change: $36.99</span></li><li><b>33</b> <span class="aw">4</span> <em class="ans-from">7.08</em></li><li><b>34</b> <span class="aw">2.6 × 4.20 = 10.92 · ≈ $10.92</span></li><li><b>35</b> <span class="aw">50.00 − 12.72 · = $37.28</span> <em class="ans-from">7.03</em></li><li><b>36</b> <span class="aw">27.66 ÷ 6 = 4.6100… · ≈ $4.61 each; 6 × 4.61 = $27.66</span></li><li><b>37</b> <span class="aw">total: $7.66 · cash: $7.65</span></li><li><b>38</b> <span class="aw">11<i>p</i> = 319 · <i>p</i> = 29: 29 pencils</span> <em class="ans-from">5.13</em></li><li><b>39</b> <span class="aw">7.5 × 5 = 37.5 hours · 37.5 × 26.50 = $993.75</span></li><li><b>40</b> <span class="aw">4.13</span> <em class="ans-from">7.10</em></li><li><b>41</b> <span class="aw">86.66 ÷ 5 = 17.3320… · ≈ $17.33 each; 5 × 17.33 = $86.65</span></li><li><b>42</b> <span class="aw">total: $12.69 · cash: $12.70</span></li><li><b>43</b> <span class="aw">1 000 mL = 1 L · 877 ÷ 1 000 = 0.877 L</span> <em class="ans-from">7.04</em></li><li><b>44</b> <span class="aw">total: $9.89 · cash: $9.90</span></li><li><b>45</b> <span class="aw">5.5 × 4 = 22 hours · 22 × 24.50 = $539.00</span></li><li><b>46</b> <span class="aw">5 right, 2 down</span> <em class="ans-from">6.01</em></li><li><b>47</b> <span class="aw">20.72 ÷ 4 = 5.1800… · ≈ $5.18 each; 4 × 5.18 = $20.72</span></li><li><b>48</b> <span class="aw">8.4</span> <em class="ans-from">7.05</em></li><li><b>49</b> <span class="aw">4 × 1.20 = 4.8 · ≈ $4.80</span></li><li><b>50</b> <span class="aw">total: $10.95 · cash: $10.95</span></li><li><b>51</b> <span class="aw">80</span> <em class="ans-from">7.08</em></li></ul></div></div>
+  </div></body></html>
