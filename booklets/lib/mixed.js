@@ -62,8 +62,16 @@ const tidy = (it) => {
 // Two short questions with one answer line each share a row.
 const pairable = (it) => !it.fig && !it.from && it.n === 1 && plain(it.q).length <= 15;
 
-// The blanked working that starts a column: the structure stays, the numbers go.
-const scaffoldOf = (it) => (it.w && it.w.length >= 2 ? it.w.map((l, i) => (i < it.n ? blankLine(l) : '')) : null);
+// The blanked working that starts a column: the structure stays, the numbers go. A line with a long list of numbers
+// keeps only its label ("24: ________").
+const blankOne = (l) => {
+  const nums = plain(l).match(/\d+/g) || [];
+  if (/^(yes|no)\b/i.test(plain(l))) return 'yes / no: ________';
+  if (nums.length <= 3) return blankLine(l);
+  const m = /^([^:=]{1,18})([:=])/.exec(plain(l));
+  return m ? `${m[1]}${m[2]} ____________` : '';
+};
+const scaffoldOf = (it) => (it.w && it.w.length >= 2 ? it.w.map((l, i) => (i < it.n ? blankOne(l) : '')) : null);
 
 const cell = (it, k) => {
   const shown = it.scaffold || [];
