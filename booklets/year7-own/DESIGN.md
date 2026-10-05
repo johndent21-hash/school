@@ -57,7 +57,10 @@ This booklet series is designed from the research on how students learn mathemat
   - two from the last lesson
   - one from two or more lessons ago
   - one prerequisite needed today
-- Every lesson has a **"Mixed practice"** block that interleaves today's skill with earlier skills that look similar. For example, in 1.04, "−3 + 5" sits next to "−3 < 5?" and "distance from −3 to 5".
+- Every lesson has a **Practice** block in two parts:
+  - **Drill:** 12 short questions on today's skill, graded from easy to harder, so it becomes quick and accurate.
+  - **Mix it up:** 4 questions that apply today's skill in context and bring in **one** look-alike from an earlier lesson (never more than two). For example, in 1.06, −7 × (−3) in the drill sits near −7 + (−3) from 1.04.
+  - This keeps the focus on today's lesson, while the Do now and the chapter review do the spaced revision.
 - The chapter ends with a **mixed review** sheet.
 
 ### Variation theory and intelligent practice
@@ -147,7 +150,7 @@ Bofferding (2014, 2019) and others describe these:
 | 1 | **Learn it**: 3 example–problem pairs, faded, with a "Why?" prompt | worked examples, fading, self-explanation | 15 min |
 | 1 | **Check**: hinge question, multiple choice | formative assessment, misconceptions | 2 min |
 | 2 | **Spot the pattern**: minimally different sequence and a "notice" prompt | variation | 8 min |
-| 2 | **Mixed practice**: today's skill interleaved with earlier ones | interleaving, retrieval | 10 min |
+| 2 | **Practice**: a drill of today's skill, then a short mix with one earlier idea | practice to fluency, interleaving | 12 min |
 | 2 | **Go further**: reasoning for students who are flying | challenge without acceleration | as time allows |
 | 2 | **Exit ticket**: 3 questions and a confidence rating | formative assessment | 4 min |
 
@@ -161,6 +164,24 @@ Bofferding (2014, 2019) and others describe these:
   - what to do next
   - full worked answers
 
+## Visual design: the pentagon theme
+
+The look is designed to help students find their way. It also stays calm and copier-safe.
+
+- **Sierpinski pentagon and rainbow.** The cover shows a Sierpinski pentagon, a fractal made of 5 copies of itself, coloured as a rainbow. Each lesson takes one colour from that rainbow, in order: 1.01 red through to 1.10 magenta.
+- **A clear start to every exercise.** Page 1 opens with a full-width band in the lesson's colour:
+  - the exercise number in a solid block
+  - the title, and "Today I will …" (the learning intention, stated up front)
+  - Name, Class and Date
+  - Page 2 has a slimmer band in the same colour.
+- **Finding a lesson.** Each sheet has a coloured edge tab, lower for each lesson, so a lesson can be found by flicking. A thin spectrum bar under each band marks this lesson's place in the chapter.
+- **Worked example vs Your turn**, always told apart in two ways besides colour:
+  - Worked example: shaded, with an outlined "eye" label. The working is shown in blue: read it.
+  - Your turn: white, with a strong border and a solid "pencil" label: you write here.
+  - An arrow runs from each example to its Your turn.
+- **Icons** mark each block (Do now, Think first, Words, Learn it, Check, Spot the pattern, Practice, Go further, Exit ticket). The inside cover explains them, with a map of one lesson's two pages.
+- **Black-and-white safe.** Colour is only ever a second signal. Labels, icons, borders and fills carry the meaning on a greyscale copy, and that has been checked.
+
 ## 3. Chapter structure
 
 - A **"Think first"** starter opens lessons where a puzzle helps (e.g. 1.04: "The temperature is −3°C and rises 5°C. Where does it end up?"). It is followed by explicit teaching.
@@ -172,7 +193,7 @@ Bofferding (2014, 2019) and others describe these:
 ## 4. What should be tested with real students
 
 - Whether the hinge question plus skip rule lets strong students move on without missing anything.
-- The completion rate of "Mixed practice" within the lesson.
+- The completion rate of the Practice block within the lesson.
 - Delayed retention (after 2–4 weeks) on interleaved chapter-review items, compared with a class using the Freefall-style sheets.
 - Whether the "Why?" prompts are actually answered, or skipped.
 
