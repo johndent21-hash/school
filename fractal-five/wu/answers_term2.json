@@ -1,0 +1,1202 @@
+[
+ {
+  "week": 1,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_quad",
+  "answer": "80",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 2,
+  "formula": "a_para",
+  "answer": "45 cm²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 3,
+  "formula": "sa_rect",
+  "answer": "72 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 4,
+  "formula": "pct_change",
+  "answer": "25%",
+  "question": "Find the percentage increase in price."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 5,
+  "formula": "range",
+  "answer": "13",
+  "question": "Find the range of these scores."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 1,
+  "formula": "ang_ext",
+  "answer": "115",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 2,
+  "formula": "c_circ_d",
+  "answer": "31.4 cm",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 3,
+  "formula": "sa_tri",
+  "answer": "132 cm²",
+  "question": "Find the surface area of this triangular prism."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 4,
+  "formula": "profit",
+  "answer": "$30",
+  "question": "Find the profit made on this sale."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 5,
+  "formula": "prob_not",
+  "answer": "0.7",
+  "question": "Find the probability that it does not rain."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 1,
+  "formula": "ang_poly",
+  "answer": "720°",
+  "question": "Find the sum of the interior angles of this hexagon."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 2,
+  "formula": "a_kite",
+  "answer": "24 cm²",
+  "question": "Find the area of this kite."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 3,
+  "formula": "v_prism",
+  "answer": "90 cm³",
+  "question": "The shaded face has an area of 15 cm². Find the volume of the prism."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 4,
+  "formula": "distrib",
+  "answer": "4x + 12",
+  "question": "Expand."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 5,
+  "formula": "linear",
+  "answer": "11",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 4."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 1,
+  "formula": "pyth_hyp",
+  "answer": "17 cm",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 2,
+  "formula": "a_rect",
+  "answer": "60 cm²",
+  "question": "Find the area of this rectangle."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 3,
+  "formula": "v_rect",
+  "answer": "36 cm³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 4,
+  "formula": "idx_mult",
+  "answer": "10^7",
+  "question": "Write as a single power."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 5,
+  "formula": "prob",
+  "answer": "1/5",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is red."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 1,
+  "formula": "pyth_short",
+  "answer": "12 m",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 2,
+  "formula": "a_tri",
+  "answer": "56 cm²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 3,
+  "formula": "v_cyl",
+  "answer": "502.7 m³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 4,
+  "formula": "speed",
+  "answer": "4 km/h",
+  "question": "A walker travels from A to B. Find the average speed."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 5,
+  "formula": "gradient",
+  "answer": "3",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 1,
+  "formula": "ang_tri",
+  "answer": "70°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 2,
+  "formula": "a_circle",
+  "answer": "314.2 cm²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 3,
+  "formula": "v_prism",
+  "answer": "180 m³",
+  "question": "The shaded face has an area of 20 m². Find the volume of the prism."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 4,
+  "formula": "pct_qty",
+  "answer": "27 L",
+  "question": "Calculate."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 5,
+  "formula": "mean",
+  "answer": "6",
+  "question": "Find the mean of these goal tallies."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_ext",
+  "answer": "105°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 2,
+  "formula": "a_semi",
+  "answer": "77.0 m²",
+  "question": "Find the area of this semicircle, correct to 1 decimal place."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 3,
+  "formula": "sa_rect",
+  "answer": "90 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 4,
+  "formula": "scale",
+  "answer": "2.5",
+  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 5,
+  "formula": "prob_not",
+  "answer": "5/6",
+  "question": "Find the probability that a six is not rolled."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 1,
+  "formula": "ang_quad",
+  "answer": "75°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 2,
+  "formula": "a_trap",
+  "answer": "65 cm²",
+  "question": "Find the area of this trapezium."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 3,
+  "formula": "v_rect",
+  "answer": "72 cm³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 4,
+  "formula": "speed",
+  "answer": "5 m/s",
+  "question": "A runner travels from A to B. Find the average speed."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 5,
+  "formula": "range",
+  "answer": "23",
+  "question": "Find the range of these marks."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 1,
+  "formula": "ang_poly",
+  "answer": "1800°",
+  "question": "Find the sum of the interior angles of this dodecagon."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 2,
+  "formula": "a_rect",
+  "answer": "78 m²",
+  "question": "Find the area of this rectangle."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 3,
+  "formula": "sa_tri",
+  "answer": "156 cm²",
+  "question": "Find the surface area of this triangular prism."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 4,
+  "formula": "pct_change",
+  "answer": "25% increase",
+  "question": "Find the percentage increase in visitors."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 5,
+  "formula": "linear",
+  "answer": "11",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 3."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_tri",
+  "answer": "58°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 2,
+  "formula": "a_kite",
+  "answer": "20 m²",
+  "question": "Find the area of this kite."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 3,
+  "formula": "v_cyl",
+  "answer": "314.2 cm³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 4,
+  "formula": "distrib",
+  "answer": "5x + 10",
+  "question": "Expand."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 5,
+  "formula": "gradient",
+  "answer": "2",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 1,
+  "formula": "pyth_hyp",
+  "answer": "34 cm",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 2,
+  "formula": "a_tri",
+  "answer": "90 cm²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 3,
+  "formula": "v_prism",
+  "answer": "120 cm³",
+  "question": "The shaded face has an area of 20 cm². Find the volume of the prism."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 4,
+  "formula": "idx_mult",
+  "answer": "3^7",
+  "question": "Write as a single power."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 5,
+  "formula": "prob",
+  "answer": "3/8",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is white."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 1,
+  "formula": "pyth_short",
+  "answer": "8 cm",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 2,
+  "formula": "a_circle",
+  "answer": "28.3 m²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 3,
+  "formula": "sa_rect",
+  "answer": "126 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 4,
+  "formula": "scale",
+  "answer": "3.5",
+  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 5,
+  "formula": "mean",
+  "answer": "20",
+  "question": "Find the mean of these scores."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_ext",
+  "answer": "102°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 2,
+  "formula": "c_circ_d",
+  "answer": "62.8 cm",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 3,
+  "formula": "v_rect",
+  "answer": "72 cm³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 4,
+  "formula": "pct_qty",
+  "answer": "$35",
+  "question": "Calculate."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 5,
+  "formula": "gradient",
+  "answer": "1",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 1,
+  "formula": "ang_poly",
+  "answer": "1080°",
+  "question": "Find the sum of the interior angles of this octagon."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 2,
+  "formula": "a_trap",
+  "answer": "21 cm²",
+  "question": "Find the area of this trapezium."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 3,
+  "formula": "v_cyl",
+  "answer": "452.4 cm³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 4,
+  "formula": "profit",
+  "answer": "$27 profit",
+  "question": "Find the profit made on this sale."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 5,
+  "formula": "range",
+  "answer": "23",
+  "question": "Find the range of these scores."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 1,
+  "formula": "ang_tri",
+  "answer": "50°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 2,
+  "formula": "a_para",
+  "answer": "70 m²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 3,
+  "formula": "sa_tri",
+  "answer": "300 m²",
+  "question": "Find the surface area of this triangular prism."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 4,
+  "formula": "scale",
+  "answer": "1.5",
+  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 5,
+  "formula": "prob_not",
+  "answer": "3/5",
+  "question": "Find the probability that a goal is not scored."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 1,
+  "formula": "pyth_short",
+  "answer": "24 cm",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 2,
+  "formula": "a_semi",
+  "answer": "14.1 cm²",
+  "question": "Find the area of this semicircle, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 3,
+  "formula": "v_prism",
+  "answer": "120 cm³",
+  "question": "The shaded face has an area of 15 cm². Find the volume of the prism."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 4,
+  "formula": "distrib",
+  "answer": "2x + 14",
+  "question": "Expand."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 5,
+  "formula": "prob",
+  "answer": "1/2",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is green."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 1,
+  "formula": "ang_quad",
+  "answer": "85°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 2,
+  "formula": "c_circ_d",
+  "answer": "37.7 cm",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 3,
+  "formula": "v_rect",
+  "answer": "120 m³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 4,
+  "formula": "pct_qty",
+  "answer": "$6",
+  "question": "Calculate."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 5,
+  "formula": "mean",
+  "answer": "6",
+  "question": "Find the mean of these scores."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 1,
+  "formula": "pyth_hyp",
+  "answer": "26 m",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 2,
+  "formula": "a_circle",
+  "answer": "78.5 cm²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 3,
+  "formula": "sa_rect",
+  "answer": "88 m²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 4,
+  "formula": "speed",
+  "answer": "80 km/h",
+  "question": "A car travels from A to B. Find the average speed."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 5,
+  "formula": "linear",
+  "answer": "6",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 1."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_tri",
+  "answer": "48°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 2,
+  "formula": "a_rect",
+  "answer": "42 cm²",
+  "question": "Find the area of this rectangle."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 3,
+  "formula": "sa_tri",
+  "answer": "84 cm²",
+  "question": "Find the surface area of this triangular prism."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 4,
+  "formula": "pct_change",
+  "answer": "20% increase",
+  "question": "Find the percentage increase in price."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 5,
+  "formula": "prob",
+  "answer": "1/2",
+  "question": "A fair die is rolled. Find the probability of rolling an even number."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 1,
+  "formula": "ang_ext",
+  "answer": "115°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 2,
+  "formula": "a_semi",
+  "answer": "100.5 cm²",
+  "question": "Find the area of this semicircle, correct to 1 decimal place."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 3,
+  "formula": "v_cyl",
+  "answer": "471.2 cm³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 4,
+  "formula": "profit",
+  "answer": "$60 profit",
+  "question": "Find the profit made on this sale."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 5,
+  "formula": "prob_not",
+  "answer": "3/4",
+  "question": "Find the probability that the counter is not red."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 1,
+  "formula": "pyth_hyp",
+  "answer": "25 cm",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 2,
+  "formula": "a_tri",
+  "answer": "56 m²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 3,
+  "formula": "v_prism",
+  "answer": "126 cm³",
+  "question": "The shaded face has an area of 18 cm². Find the volume of the prism."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 4,
+  "formula": "idx_div",
+  "answer": "6^2",
+  "question": "Write as a single power."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 5,
+  "formula": "range",
+  "answer": "9",
+  "question": "Find the range of these goal tallies."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_quad",
+  "answer": "95°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 2,
+  "formula": "a_trap",
+  "answer": "35 m²",
+  "question": "Find the area of this trapezium."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 3,
+  "formula": "v_rect",
+  "answer": "64 cm³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 4,
+  "formula": "scale",
+  "answer": "2.4",
+  "question": "The small rectangle is enlarged to make the large one. Find the scale factor."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 5,
+  "formula": "gradient",
+  "answer": "3",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 1,
+  "formula": "pyth_short",
+  "answer": "16 cm",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 2,
+  "formula": "a_para",
+  "answer": "48 cm²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 3,
+  "formula": "v_cyl",
+  "answer": "62.8 cm³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 4,
+  "formula": "distrib",
+  "answer": "4m + 36",
+  "question": "Expand."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 5,
+  "formula": "mean",
+  "answer": "7",
+  "question": "Find the mean of these goal tallies."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 1,
+  "formula": "ang_poly",
+  "answer": "900°",
+  "question": "Find the sum of the interior angles of this heptagon."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 2,
+  "formula": "a_kite",
+  "answer": "30 m²",
+  "question": "Find the area of this rhombus."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 3,
+  "formula": "sa_tri",
+  "answer": "168 cm²",
+  "question": "Find the surface area of this triangular prism."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 4,
+  "formula": "profit",
+  "answer": "$15 loss",
+  "question": "Find the loss made on this sale."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 5,
+  "formula": "linear",
+  "answer": "4",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 0."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_ext",
+  "answer": "115°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 2,
+  "formula": "a_semi",
+  "answer": "39.3 m²",
+  "question": "Find the area of this semicircle, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 3,
+  "formula": "sa_rect",
+  "answer": "160 m²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 4,
+  "formula": "pct_qty",
+  "answer": "43 kg",
+  "question": "Calculate."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 5,
+  "formula": "range",
+  "answer": "9",
+  "question": "Find the range of these scores."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 1,
+  "formula": "ang_tri",
+  "answer": "82°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 2,
+  "formula": "c_circ_d",
+  "answer": "44.0 m",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 3,
+  "formula": "v_rect",
+  "answer": "75 m³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 4,
+  "formula": "pct_change",
+  "answer": "20% decrease",
+  "question": "Find the percentage decrease in price."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 5,
+  "formula": "prob_not",
+  "answer": "0.85",
+  "question": "Find the probability that the bus is not late."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 1,
+  "formula": "pyth_short",
+  "answer": "20 cm",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 2,
+  "formula": "a_trap",
+  "answer": "66 cm²",
+  "question": "Find the area of this trapezium."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 3,
+  "formula": "v_prism",
+  "answer": "150 cm³",
+  "question": "The shaded face has an area of 15 cm². Find the volume of the prism."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 4,
+  "formula": "idx_div",
+  "answer": "10^4",
+  "question": "Write as a single power."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 5,
+  "formula": "prob",
+  "answer": "1/3",
+  "question": "A fair die is rolled. Find the probability of rolling a number less than 3."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 1,
+  "formula": "ang_quad",
+  "answer": "65°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 2,
+  "formula": "a_tri",
+  "answer": "24 cm²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 3,
+  "formula": "v_cyl",
+  "answer": "56.5 m³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 4,
+  "formula": "speed",
+  "answer": "90 km/h",
+  "question": "A car travels from A to B. Find the average speed."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 5,
+  "formula": "gradient",
+  "answer": "1",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 1,
+  "formula": "pyth_hyp",
+  "answer": "13 cm",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 2,
+  "formula": "a_rect",
+  "answer": "60 m²",
+  "question": "Find the area of this rectangle."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 3,
+  "formula": "sa_tri",
+  "answer": "108 m²",
+  "question": "Find the surface area of this triangular prism."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 4,
+  "formula": "pct_qty",
+  "answer": "9 kg",
+  "question": "Calculate."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 5,
+  "formula": "linear",
+  "answer": "13",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 2."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 1,
+  "formula": "ang_poly",
+  "answer": "1440°",
+  "question": "Find the sum of the interior angles of this decagon."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 2,
+  "formula": "a_para",
+  "answer": "55 cm²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 3,
+  "formula": "sa_rect",
+  "answer": "94 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 4,
+  "formula": "pct_change",
+  "answer": "25% increase",
+  "question": "Find the percentage increase in price."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 5,
+  "formula": "mean",
+  "answer": "50",
+  "question": "Find the mean of these marks."
+ }
+]
