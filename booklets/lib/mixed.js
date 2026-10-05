@@ -17,10 +17,11 @@
 //          q  the question (HTML)     a  the answer (defaults to the last working line)
 //          w  the working, one step a line, the answer last: the question gets that many lines (2 to 4)
 //          n  the number of lines to give (default: 1 for a question with no working)
+//          key  questions with the same key count as the same question (e.g. one claim with different names)
 //          fig a diagram under the question
 //          Return null (or nothing) to skip one, for example when the numbers do not suit.
 //   look   earlier lessons whose questions look like today's (the best ones to mix in); optional
-//   exH    height of the WE DO box in mm (default 50)
+//   exH    height of the WE DO box in mm (default 56, or 64 when an example has a diagram); exFh caps example diagrams
 //
 // Columns are filled with more questions than fit. The build lays the page out, then drops questions from the
 // bottom of each column until it fits (fit, run in the browser), numbers the questions and writes the answers for the
@@ -79,7 +80,8 @@ const sourcesFor = (code, bank, look = []) => {
   const same = before.filter((x) => x.code.split('.')[0] === ch);
   const recent = [...look.map((c) => before.find((x) => x.code === c)).filter(Boolean), ...same.slice(-3).reverse()].filter((x, i, a) => a.indexOf(x) === i);
   const older = same.filter((x) => !recent.includes(x));
-  const prev = before.filter((x) => x.code.split('.')[0] !== ch);
+  // Year 6 skills only while there is no earlier Year 7 chapter to look back on.
+  const prev = before.filter((x) => x.code.split('.')[0] !== ch).filter((x, i, all) => !x.L.tag || all.every((y) => y.L.tag));
   return { recent, older, prev };
 };
 // The order in which the slots for earlier questions take their source.
@@ -96,7 +98,7 @@ module.exports = ({ code, title }, L, bank = []) => Object.assign((chapter) => {
       let it;
       try { it = tidy(fn(k, i)); } catch (e) { throw new Error(`${code}: a question generator failed: ${e.message}`); }
       if (!it) continue;
-      const key = `${plain(it.q)}|${it.fig || ''}`;
+      const key = it.key ? `key:${it.key}` : `${plain(it.q)}|${it.fig || ''}`;
       if (seen.has(key)) continue;
       seen.add(key);
       return it;
@@ -165,10 +167,10 @@ module.exports = ({ code, title }, L, bank = []) => Object.assign((chapter) => {
   });
 
   const exs = L.ex || [];
-  const exBox = `<section class="mx-ex" style="height:${L.exH || 58}mm">
+  const exBox = `<section class="mx-ex" style="height:${L.exH || (exs.some((x) => x[2]) ? 64 : 56)}mm">
       <div class="mx-ex-side"><span class="zone-pill">WE DO</span><p>Watch your teacher. Copy every step.</p></div>
       <div class="mx-ex-main"><p class="mx-idea"><b>Key idea</b> ${keep(L.idea)}</p>
-      <div class="mx-ex-row" style="grid-template-columns:repeat(${exs.length}, minmax(0, 1fr))">${exs.map(([q, , fig], i) => `<div class="mx-ex-cell"><div class="mx-qrow"><span class="ff-n">E${i + 1}</span><span class="mx-qt">${keep(q)}</span></div>${figBox(fig, 160 / exs.length - 6, 24)}<div class="mx-ex-space"></div></div>`).join('')}</div></div>
+      <div class="mx-ex-row" style="grid-template-columns:repeat(${exs.length}, minmax(0, 1fr))">${exs.map(([q, , fig], i) => `<div class="mx-ex-cell"><div class="mx-qrow"><span class="ff-n">E${i + 1}</span><span class="mx-qt">${keep(q)}</span></div>${figBox(fig, 160 / exs.length - 6, L.exFh || 26)}<div class="mx-ex-space"></div></div>`).join('')}</div></div>
     </section>`;
 
   const page = (p) => `
