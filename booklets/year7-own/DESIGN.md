@@ -19,9 +19,10 @@ This booklet series is designed from the research on how students learn mathemat
   - The 2023 meta-analysis found that adding *incorrect* examples next to correct ones did not help on average. Barbieri & Booth (2020) found benefits for incorrect examples with algebra students who already had some knowledge. **Evidence mixed.**
 
 **On the page:**
-- Every new idea is taught through **example–problem pairs**: a worked example on the left, a matched "your turn" on the right.
+- Every new idea is taught through **example–problem pairs**: an example on the left, a matched "your turn" on the right.
+- The example is printed **blank**. The teacher models it live, thinking aloud, and students copy the working. The full working is in the answer booklet.
 - The pairs fade: the first "your turn" has its steps started for you, the last one is blank.
-- One **"Why?" prompt** is attached to each worked example.
+- One **Explain** prompt is attached to each example. It asks one clear question about the key step, and the answer line starts a sentence for the student (e.g. "Subtracting is adding …").
 - Spotting mistakes appears only late in a lesson ("Is it right?"), once the correct method is secure. It is never used to teach the method.
 
 ### Explicit instruction, and problem solving before instruction
@@ -57,10 +58,10 @@ This booklet series is designed from the research on how students learn mathemat
   - two from the last lesson
   - one from two or more lessons ago
   - one prerequisite needed today
-- Every lesson has a **Practice** block in two parts:
-  - **Drill:** 12 short questions on today's skill, graded from easy to harder, so it becomes quick and accurate.
-  - **Mix it up:** 4 questions that apply today's skill in context and bring in **one** look-alike from an earlier lesson (never more than two). For example, in 1.06, −7 × (−3) in the drill sits near −7 + (−3) from 1.04.
-  - This keeps the focus on today's lesson, while the Do now and the chapter review do the spaced revision.
+- Every lesson has a **Mixed practice** block of 15 questions, split about 80/20:
+  - **12 on today's skill**: short drill questions first (easy to harder), then today's skill in context.
+  - **3 from earlier lessons**, spread through the set and marked "from 1.0x". They are look-alikes where possible. For example, in 1.06, −7 + (−3) from 1.04 sits near −7 × (−3).
+  - This keeps the focus on today's lesson, while the Do now and the chapter review do most of the spaced revision.
 - The chapter ends with a **mixed review** sheet.
 
 ### Variation theory and intelligent practice
@@ -102,7 +103,7 @@ Bofferding (2014, 2019) and others describe these:
 **On the page:**
 - Each lesson names **one key misconception** and targets it:
   - a hinge question whose wrong answers each show that misconception
-  - a "Why?" prompt about it
+  - an Explain prompt about it
   - a teacher note
 - "Minus" is read aloud three ways ("subtract", "negative", "the opposite of"), and the booklet uses those words.
 
@@ -146,11 +147,11 @@ Bofferding (2014, 2019) and others describe these:
 | Page | Block | Research reason | Approx. time |
 |---|---|---|---|
 | 1 | **Do now**: 4 retrieval questions | retrieval, spacing, prerequisite check | 5 min |
-| 1 | **Words** and the **Big idea**: one sentence and one picture | explicit instruction, vocabulary | 3 min |
-| 1 | **Learn it**: 3 example–problem pairs, faded, with a "Why?" prompt | worked examples, fading, self-explanation | 15 min |
+| 1 | **Words** and the **Big idea**: a short cloze, filled in with the teacher, and one picture | explicit instruction, vocabulary, generation | 4 min |
+| 1 | **Learn it**: 3 example–problem pairs (examples modelled live), faded, with an Explain prompt | worked examples, fading, self-explanation | 15 min |
 | 1 | **Check**: hinge question, multiple choice | formative assessment, misconceptions | 2 min |
 | 2 | **Spot the pattern**: minimally different sequence and a "notice" prompt | variation | 8 min |
-| 2 | **Practice**: a drill of today's skill, then a short mix with one earlier idea | practice to fluency, interleaving | 12 min |
+| 2 | **Mixed practice**: 15 questions, about 80% today's skill and 20% earlier lessons | practice to fluency, interleaving | 12 min |
 | 2 | **Go further**: reasoning for students who are flying | challenge without acceleration | as time allows |
 | 2 | **Exit ticket**: 3 questions and a confidence rating | formative assessment | 4 min |
 
@@ -164,22 +165,26 @@ Bofferding (2014, 2019) and others describe these:
   - what to do next
   - full worked answers
 
-## Visual design: the pentagon theme
+## Visual design: the times-table circles theme
 
 The look is designed to help students find their way. It also stays calm and copier-safe.
 
-- **Sierpinski pentagon and rainbow.** The cover shows a Sierpinski pentagon, a fractal made of 5 copies of itself, coloured as a rainbow. Each lesson takes one colour from that rainbow, in order: 1.01 red through to 1.10 magenta.
-- **A clear start to every exercise.** Page 1 opens with a full-width band in the lesson's colour:
-  - the exercise number in a solid block
+- **Times-table circles.** Put n points around a circle and join each point k to point m × k (counting round past the last point). The lines draw a curve: the 2 times table gives a heart shape (a cardioid). The inside cover shows how to draw one with 10 points.
+  - The charcoal cover shows the 2 times table on 300 points.
+  - Each lesson has its own circle: lesson n uses the (n + 1) times table. This shows on its exercise number and on the contents page.
+- **Colours.** Charcoal ink, one chapter colour (teal for Chapter 1) and a warm amber used sparingly (Explain prompts, "from 1.0x" tags). There is no colour per lesson. The exercise number, the circle and the edge tab mark each lesson instead.
+- **A clear start to every exercise.** Page 1 opens with a full-width band:
+  - the exercise number in a charcoal block, with the lesson's circle
   - the title, and "Today I will …" (the learning intention, stated up front)
   - Name, Class and Date
-  - Page 2 has a slimmer band in the same colour.
-- **Finding a lesson.** Each sheet has a coloured edge tab, lower for each lesson, so a lesson can be found by flicking. A thin spectrum bar under each band marks this lesson's place in the chapter.
-- **Worked example vs Your turn**, always told apart in two ways besides colour:
-  - Worked example: shaded, with an outlined "eye" label. The working is shown in blue: read it.
-  - Your turn: white, with a strong border and a solid "pencil" label: you write here.
+  - Page 2 has a slimmer band.
+- **Finding a lesson.** Each sheet has an edge tab, lower for each lesson, so a lesson can be found by flicking. A progress bar under each band shows the lessons done and marks this one.
+- **Example vs Your turn**, always told apart in two ways besides colour:
+  - Example: shaded, with an outlined "board" label. Blank: the teacher models it and students copy.
+  - Your turn: white, with a strong charcoal border and a solid "pencil" label. Students work on their own.
   - An arrow runs from each example to its Your turn.
-- **Icons** mark each block (Do now, Think first, Words, Learn it, Check, Spot the pattern, Practice, Go further, Exit ticket). The inside cover explains them, with a map of one lesson's two pages.
+- **Icons** mark each block. The inside cover explains them, with a map of one lesson's two pages.
+- **Typesetting.** A short last word never sits alone on a line. Lists of numbers, equations and units (−10 m, 1 403) are never split across lines.
 - **Black-and-white safe.** Colour is only ever a second signal. Labels, icons, borders and fills carry the meaning on a greyscale copy, and that has been checked.
 
 ## 3. Chapter structure
@@ -193,9 +198,9 @@ The look is designed to help students find their way. It also stays calm and cop
 ## 4. What should be tested with real students
 
 - Whether the hinge question plus skip rule lets strong students move on without missing anything.
-- The completion rate of the Practice block within the lesson.
+- The completion rate of Mixed practice within the lesson.
 - Delayed retention (after 2–4 weeks) on interleaved chapter-review items, compared with a class using the Freefall-style sheets.
-- Whether the "Why?" prompts are actually answered, or skipped.
+- Whether the Explain prompts are actually answered, or skipped.
 
 ## References
 
