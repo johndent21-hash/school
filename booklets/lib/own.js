@@ -92,7 +92,7 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
   notes.unshift(`<b>Key misconception.</b> ${L.teacher.misconception}`);
   notes.push(`<b>Check (hinge).</b> ${H.q} Answer: <b>${H.answer}</b>.<br>${opts.map((o, i) => `${o} (${H.options[i]}): ${H.why[o]}`).join('<br>')}`);
   notes.push(`<b>Next.</b> ${L.teacher.next}`);
-  if (L.think) notes.push(`<b>Think first.</b> ${L.teacher.think} Come back to it straight after Example ${L.think.ex}: a pre-question helps only when students then see the right answer.`);
+  if (L.think) notes.push(`<b>Think first.</b> ${L.teacher.think} Come back to it straight after Example ${L.think.ex}: pre-questions help learning when students then see the right answer (Pan & Carpenter, 2023).`);
   const check = `<section class="tc-block tc-check">${head('check', 'Check', 'Everyone answers. Circle one letter, then hold it up.')}<div class="tc-check-row"><p>${H.q}</p>${H.options.map((o, i) => `<span class="tc-opt"><b>${opts[i]}</b>${o}</span>`).join('')}</div></section>`;
 
   // ---------- page 2: practise it ----------
@@ -107,7 +107,7 @@ module.exports = ({ code, title }, L) => Object.assign((chapter) => {
   // in five from earlier lessons, spread through and marked "from 1.0x".
   const mixed = `<section class="tc-block tc-prac">${head('practice', 'Mixed practice', 'Mostly today\'s skill. Questions marked "from" are from earlier lessons. Show your working.')}
     <div class="tc-mix">${L.mixed.map((m, i) => { w(`Mixed ${i + 1}`, m.q, m.a); return `<div class="tc-mix-cell ${m.from ? 'old' : ''}"><p><b class="tc-n">${i + 1}</b> ${keep(m.q)}</p><i class="tc-l">${from(m.from)}</i></div>`; }).join('')}</div>
-    <div class="tc-bank"><b>Check your answers</b> <em>All 15 answers, in a mixed-up order.</em><span>${bank(L.mixed)}</span></div></section>`;
+    <div class="tc-bank"><b>Check your answers</b> <em>One box per question, in a mixed-up order.</em><span>${bank(L.mixed)}</span></div></section>`;
 
   const further = `<section class="tc-block tc-further">${head('further', 'Go further', 'Finished? Try these. Explain your thinking.')}
     ${L.further.map((f, i) => { w(`Go further ${i + 1}`, f.q, f.a); return `<div class="tc-fur"><p><b class="tc-n">${i + 1}</b> ${keep(f.q)}</p>${'<i class="tc-l"></i>'.repeat(f.n || 2)}</div>`; }).join('')}</section>`;

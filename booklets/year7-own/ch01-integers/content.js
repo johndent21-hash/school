@@ -288,7 +288,7 @@ module.exports = {
       q: 'Work out&ensp;−2 + 5',
       options: ['−7', '3', '−3', '7'], answer: 'B',
       why: {
-        A: 'added the sizes and kept the minus sign ("symmetric" error). Re-teach with Example 1 on the number line.',
+        A: 'added the sizes and kept the minus sign. Re-teach with Example 1 on the number line.',
         B: 'correct.',
         C: 'moved the wrong way, or did 5 − 2 and kept the minus. Act it out: start at −2, walk 5 steps right.',
         D: 'ignored the negative sign. Check they read −2 as a place left of zero (Words box).',
@@ -331,7 +331,7 @@ module.exports = {
       { q: 'It is −6°C. It warms up 10°C. What is the temperature now?', a: '−6 + 10 = 4°C' },
     ],
     teacher: {
-      misconception: 'Treating −2 + 5 as "−(2 + 5)" (the symmetric error), and carrying "two negatives make a positive" over from multiplication into addition.',
+      misconception: 'Treating −2 + 5 as "−(2 + 5)" (adding the sizes and keeping the minus sign), and carrying "two negatives make a positive" over from multiplication into addition.',
       next: 'Most students B: go on to page 2. Students with A, C or D: a short re-teach at the board with Examples 1 and 2 on the number line (walk it out), then Your turn 1 and 2 again before page 2. Students who finish Mixed practice: Go further.',
       think: 'Take answers without judging. Show a thermometer: start at −3, count up 5. Link to Example 1: the same move on a sideways number line.',
     },

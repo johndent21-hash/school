@@ -993,8 +993,8 @@ ul.plain { list-style: none; padding-left: 0; }
 .tc-bank { margin-top: 1.4mm; padding-top: 1mm; border-top: 0.3mm dashed var(--rule); display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4mm 2mm; }
 .tc-bank > b { color: var(--c); font-size: 7pt; letter-spacing: 0.08em; text-transform: uppercase; }
 .tc-bank > em { font-style: normal; font-size: 7.5pt; color: var(--mute); }
-.tc-bank > span { flex-basis: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.6mm 3mm; font-size: 8.8pt; }
-.tc-bank i { font-style: normal; color: var(--ink2); font-weight: 600; white-space: nowrap; }
+.tc-bank > span { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 1mm 1.4mm; font-size: 8.6pt; }
+.tc-bank i { font-style: normal; color: var(--ink2); font-weight: 600; white-space: nowrap; border: 0.3mm solid #b9c2c0; border-radius: 1mm; padding: 0.1mm 1.6mm; background: #fff; line-height: 1.45; }
 /* Exit ticket: score after marking */
 .tc-score { border: 0 !important; padding: 0 !important; font-weight: 600; }
 .tc-score i { display: inline-block; width: 9mm; border-bottom: 0.3mm solid var(--ink2); height: 4mm; vertical-align: -0.5mm; margin: 0 1mm; }

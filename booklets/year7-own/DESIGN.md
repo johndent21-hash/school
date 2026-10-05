@@ -2,7 +2,7 @@
 
 This booklet series is designed from the research on how students learn mathematics, not from an existing worksheet format. Chapter 1 (Integers) is the pilot. Each lesson is **one double-sided A4 sheet** (two pages), as in the other series.
 
-**How this brief was written.** Web search was available, but full papers could not be fetched (the network blocks those sites). Findings come from search summaries of the papers, plus well-established research cited by author and year. Anything marked **(verify)** should be checked against the original.
+**How the sources were checked.** Every reference at the end was checked in October 2026 against a library, publisher or author record: authors, year, title and journal. Every number quoted (effect sizes, numbers of studies, percentages) was checked against the paper's abstract or a published summary of it. Full texts could not be opened from the build environment, so finer details rest on abstracts and summaries, and the wording below stays within what those support. Where the evidence is thin, this brief says so.
 
 ---
 
@@ -12,11 +12,13 @@ This booklet series is designed from the research on how students learn mathemat
 
 - **Novices learn more from studying worked examples than from solving the same problems unaided** (Sweller & Cooper, 1985; Sweller, 1988).
   - A 2023 meta-analysis of 55 studies in mathematics found a moderate average benefit, g = 0.48 (Barbieri, Miller-Cotto, Clerjuste & Chawla, 2023).
-- **Example–problem pairs** alternate a worked example with a matched problem. They beat long runs of examples or of problems (Trafton & Reiser, 1993; van Gog, Kester & Paas, 2011).
+- **Example first, then a matched problem.**
+  - van Gog, Kester & Paas (2011) compared examples only, example–problem pairs, problem–example pairs and problems only. The two example-first conditions learned more than the two problem-first ones; the pairs needed the least mental effort.
+  - Trafton & Reiser (1993) found an example helps most when a problem that uses it follows straight away.
 - **Fading** removes worked steps one at a time, moving students from studying examples to solving problems. Backward fading (the last step is removed first) works well (Renkl & Atkinson, 2003).
 - **The expertise reversal effect.** Support that helps novices hinders students who already know the method (Kalyuga et al., 2003). So support must be withdrawn, not kept for everyone.
-- **Self-explanation prompts** ("Why did we move left?") attached to examples increase learning (Chi et al., 1989; Rittle-Johnson, 2006).
-  - The 2023 meta-analysis found that adding *incorrect* examples next to correct ones did not help on average. Barbieri & Booth (2020) found benefits for incorrect examples with algebra students who already had some knowledge. **Evidence mixed.**
+- **Self-explanation.** Students who explained worked examples to themselves learned more (Chi et al., 1989; a comparison of good and poor learners, so correlational). In an experiment, prompting children to explain improved transfer (Rittle-Johnson, 2006). Section 5 weighs the newer meta-analyses, which are less positive.
+- **Incorrect examples.** In the 2023 meta-analysis, studies using correct examples alone had larger effects than those using incorrect examples, alone or mixed with correct ones. Barbieri & Booth (2020), in a classroom algebra study, found incorrect examples improved equation solving. **Evidence mixed**, so the booklet uses "Is it right?" items only late in a lesson.
 
 **On the page:**
 - Every new idea is taught through **example–problem pairs**: an example on the left, a matched "your turn" on the right.
@@ -34,10 +36,11 @@ This booklet series is designed from the research on how students learn mathemat
   - guided practice with checks for understanding
   - independent practice aiming for a high success rate (around 80%)
   - weekly and monthly review
-- For novices, fully guided instruction outperforms minimally guided discovery (Kirschner, Sweller & Clark, 2006).
-- **Disputed.** Sinha & Kapur's (2021) meta-analysis of 53 studies found that solving problems *before* instruction ("productive failure") gave better conceptual understanding and transfer (g = 0.36).
-  - That effect depends on well-designed problems, and on the instruction that follows building on students' attempts.
-  - It reversed for younger learners.
+- Kirschner, Sweller & Clark (2006) review the evidence and argue that, for novices, fully guided instruction beats minimally guided discovery.
+- **Disputed.** Sinha & Kapur's (2021) meta-analysis (53 studies, 166 comparisons) found that solving problems *before* instruction ("productive failure") gave a moderate benefit for conceptual understanding and transfer (g = 0.36).
+  - The effect was larger (g = 0.37 to 0.58) when the design followed productive-failure principles closely.
+  - For younger learners (Grades 2 to 5) the effects favoured instruction first.
+  - In a randomised experiment, Ashman, Kalyuga & Sweller (2020) found instruction first gave scores almost 50% higher, for complex material.
 
 **On the page:**
 - The main teaching is **explicit**: model, guided pairs, then independent practice.
@@ -46,12 +49,12 @@ This booklet series is designed from the research on how students learn mathemat
 ### Retrieval, spacing and interleaving
 
 - **Retrieval practice** (recalling something from memory) is one of the most reliable effects in learning research:
-  - Adesope et al. (2017), g ≈ 0.61; similar in classrooms and labs.
+  - Adesope et al. (2017): 118 articles, g = 0.61 for practice tests over other conditions.
   - Agarwal et al. (2021): a systematic review of classroom studies, with consistent benefits.
 - **Spacing:** reviewing a topic over days beats massing it all into one day (Cepeda et al., 2006).
 - **Interleaving** mixes problem types so students must *choose* a method.
   - A randomised trial with 787 Year 7 (Grade 7) students in 54 classes found a large benefit on a delayed test, d = 0.83: 61% vs 38% correct (Rohrer, Dedrick, Hartwig & Cheung, 2020).
-  - Interleaving works best once each type has been taught, and for types that are easily confused.
+  - In that trial the interleaved problems reviewed topics already taught. Mixing makes sense once each type has been taught, and matters most for types that are easily confused.
 
 **On the page:**
 - Every lesson opens with a **"Do now"** of four retrieval questions:
@@ -78,28 +81,24 @@ This booklet series is designed from the research on how students learn mathemat
 
 ### Representations: concrete, pictorial, abstract
 
-- Representations should reveal the mathematical structure, and have a clear rationale (EEF, 2022, recommendation 2).
-- **For integers there is no perfect model** (Vig, Murray & Star, 2014, **verify**):
-  - The **number line** shows order, distance and addition as movement well. Subtraction and division are harder to show on it.
-  - **Counters** (zero pairs) show addition and the idea of "cancelling" well, but become clumsy for subtraction and for multiplying two negatives.
-- Using both, and linking them, is recommended over relying on one.
-- Representations should be **faded**: students who keep leaning on counting jumps do not move to efficient rules.
+- Representations should reveal the mathematical structure, and have a clear rationale (EEF, 2017, recommendation 2).
+- **Every model has a breaking point.** Vig, Murray & Star (2014) describe the point at which a model stops helping, because using it becomes too complicated. Their example is the chip (counter) model for integer subtraction.
+- In this booklet's design judgement (not a tested finding): the **number line** shows order, distance and adding as movement well. Counters show equal groups for × and ÷. Neither shows negative × negative well, so that uses a pattern instead.
+- Representations are **faded**, so students move on to the rules.
 
 **On the page:**
-- **Number line** first, for order, adding and subtracting. **Counters** once, to justify "the sign with more wins". **Patterns** (not models) for − × − = +.
-- Each lesson says when the picture is removed: the last pair and all mixed practice have no picture.
+- **Number line** first, for order, adding and subtracting. **Groups of counters** for × and ÷. **Patterns** (not models) for − × − = +.
+- Pictures are removed as each lesson goes on: the last pair and all of Mixed practice have none.
 
 ### Integer misconceptions
 
-Bofferding (2014, 2019) and others describe these:
-
-- **Three meanings of "−":** subtraction, negative, and opposite. Students need to talk about them explicitly.
-- **Magnitude confusion:** "−8 is bigger than −3 because 8 > 3".
-- **Symmetric strategy:** answering −2 + 5 as "−(2 + 5) = −7".
-- **Treating "−" as a label to ignore:** 3 − (−2) = 1.
-- **Sign rules applied to addition:** −3 + −4 = +7 "because two negatives make a positive". This is overgeneralising the multiplication rule.
-- Placing negatives to the right of zero, especially early on.
-- **Comparing contrasting problems helps.** Bofferding & Wessman-Enzinger found that comparing pairs such as 3 + (−2) and 3 − 2 supported integer understanding (**verify**). Comparing solution methods also supports flexibility more generally (Rittle-Johnson & Star, 2007).
+- **Three meanings of "−":** subtraction, negative, and opposite (the binary, unary and symmetric functions of the minus sign: Vlassis, 2004). Students need to talk about them explicitly.
+- **Whole-number thinking carried over to negatives.** In interviews with 61 first graders, Bofferding (2014) found children at first leaned on whole-number ideas (for example, treating −8 as larger than −3); many later built a correct model. See also Bofferding (2019).
+- The booklet also targets these common classroom errors. They are listed from teaching experience, not from a particular study:
+  - −2 + 5 answered as −(2 + 5) = −7
+  - 3 − (−2) answered as 1 (the second "−" ignored)
+  - −3 + (−4) answered as 7, "because two negatives make a positive" (the multiplication rule used for adding)
+- **Contrasting problems.** In a case study of four second graders, Aqazade, Bofferding & Farmer (2016) found each child's integer addition improved after analysing contrasting problems. That is a very small study, so it is weak evidence. Better evidence for comparing comes from Rittle-Johnson & Star (2007), a classroom experiment on solving equations, and from Alfieri et al. (2013) (section 5).
 
 **On the page:**
 - Each lesson names **one key misconception** and targets it:
@@ -110,7 +109,7 @@ Bofferding (2014, 2019) and others describe these:
 
 ### Formative assessment
 
-- Wiliam (2011) and the EEF (2022, recommendation 1):
+- Wiliam (2011) and the EEF (2017, recommendation 1):
   - use assessment to build on what students already know
   - **hinge questions**: a single diagnostic multiple-choice item, answered by everyone, at the point where the lesson branches
   - **exit tickets**
@@ -123,18 +122,18 @@ Bofferding (2014, 2019) and others describe these:
 
 ### Differentiation without separate sheets
 
-- Recommendation 6 of the EEF (2022): tasks should be accessible to all but extend some.
+- Recommendation 6 of the EEF (2017): tasks should be accessible to all but extend some.
 - Recommendation 7: structured support for those behind.
 - The expertise reversal effect means the same sheet must let secure students **skip support**.
 
 **On the page:**
-- **Support** is always visible: a "stuck?" arrow to the matching worked example. The number line strip is on every page.
+- **Support:** each Your turn sits beside its example, and the first Your turn has its working started.
 - **Stretch:** a **"Go further"** box on page 2. It deepens rather than accelerates: always/sometimes/never, make up your own, find all possibilities.
-- Students who score 3/3 on the hinge question may skip the first practice block.
+- The hinge question tells the teacher who needs re-teaching before page 2 (see the teacher notes).
 
 ### Literacy and wording load
 
-- Heavy wording raises extraneous load and hides the maths from weaker readers. Word problems are harder for students with weaker reading, whatever their maths skill (Abedi & Lord, 2001).
+- Heavy wording can hide the maths. Abedi & Lord (2001) found that simplifying the language of maths word problems raised scores, especially for English-language learners and students in lower-level maths classes.
 - **On the page:**
   - Sentences of 12 words or fewer where possible.
   - One context per question.
@@ -190,7 +189,7 @@ The look is designed to help students find their way. It also stays calm and cop
 
 ## 3. Chapter structure
 
-- A **"Think first"** starter opens lessons where a puzzle helps (e.g. 1.04: "The temperature is −3°C and rises 5°C. Where does it end up?"). It is followed by explicit teaching.
+- A short **"Think first"** pre-question opens every lesson (e.g. 1.04: "It is −3°C at 6 am. By noon it is 5°C warmer. What is the temperature?"). One of the examples then gives the answer.
 - **Order of the chapter:** meaning of negatives, then order, then adding, subtracting, multiplying, dividing, order of operations, calculator, then problems.
 - **Every Do now** reaches back at least two lessons.
 - A **chapter review sheet** at the end (two pages, 24 questions, mixed across all ten lessons, each tagged with its lesson). It ends with a **"What next?"** tick list: any lesson not ticked sends the student back to that lesson's Examples and Exit ticket.
@@ -198,7 +197,7 @@ The look is designed to help students find their way. It also stays calm and cop
 
 ## 4. What should be tested with real students
 
-- Whether the hinge question plus skip rule lets strong students move on without missing anything.
+- Whether the hinge question sorts students accurately (compare it with the exit ticket).
 - The completion rate of Mixed practice within the lesson.
 - Delayed retention (after 2–4 weeks) on interleaved chapter-review items, compared with a class using the Freefall-style sheets.
 - Whether the Explain prompts are actually answered, or skipped.
@@ -217,59 +216,71 @@ Ratings: **Strong** (act on it), **Mixed** (use with care), **Weak** (cut, or ke
 
 | Principle | Best evidence, and its quality | Rating | What it means for the booklet |
 |---|---|---|---|
-| Retrieval practice (Do now, review) | Yang et al. 2021: 222 classroom studies, g ≈ 0.50. Agarwal et al. 2021: 50 classroom experiments, almost all positive. Many real-classroom RCTs with delayed tests. | **Strong** | Keep the Do now and the chapter review. |
+| Retrieval practice (Do now, review) | Yang et al. 2021: 222 classroom studies, about 48,000 students, g = 0.50. Agarwal et al. 2021: about 50 classroom experiments, medium to large effects, almost all positive. Adesope et al. 2017: g = 0.61. | **Strong** | Keep the Do now and the chapter review. |
 | Spacing and interleaving | Rohrer et al. 2020: cluster RCT, 54 Year 7 classes, unannounced delayed test, d = 0.83. Rohrer & Taylor 2006: spaced practice gave large gains at 4 weeks. | **Strong** | Keep the earlier-lesson questions in Mixed practice, and keep them as look-alikes that make students tell problem types apart. |
 | Overlearning (many same-skill problems in one sitting) | Rohrer & Taylor 2006: 9 vs 3 problems in one session made no difference at 1 or 4 weeks (college students, one task type). | **Weak** for retention | The 12 same-lesson questions are for accuracy today, not memory. They vary in form, and the skill comes back in the next Do nows and the review. That is where retention is built. |
-| Worked examples, with fading | Barbieri et al. 2023: 55 studies, g = 0.48, robust variance estimation, held for both acquisition and practice. Fading and expertise reversal: Renkl & Atkinson; Kalyuga. | **Strong**, for printed examples that students study | The examples are modelled live (your choice). To keep it close to the research conditions, every example now has a short "say this" think-aloud script in the teacher notes. Your turn still fades. |
-| Self-explanation prompts | Rittle-Johnson et al. 2017 (maths meta-analysis): small-to-moderate effects, measured immediately. Thin evidence for delayed or classroom effects. Stronger when explanations are scaffolded. Barbieri et al. 2023: adding self-explanation prompts to worked examples *reduced* their benefit. McEldoon et al. 2012: helped low-prior-knowledge learners more than extra practice, time for time. Aleven & Koedinger 2002 (classroom): explanations chosen from a menu worked well. | **Mixed** | Explain is now **choose the better reason** (one correct reason vs one common wrong idea). It scaffolds a good explanation, takes seconds rather than minutes, and gives the teacher a misconception check. Each sits in its own strip under the pair, so the example area stays clear. |
-| Pre-questions / "Think first" | Pan & Carpenter 2023 (review): pretesting reliably helps if the correct answer is studied afterwards. Productive failure (Sinha & Kapur 2021) reports large effects, but they depend on high-fidelity design and often weak comparison conditions. Ashman, Kalyuga & Sweller 2020 (randomised): teaching first was about 50% better for complex material. | **Mixed** for discovery; **Strong** for short pre-questions with feedback | Kept as a short pre-question in all ten lessons, decided lesson by lesson (each is a single idea that one example answers). Each now names the example that gives the answer ("Check it in Example 1"). The teacher notes say to come back to it. 1.03 now asks the misconception directly: "So which number is smaller?" |
-| Feedback | Kluger & DeNisi 1996: d = 0.41 overall, but over a third of feedback interventions *lowered* performance. Feedback about the task helps; feedback about the self does not. Wisniewski et al. 2020: d ≈ 0.48, very varied. | **Strong** for task feedback, if well designed | Mixed practice now ends with a **mixed-up answer bank**: immediate, task-level, and it doesn't give away which answer goes with which question. |
-| Formative assessment (Check, Exit ticket) | Black & Wiliam 1998 claimed 0.4 to 0.7, but did no meta-analysis. Kingston & Nash 2011: about 0.20, itself criticised. | **Mixed**, low cost | Keep the hinge question and exit ticket, with every wrong option tied to one misconception (1.03 option D fixed). Don't over-claim them. |
-| Self-rating of confidence ("Not yet / Nearly / Got it") | Low achievers are reliably overconfident; children's calibration is poor (e.g. Rinne & Mazzocco 2014). | **Weak** | Replaced with the **marked score** (After marking: _ / 3). Judging by evidence also trains calibration. |
-| Guided notes / cloze Big idea | Konrad et al. 2009 (meta-analysis): guided notes improve recall, mainly in small studies, with the clearest gains for students who struggle. | **Mixed**, low cost | Kept. |
+| Worked examples, with fading | Barbieri et al. 2023: 55 studies, g = 0.48, robust variance estimation, held for both acquisition and practice. Fading and expertise reversal: Renkl & Atkinson 2003; Kalyuga et al. 2003. | **Strong**, for printed examples that students study | The examples are modelled live (your choice). To keep it close to the research conditions, every example now has a short "say this" think-aloud script in the teacher notes. Your turn still fades. |
+| Self-explanation prompts | Rittle-Johnson, Loehr & Durkin 2017 (maths meta-analysis): small-to-moderate effects measured straight after; much less evidence for classroom or delayed effects; larger when good explanations were scaffolded. Barbieri et al. 2023: worked-example studies that added self-explanation prompts had *smaller* effects than those without. McEldoon et al. 2013 (Grades 2–4, time-matched): self-explaining gave more procedural transfer than extra practice. Aleven & Koedinger 2002 (two classroom experiments): students who explained their steps, by choosing reasons from a menu, learned with more understanding. | **Mixed** | Explain is now **choose the better reason** (one correct reason vs one common wrong idea). It scaffolds a good explanation, takes seconds rather than minutes, and gives the teacher a misconception check. Each sits in its own strip under the pair, so the example area stays clear. |
+| Pre-questions / "Think first" | Pan & Carpenter 2023 (review): pretesting helps learning when the correct answers are studied afterwards. Sinha & Kapur 2021: problem solving before instruction gave a moderate benefit (g = 0.36), larger with high-fidelity designs, but favoured instruction first for Grades 2–5. Ashman, Kalyuga & Sweller 2020 (randomised): instruction first scored almost 50% higher for complex material. | **Mixed** for discovery; **Strong** for short pre-questions with feedback | Kept as a short pre-question in all ten lessons, decided lesson by lesson (each is a single idea that one example answers). Each now names the example that gives the answer ("Check it in Example 1"). The teacher notes say to come back to it. 1.03 now asks the misconception directly: "So which number is smaller?" |
+| Feedback | Kluger & DeNisi 1996 (607 effect sizes): d = 0.41 overall, but over a third of feedback interventions *lowered* performance. Their theory: feedback works when it keeps attention on the task, not on the self. Wisniewski, Zierer & Hattie 2020: d = 0.48, very varied, and larger when the feedback carries more information. | **Strong** for task feedback, if well designed | Mixed practice now ends with a **mixed-up answer bank**: immediate, task-level, and it doesn't give away which answer goes with which question. |
+| Formative assessment (Check, Exit ticket) | Black & Wiliam 1998 reported typical effects of 0.4 to 0.7 from a review, not a quantitative meta-analysis. Kingston & Nash 2011 (meta-analysis): about 0.20. Briggs et al. 2012 criticised that meta-analysis's methods. The true size is uncertain. | **Mixed**, low cost | Keep the hinge question and exit ticket, with every wrong option tied to one misconception (1.03 option D fixed). Don't over-claim them. |
+| Self-rating of confidence ("Not yet / Nearly / Got it") | Rinne & Mazzocco 2014 (Grades 5 to 8, followed for four years): how well children's confidence matched their accuracy was still developing, was poorest in children with a mathematics learning disability, and better calibration predicted later gains. So a self-rating is least trustworthy for the students who most need checking. | **Weak** as a measure | Replaced with the **marked score** (After marking: _ / 3), which gives students accurate information about how they went. |
+| Guided notes / cloze Big idea | Konrad, Joseph & Eveleigh 2009 (review and meta-analysis): guided notes improved outcomes, especially for students with disabilities. | **Mixed**, low cost | Kept. |
 | Comparing cases (Spot the pattern) | Alfieri et al. 2013: 57 experiments, d ≈ 0.50. Stating the principle **after** the comparison helps most. | **Strong** | Kept. The "What do you notice?" answer in the teacher notes is the rule to state after the comparison. |
-| Spatial contiguity, split attention | Ginns 2006 (meta-analysis): integrated layouts beat separated ones. | **Strong** | The answer space sits directly under each question, and the Explain strip sits right under its pair. |
+| Spatial contiguity, split attention | Ginns 2006 (meta-analysis): placing related information together beat separating it, with a large average effect (d ≈ 0.85 for spatial contiguity), smaller for simple material. | **Strong** | The answer space sits directly under each question, and the Explain strip sits right under its pair. |
 | Learning intentions, icons, colour | Little direct evidence either way. | **Weak**, no cost | Kept for navigation only. Nothing depends on them. |
-| Growth mindset add-ons, learning styles | Sisk et al. 2018: mindset interventions d ≈ 0.08. Learning styles: no support in controlled tests. | **Weak** | Deliberately left out. |
+| Growth mindset add-ons, learning styles | Sisk et al. 2018 (43 intervention studies, about 57,000 students): mindset interventions d ≈ 0.08. Pashler et al. 2008: no adequate evidence that matching teaching to a "learning style" helps. | **Weak** | Deliberately left out. |
 
-**Integer-specific note.** There are few controlled trials comparing number lines with counters. The number line was kept because it is the model in the syllabus, and it covers all four operations and ordering consistently.
+**Integer-specific note.** No controlled trial comparing number lines with counters was found in the search for this brief. The number line was kept as a design judgement: it is the model in the syllabus, and it covers ordering, adding and subtracting consistently.
 
 ## References
 
-- Abedi, J., & Lord, C. (2001). The language factor in mathematics tests. *Applied Measurement in Education, 14*(3).
-- Adesope, O. O., Trevisan, D. A., & Sundararajan, N. (2017). Rethinking the use of tests: A meta-analysis of practice testing. *Review of Educational Research, 87*(3).
+All checked against a library, publisher or author record (October 2026).
+
+- Abedi, J., & Lord, C. (2001). The language factor in mathematics tests. *Applied Measurement in Education, 14*(3), 219–234.
+- Adesope, O. O., Trevisan, D. A., & Sundararajan, N. (2017). Rethinking the use of tests: A meta-analysis of practice testing. *Review of Educational Research, 87*(3), 659–701.
 - Agarwal, P. K., Nunes, L. D., & Blunt, J. R. (2021). Retrieval practice consistently benefits student learning: A systematic review of applied research in schools and classrooms. *Educational Psychology Review, 33*.
-- Barbieri, C. A., & Booth, J. L. (2020). Mistakes on display. *Applied Cognitive Psychology, 34*.
+- Aleven, V., & Koedinger, K. R. (2002). An effective metacognitive strategy: Learning by doing and explaining with a computer-based Cognitive Tutor. *Cognitive Science, 26*, 147–179.
+- Alfieri, L., Nokes-Malach, T. J., & Schunn, C. D. (2013). Learning through case comparisons: A meta-analytic review. *Educational Psychologist*.
+- Aqazade, M., Bofferding, L., & Farmer, S. (2016). Benefits of analyzing contrasting integer problems: The case of four second graders. In *Proceedings of the 38th Annual Meeting of PME-NA* (pp. 132–139). University of Arizona.
+- Ashman, G., Kalyuga, S., & Sweller, J. (2020). Problem-solving or explicit instruction: Which should go first when element interactivity is high? *Educational Psychology Review, 32*.
+- Barbieri, C. A., & Booth, J. L. (2020). Mistakes on display: Incorrect examples refine equation solving and algebraic feature knowledge. *Applied Cognitive Psychology, 34*(4), 862–878.
 - Barbieri, C. A., Miller-Cotto, D., Clerjuste, S. N., & Chawla, K. (2023). A meta-analysis of the worked examples effect on mathematics performance. *Educational Psychology Review, 35*.
 - Barton, C. (2018). *How I Wish I'd Taught Maths.* John Catt.
-- Bofferding, L. (2014). Negative integer understanding: Characterizing first graders' mental models. *JRME, 45*(2); Bofferding, L. (2019). Understanding negative numbers. In *Constructing Number*, Springer.
-- Cepeda, N. J., et al. (2006). Distributed practice in verbal recall tasks. *Psychological Bulletin, 132*(3).
-- Chi, M. T. H., Bassok, M., Lewis, M. W., Reimann, P., & Glaser, R. (1989). Self-explanations. *Cognitive Science, 13*.
-- Education Endowment Foundation (2022). *Improving Mathematics in Key Stages 2 and 3* (guidance report, updated).
-- Kalyuga, S., Ayres, P., Chandler, P., & Sweller, J. (2003). The expertise reversal effect. *Educational Psychologist, 38*(1).
-- Kirschner, P. A., Sweller, J., & Clark, R. E. (2006). Why minimal guidance during instruction does not work. *Educational Psychologist, 41*(2).
+- Black, P., & Wiliam, D. (1998). Assessment and classroom learning. *Assessment in Education, 5*(1).
+- Bofferding, L. (2014). Negative integer understanding: Characterizing first graders' mental models. *Journal for Research in Mathematics Education, 45*(2), 194–245.
+- Bofferding, L. (2019). Understanding negative numbers. In A. Norton & M. W. Alibali (Eds.), *Constructing Number: Merging Perspectives from Psychology and Mathematics Education* (pp. 251–277). Springer.
+- Briggs, D. C., Ruiz-Primo, M. A., Furtak, E., Shepard, L., & Yin, Y. (2012). Meta-analytic methodology and inferences about the efficacy of formative assessment. *Educational Measurement: Issues and Practice, 31*(4), 13–17.
+- Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. *Psychological Bulletin, 132*(3), 354–380.
+- Chi, M. T. H., Bassok, M., Lewis, M. W., Reimann, P., & Glaser, R. (1989). Self-explanations: How students study and use examples in learning to solve problems. *Cognitive Science, 13*(2), 145–182.
+- Education Endowment Foundation (2017). *Improving Mathematics in Key Stages 2 and 3* (guidance report; Henderson, Hodgen, Foster & Kuchemann).
+- Ginns, P. (2006). Integrating information: A meta-analysis of the spatial contiguity and temporal contiguity effects. *Learning and Instruction, 16*(6), 511–525.
+- Kalyuga, S., Ayres, P., Chandler, P., & Sweller, J. (2003). The expertise reversal effect. *Educational Psychologist, 38*(1), 23–31.
+- Kingston, N., & Nash, B. (2011). Formative assessment: A meta-analysis and a call for research. *Educational Measurement: Issues and Practice, 30*(4), 28–37.
+- Kirschner, P. A., Sweller, J., & Clark, R. E. (2006). Why minimal guidance during instruction does not work. *Educational Psychologist, 41*(2), 75–86.
+- Kluger, A. N., & DeNisi, A. (1996). The effects of feedback interventions on performance: A historical review, a meta-analysis, and a preliminary feedback intervention theory. *Psychological Bulletin, 119*(2), 254–284.
+- Konrad, M., Joseph, L. M., & Eveleigh, E. (2009). A meta-analytic review of guided notes. *Education and Treatment of Children, 32*(3), 421–444.
 - Marton, F., & Booth, S. (1997). *Learning and Awareness.* Erlbaum.
-- Renkl, A., & Atkinson, R. K. (2003). Structuring the transition from example study to problem solving. *Educational Psychologist, 38*(1).
-- Rittle-Johnson, B. (2006). Promoting transfer: Effects of self-explanation and direct instruction. *Child Development, 77*(1).
-- Rittle-Johnson, B., & Star, J. R. (2007). Does comparing solution methods facilitate conceptual and procedural knowledge? *Journal of Educational Psychology, 99*(3).
+- McEldoon, K. L., Durkin, K. L., & Rittle-Johnson, B. (2013). Is self-explanation worth the time? A comparison to additional practice. *British Journal of Educational Psychology, 83*(4), 615–632.
+- Pan, S. C., & Carpenter, S. K. (2023). Prequestioning and pretesting effects: A review of empirical research, theoretical perspectives, and implications for educational practice. *Educational Psychology Review, 35*.
+- Pashler, H., McDaniel, M., Rohrer, D., & Bjork, R. (2008). Learning styles: Concepts and evidence. *Psychological Science in the Public Interest, 9*(3).
+- Renkl, A., & Atkinson, R. K. (2003). Structuring the transition from example study to problem solving in cognitive skill acquisition: A cognitive load perspective. *Educational Psychologist, 38*(1), 15–22.
+- Rinne, L. F., & Mazzocco, M. M. M. (2014). Knowing right from wrong in mental arithmetic judgments: Calibration of confidence predicts the development of accuracy. *PLoS ONE*.
+- Rittle-Johnson, B. (2006). Promoting transfer: Effects of self-explanation and direct instruction. *Child Development, 77*(1), 1–15.
+- Rittle-Johnson, B., Loehr, A. M., & Durkin, K. (2017). Promoting self-explanation to improve mathematics learning: A meta-analysis and instructional design principles. *ZDM Mathematics Education*.
+- Rittle-Johnson, B., & Star, J. R. (2007). Does comparing solution methods facilitate conceptual and procedural knowledge? An experimental study on learning to solve equations. *Journal of Educational Psychology, 99*(3), 561–574.
 - Rohrer, D., Dedrick, R. F., Hartwig, M. K., & Cheung, C.-N. (2020). A randomized controlled trial of interleaved mathematics practice. *Journal of Educational Psychology, 112*(1), 40–52.
-- Rosenshine, B. (2012). Principles of instruction. *American Educator, 36*(1).
-- Sinha, T., & Kapur, M. (2021). When problem solving followed by instruction works: Evidence for productive failure. *Review of Educational Research, 91*(5).
-- Sweller, J., & Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. *Cognition and Instruction, 2*(1).
-- Trafton, J. G., & Reiser, B. J. (1993). The contributions of studying examples and solving problems to skill acquisition. *Proceedings of the Cognitive Science Society.*
-- van Gog, T., Kester, L., & Paas, F. (2011). Effects of worked examples, example–problem, and problem–example pairs on novices' learning. *Contemporary Educational Psychology, 36*.
-- Vig, R., Murray, E., & Star, J. R. (2014). Model breaking points conceptualized. *Educational Psychology Review, 26* (verify).
-- Watson, A., & Mason, J. (2006). Seeing an exercise as a single mathematical object: Using variation to structure sense-making. *Mathematical Thinking and Learning, 8*(2).
+- Rohrer, D., & Taylor, K. (2006). The effects of overlearning and distributed practice on the retention of mathematics knowledge. *Applied Cognitive Psychology, 20*.
+- Rosenshine, B. (2012). Principles of instruction: Research-based strategies that all teachers should know. *American Educator, 36*(1), 12–19.
+- Sinha, T., & Kapur, M. (2021). When problem solving followed by instruction works: Evidence for productive failure. *Review of Educational Research, 91*(5), 761–798.
+- Sisk, V. F., Burgoyne, A. P., Sun, J., Butler, J. L., & Macnamara, B. N. (2018). To what extent and under which circumstances are growth mind-sets important to academic achievement? Two meta-analyses. *Psychological Science*.
+- Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. *Cognitive Science, 12*(2), 257–285.
+- Sweller, J., & Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. *Cognition and Instruction, 2*(1), 59–89.
+- Trafton, J. G., & Reiser, B. J. (1993). The contributions of studying examples and solving problems to skill acquisition. In *Proceedings of the 1993 Conference of the Cognitive Science Society* (pp. 1017–1022).
+- van Gog, T., Kester, L., & Paas, F. (2011). Effects of worked examples, example–problem, and problem–example pairs on novices' learning. *Contemporary Educational Psychology, 36*(3), 212–218.
+- Vig, R., Murray, E., & Star, J. R. (2014). Model breaking points conceptualized. *Educational Psychology Review, 26*(1), 73–90.
+- Vlassis, J. (2004). Making sense of the minus sign or becoming flexible in "negativity". *Learning and Instruction, 14*.
+- Watson, A., & Mason, J. (2006). Seeing an exercise as a single mathematical object: Using variation to structure sense-making. *Mathematical Thinking and Learning, 8*(2), 91–111.
 - Wiliam, D. (2011). *Embedded Formative Assessment.* Solution Tree.
-- Aleven, V., & Koedinger, K. R. (2002). An effective metacognitive strategy: Learning by doing and explaining with a computer-based Cognitive Tutor. *Cognitive Science, 26*(2).
-- Alfieri, L., Nokes-Malach, T. J., & Schunn, C. D. (2013). Learning through case comparisons: A meta-analytic review. *Educational Psychologist, 48*(2).
-- Ashman, G., Kalyuga, S., & Sweller, J. (2020). Problem-solving or explicit instruction: Which should go first when element interactivity is high? *Educational Psychology Review, 32*.
-- Kingston, N., & Nash, B. (2011). Formative assessment: A meta-analysis and a call for research. *Educational Measurement: Issues and Practice, 30*(4).
-- Kluger, A. N., & DeNisi, A. (1996). The effects of feedback interventions on performance. *Psychological Bulletin, 119*(2).
-- Konrad, M., Joseph, L. M., & Eveleigh, E. (2009). A meta-analytic review of guided notes. *Education and Treatment of Children, 32*(3).
-- McEldoon, K. L., Durkin, K. L., & Rittle-Johnson, B. (2012). Is self-explanation worth the time? A comparison to additional practice. *British Journal of Educational Psychology, 83*(4).
-- Pan, S. C., & Carpenter, S. K. (2023). Prequestioning and pretesting effects: A review. *Educational Psychology Review, 35*.
-- Rinne, L. F., & Mazzocco, M. M. M. (2014). Knowing right from wrong in mental arithmetic judgments: Calibration of confidence predicts the development of accuracy. *PLoS ONE, 9*(7).
-- Sisk, V. F., Burgoyne, A. P., Sun, J., Butler, J. L., & Macnamara, B. N. (2018). To what extent and under which circumstances are growth mind-sets important to academic achievement? *Psychological Science, 29*(4).
-- Wisniewski, B., Zierer, K., & Hattie, J. (2020). The power of feedback revisited: A meta-analysis of educational feedback research. *Frontiers in Psychology, 10*.
-- Yang, C., Luo, L., Vadillo, M. A., Yu, R., & Shanks, D. R. (2021). Testing (quizzing) boosts classroom learning: A systematic and meta-analytic review. *Psychological Bulletin, 147*(4).
+- Wisniewski, B., Zierer, K., & Hattie, J. (2020). The power of feedback revisited: A meta-analysis of educational feedback research. *Frontiers in Psychology, 10*, 3087.
+- Yang, C., Luo, L., Vadillo, M. A., Yu, R., & Shanks, D. R. (2021). Testing (quizzing) boosts classroom learning: A systematic and meta-analytic review. *Psychological Bulletin, 147*(4), 399–435.
