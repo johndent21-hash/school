@@ -16,7 +16,7 @@
 //          K is a seeded kit (lib/drill.js: ri, nz, pick, shuffle, N, B); i counts the questions made of this kind.
 //          q  the question (HTML)     a  the answer (defaults to the last working line)
 //          w  the working, one step a line, the answer last: the question gets that many lines (2 to 4)
-//          n  the number of lines to give (default: 1 for a question with no working)
+//          n  the number of lines to give (default: 1 for a question with no working; 0 for a drawing question)
 //          key  questions with the same key count as the same question (e.g. one claim with different names)
 //          fig a diagram under the question
 //          Return null (or nothing) to skip one, for example when the numbers do not suit.
@@ -56,7 +56,7 @@ const tidy = (it) => {
   if (!it || !(it.q || it.fig)) return null;
   const w = it.w && it.w.length ? it.w.map(String) : null;
   const a = it.a != null ? String(it.a) : w ? w[w.length - 1] : '';
-  const n = it.n || (w ? Math.min(4, Math.max(2, w.length)) : 1);
+  const n = it.n ?? (w ? Math.min(4, Math.max(2, w.length)) : 1); // n: 0 for a drawing question (the diagram is the space)
   return { ...it, w, a, n };
 };
 // Two short questions with one answer line each share a row.
@@ -76,7 +76,8 @@ const scaffoldOf = (it) => (it.w && it.w.length >= 2 ? it.w.map((l, i) => (i < i
 const cell = (it, k) => {
   const shown = it.scaffold || [];
   const lines = Array.from({ length: it.n }, (_, i) => `<i class="mx-l">${shown[i] ? `<b class="ff-done part">${shown[i]}</b>` : ''}${i === 0 && it.from ? `<span class="mx-from">from ${it.from}</span>` : ''}</i>`).join('');
-  return `<div class="mx-q${it.from ? ' old' : ''}" data-k="${k}"><div class="mx-qrow"><span class="ff-n">?</span><span class="mx-qt">${it.q ? keep(it.q) : ''}</span></div>${figBox(it.fig, it.figW || 54, it.fh || 30)}<div class="mx-ls">${lines}</div></div>`;
+  const tag = !it.n && it.from ? `<span class="mx-from">from ${it.from}</span>` : '';
+  return `<div class="mx-q${it.from ? ' old' : ''}${it.n ? '' : ' draw'}" data-k="${k}"><div class="mx-qrow"><span class="ff-n">?</span><span class="mx-qt">${it.q ? keep(it.q) : ''}</span>${tag}</div>${figBox(it.fig, it.figW || 54, it.fh || 30)}<div class="mx-ls">${lines}</div></div>`;
 };
 
 // The earlier lessons a lesson draws on: the last three lessons of this chapter (most alike), older lessons of this

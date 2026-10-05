@@ -69,11 +69,11 @@ module.exports = {
     ],
     m: [
       ({ ri, pick }) => { const d = ri(3, 33) * 5 + ri(1, 4); return { q: 'Estimate the angle. Then measure it.', fig: ang(d, pick([0, 30])), fh: 22, w: [`estimate: about ${Math.round(d / 10) * 10}°`, `measure: ${d}°`] }; },
-      ({ ri }) => { const d = ri(4, 34) * 5; return { q: `Draw an angle of ${d}° on the ray.`, fig: space(), a: `${d}° (check with a protractor)` }; },
+      ({ ri }) => { const d = ri(4, 34) * 5; return { q: `Draw an angle of ${d}° on the ray.`, fig: space(), n: 0, a: `${d}° (check with a protractor)` }; },
       ({ ri }) => { const d = ri(38, 68) * 5; return { q: 'Measure the reflex angle (the one marked outside).', fig: ang(d, 0), fh: 24, w: [`inside angle: ${360 - d}°`, `360° − ${360 - d}° = ${d}°`] }; },
     ],
     c: [
-      ({ ri }) => { const d = ri(38, 68) * 5; return { q: `Draw a reflex angle of ${d}° on the ray.`, fig: space(), w: [`360° − ${d}° = ${360 - d}°`, `draw ${360 - d}°, mark the outside`] }; },
+      ({ ri }) => { const d = ri(38, 68) * 5; return { q: `Draw a reflex angle of ${d}° on the ray.`, fig: space(), n: 0, w: [`360° − ${d}° = ${360 - d}°`, `draw ${360 - d}°, mark the outside`] }; },
       ({ ri }) => { const e = ri(4, 16) * 5; return { q: `An angle is ${e}° less than a revolution. Find its size and classify it.`, w: [`360° − ${e}° = ${360 - e}°`, `${360 - e}° is reflex`] }; },
       ({ ri }) => { const a = ri(1, 5), b = ri(a + 2, 11); return { q: `The minute hand turns from ${a} to ${b} on a clock. Through what angle does it turn?`, w: [`each number: 360° ÷ 12 = 30°`, `${b - a} × 30° = ${(b - a) * 30}°`] }; },
       ({ ri, pick }) => { const d = ri(4, 16) * 5, who = pick(NAMES); return { q: `${who} measured an angle as ${180 - d}°, but it is clearly acute. What mistake was made? What is the angle?`, a: `Read the wrong scale. The angle is ${d}°.`, n: 2 }; },
@@ -169,11 +169,11 @@ module.exports = {
         return { q: `Name the parallel sides and the perpendicular sides of ${S[0]} ${a}${b}${c}${d}.`, fig: D.polygon({ pts: S[1].map(([x, y]) => [x + 5, y + 3]), vlabels: [a, b, c, d], right: S[2], w: 56, h: 30 }), w: [`∥: ${S[3]}`, `⊥: ${S[4]}`] };
       },
       ({ pick }) => { const [a, b, c, d] = four(pick); return { q: `${a}${b} ⊥ ${c}${d}. What size is the angle where they meet?`, a: '90°' }; },
-      ({ pick }) => { const [x, y] = pick([['parallel', 'never meet'], ['perpendicular', 'meet at 90°']]); return { q: `Draw two lines that are ${x}. Mark them with the right symbol.`, fig: D.drawSpace({ w: 54, h: 22, ray: false }), a: `two lines that ${y}, marked ${x === 'parallel' ? 'with arrows' : 'with a right-angle mark'}` }; },
+      ({ pick }) => { const [x, y] = pick([['parallel', 'never meet'], ['perpendicular', 'meet at 90°']]); return { q: `Draw two lines that are ${x}. Mark them with the right symbol.`, fig: D.drawSpace({ w: 54, h: 22, ray: false }), n: 0, a: `two lines that ${y}, marked ${x === 'parallel' ? 'with arrows' : 'with a right-angle mark'}` }; },
     ],
     c: [
       ({ pick }) => { const [a, b] = pick([['A', 'B'], ['P', 'Q'], ['M', 'N']]), p = pick(['T', 'W', 'V']); return { q: `Write the steps to construct a line perpendicular to ${a}${b} through the point ${p} on ${a}${b}.`, w: [`compasses at ${p}: mark two points on ${a}${b}`, 'from each point, equal arcs that cross', `rule from ${p} through the crossing`], key: 'construct perpendicular' }; },
-      () => ({ q: 'Construct a line perpendicular to the ray at its end point. Use compasses.', fig: D.drawSpace({ w: 54, h: 30 }), a: 'a line at 90° to the ray through its end point (check with a set square)' }),
+      () => ({ q: 'Construct a line perpendicular to the ray at its end point. Use compasses.', fig: D.drawSpace({ w: 54, h: 30 }), n: 0, a: 'a line at 90° to the ray through its end point (check with a set square)' }),
       ({ pick }) => { const [a, b] = pick([['A', 'B'], ['P', 'Q'], ['M', 'N']]), p = pick(['T', 'W', 'V']); return { q: `Write the steps to construct a line parallel to ${a}${b} through the point ${p}, which is not on ${a}${b}.`, w: [`rule a line through ${p} that cuts ${a}${b}`, `copy the angle it makes at ${p}`, `rule the new arm: it is ∥ to ${a}${b}`], key: 'construct parallel' }; },
       ({ pick }) => { const [s1, s2, ans] = pick([['⊥', '⊥', '∥'], ['∥', '∥', '∥'], ['∥', '⊥', '⊥']]); return { q: `AB ${s1} CD and CD ${s2} EF. What can you say about AB and EF?`, a: `AB ${ans} EF`, n: 2, key: `logic ${s1}${s2}` }; },
       ({ pick }) => { const [a, b] = pick([['A', 'B'], ['P', 'Q'], ['C', 'D']]); return { q: `Write the steps to construct the perpendicular bisector of the interval ${a}${b}.`, w: [`compasses more than half of ${a}${b}`, `arcs from ${a} and from ${b}, above and below`, 'rule through the two crossings'], key: 'construct bisector' }; },
