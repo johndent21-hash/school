@@ -47,7 +47,7 @@ module.exports = () => {
     p.querySelectorAll('.q-text, .worked-q, .steps li, .worked-a, .given, .card li, .zone-text, .banner-title, .qs .q-text, td, th').forEach((el) => {
       if (el.scrollWidth > el.clientWidth + 2) out.push(`${pg}: text too wide for its box${label(el)} "${el.textContent.trim().slice(0, 40)}"`);
     });
-    p.querySelectorAll('.worked, .zone, .exit-q, .ff-col').forEach((el) => {
+    p.querySelectorAll('.worked, .zone, .exit-q, .ff-col, .mx-list, .mx-ex-cell').forEach((el) => {
       if (el.scrollHeight > el.clientHeight + 2) out.push(`${pg}: text cut off at the bottom of a ${el.className.split(' ')[0]}${label(el)}`);
     });
 
@@ -61,7 +61,7 @@ module.exports = () => {
     // 3.3 units must print at least about 5 pt.
     p.querySelectorAll('svg.graph').forEach((g) => {
       if (!(r(g).height > 0)) return;
-      if (g.closest('.ws2, .own') && g.closest('.ff-fig, .ff-rfig, .ff-how, .cw-fig, .ow-fig, .pf-fig, .tc-fig')) { const vb = g.viewBox.baseVal, s = Math.min(r(g).height / MM / vb.height, r(g).width / MM / vb.width); if (vb.height && s < 0.6) out.push(`${pg}: a diagram prints at ${(s * 100).toFixed(0)}% of its size${label(g)}`); return; }
+      if (g.closest('.ws2, .own, .mx') && g.closest('.ff-fig, .ff-rfig, .ff-how, .cw-fig, .ow-fig, .pf-fig, .tc-fig, .mx-fig')) { const vb = g.viewBox.baseVal, s = Math.min(r(g).height / MM / vb.height, r(g).width / MM / vb.width); if (vb.height && s < 0.6) out.push(`${pg}: a diagram prints at ${(s * 100).toFixed(0)}% of its size${label(g)}`); return; }
       if (r(g).height / MM < 12 && !g.closest('.q-text')) out.push(`${pg}: a graph is squashed to ${(r(g).height / MM).toFixed(0)} mm${label(g)}`);
     });
 

@@ -195,11 +195,17 @@ const answersCss = `
   .ans-block ul.worked { list-style: none; padding: 0; columns: 3; column-gap: 7mm; }
   .ans-block ul.worked li { break-inside: avoid; margin: 0 0 1.8mm; line-height: 1.3; }
   .ans-block ul.worked .aw { color: #1a3fae; font-weight: 600; }
-  .ans-block ul.worked li b { display: inline-block; min-width: 7mm; }`;
+  .ans-block ul.worked li b { display: inline-block; min-width: 7mm; }
+  .answers:has(.ans-mx) { columns: 1; }
+  .ans-block ul.worked.ans-mx, .ans-block ul.worked.ans-ex { display: block; border: 0; border-radius: 0; padding: 0; }
+  .ans-block ul.worked.ans-mx { columns: 4; column-gap: 5mm; }
+  .ans-block ul.worked.ans-mx li { margin: 0 0 0.9mm; line-height: 1.25; font-size: 8pt; }
+  .ans-block ul.worked.ans-mx li b { min-width: 5.5mm; }
+  .ans-block ul.worked.ans-ex li { font-size: 8.3pt; }`;
 // Long lists (the skill drills) flow into columns in the blended series (see .theme-mb .ans-block ol.multi).
 // A list marked plain (worked solutions that carry their own labels) is shown without numbers, in two columns.
 const answerBlocks = (items) => items.map(([h, list]) => (list.plain
-  ? `<div class="ans-block"><h3>${h}</h3><ul class="worked">${list.map((a) => `<li>${a}</li>`).join('')}</ul></div>`
+  ? `<div class="ans-block"><h3>${h}</h3><ul class="worked${list.cls ? ` ${list.cls}` : ''}">${list.map((a) => `<li>${a}</li>`).join('')}</ul></div>`
   : `<div class="ans-block"><h3>${h}</h3><ol${list.length > 10 ? ' class="multi"' : ''}>${list.map((a) => `<li>${a}</li>`).join('')}</ol></div>`)).join('');
 const answersHtml = (heading, lessons, pageLabel) => `
   <div class="ans-header"><h1>${heading}</h1></div>
@@ -226,9 +232,13 @@ const jobs = []; // { dir, name, html, check }
       `<div class="ans-header"><h1>Year ${chapter.year} · Chapter ${chapter.number} · ${chapter.title}: homework answers (teacher copy)</h1></div><div class="answers">${hw.answers.map(([h, list]) => `<div class="ans-block"><h3>${h}</h3><ul class="plain">${list.map((a) => `<li>${a}</li>`).join('')}</ul></div>`).join('')}</div>`, answersCss) });
   }
   const base = chapter.fileName;
-  jobs.push({ dir: chapterDir, name: base, check: true, html: doc(chapterDir, `${chapter.title} booklet`, pages.join('\n')) });
-  jobs.push({ dir: chapterDir, name: `${base}-Answers`, html: doc(chapterDir, `${chapter.title} answers`,
+  const answersJob = () => ({ dir: chapterDir, name: `${base}-Answers`, html: doc(chapterDir, `${chapter.title} answers`,
     answersHtml(`Year ${chapter.year} · Chapter ${chapter.number} · ${chapter.title}: answers (teacher copy)`, lessons, 'booklet'), answersCss) });
+  // A chapter with a fit (lib/mixed.js) is laid out in the browser first: the fit drops what does not fit and says
+  // which questions are left, and only then are the answers written.
+  jobs.push({ dir: chapterDir, name: base, check: true, html: doc(chapterDir, `${chapter.title} booklet`, pages.join('\n')),
+    fit: chapter.fit, after: chapter.fit ? (kept) => { lessons.forEach((l) => l.setKept && l.setKept(kept[l.code] || [])); return answersJob(); } : null });
+  if (!chapter.fit) jobs.push(answersJob());
 }
 
 // 2. One booklet per lesson: cover, "before you start", then the lesson
@@ -260,6 +270,11 @@ if (!noIndividual) {
     fs.writeFileSync(file, job.html);
     await pg.goto('file://' + file);
     await pg.evaluate(() => document.fonts.ready);
+    if (job.fit) {
+      const kept = await pg.evaluate(`(${job.fit.toString()})()`);
+      fs.writeFileSync(file, await pg.content());
+      if (job.after) jobs.push(job.after(kept));
+    }
     if (job.check) {
       const problems = await pg.evaluate(`(${require('./lib/check').toString()})()`);
       totalProblems += problems.length;
