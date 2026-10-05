@@ -38,7 +38,7 @@ const CAP = [9, 9, 8, 11, 10, 10];
 
 // Typesetting: keep numbers with their units, never split a calculation (−9 + ☐ = −2) across lines, and never leave
 // a short last word alone on a line.
-const OPD = '[(\\[]*[−+]?(?:\\$?\\d[\\d\\u00a0]*(?:[.,]\\d+)?|☐|<i>[a-z]</i>)[)\\]]*(?:<sup>\\d+</sup>)?(?:°C?|%)?';
+const OPD = '(?:\\d+(?=\\())?[(\\[]*[−+]?(?:\\$?\\d[\\d\\u00a0]*(?:[.,]\\d+)?(?:<i>[a-z]</i>(?:<sup>\\d+</sup>)?)*|☐|(?:<i>[a-z]</i>(?:<sup>\\d+</sup>)?)+)[)\\]]*(?:<sup>\\d+</sup>)?(?:°C?|%)?';
 const EXPR = new RegExp(`${OPD}(?: (?:[+−×÷=☐]|&lt;|&gt;|≈) ${OPD})+`, 'g');
 const keep = (t) => String(t).replace(/(\d) (\d{3})\b/g, '$1\u00a0$2').replace(/(\d) (mm|cm|m|km|g|kg|t|mL|L|s|h|min|°|%|cm²|m²|cm³|m³)(?=[\s.,?)]|$)/g, '$1\u00a0$2')
   .replace(EXPR, (m) => (m.length < 40 ? `<span class="nw">${m}</span>` : m)).replace(/ ([^\s<>]{1,7}(?:<\/\w+>)?)$/, '&nbsp;$1');
