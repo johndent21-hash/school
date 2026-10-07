@@ -183,3 +183,31 @@ Chapter 1 now uses two pages a lesson: one double-sided sheet, since every lesso
   - `counters`: + and − counters with zero pairs
   - `groups`: equal groups of counters
   - `keys`: calculator keys
+
+## 10. Mixed-practice worksheets (`year7-mixed`)
+
+`year7-mixed/` builds every chapter (1 to 12, with 5A and 5B) again as two-page Freefall-style worksheets. The questions mix the lesson's own work with questions from earlier lessons. Build one chapter with `node build.js year7-mixed/ch07-decimals`. The build prints how many questions are from the lesson and how many are from earlier.
+
+- **Pages:** each lesson is one double-sided sheet.
+  - Page 1 has a full-width WE DO box: a one-line KEY IDEA and 2–3 examples with blank space for the teacher to work live. Three columns follow.
+  - Page 2 has three more columns.
+  - The columns go Easy, Easy, Medium, then Medium, Challenging, Challenging.
+- **Less scaffolding:** there are no HOW TO boxes. In the first two columns, the first question with working shows its steps with the numbers blanked. Every other question is blank.
+- **Mixed practice:** each question stands on its own, like the Mixed practice section of `year7-own`. A question from an earlier lesson has an amber "from 3.04" tag, so students know where to look back.
+- **The mix:** the share of earlier questions grows across the sheet. It goes 12%, 25%, 34% and then 42% in each of the last three columns. That is about 30% before the fit trims the columns. After the trim it is 24–29% a chapter (27% over the whole year, about 1 question in 4).
+  - The lesson's own work is blocked at the start, so students first practise today's skill.
+  - The earlier questions are then interleaved through the sheet. Most come from recent lessons and from the lessons in `look` (the earlier lessons whose questions look like today's). Some come from older lessons and earlier chapters.
+  - Chapter 1 starts with fewer earlier questions and uses Year 6 revision (`year7-mixed/year6.js`) until there is something to look back on.
+  - Why: in a randomised trial with Year 7 classes, interleaved practice gave much better delayed test scores than blocked practice (61% vs 38%, d = 0.83; Rohrer, Dedrick, Hartwig and Cheung, 2020). Rohrer and Hartwig recommend that most practice of a skill is spaced into later assignments. A hybrid of blocked practice first, then mixed practice, keeps the first attempts successful.
+- **Filling:** each column is over-filled, then the browser drops questions from the bottom until the column fits, and renumbers. The answers are written after the fit, so they match the questions that are left.
+- **Template:** `lib/mixed.js`. `lib/mixed-chapter.js` builds a chapter from the blended chapter plus the chapter's `content.js`. `year7-mixed/bank.js` collects every lesson's questions, so any lesson can draw on the earlier ones.
+- **`content.js`:** a lesson is `{ idea, ex, e, m, c, look?, exH?, exFh? }`.
+  - `idea` is the KEY IDEA line.
+  - `ex` is the examples, each `[question, working lines, fig?]`.
+  - `e`, `m` and `c` are Easy, Medium and Challenging kinds of question.
+  - A kind is `(K, i) => ({ q, a?, w?, fig?, fh?, figW?, n?, key? })`.
+    - `w` is the working, one step a line. `a` is the answer, if it is not the last working line.
+    - `n: 0` makes a drawing question with no answer lines.
+    - `key` stops two questions that are too alike being on one sheet.
+    - Return `null` to skip a value that does not work.
+    - `K` holds the seeded random helpers: `ri`, `nz`, `pick`, `shuffle`, `N` and `B`.

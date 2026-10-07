@@ -237,7 +237,12 @@ const jobs = []; // { dir, name, html, check }
   // A chapter with a fit (lib/mixed.js) is laid out in the browser first: the fit drops what does not fit and says
   // which questions are left, and only then are the answers written.
   jobs.push({ dir: chapterDir, name: base, check: true, html: doc(chapterDir, `${chapter.title} booklet`, pages.join('\n')),
-    fit: chapter.fit, after: chapter.fit ? (kept) => { lessons.forEach((l) => l.setKept && l.setKept(kept[l.code] || [])); return answersJob(); } : null });
+    fit: chapter.fit, after: chapter.fit ? (kept) => {
+      lessons.forEach((l) => l.setKept && l.setKept(kept[l.code] || []));
+      const [today, earlier] = lessons.reduce((t, l) => (l.mix ? [t[0] + l.mix[0], t[1] + l.mix[1]] : t), [0, 0]);
+      console.log(`Mixed practice: ${today} questions on the lesson, ${earlier} from earlier lessons (${Math.round((100 * earlier) / (today + earlier))}% earlier)`);
+      return answersJob();
+    } : null });
   if (!chapter.fit) jobs.push(answersJob());
 }
 
