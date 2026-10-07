@@ -41,6 +41,7 @@ const CAP = [9, 9, 8, 11, 10, 10];
 const OPD = '(?:\\d+(?=\\())?[(\\[]*[−+]?(?:\\$?\\d[\\d\\u00a0]*(?:[.,]\\d+)?(?:<i>[a-z]</i>(?:<sup>\\d+</sup>)?)*|☐|(?:<i>[a-z]</i>(?:<sup>\\d+</sup>)?)+)[)\\]]*(?:<sup>\\d+</sup>)?(?:°C?|%)?';
 const EXPR = new RegExp(`${OPD}(?: (?:[+−×÷=☐]|&lt;|&gt;|≈) ${OPD})+`, 'g');
 const keep = (t) => String(t).replace(/(\d) (\d{3})\b/g, '$1\u00a0$2').replace(/(\d) (mm|cm|m|km|g|kg|t|mL|L|s|h|min|°|%|cm²|m²|cm³|m³)(?=[\s.,?)]|$)/g, '$1\u00a0$2')
+  .replace(/\b([Aa]) (?=(?:8|11(?!\d)|18(?!\d)|[aeioAEIO][a-z]{2,}))/g, '$1n ') // a 8 m → an 8 m, a octagon → an octagon
   .replace(EXPR, (m) => (m.length < 40 ? `<span class="nw">${m}</span>` : m)).replace(/ ([^\s<>]{1,7}(?:<\/\w+>)?)$/, '&nbsp;$1');
 
 const figBox = (fig, width = 54, cap = 30) => {
