@@ -9,6 +9,10 @@ its region with `art`). For each region it writes, in assets/mandelbrot/:
   <region>-cover.jpg  the cover picture (fades to white at the top)
   <region>-band.jpg   the strip on the right of each page's header band
   <region>-hw.jpg     a closer look at the same region, for the homework booklet's cover
+  <region>-page.jpg   (regions with page=True) a full A4 portrait picture for a full-bleed cover
+
+A region can name another colour scheme with palette= (PALETTES below): 'gold' is the gold-and-green scheme of the
+Year 10 transition booklets.
 """
 import numpy as np
 from PIL import Image
@@ -32,10 +36,16 @@ REGIONS = {
     'snowflake':      dict(c=(-0.5582, 0.6353), span=0.035, it=700),                               # Ch 10
     'feather':        dict(c=(0.3245, 0.04855), span=0.004, it=1200),                              # Ch 11
     'jellyfish':      dict(c=(-1.25066, 0.02012), span=0.0012, it=1200),                           # Ch 12
+    'gold-spiral':    dict(c=(-0.7436, 0.1316), span=0.0065, it=1400, palette='gold', page=True),  # Year 10 transition: gold spirals in Seahorse Valley
 }
 
 STOPS = [(0.0, (190, 197, 222)), (0.45, (168, 181, 222)), (0.7, (140, 162, 232)), (0.86, (96, 128, 236)), (0.95, (60, 80, 170)), (1.0, (40, 44, 70))]
 INSIDE = (50, 49, 45)
+# Other colour schemes: (stops, inside colour). gold: a deep green field with gold filaments close to the set.
+PALETTES = {
+    'blue': (STOPS, INSIDE),
+    'gold': ([(0.0, (3, 24, 19)), (0.5, (9, 54, 40)), (0.7, (20, 92, 63)), (0.82, (104, 136, 58)), (0.9, (204, 164, 48)), (0.96, (245, 214, 118)), (1.0, (255, 246, 210))], (4, 18, 14)),
+}
 
 
 def escape(w, h, cx, cy, span, it):
@@ -59,14 +69,15 @@ def escape(w, h, cx, cy, span, it):
     return n.reshape(h, w)
 
 
-def colour(n, it):
+def colour(n, it, palette='blue'):
+    stops, inside_rgb = PALETTES[palette]
     inside = n < 0
     t = np.clip(np.log1p(np.where(inside, 0, n)) / np.log1p(it * 0.6), 0, 1)
     img = np.zeros(n.shape + (3,))
-    for (a, ca), (b, cb) in zip(STOPS, STOPS[1:]):
+    for (a, ca), (b, cb) in zip(stops, stops[1:]):
         m = (t >= a) & (t <= b); f = ((t - a) / (b - a))[m][:, None]
         img[m] = np.array(ca) * (1 - f) + np.array(cb) * f
-    img[inside] = INSIDE
+    img[inside] = inside_rgb
     return img
 
 
@@ -79,12 +90,14 @@ def save(img, path, fade=0.0):
 
 
 def draw(name, r):
-    (cx, cy), span, it = r['c'], r['span'], r['it']
-    save(colour(escape(2400, 1100, cx, cy, span, it), it), os.path.join(OUT, f'{name}-cover.jpg'), fade=0.14)
+    (cx, cy), span, it, pal = r['c'], r['span'], r['it'], r.get('palette', 'blue')
+    save(colour(escape(2400, 1100, cx, cy, span, it), it, pal), os.path.join(OUT, f'{name}-cover.jpg'), fade=0.14)
     bx, by, bs = r.get('band', (cx, cy, span * 0.6))
-    save(colour(escape(2400, 260, bx, by, bs, it), it), os.path.join(OUT, f'{name}-band.jpg'))
+    save(colour(escape(2400, 260, bx, by, bs, it), it, pal), os.path.join(OUT, f'{name}-band.jpg'))
     hx, hy, hs = r.get('hw', (cx, cy, span / 4))
-    save(colour(escape(2400, 1100, hx, hy, hs, it + 300), it + 300), os.path.join(OUT, f'{name}-hw.jpg'), fade=0.14)
+    save(colour(escape(2400, 1100, hx, hy, hs, it + 300), it + 300, pal), os.path.join(OUT, f'{name}-hw.jpg'), fade=0.14)
+    if r.get('page'):  # A4 portrait (210 x 297), the view `span` wide
+        save(colour(escape(1654, 2339, cx, cy, span, it), it, pal), os.path.join(OUT, f'{name}-page.jpg'))
     print('written', name, flush=True)
 
 

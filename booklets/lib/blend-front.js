@@ -17,6 +17,7 @@ const ART = {
   snowflake: 'snowflake-like branches between the main body and the top bulb',
   feather: 'feathery spirals deep in Elephant Valley',
   jellyfish: 'a jellyfish of spirals near the neck of the left bulb',
+  'gold-spiral': 'gold spirals deep in Seahorse Valley, coloured in gold and green',
 };
 
 // Worksheet booklet cover, in the style of the revision booklets: the charcoal band with the title and name box,
@@ -189,4 +190,4 @@ const homework = (chapter, lessons) => {
   return { pages: [cover(chapter, lessons, { kind: 'Homework booklet', sub: `Drill practice and mixed revision of all ${lessons.length} lessons · ${off + all.length} questions`, list: false }), ...pages], answers };
 };
 
-module.exports = { cover, worksheetCover, insideCover, homework };
+module.exports = { cover, worksheetCover, insideCover, homework, ART };

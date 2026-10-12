@@ -330,3 +330,5 @@ module.exports = (spec) => (chapter) => {
 };
 
 module.exports.pairExamples = pairExamples;
+// Building blocks reused by the two-page lessons (lib/lesson-two.js).
+module.exports.parts = { exBlock, roundHtml, hint };

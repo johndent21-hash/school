@@ -183,3 +183,11 @@ Chapter 1 now uses two pages a lesson: one double-sided sheet, since every lesso
   - `counters`: + and − counters with zero pairs
   - `groups`: equal groups of counters
   - `keys`: calculator keys
+
+## 10. Year 10 transition (gold theme, two-page lessons)
+
+`year10-transition/` builds easier Year 10 booklets from the Cambridge MATHS GOLD Year 10 chapter reviews. Build one with `node build.js year10-transition/ch01-financial-maths`. It writes the booklet and a teacher answers PDF; there is no homework booklet.
+
+- **Lessons:** `lib/lesson-two.js`. Each lesson is two pages. Page 1 has a slim header (title, date, one learning intention, 2–3 success criteria), then Easy. Page 2 is Medium. Each level is a WE DO example (`ex`, `exAns`) and a YOU DO box of rounds (`{ text, items, ans, cols, work }`, as in `lib/drill.js`) with a `hint` line. There are no key terms, notes, extension, exit ticket or summary.
+- **Front pages:** `lib/gold-front.js` has a full-bleed Mandelbrot cover and the blended inside cover with its own how-to. `plan` in the chapter file lists every lesson, so the cover and contents are complete while lessons are still being written.
+- **Theme:** `.theme-gold` in `lib/theme.css` uses deep green and gold. WE DO stays charcoal and YOU DO stays blue. The art is the `gold-spiral` region, drawn with `palette='gold'` in `tools/mandelbrot.py`, which also writes a full-page `-page.jpg` for the cover.

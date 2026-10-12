@@ -180,7 +180,7 @@ const assemble = (front, lessons) => {
 
 const doc = (dir, title, body, extraCss = '') => `<!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8"><title>${title}</title>
-<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; --mb-dark: url(${assetsFor(dir)}/mandelbrot/${chapter.art || 'whole-set'}-band.jpg); }${extraCss}</style></head><body class="${chapter.theme === 'mandelbrot' ? 'theme-mb' : chapter.theme ? `theme-${chapter.theme}` : ''}">${body.replaceAll('{{ASSETSREL}}', assetsFor(dir))}</body></html>`;
+<style>${cssFor(dir)}:root { --accent: ${chapter.accent || '#7d3c98'}; --mb-dark: url(${assetsFor(dir)}/mandelbrot/${chapter.art || 'whole-set'}-band.jpg); }${extraCss}</style></head><body class="${chapter.bodyClass || (chapter.theme === 'mandelbrot' ? 'theme-mb' : chapter.theme ? `theme-${chapter.theme}` : '')}">${body.replaceAll('{{ASSETSREL}}', assetsFor(dir))}</body></html>`;
 
 const answersCss = `
   @page { size: A4; margin: 12mm 12mm 14mm; }

@@ -1007,3 +1007,64 @@ ul.plain { list-style: none; padding-left: 0; }
 .tc-think-a span { font-size: 7pt; color: var(--mute); }
 .tc-explain { grid-template-columns: auto 1fr; align-items: start; column-gap: 3mm; }
 .tc-explain .tc-reasons { grid-column: 1 / -1; }
+
+/* ===================== Gold theme (Year 10 transition series: two-page lessons) =====================
+   Deep green and gold, from the gold-spiral Mandelbrot art. WE DO stays charcoal and YOU DO stays blue. */
+.theme-gold { --gd-green: #0b3d2e; --gd-deep: #06261d; --gd-gold: #d4a62a; --gd-gold-soft: #f7f0dc; --gd-gold-line: #e3cf95; }
+.theme-gold .mb-band {
+  background: linear-gradient(90deg, var(--gd-deep) 36%, rgba(6,38,29,0.75) 58%, rgba(6,38,29,0.05) 88%), var(--mb-dark) right center / auto 100% no-repeat, var(--gd-deep);
+  border-bottom: 1mm solid var(--gd-gold);
+}
+.theme-gold .mb-kicker { color: var(--gd-gold-line); }
+.theme-gold .mb-title b { background: var(--gd-gold); color: var(--gd-deep); }
+.theme-gold .mb-sec { background: var(--gd-gold); color: var(--gd-deep); }
+.theme-gold .page-foot .pn { background: var(--gd-green); box-shadow: 0 0 0 0.6mm #fff, 0 0 0 1mm var(--gd-gold); }
+.theme-gold .lesson-badge { background: var(--gd-green); color: #fff; box-shadow: 0 0 0 0.8mm #fff, 0 0 0 1.6mm var(--gd-gold); }
+.theme-gold .lesson-badge b { color: var(--gd-gold-line); }
+.theme-gold .banner { background: var(--gd-gold-soft); border-left: 1.6mm solid var(--gd-gold); }
+.theme-gold .banner .lvl-dots i { background: var(--gd-green); box-shadow: 0 0 0 0.5mm var(--gd-gold-soft), 0 0 0 0.9mm var(--gd-gold); }
+.theme-gold .card { background: var(--gd-gold-soft); border-top-color: var(--gd-gold); }
+.theme-gold .contents td.code { color: var(--gd-green); }
+.theme-gold .howto .step { background: var(--gd-green); color: #fff; }
+.theme-gold .mb-ack { background: var(--gd-deep); }
+.theme-gold .contents th { border-bottom-color: var(--gd-gold); }
+
+/* two-page lesson: a slim header */
+.lesson-title.two h1 { font-size: 18pt; }
+.lesson-title.two .lesson-badge { width: 15mm; height: 15mm; }
+.li-sc.two { grid-template-columns: 1fr 1.25fr; gap: 3mm; }
+.li-sc.two .card { padding: 2mm 3.5mm; }
+.li-sc.two h3 { font-size: 9.5pt; margin-bottom: 0.6mm; }
+.li-sc.two p, .li-sc.two li { font-size: 9pt; }
+.li-sc.two li { margin-bottom: 0.3mm; }
+/* a WE DO example with four parts sits in one row */
+.ex-zone.parts-4 .ex-parts { grid-template-columns: repeat(4, 1fr); }
+.two-page .ex-part .box.teacher { height: 26mm; }
+.two-page .round-h b { background: var(--charcoal); }
+.two-page .skill-zone .dq .ans-line { height: 6.5mm; }
+.two-page .dq .q-text { font-size: 9.5pt; }
+.two-page .dq .fr { font-size: 0.95em; }
+
+/* full-bleed cover */
+.gd-cover { background: var(--gd-deep) center / cover no-repeat; color: #fff; }
+.gdc-top { position: absolute; top: 12mm; left: 14mm; right: 14mm; display: flex; align-items: center; gap: 5mm; }
+.gdc-logo { height: 18mm; background: #fff; border-radius: 2mm; padding: 2mm 3mm; }
+.gdc-series { margin-left: auto; font-size: 9pt; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gd-deep); background: var(--gd-gold); padding: 2mm 4mm; border-radius: 1.5mm; }
+.gdc-panel { position: absolute; top: 62mm; left: 14mm; right: 14mm; background: rgba(6,38,29,0.88); border: 0.6mm solid var(--gd-gold); border-radius: 4mm; padding: 9mm 10mm 9mm; }
+.gdc-badge { position: absolute; top: -14mm; right: 10mm; width: 32mm; height: 32mm; border-radius: 50%; background: var(--gd-gold); color: var(--gd-deep); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 0 1.5mm var(--gd-deep), 0 0 0 2.2mm var(--gd-gold); }
+.gdc-badge span { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; }
+.gdc-badge b { font-size: 34pt; line-height: 1; font-weight: 700; }
+.gdc-kicker { font-size: 9pt; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gd-gold); font-weight: 600; }
+.gd-cover h1 { color: #fff; font-size: 32pt; line-height: 1.05; margin: 2mm 0 2mm; max-width: 130mm; }
+.gdc-sub { font-size: 10pt; color: #e9e2c8; margin-bottom: 6mm; }
+.gdc-lessons { display: grid; grid-template-columns: 1fr; gap: 1.6mm; font-size: 10.5pt; }
+.gdc-lessons div { padding: 1.6mm 3mm; border-left: 1.2mm solid var(--gd-gold); background: rgba(255,255,255,0.06); border-radius: 1mm; }
+.gdc-lessons b { color: var(--gd-gold); margin-right: 3mm; }
+.gdc-name { position: absolute; left: 14mm; right: 14mm; bottom: 20mm; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 6mm; background: #fff; color: var(--charcoal); border-radius: 3mm; padding: 4mm 6mm; border-top: 1.4mm solid var(--gd-gold); }
+.gdc-name div { display: flex; align-items: flex-end; gap: 2mm; font-size: 8pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+.gdc-name i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 6mm; }
+.gdc-credit { position: absolute; left: 14mm; right: 14mm; bottom: 9mm; font-size: 7.5pt; color: #e9e2c8; text-align: right; }
+.ex-zone.parts-4 .box.teacher span { display: none; }
+.theme-gold .howto .lvl-word { margin-right: 0; }
+.gdc-credit span { background: rgba(6,38,29,0.85); padding: 1mm 2.5mm; border-radius: 1mm; }
+.theme-gold .mb-ack-art { background-position: 40% 30%; }
