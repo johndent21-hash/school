@@ -36,7 +36,9 @@ REGIONS = {
     'snowflake':      dict(c=(-0.5582, 0.6353), span=0.035, it=700),                               # Ch 10
     'feather':        dict(c=(0.3245, 0.04855), span=0.004, it=1200),                              # Ch 11
     'jellyfish':      dict(c=(-1.25066, 0.02012), span=0.0012, it=1200),                           # Ch 12
-    'gold-spiral':    dict(c=(-0.7436, 0.1316), span=0.0065, it=1400, palette='gold', page=True),  # Year 10 transition: gold spirals in Seahorse Valley
+    'gold-spiral':    dict(c=(-0.7436, 0.1316), span=0.0065, it=1400, palette='gold', page=True),  # Year 10 transition Ch 1: gold spirals in Seahorse Valley
+    'gold-feather':   dict(c=(0.3245, 0.04855), span=0.004, it=1400, palette='gold', page=True),   # Year 10 transition Ch 2: feathery spirals in Elephant Valley
+    'gold-triple':    dict(c=(-0.0886, -0.6555), span=0.009, it=1200, palette='gold', page=True),  # Year 10 transition Ch 4: a band of triple spirals on the edge of the lower bulb
 }
 
 STOPS = [(0.0, (190, 197, 222)), (0.45, (168, 181, 222)), (0.7, (140, 162, 232)), (0.86, (96, 128, 236)), (0.95, (60, 80, 170)), (1.0, (40, 44, 70))]

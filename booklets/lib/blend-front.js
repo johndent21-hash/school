@@ -18,6 +18,8 @@ const ART = {
   feather: 'feathery spirals deep in Elephant Valley',
   jellyfish: 'a jellyfish of spirals near the neck of the left bulb',
   'gold-spiral': 'gold spirals deep in Seahorse Valley, coloured in gold and green',
+  'gold-feather': 'feathery gold spirals deep in Elephant Valley, coloured in gold and green',
+  'gold-triple': 'a band of gold triple spirals on the edge of the lower bulb, coloured in gold and green',
 };
 
 // Worksheet booklet cover, in the style of the revision booklets: the charcoal band with the title and name box,

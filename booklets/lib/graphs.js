@@ -115,6 +115,33 @@ const lineGraph = ({ title: t, xs, ys, max, yMin = 0, step = 1, labelEvery = 5, 
   return svg(w, h, body);
 };
 
+// Histogram: columns that touch, one for each class interval (labelled under its column), with a half-column gap
+// before the first. values omitted or blank: true gives the empty grid for students to draw on (column edges dotted).
+// total: also label the right axis with the percentage frequency (each gridline as a % of the total).
+const histogram = ({ title: t = '', classes, values = [], max, step = 1, labelEvery = step, yTitle = 'Frequency', xTitle = '', total = 0,
+  w = 88, h = 54, blank = false }) => {
+  const x0 = 13, x1 = w - (total ? 12 : 3), yb = h - (xTitle ? 13 : 9), yt = t ? 8 : 4;
+  const { sy, lines } = makeScale({ max, step, yb, yt });
+  const bw = (x1 - x0) / (classes.length + 0.5), bx = (i) => x0 + bw / 2 + i * bw;
+  let body = t ? title(w, t) : '';
+  lines.forEach(({ v }) => {
+    const major = Math.abs(v / labelEvery - Math.round(v / labelEvery)) < 1e-6;
+    body += line(x0, sy(v), x1, sy(v), major ? C.gridMajor : C.grid, major ? 0.25 : 0.15);
+    if (major) body += text(x0 - 1.2, sy(v) + 0.9, v, { size: 2.4, anchor: 'end' });
+    if (major && total) body += text(x1 + 1.2, sy(v) + 0.9, `${+(v / total * 100).toFixed(1)}%`, { size: 2.3 });
+  });
+  classes.forEach((c, i) => {
+    if (blank || values[i] === undefined) body += line(bx(i), yt, bx(i), yb, C.grid, 0.2) + (i === classes.length - 1 ? line(bx(i) + bw, yt, bx(i) + bw, yb, C.grid, 0.2) : '');
+    else body += `<rect x="${bx(i).toFixed(2)}" y="${sy(values[i]).toFixed(2)}" width="${bw.toFixed(2)}" height="${(yb - sy(values[i])).toFixed(2)}" fill="${C.lightBlue}" stroke="${C.blue}" stroke-width="0.35"/>`;
+    body += multiline(bx(i) + bw / 2, yb + 3.2, c, { size: 2.3, anchor: 'middle' });
+  });
+  body += axes(x0, x1, yb, yt);
+  if (total) body += line(x1, yt - 1, x1, yb, C.charcoal, 0.35) + text(w - 1.5, (yt + yb) / 2, 'Percentage frequency', { size: 2.2, anchor: 'middle', rotate: 90 });
+  body += text(3, (yt + yb) / 2, yTitle, { size: 2.4, anchor: 'middle', rotate: -90 });
+  if (xTitle) body += text((x0 + x1) / 2, h - 1.5, xTitle, { size: 2.4, anchor: 'middle' });
+  return svg(w, h, body);
+};
+
 // Slices: [label, value, colour, labelInside]. Numbers are not shown unless the label includes them.
 const sectorGraph = ({ title: t, slices, w = 88, h = 48 }) => {
   const cx = w / 2 + 4, cy = 28.5, r = 16.5;
@@ -259,6 +286,6 @@ const table = (head, rows, cls = '') => `
   ${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
 
 module.exports = {
-  C, svg, text, line, symbol, inlineSymbol, pictureGraph, columnGraph, lineGraph, sectorGraph, dividedBar,
+  C, svg, text, line, symbol, inlineSymbol, pictureGraph, columnGraph, histogram, lineGraph, sectorGraph, dividedBar,
   dotPlot, dotPlotTemplate, stemLeaf, stemLeafTemplate, backToBack, backToBackTemplate, gridPaper, table,
 };

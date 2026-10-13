@@ -201,6 +201,40 @@ const circle = ({ label = '', diameter = false, w = 32, h = 32 }) => {
   return svg(w, h, b);
 };
 
+// A semicircle (angle 180) or quarter circle (angle 90), flat side down, with its radius (or, for a semicircle, its
+// diameter) drawn and labelled. A quarter circle has its right angle marked.
+const sectorShape = ({ angle = 180, label = '', diameter = false, r = 16 }) => {
+  const m = 4, cx = m + (angle === 90 ? 0 : r), cy = m + r, W = angle === 90 ? r + 2 * m : 2 * r + 2 * m, H = r + 2 * m + 4;
+  const [ex, ey] = pt(cx, cy, r, angle);
+  let b = `<path d="M${cx + r},${cy} A${r},${r} 0 0 0 ${f(ex)},${f(ey)} L${cx},${cy} Z" fill="#eef1f9" stroke="${C.charcoal}" stroke-width="0.45"/>` + dot(cx, cy, 0.6);
+  if (angle === 90) b += `<polyline points="${cx + 2.5},${cy} ${cx + 2.5},${cy - 2.5} ${cx},${cy - 2.5}" fill="none" stroke="${C.charcoal}" stroke-width="0.3"/>`;
+  b += diameter && angle === 180 ? line(cx - r, cy, cx + r, cy, C.blue, 0.5) + T(cx, cy + 4, label, { size: 3, anchor: 'middle', weight: 600 })
+    : line(cx, cy, cx + r, cy, C.blue, 0.5) + T(cx + r / 2, cy + 4, label, { size: 3, anchor: 'middle', weight: 600 });
+  return svg(f(W), f(H), b);
+};
+
+// A rectangle with a semicircle on its right-hand end (the semicircle's diameter is the rectangle's height).
+// len: label for the rectangle's length (top), wid: label for the height (left side).
+const rectSemi = ({ len = '', wid = '', L = 26, H = 16 }) => {
+  const m = 5, x = m + 4, y = m, r = H / 2;
+  let b = `<path d="M${x},${y} L${x + L},${y} A${r},${r} 0 0 1 ${x + L},${y + H} L${x},${y + H} Z" fill="#eef1f9" stroke="${C.charcoal}" stroke-width="0.45"/>`;
+  b += `<line x1="${x + L}" y1="${y}" x2="${x + L}" y2="${y + H}" stroke="${C.grey}" stroke-width="0.3" stroke-dasharray="1 0.8"/>`;
+  b += T(x + L / 2, y - 1.5, len, { size: 3, anchor: 'middle' }) + T(x - 1.5, y + H / 2 + 1, wid, { size: 3, anchor: 'end' });
+  return svg(f(x + L + r + m), f(y + H + m), b);
+};
+
+// Cylinder, upright, with its radius (or diameter) and height labelled.
+const cylinder = ({ r = '', d = '', ht = '', R = 11, H = 22 }) => {
+  const m = 4, cx = m + R + (ht ? 8 : 0), ry = R * 0.32, top = m + ry + 1, bot = top + H;
+  let b = `<path d="M${cx - R},${top} L${cx - R},${bot} A${R},${f(ry)} 0 0 0 ${cx + R},${bot} L${cx + R},${top}" fill="#eef1f9" stroke="${C.charcoal}" stroke-width="0.45"/>`
+    + `<path d="M${cx - R},${bot} A${R},${f(ry)} 0 0 1 ${cx + R},${bot}" fill="none" stroke="${C.grey}" stroke-width="0.3" stroke-dasharray="1 0.8"/>`
+    + `<ellipse cx="${cx}" cy="${top}" rx="${R}" ry="${f(ry)}" fill="#f7f7f7" stroke="${C.charcoal}" stroke-width="0.45"/>` + dot(cx, top, 0.5);
+  b += d ? line(cx - R, top, cx + R, top, C.blue, 0.5) + T(cx, top - 1.4, d, { size: 3, anchor: 'middle', weight: 600 })
+    : line(cx, top, cx + R, top, C.blue, 0.5) + T(cx + R / 2, top - 1.4, r, { size: 3, anchor: 'middle', weight: 600 });
+  if (ht) b += T(cx - R - 1.5, (top + bot) / 2 + 1, ht, { size: 3, anchor: 'end' });
+  return svg(f(cx + R + m), f(bot + ry + m), b);
+};
+
 // Spinner. sectors: [{ label, size }] (sizes are relative).
 const spinner = ({ sectors, w = 36, h = 36 }) => {
   const cx = w / 2, cy = h / 2, r = Math.min(w, h) / 2 - 2;
@@ -380,4 +414,4 @@ const keys = (list) => {
   return svg(f(x), 8.5, b);
 };
 
-module.exports = { jumps, thermometer, vscale, counters, groups, keys, fit, prism, numberLine, angle, rays, parallel, polygon, grid, plane, box, triPrism, circle, spinner, squares, fractionBar, drawSpace };
+module.exports = { sectorShape, rectSemi, cylinder, jumps, thermometer, vscale, counters, groups, keys, fit, prism, numberLine, angle, rays, parallel, polygon, grid, plane, box, triPrism, circle, spinner, squares, fractionBar, drawSpace };

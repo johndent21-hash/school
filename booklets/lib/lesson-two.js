@@ -13,6 +13,9 @@
 //     hint: 'the method, in one line'          shown at the top of the YOU DO box
 //     rounds: [{ text, items, ans, cols?, work? }]   as in lib/drill.js: work gives each question a working box
 //   }
+// A round with figs: true is a round of diagram questions: items are { fig, t? }, each shown as its number, the
+// diagram on a white card, then an answer line (prefix: 'A =' writes that before the line) or, with work, a box.
+// figH sets the diagram card height (default 24mm).
 const { mbPage, banner, youDo } = require('./layout');
 const { exBlock, roundHtml, hint } = require('./lesson-blend').parts;
 
@@ -31,10 +34,20 @@ const header = (spec) => `
     <div class="card"><h3>Success criteria</h3><ul class="ticks">${spec.sc.map((x) => `<li>I can ${x}</li>`).join('')}</ul></div>
   </div>`;
 
+// A round of diagram questions (round.figs).
+const figCell = (it, n, x) => `<div class="fq${x.work ? ' work' : ''}${it.t ? ' has-t' : ''}"><div class="fq-head"><span class="q-num">${n}</span>${it.t ? `<span class="q-text">${it.t}</span>` : ''}</div>`
+  + `<div class="fq-fig"${x.figH ? ` style="height:${x.figH}mm"` : ''}>${it.fig}</div>`
+  + (x.work ? '<span class="box"></span>' : `<div class="fq-ans">${x.prefix ? `<span>${x.prefix}</span>` : ''}<i></i></div>`) + '</div>';
+const figRound = (x, i, from) => {
+  const cols = x.cols || 4, rows = Math.ceil(x.items.length / cols);
+  return `<div class="round" style="flex-grow:${rows * 3}"><p class="round-h"><b>Round ${i + 1}</b><span>Questions ${from}–${from + x.items.length - 1}: ${x.text}</span></p>`
+    + `<div class="fq-grid c${cols}">${x.items.map((it, k) => figCell(it, from + k, x)).join('')}</div></div>`;
+};
+
 // The YOU DO box of one level: the method hint, then the rounds, numbered on through the level.
 const practice = (lvl, L) => {
   let from = 1;
-  const body = L.rounds.map((x, i) => { const h = roundHtml(x, i, from); from += x.items.length; return h; }).join('');
+  const body = L.rounds.map((x, i) => { const h = (x.figs ? figRound : roundHtml)(x, i, from); from += x.items.length; return h; }).join('');
   const work = L.rounds.some((x) => x.work);
   return youDo(`<b class="lvl-word l${lvl}">${LEVEL_WORD[lvl]}</b> work down the box, one round at a time. Write each answer on its line${work ? ' (show working in the boxes)' : ''}.<span class="count">${qn(total(L.rounds))}</span>`,
     `${hint(L.hint)}${body}`, 'grow skill-zone');
