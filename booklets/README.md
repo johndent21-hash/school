@@ -191,3 +191,12 @@ Chapter 1 now uses two pages a lesson: one double-sided sheet, since every lesso
 - **Lessons:** `lib/lesson-two.js`. Each lesson is two pages. Page 1 has a slim header (title, date, one learning intention, 2–3 success criteria), then Easy. Page 2 is Medium. Each level is a WE DO example (`ex`, `exAns`) and a YOU DO box of rounds (`{ text, items, ans, cols, work }`, as in `lib/drill.js`) with a `hint` line. There are no key terms, notes, extension, exit ticket or summary.
 - **Front pages:** `lib/gold-front.js` has a full-bleed Mandelbrot cover and the blended inside cover with its own how-to. `plan` in the chapter file lists every lesson, so the cover and contents are complete while lessons are still being written.
 - **Theme:** `.theme-gold` in `lib/theme.css` uses deep green and gold. WE DO stays charcoal and YOU DO stays blue. The art is the `gold-spiral` region, drawn with `palette='gold'` in `tools/mandelbrot.py`, which also writes a full-page `-page.jpg` for the cover.
+
+### Chapters 2 (Measurement) and 4 (Statistics)
+
+These two booklets are mostly diagrams: nearly every question is a labelled picture, shape, graph, table or plot, and each Medium page ends with 2 or 3 word problems. Build them with `node build.js year10-transition/ch02-measurement` and `node build.js year10-transition/ch04-statistics`.
+
+- `year10-transition/chapter.js` makes any chapter of the series (`dir`, `number`, `title`, `art`, `fileName`, `plan`, `goals`). Each chapter's lessons are in `lessons/<code>.js`.
+- Diagram rounds: `{ figs: true, items: [{ fig }], ans, cols, prefix: 'A =', figH }` puts each question on a white card with an answer line (see `lib/lesson-two.js`). A round with `fig` puts one graph beside its questions; an example with `fig` puts one graph beside its parts.
+- Chapter 2 helpers draw labelled shapes, circles, prisms and cylinders. Chapter 4 helpers add frequency tables, class intervals and tallies on top of `lib/graphs.js`, which also has a `histogram`.
+- Art: `gold-feather` (Chapter 2) and `gold-triple` (Chapter 4), drawn with `palette='gold'`.

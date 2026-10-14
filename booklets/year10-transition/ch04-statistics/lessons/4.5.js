@@ -2,7 +2,7 @@
 // Easy: reading an ordered stem-and-leaf plot. Medium: drawing an ordered plot from raw data (on a blank template), then
 // finding the median and the range; the page ends with word problems.
 // From the Chapter 4 review: the plot with stems 2 to 5 (multiple-choice 7 and 8: minimum 24, mode 31, the Easy WE DO),
-// the basketball points (short-answer 7, the Medium WE DO) and the flying-fox counts (extended response 2).
+// the basketball points (short-answer 7, the Medium WE DO) and the flying-fox counts (extended response 2, a word problem).
 const { fmt, problems, stemLeaf, stemLeafTemplate, sum } = require('../helpers');
 
 // ---------- data helpers ----------
@@ -25,6 +25,7 @@ const MARKS = [56, 62, 65, 68, 70, 73, 73, 73, 79, 81, 84, 87, 90, 95];
 const PTS = [20, 19, 24, 37, 42, 34, 38, 49, 28, 15, 38, 32, 50, 29]; // the review's basketball points
 const FOX = [73, 50, 36, 82, 15, 24, 73, 57, 65, 86, 51, 32, 21, 39]; // the review's flying-fox counts
 const HW = [12, 25, 31, 18, 22, 27, 35, 14, 29, 20, 33, 26];
+const BEACH = [23, 41, 35, 18, 29, 44, 37, 26, 31, 19, 38, 45];
 const PLANT = [12, 15, 18, 20, 24, 24, 27, 31, 33, 36, 40];
 const between = (xs, a, b) => xs.filter((x) => x >= a && x <= b).length;
 
@@ -52,14 +53,14 @@ module.exports = {
     exAns: [ordered(PTS), medW(PTS), rangeW(PTS), `in the 20s and 30s (${between(PTS, 20, 39)} of the ${PTS.length} scores)`],
     hint: 'Write the stems down the side, then each leaf beside its stem, smallest to largest · Add a key · Median: count in from both ends.',
     rounds: [
-      { text: 'draw an ordered stem-and-leaf plot on each template, then find the median and the range.', figs: true, cols: 2, figH: 52, prefix: 'Median, range:',
-        items: [{ fig: drawPair('Flying foxes in a fig tree each day', FOX) }, { fig: drawPair('Minutes spent on homework', HW) }],
-        ans: [`${ordered(FOX)}; median ${medW(FOX)}; range ${rangeW(FOX)}`, `${ordered(HW)}; median ${medW(HW)}; range ${rangeW(HW)}`] },
+      { text: 'draw an ordered plot on each template. Then find the median and range.', figs: true, cols: 2, figH: 44, prefix: 'Median, range:',
+        items: [{ fig: drawPair('Ages of people at the beach', BEACH) }, { fig: drawPair('Minutes spent on homework', HW) }],
+        ans: [`${ordered(BEACH)}; median ${medW(BEACH)}; range ${rangeW(BEACH)}`, `${ordered(HW)}; median ${medW(HW)}; range ${rangeW(HW)}`] },
       { text: 'use the plot of plant heights (cm).', cols: 2, fig: plot(PLANT, 'Heights of plants (cm)'),
-        items: ['How many plants are there?', 'What is the median height?', 'What is the range?', 'What is the mode?', 'How many plants are shorter than 25 cm?', 'How many plants are 30 cm or taller?'],
-        ans: [String(PLANT.length), medW(PLANT), rangeW(PLANT), mode(PLANT), String(PLANT.filter((x) => x < 25).length), String(PLANT.filter((x) => x >= 30).length)] },
+        items: ['How many plants are there?', 'What is the median height?', 'What is the range?', 'How many plants are 30 cm or taller?'],
+        ans: [String(PLANT.length), medW(PLANT), rangeW(PLANT), String(PLANT.filter((x) => x >= 30).length)] },
       problems('solve each problem. Show your working.', [
-        ['A plot has the row 4 | 1 3 8 and the key 4 | 1 = 41. Which three values does this row show?', '41, 43, 48'],
+        [`Flying foxes in a fig tree were counted on ${FOX.length} days: ${FOX.join(', ')}. Write the counts in order, then find the median and the range.`, `${sorted(FOX).join(', ')}; median ${medW(FOX)}; range ${rangeW(FOX)}`],
         ((xs) => [`Sam says the median of ${xs.join(', ')} is ${xs[2]}. Explain the mistake and find the median.`, `there are ${xs.length} values (even), so the median is halfway between the two middle values: ${medW(xs)}`])([12, 15, 18, 40]),
       ]),
     ],

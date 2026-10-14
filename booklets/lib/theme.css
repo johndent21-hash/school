@@ -1130,3 +1130,10 @@ svg.tally { height: 3.6mm; vertical-align: middle; }
 .fq:not(.has-t) .fq-fig .ncards { padding-left: 6.5mm; }
 .ex-part .inline-fig .ncards span { font-size: 9pt; }
 .ex-fig .ncards span { font-size: 13pt; padding: 1mm 2.2mm; }
+/* a compact blank stem-and-leaf template beside its raw data */
+.fig-pair .sl.template { flex: none; width: 46%; }
+.fig-pair .sl.template table { font-size: 8.5pt; }
+.fig-pair .sl.template td { height: 6.6mm; padding: 0 2mm; }
+.fig-pair .sl.template td.stem { width: 9mm; }
+.fig-pair .sl.template th { padding: 0.3mm 2mm; }
+.fig-pair .sl-key { font-size: 7pt; }
