@@ -1108,3 +1108,25 @@ ul.plain { list-style: none; padding-left: 0; }
 .data-table.blank-pct td:empty { min-width: 14mm; height: 6mm; }
 /* a small diagram beside a WE DO example is enlarged at most 1.6 times, so its labels stay a sensible size */
 .two-page .ex-fig .graph { width: min(100%, calc(var(--w) * 1.6)); }
+/* a survey or data card (Year 10 Chapter 4): a question or a heading, with some example answers under it */
+.dcard { display: flex; flex-direction: column; gap: 1mm; align-items: center; justify-content: center; text-align: center; padding: 1mm 2mm; height: 100%; width: 100%; }
+.dcard b { font-size: 9pt; line-height: 1.2; color: var(--charcoal); }
+.dcard span { font-size: 8pt; color: var(--muted); }
+.dcard.q b::before { content: '“'; } .dcard.q b::after { content: '”'; }
+.dcard .bubble { background: #f3f5fb; border: 0.3mm solid #c8d1ea; border-radius: 2mm; padding: 0.8mm 2mm; }
+.fq:not(.has-t) .fq-fig .dcard { padding-left: 7mm; }
+/* raw data beside its frequency table (Year 10 Chapter 4) */
+.rawdata { background: #fff; border: 0.3mm solid var(--line); border-radius: 1.5mm; padding: 1.2mm 2mm; font-size: 8.5pt; line-height: 1.45; }
+.rawdata b { display: block; font-size: 8.5pt; color: var(--charcoal); margin-bottom: 0.5mm; }
+.fig-pair { display: flex; gap: 2mm; align-items: center; justify-content: center; width: 100%; }
+.fig-pair .rawdata { flex: 1 1 0; min-width: 0; }
+.fig-pair .data-table { flex: none; font-size: 8.5pt; }
+.fig-pair .data-table th, .fig-pair .data-table td { padding: 0.6mm 1.6mm; }
+.data-table td.blank { min-width: 13mm; height: 5.6mm; }
+svg.tally { height: 3.6mm; vertical-align: middle; }
+/* a set of data shown as number cards (Year 10 Chapter 4) */
+.ncards { display: flex; flex-wrap: wrap; gap: 1mm; justify-content: center; align-items: center; padding: 0.5mm 1mm; }
+.ncards span { min-width: 6mm; text-align: center; font-weight: 700; font-size: 9.5pt; background: #eef1f9; border: 0.3mm solid #c8d1ea; border-radius: 1.2mm; padding: 0.5mm 1.2mm; color: var(--charcoal); }
+.fq:not(.has-t) .fq-fig .ncards { padding-left: 6.5mm; }
+.ex-part .inline-fig .ncards span { font-size: 9pt; }
+.ex-fig .ncards span { font-size: 13pt; padding: 1mm 2.2mm; }
