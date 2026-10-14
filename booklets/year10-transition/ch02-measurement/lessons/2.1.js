@@ -20,7 +20,8 @@ const ask = (v, a, b) => `Change ${m(v, a)} to ${NAME[b] || b}.`;
 // A picture question: draw(label, value) shows the measurement; the answer is worked out from the same numbers.
 const pic = (draw, v, a, b) => ({ fig: draw(m(v, a), v), t: `Change to ${NAME[b] || b}.`, ans: m(conv(v, a, b), b) });
 const pics = (text, list, o = {}) => ({ text, figs: true, cols: 4, items: list.map(({ fig, t }) => ({ fig, t })), ans: list.map((x) => x.ans), ...o });
-const EASY = { figH: 22 }; // page 1 also holds the lesson header, so its picture cards are a little shorter
+// Picture cards a little shorter than the default (24 mm), so each page also fits its WE DO chart; page 1 also holds the header.
+const EASY = { figH: 21 }, CARD = { figH: 22 };
 
 // ---------- drawing (mm) ----------
 const f2 = (n) => +n.toFixed(2);
@@ -78,11 +79,11 @@ const truck = (L) => svg(44, 22, R(3, 4, 24, 11, '#f3d36b') + T(15, 11.4, L, { s
   + O(9, 18.6, 2.7, C.charcoal, { sw: 0 }) + O(9, 18.6, 1, '#c9c5b4', { sw: 0 }) + O(34, 18.6, 2.7, C.charcoal, { sw: 0 }) + O(34, 18.6, 1, '#c9c5b4', { sw: 0 }));
 const car = (L) => svg(43, 21, P('M3,16.5 L3,12.5 Q4,11 8,10.5 L13,6 Q14.5,5 17,5 L27,5 Q29,5 30.5,6.4 L34.5,10.5 Q38.5,11 40,12.5 L40,16.5 Z', '#e39a7f')
   + P('M14.6,10.2 L17.4,6.6 L21.2,6.6 L21.2,10.2 Z', '#fff', { sw: 0.3 }) + P('M23,10.2 L23,6.6 L28,6.6 L31.6,10.2 Z', '#fff', { sw: 0.3 })
-  + O(11, 17, 3, C.charcoal, { sw: 0 }) + O(11, 17, 1.1, '#c9c5b4', { sw: 0 }) + O(32, 17, 3, C.charcoal, { sw: 0 }) + O(32, 17, 1.1, '#c9c5b4', { sw: 0 }) + T(21.5, 14.8, L));
+  + O(10, 17, 3, C.charcoal, { sw: 0 }) + O(10, 17, 1.1, '#c9c5b4', { sw: 0 }) + O(33.5, 17, 3, C.charcoal, { sw: 0 }) + O(33.5, 17, 1.1, '#c9c5b4', { sw: 0 }) + T(21.5, 14.8, L));
 const bottle = (L) => svg(22, 24, P('M8.6,3 L13.4,3 L13.4,5.4 Q17,7 17,10.5 L17,22 Q17,23 16,23 L6,23 Q5,23 5,22 L5,10.5 Q5,7 8.6,5.4 Z', '#cfe3f5')
   + R(8.3, 0.8, 5.4, 2.4, XC, { rx: 0.4 }) + R(5, 12, 12, 6.6, '#fff', { sw: 0.3 }) + T(11, 16.6, L));
 const jug = (L) => svg(34, 24, P('M24.6,6 Q30.5,6 30,12 Q29.5,17.5 23.8,17.5', 'none', { sw: 1.2 }) + P('M7.5,11 L24.7,11 L23.5,22.5 L8.5,22.5 Z', '#9fc4ef', { sw: 0 })
-  + P('M7,3 L4.6,1.8 L6.6,4.6 L8.5,22.5 L23.5,22.5 L25.2,3 Z', 'none') + [7, 11, 15, 19].map((y) => line(f2(7.6 + (y - 3) * 0.05), y, f2(11 + (y - 3) * 0.05), y, C.charcoal, 0.3)).join('')
+  + P('M7,3 L4.6,1.8 L6.6,4.6 L8.5,22.5 L23.5,22.5 L25.2,3 Z', 'none') + [7, 11, 15].map((y) => line(f2(7.6 + (y - 3) * 0.05), y, f2(11 + (y - 3) * 0.05), y, C.charcoal, 0.3)).join('')
   + T(16.2, 18.2, L));
 const can = (L) => svg(24, 24, R(5, 3, 14, 19, '#e06c5a', { sw: 0 }) + line(5, 3, 5, 22, C.charcoal, 0.4) + line(19, 3, 19, 22, C.charcoal, 0.4)
   + P('M5,22 A7,1.5 0 0 0 19,22', '#e06c5a') + E(12, 3, 7, 1.5, '#d7dbe6') + R(5, 9.4, 14, 6.6, '#fff', { sw: 0.3 }) + T(12, 14, L, { size: 3.1 }));
@@ -108,35 +109,35 @@ const sunMoon = (L) => {
 // ---------- the conversion charts (WE DO) ----------
 // Easy: km → m → cm → mm, × over the top and ÷ underneath.
 const lengthChart = () => {
-  const u = ['km', 'm', 'cm', 'mm'], bw = 13, bh = 9, gap = 10, top = 15.5, bx = (i) => 2 + i * (bw + gap);
-  let b = T(2, 3.8, 'Big unit → small unit: × (multiply)', { anchor: 'start', fill: XC, size: 3.2 }) + T(2, 39.2, 'Small unit → big unit: ÷ (divide)', { anchor: 'start', fill: DC, size: 3.2 });
+  const u = ['km', 'm', 'cm', 'mm'], bw = 13, bh = 9, gap = 10, top = 14, bx = (i) => 2 + i * (bw + gap);
+  let b = T(2, 3.8, 'Big unit → small unit: × (multiply)', { anchor: 'start', fill: XC, size: 3.2 }) + T(2, 37.4, 'Small unit → big unit: ÷ (divide)', { anchor: 'start', fill: DC, size: 3.2 });
   u.forEach((s, i) => { b += R(bx(i), top, bw, bh, '#eef1f9', { rx: 1.2 }) + T(bx(i) + bw / 2, top + bh / 2 + 1.4, s, { size: 3.9 }); });
   u.slice(1).forEach((s, i) => {
     const x1 = bx(i) + bw / 2 + 1.5, x2 = bx(i + 1) + bw / 2 - 1.5, mx = (x1 + x2) / 2;
-    const ya = top - 0.5, ca = top - 9.4, yb = top + bh + 0.5, cb = yb + 9.4;
+    const ya = top - 0.5, ca = top - 8.6, yb = top + bh + 0.5, cb = yb + 8.6;
     b += P(`M${f2(x1)},${f2(ya)} Q${f2(mx)},${f2(ca)} ${f2(x2)},${f2(ya)}`, 'none', { stroke: XC, sw: 0.45 }) + head(x2, ya, Math.atan2(ya - ca, x2 - mx), XC)
       + T(mx, (ya + ca) / 2 - 1.3, by(u[i], s), { fill: XC, size: 3.2 });
     b += P(`M${f2(x2)},${f2(yb)} Q${f2(mx)},${f2(cb)} ${f2(x1)},${f2(yb)}`, 'none', { stroke: DC, sw: 0.45 }) + head(x1, yb, Math.atan2(yb - cb, x1 - mx), DC)
       + T(mx, (yb + cb) / 2 + 3.6, by(s, u[i]), { fill: DC, size: 3.2 });
   });
-  return svg(86, 41, b);
+  return svg(86, 39, b);
 };
 // Medium: mass, capacity and time, each a row of units with × and ÷ between them.
 const factsChart = () => {
   const rows = [['Mass', ['t', 'kg', 'g']], ['Capacity', ['L', 'mL']], ['Time', ['day', 'h', 'min', 's']]];
-  const bw = 11, bh = 9.5, gap = 12, rh = 16.6, bx = (i) => 2 + i * (bw + gap);
+  const bw = 11, bh = 8.6, rh = 14.6;
   let b = '';
   rows.forEach(([name, u], r) => {
-    const y0 = r * rh, top = y0 + 5;
+    const y0 = r * rh, top = y0 + 5, c = top + bh / 2, gap = u.length > 3 ? 12 : 16, bx = (i) => 2 + i * (bw + gap);
     b += T(2, y0 + 3.6, name, { anchor: 'start', size: 3.2 });
-    u.forEach((s, i) => { b += R(bx(i), top, bw, bh, '#eef1f9', { rx: 1.2 }) + T(bx(i) + bw / 2, top + bh / 2 + 1.3, s, { size: 3.7 }); });
+    u.forEach((s, i) => { b += R(bx(i), top, bw, bh, '#eef1f9', { rx: 1.2 }) + T(bx(i) + bw / 2, c + 1.3, s, { size: 3.7 }); });
     u.slice(1).forEach((s, i) => {
       const x1 = bx(i) + bw + 1, x2 = bx(i + 1) - 1, mx = (x1 + x2) / 2;
-      b += line(x1, top + 4.1, x2 - 1, top + 4.1, XC, 0.4) + head(x2, top + 4.1, 0, XC, 1.4, 0.7) + T(mx, top + 2.7, by(u[i], s), { fill: XC, size: 2.9 });
-      b += line(x1 + 1, top + 5.6, x2, top + 5.6, DC, 0.4) + head(x1, top + 5.6, Math.PI, DC, 1.4, 0.7) + T(mx, top + 9.1, by(s, u[i]), { fill: DC, size: 2.9 });
+      b += line(x1, c - 0.75, x2 - 1, c - 0.75, XC, 0.4) + head(x2, c - 0.75, 0, XC, 1.4, 0.7) + T(mx, c - 2.1, by(u[i], s), { fill: XC, size: 2.9 });
+      b += line(x1 + 1, c + 0.75, x2, c + 0.75, DC, 0.4) + head(x1, c + 0.75, Math.PI, DC, 1.4, 0.7) + T(mx, c + 4.35, by(s, u[i]), { fill: DC, size: 2.9 });
     });
   });
-  return svg(84, f2(3 * rh + 3.6), b + T(2, 3 * rh + 2.6, 't = tonnes · h = hours · min = minutes · s = seconds', { anchor: 'start', size: 2.9, weight: 500 }));
+  return svg(84, f2(3 * rh + 3.9), b + T(2, 3 * rh + 2.9, 't = tonnes · h = hours · min = minutes · s = seconds', { anchor: 'start', size: 2.9, weight: 500 }));
 };
 
 // ---------- the questions ----------
@@ -165,16 +166,16 @@ module.exports = {
     ex: { stem: 'Mass and capacity use × 1 000. Time uses × 60 and × 24.', fig: factsChart(),
       parts: ex2.map(([v, c]) => ask(v, c[0], c[c.length - 1])) },
     exAns: ex2.map(([v, c]) => steps(v, c)),
-    hint: `${fact('t', 'kg')} · ${fact('kg', 'g')} · ${fact('L', 'mL')} · ${fact('day', 'h')} · ${fact('h', 'min')} · ${fact('min', 's')}.`,
+    hint: '1 t = 1 000 kg · 1 kg = 1 000 g · 1 L = 1 000 mL · 1 day = 24 h · 1 h = 60 min · 1 min = 60 s.',
     rounds: [
-      pics('mass. Change each one to the unit shown.', [pic(bag('FLOUR'), 2, 'kg', 'g'), pic(scale, 750, 'g', 'kg'), pic(truck, 3, 't', 'kg'), pic(car, 1500, 'kg', 't')]),
-      pics('capacity. Change each one to the unit shown.', [pic(bottle, 1.5, 'L', 'mL'), pic(jug, 500, 'mL', 'L'), pic(can, 375, 'mL', 'L'), pic(bucket, 9, 'L', 'mL')]),
-      pics('time. Change each one to the unit shown.', [pic(stopwatch, 4, 'min', 's'), pic(hourglass, 180, 's', 'min'), pic(calendar, 3, 'day', 'h'), pic(sunMoon, 1, 'day', 's')]),
+      pics('mass. Change each one to the unit shown.', [pic(bag('FLOUR'), 2, 'kg', 'g'), pic(scale, 750, 'g', 'kg'), pic(truck, 3, 't', 'kg'), pic(car, 1500, 'kg', 't')], CARD),
+      pics('capacity. Change each one to the unit shown.', [pic(bottle, 1.5, 'L', 'mL'), pic(jug, 500, 'mL', 'L'), pic(can, 375, 'mL', 'L'), pic(bucket, 9, 'L', 'mL')], CARD),
+      pics('time. Change each one to the unit shown.', [pic(stopwatch, 4, 'min', 's'), pic(hourglass, 180, 's', 'min'), pic(calendar, 3, 'day', 'h'), pic(sunMoon, 1, 'day', 's')], CARD),
       problems('solve each problem. Show your working.', [
         [`Ava is in a ${m(run.km, 'km')} fun run. Ava has run ${m(run.done, 'm')} so far. How many metres does Ava still have to run?`,
-          `${m(conv(run.km, 'km', 'm'), 'm')} − ${m(run.done, 'm')} = ${m(conv(run.km, 'km', 'm') - run.done, 'm')}`],
+          `${steps(run.km, ['km', 'm'])}; ${fmt(conv(run.km, 'km', 'm'))} − ${fmt(run.done)} = ${m(conv(run.km, 'km', 'm') - run.done, 'm')}`],
         [`A jug holds ${m(juice.L, 'L')} of juice. Each glass holds ${m(juice.glass, 'mL')}. How many glasses can Leo fill?`,
-          `${m(conv(juice.L, 'L', 'mL'), 'mL')} ÷ ${m(juice.glass, 'mL')} = ${fmt(conv(juice.L, 'L', 'mL') / juice.glass)} glasses`],
+          `${steps(juice.L, ['L', 'mL'])}; ${fmt(conv(juice.L, 'L', 'mL'))} ÷ ${fmt(juice.glass)} = ${fmt(conv(juice.L, 'L', 'mL') / juice.glass)} glasses`],
       ]),
     ],
   },
