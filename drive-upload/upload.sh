@@ -23,7 +23,7 @@ esac
 query=$(python3 -c 'import sys, urllib.parse as u; print(u.urlencode(dict(zip(["key","folder","name","mime","replace"], sys.argv[1:]))))' \
   "$DRIVE_UPLOAD_KEY" "$folder" "$name" "$mime" "$replace")
 
-# curl -L turns the POST into a GET on Apps Script's 302 redirect, which is what it expects.
-base64 -w0 "$file" | curl -sSL --fail -X POST -H 'Content-Type: text/plain' \
+# No -X POST: curl must switch to GET when Apps Script redirects to script.googleusercontent.com.
+base64 -w0 "$file" | curl -sSL --fail -H 'Content-Type: text/plain' \
   --data-binary @- "$DRIVE_UPLOAD_URL?$query"
 echo
