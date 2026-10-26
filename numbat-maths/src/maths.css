@@ -226,3 +226,111 @@
 .dg .sh-bg {
   fill: hsl(var(--card));
 }
+
+/* Stage 2 diagrams (clocks, rulers, fractions, arrays, maps, tallies, jugs, scales, cubes) */
+.dg .tk.thin,
+.dg .ln.thin {
+  stroke-width: 1;
+}
+.dg .clockface {
+  stroke: currentColor;
+  stroke-width: 3;
+}
+.dg text.clocknum {
+  font-size: 17px;
+}
+.dg .hand {
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 6;
+}
+.dg .hand-m {
+  stroke: hsl(var(--primary));
+  stroke-width: 4;
+}
+.dg .rulerbody {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: hsl(var(--sun-soft));
+}
+.dg text.rulernum {
+  font-size: 12px;
+}
+.dg .obj {
+  fill: hsl(var(--accent-2) / 0.55);
+  stroke: hsl(var(--accent-2));
+  stroke-width: 1.5;
+}
+.dg .fracbar {
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+.dg .nlmark {
+  fill: hsl(var(--primary));
+}
+.dg .fpart {
+  fill: hsl(var(--card));
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.dg .fpart.on {
+  fill: hsl(var(--primary) / 0.45);
+}
+.dg .cover {
+  fill: hsl(var(--shape-3));
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.dg .compass {
+  fill: hsl(var(--primary));
+}
+.dg .tally {
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.dg .tallyframe {
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+.dg .liquid {
+  fill: hsl(var(--primary) / 0.3);
+}
+.dg text.jugnum,
+.dg text.dialnum {
+  font-size: 12px;
+}
+.dg .cube {
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+.dg .cube-top {
+  fill: hsl(var(--shape));
+}
+.dg .cube-l {
+  fill: hsl(var(--shape-2));
+}
+.dg .cube-r {
+  fill: hsl(var(--shape-3));
+}
+.dg .cell.on {
+  fill: hsl(var(--primary) / 0.35);
+}
+.dg .gridcell {
+  stroke: hsl(var(--muted-foreground) / 0.55);
+}
+.dg .areashape {
+  fill: hsl(var(--primary) / 0.3);
+}
+.dg .pg {
+  fill: hsl(var(--primary) / 0.45);
+  stroke: hsl(var(--primary));
+  stroke-width: 1.5;
+}
+.dg text.dialnum {
+  paint-order: stroke;
+  stroke: hsl(var(--card));
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}

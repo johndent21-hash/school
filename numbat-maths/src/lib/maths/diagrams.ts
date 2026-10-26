@@ -74,7 +74,7 @@ export function angleMark(c: P, a1: number, a2: number, label: string, r = 22, l
   return mark + (label ? text(polar(c, lr, mid), label, 'dl ang') : '')
 }
 
-function tick(a: P, b: P, count = 1): string {
+export function tick(a: P, b: P, count = 1): string {
   const m: P = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
   const dx = b[0] - a[0]
   const dy = b[1] - a[1]
@@ -107,7 +107,7 @@ function arrowOnLine(a: P, b: P, count = 1, at = 0.5): string {
 }
 
 /** Places a side label just outside the polygon side a→b (polygon centre given). */
-function sideLabel(a: P, b: P, centre: P, s: string, gap = 14): string {
+export function sideLabel(a: P, b: P, centre: P, s: string, gap = 14): string {
   const m: P = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
   const dx = b[0] - a[0]
   const dy = b[1] - a[1]
@@ -124,7 +124,7 @@ function sideLabel(a: P, b: P, centre: P, s: string, gap = 14): string {
   return text([m[0] + nx * g, m[1] + ny * g], s, 'dl side')
 }
 
-function centroid(pts: P[]): P {
+export function centroid(pts: P[]): P {
   return [pts.reduce((s, p) => s + p[0], 0) / pts.length, pts.reduce((s, p) => s + p[1], 0) / pts.length]
 }
 

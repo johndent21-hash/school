@@ -5,6 +5,7 @@ import { mc } from '@/lib/maths/rand'
 export * from '@/lib/maths/format'
 export * from '@/lib/maths/rand'
 export * as D from '@/lib/maths/diagrams'
+export * as D2 from '@/lib/maths/diagrams2'
 
 /** Pick a value by level. */
 export function L<T>(level: Level, a: T, b: T, c: T): T {
@@ -31,5 +32,10 @@ export const mcFixedA = (options: string[], correct: string): Answer => {
 export const exprA = (expr: string, form: ExprForm = 'any'): Answer => ({ kind: 'expr', expr, form })
 export const pointA = (x: number, y: number): Answer => ({ kind: 'point', x, y })
 export const ratioA = (...parts: number[]): Answer => ({ kind: 'ratio', parts })
+
+/** A fraction where any equivalent fraction is accepted (e.g. 2/4 or 1/2). */
+export const fracAnyA = (n: number, d: number): Answer => ({ kind: 'frac', n, d, simplest: false })
+export const timeA = (h: number, m: number, ampm?: 'am' | 'pm'): Answer => ({ kind: 'time', h, m, ampm })
+export const textA = (...accept: string[]): Answer => ({ kind: 'text', accept })
 
 export const NOT_TO_SCALE = 'Diagram not drawn to scale.'

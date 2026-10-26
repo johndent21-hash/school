@@ -25,7 +25,7 @@ for (const t of ALL_TOPICS)
       }
   }
 const html = `<!doctype html><meta charset="utf8"><style>
-:root{--font-body:Arial,sans-serif;--font-math:'Times New Roman',serif;--foreground:222 40% 16%;--card:0 0% 100%;--primary:172 62% 30%;--accent-2:352 72% 50%;--sun:42 95% 55%;--shape:200 60% 96%;--shape-2:200 50% 90%;--shape-3:200 40% 84%;--grid-line:210 30% 88%;--border:210 20% 80%;--muted:210 30% 95%;--muted-foreground:215 15% 40%}
+:root{--font-body:Arial,sans-serif;--font-math:'Times New Roman',serif;--foreground:222 40% 16%;--card:0 0% 100%;--primary:172 62% 30%;--accent-2:352 72% 50%;--sun:42 95% 55%;--shape:200 60% 96%;--shape-2:200 50% 90%;--shape-3:200 40% 84%;--grid-line:210 30% 88%;--border:210 20% 80%;--muted:210 30% 95%;--muted-foreground:215 15% 40%;--sun-soft:45 100% 92%;--primary-soft:172 50% 93%}
 body{font-family:Arial;margin:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:#f3f6f8}
 .card{background:#fff;border:1px solid #ccd;border-radius:8px;padding:10px;font-size:14px}.meta{font-size:11px;color:#888}.ans{color:#0a7;font-weight:bold}.note{font-size:11px;color:#a50}
 ${css}</style>${cards}`

@@ -175,6 +175,30 @@ export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
       return { correct: got.every((g, i) => eq(g, want[i])) }
     }
 
+    case 'time': {
+      const t = normalise(input).toLowerCase().replace(/\s+/g, ' ').trim()
+      const mm = t.match(/^(\d{1,2})\s*(?:[:.]\s*(\d{1,2}))?\s*(am|pm|a\.m\.?|p\.m\.?)?(?:\s*o'?\s*clock)?$/)
+      if (!mm) return { correct: false, invalid: true, feedback: 'Write the time with a colon, e.g. 3:45.' }
+      let h = +mm[1]
+      const mins = mm[2] === undefined ? 0 : +mm[2]
+      if (mm[2] !== undefined && mm[2].length !== 2) return { correct: false, invalid: true, feedback: 'Write the minutes with two digits, e.g. 3:05.' }
+      if (mins > 59 || h > 23) return { correct: false, invalid: true, feedback: 'That is not a time. Check the hours and minutes.' }
+      const half = mm[3] ? (mm[3].startsWith('a') ? 'am' : 'pm') : null
+      let given: 'am' | 'pm' | null = half
+      if (h > 12) {
+        // 24-hour time: accept if it names the right time
+        given = 'pm'
+        h -= 12
+      } else if (h === 0) {
+        given = 'am'
+        h = 12
+      }
+      if (h === 0) h = 12
+      const target = answer.h % 12 === 0 ? 12 : answer.h % 12
+      if (answer.ampm && !given) return { correct: false, invalid: true, feedback: 'Say whether it is am or pm, e.g. 7:45 pm.' }
+      return { correct: h === target && mins === answer.m && (!answer.ampm || given === answer.ampm) }
+    }
+
     case 'text': {
       const norm = (t: string) => normalise(t).toLowerCase().replace(/\s+/g, ' ').replace(/[.!]$/, '').trim()
       return { correct: answer.accept.some((a) => norm(a) === norm(input)) }
@@ -294,7 +318,7 @@ export function answerText(a: Answer): string {
         ? round(a.value, a.dp).toFixed(a.dp)
         : Number(a.value.toPrecision(12)).toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 20 })
     case 'frac': {
-      const g = gcd(a.n, a.d) || 1
+      const g = a.simplest === false ? 1 : gcd(a.n, a.d) || 1
       const n = a.n / g
       const d = a.d / g
       if (d === 1) return String(n)
@@ -321,6 +345,8 @@ export function answerText(a: Answer): string {
     }
     case 'text':
       return a.accept[0]
+    case 'time':
+      return `${a.h % 12 === 0 ? 12 : a.h % 12}:${String(a.m).padStart(2, '0')}${a.ampm ? ' ' + a.ampm : ''}`
     case 'nums': {
       const vals = a.values.slice().sort((x, y) => x - y)
       if (vals.length === 2 && Math.abs(vals[0] + vals[1]) < 1e-12 && vals[1] !== 0) {

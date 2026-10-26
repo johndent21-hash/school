@@ -32,6 +32,8 @@ export type Answer =
   | { kind: 'nums'; values: number[]; dp?: number }
   // Free text from a list of accepted answers (case-insensitive)
   | { kind: 'text'; accept: string[] }
+  // A time of day such as 3:45 (12-hour). With ampm, the student must say am or pm.
+  | { kind: 'time'; h: number; m: number; ampm?: 'am' | 'pm' }
 
 export type ExprForm =
   | 'any'
@@ -72,7 +74,7 @@ export interface Skill {
 
 export interface Topic {
   id: string
-  year: 7 | 8 | 9
+  year: 3 | 4 | 7 | 8 | 9
   title: string
   strand: 'Number and algebra' | 'Measurement and space' | 'Statistics and probability'
   outcomes: string[]

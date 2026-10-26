@@ -1,10 +1,13 @@
 // The correct answer, formatted for display after a question is marked.
 import type { Answer, Question } from './maths/types'
 import { answerText } from './maths/check'
-import { ex, frac, mixed } from './maths/format'
+import { ex, frac, mixed, num } from './maths/format'
 
 export function answerHtml(a: Answer): string {
   switch (a.kind) {
+    case 'num':
+      // NSW digit grouping (90 000), keeping any required decimal places
+      return a.dp !== undefined ? num(a.value, a.dp) : num(Number(a.value.toPrecision(12)))
     case 'mc':
       return a.options[a.correct]
     case 'expr':
@@ -26,6 +29,7 @@ export function answerHtml(a: Answer): string {
 
 /** "x = 5 cm" style answer line, including the question's prefix and suffix. */
 export function fullAnswerHtml(q: Question): string {
+  if (q.prefix === '$' && q.answer.kind === 'num') return '$' + num(q.answer.value, 2) + (q.suffix ? ' ' + q.suffix : '')
   const core = answerHtml(q.answer)
   if (q.answer.kind === 'mc') return core
   return [q.prefix, core, q.suffix].filter(Boolean).join(' ')
