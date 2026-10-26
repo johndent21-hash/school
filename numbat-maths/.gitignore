@@ -1,0 +1,7 @@
+node_modules/
+# assembled copies (see harness/sync.sh and backend-test/sync.sh)
+harness/src/
+harness/.env
+backend-test/convex/*.ts
+backend-test/convex/lib/
+*.png

@@ -1,0 +1,49 @@
+{
+  "default": {
+    "title": "Numbat Maths: NSW Years 7–9 maths practice",
+    "description": "Step-by-step lessons, instant-feedback practice and topic tests for NSW Years 7, 8 and 9, matched to the NSW Mathematics K–10 Syllabus."
+  },
+  "/": {
+    "title": "Numbat Maths: NSW Years 7–9 maths practice",
+    "description": "Step-by-step lessons, instant-feedback practice and topic tests for NSW Years 7, 8 and 9, matched to the NSW Mathematics K–10 Syllabus. Students log in with a class code."
+  },
+  "/join": {
+    "title": "Student log in · Numbat Maths",
+    "description": "Log in with your class code, your name and your 4-digit PIN."
+  },
+  "/home": {
+    "title": "My maths · Numbat Maths",
+    "description": "Your topics, tasks and progress for NSW Years 7, 8 and 9 maths."
+  },
+  "/topic": {
+    "title": "Topic · Numbat Maths",
+    "description": "Skills, lessons and a topic test for this NSW maths topic."
+  },
+  "/lesson": {
+    "title": "Lesson · Numbat Maths",
+    "description": "Learn the skill with worked examples, then practise with instant feedback."
+  },
+  "/test": {
+    "title": "Topic test · Numbat Maths",
+    "description": "Ten questions from across the topic, marked at the end with full worked solutions."
+  },
+  "/teacher": {
+    "title": "Teachers · Numbat Maths",
+    "description": "Create classes, give students a class code, set tasks and follow progress in the markbook."
+  },
+  "/teacher-class": {
+    "title": "Class · Numbat Maths",
+    "description": "Students, markbook and tasks for your class.",
+    "noindex": true
+  },
+  "/teacher-student": {
+    "title": "Student report · Numbat Maths",
+    "description": "One student's progress and recent results.",
+    "noindex": true
+  },
+  "/teacher-cards": {
+    "title": "Login cards · Numbat Maths",
+    "description": "Printable login cards for your class.",
+    "noindex": true
+  }
+}
