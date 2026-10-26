@@ -4,6 +4,7 @@ import { Logo } from './Logo'
 import { firstName, useSession } from '@/lib/session'
 import { PREVIEW_ONLY } from '@/lib/preview'
 import { useMounted } from '@/lib/use-mounted'
+import { YEAR_SPAN } from '@/content'
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const mounted = useMounted()
@@ -75,7 +76,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       </main>
       <footer className="no-print border-t border-border bg-card/70">
         <div className="gutter mx-auto max-w-6xl py-5 text-sm text-muted-foreground">
-          Numbat Maths covers Years 7–9 of the NSW Mathematics K–10 Syllabus (NESA, 2022). It is an independent resource, not made or endorsed by NESA.
+          Numbat Maths covers {YEAR_SPAN} of the NSW Mathematics K–10 Syllabus (NESA, 2022). It is an independent resource, not made or endorsed by NESA.
         </div>
       </footer>
     </div>

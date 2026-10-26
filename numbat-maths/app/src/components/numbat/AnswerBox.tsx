@@ -34,6 +34,8 @@ function keysFor(a: Answer): Key[] {
       return [{ label: '×', insert: ' × ' }, POWER]
     case 'expr':
       return [...exprLetters(a.expr).map((l) => ({ label: l, insert: l })), POWER, { label: '(', insert: '(' }, { label: ')', insert: ')' }, SLASH, MINUS]
+    case 'time':
+      return a.ampm ? [{ label: ':', insert: ':', title: 'colon' }, { label: 'am', insert: ' am' }, { label: 'pm', insert: ' pm' }] : [{ label: ':', insert: ':', title: 'colon' }]
     default:
       return []
   }
@@ -57,6 +59,8 @@ function placeholderFor(a: Answer): string {
       return 'e.g. 2^3 × 5'
     case 'expr':
       return 'Type your answer'
+    case 'time':
+      return a.ampm ? 'e.g. 7:45 pm' : 'e.g. 3:45'
     default:
       return 'Type your answer'
   }
@@ -74,6 +78,8 @@ function helpFor(a: Answer): string | null {
       return 'Use ^ for powers, e.g. 2^3 × 3^2.'
     case 'expr':
       return 'Use ^ for powers (x^2) and / for fractions.'
+    case 'time':
+      return a.ampm ? 'Type the time with a colon, then am or pm, e.g. 7:45 pm.' : 'Type the time with a colon, e.g. 3:45.'
     default:
       return null
   }

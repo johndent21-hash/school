@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ArrowRight, BookOpen, GraduationCap, PencilLine, Trophy } from 'lucide-react'
 import { Shell } from '@/components/numbat/Shell'
-import { topicsForYear, YEARS } from '@/content'
+import { INCLUDE_STAGE2, stageLabel, topicsForYear, YEAR_SPAN, YEARS, yearHue } from '@/content'
 import { cleanCode } from '@/lib/codes'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
@@ -128,18 +128,41 @@ const STEPS = [
   },
 ]
 
+function YearTile({ y }: { y: number }) {
+  const topics = topicsForYear(y)
+  const skills = topics.reduce((t, x) => t + x.skills.length, 0)
+  return (
+    <Link to="/home" search={{ year: y }} className="topic-tile" style={{ ['--hue' as string]: yearHue(y) }}>
+      <div className="flex items-center gap-3">
+        <span className="tile-mark">{y}</span>
+        <div>
+          <h3 className="font-display text-xl font-semibold">Year {y}</h3>
+          <p className="text-sm text-muted-foreground">
+            {topics.length} topics · {skills} skills · {stageLabel(y)}
+          </p>
+        </div>
+      </div>
+      <ul className="grid gap-1 text-sm">
+        {topics.map((t) => (
+          <li key={t.id}>{t.title}</li>
+        ))}
+      </ul>
+    </Link>
+  )
+}
+
 function Landing() {
   return (
     <Shell>
       <div className="grid gap-12">
         <section className="grid items-start gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-x-8">
           <div className="grid gap-5 pt-2">
-            <span className="chip w-fit">NSW Years 7, 8 and 9 · Stage 4 and Stage 5</span>
+            <span className="chip w-fit">{INCLUDE_STAGE2 ? 'NSW Years 3, 4, 7, 8 and 9 · Stages 2, 4 and 5' : 'NSW Years 7, 8 and 9 · Stage 4 and Stage 5'}</span>
             <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl">
               Learn it. Practise it. <span className="text-primary">Master it.</span>
             </h1>
             <p className="max-w-xl text-lg text-muted-foreground">
-              Step-by-step lessons, instant-feedback practice and topic tests for every Year 7–9 topic in the NSW Mathematics K–10 Syllabus. Students log in with a class code
+              Step-by-step lessons, instant-feedback practice and topic tests for {YEAR_SPAN} in the NSW Mathematics K–10 Syllabus. Students log in with a class code
               and a PIN: no email needed.
             </p>
           </div>
@@ -162,29 +185,11 @@ function Landing() {
           <h2 id="years" className="font-display text-2xl font-semibold">
             What’s inside
           </h2>
+          {INCLUDE_STAGE2 && <h3 className="font-display text-lg font-semibold text-muted-foreground">Primary · Stage 2</h3>}
+          {INCLUDE_STAGE2 && <div className="grid gap-4 md:grid-cols-2">{YEARS.filter((y) => y <= 4).map((y) => <YearTile key={y} y={y} />)}</div>}
+          {INCLUDE_STAGE2 && <h3 className="font-display text-lg font-semibold text-muted-foreground">Secondary · Stages 4 and 5</h3>}
           <div className="grid gap-4 md:grid-cols-3">
-            {YEARS.map((y) => {
-              const topics = topicsForYear(y)
-              const skills = topics.reduce((t, x) => t + x.skills.length, 0)
-              return (
-                <Link key={y} to="/home" search={{ year: y }} className="topic-tile" style={{ ['--hue' as string]: y === 7 ? 172 : y === 8 ? 205 : 352 }}>
-                  <div className="flex items-center gap-3">
-                    <span className="tile-mark">{y}</span>
-                    <div>
-                      <h3 className="font-display text-xl font-semibold">Year {y}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {topics.length} topics · {skills} skills · {y === 9 ? 'Stage 5 core' : 'Stage 4'}
-                      </p>
-                    </div>
-                  </div>
-                  <ul className="grid gap-1 text-sm">
-                    {topics.map((t) => (
-                      <li key={t.id}>{t.title}</li>
-                    ))}
-                  </ul>
-                </Link>
-              )
-            })}
+            {YEARS.filter((y) => y >= 7).map((y) => <YearTile key={y} y={y} />)}
           </div>
         </section>
 

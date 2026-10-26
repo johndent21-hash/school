@@ -27,6 +27,13 @@ export const ALL_TOPICS: Topic[] = INCLUDE_STAGE2 ? [...STAGE2_TOPICS, ...SECOND
 export const YEARS: number[] = INCLUDE_STAGE2 ? [3, 4, 7, 8, 9] : [7, 8, 9]
 export type Year = 3 | 4 | 7 | 8 | 9
 
+/** Syllabus stage shown beside a year. Year 3 follows the Part A focus areas, Year 4 Part B. */
+export const stageLabel = (y: number) => (y === 3 ? 'Stage 2 · Part A' : y === 4 ? 'Stage 2 · Part B' : y === 9 ? 'Stage 5 core' : 'Stage 4')
+/** Tile colour (hue) for each year. */
+export const yearHue = (y: number) => ({ 3: 28, 4: 140, 7: 172, 8: 205, 9: 352 })[y as Year] ?? 205
+/** "Years 7–9", or "Years 3–4 and 7–9" when Stage 2 is included. */
+export const YEAR_SPAN = INCLUDE_STAGE2 ? 'Years 3–4 and 7–9' : 'Years 7–9'
+
 export function topicsForYear(year: number): Topic[] {
   return ALL_TOPICS.filter((t) => t.year === year)
 }

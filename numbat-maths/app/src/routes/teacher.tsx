@@ -6,6 +6,7 @@ import { ArrowRight, Plus, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import { api } from '@/convex/_generated/api'
 import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
+import { YEARS, yearHue } from '@/content'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
 import { firstName, useSession } from '@/lib/session'
@@ -171,7 +172,7 @@ function Classes() {
               to="/teacher-class"
               search={{ id: c.id }}
               className="topic-tile"
-              style={{ ['--hue' as string]: c.year === 7 ? 172 : c.year === 8 ? 205 : 352 }}
+              style={{ ['--hue' as string]: yearHue(c.year) }}
             >
               <div className="flex items-start gap-3">
                 <span className="tile-mark">{c.year}</span>
@@ -210,9 +211,11 @@ function Classes() {
         <label className="grid gap-1">
           <span className="label">Year</span>
           <select className="field" value={year} onChange={(e) => setYear(Number(e.target.value))}>
-            <option value={7}>Year 7</option>
-            <option value={8}>Year 8</option>
-            <option value={9}>Year 9</option>
+            {YEARS.map((y) => (
+              <option key={y} value={y}>
+                Year {y}
+              </option>
+            ))}
           </select>
         </label>
         <button type="submit" className="btn btn-primary btn-lg" disabled={busy || !name.trim()}>

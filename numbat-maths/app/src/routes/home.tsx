@@ -18,7 +18,7 @@ import { useMounted } from '@/lib/use-mounted'
 export const Route = createFileRoute('/home')({
   validateSearch: (s: Record<string, unknown>): { year?: number } => {
     const y = Number(s.year)
-    return { year: y === 7 || y === 8 || y === 9 ? y : undefined }
+    return { year: YEARS.includes(y) ? y : undefined }
   },
   head: () => pageHead('/home'),
   component: HomePage,
@@ -37,7 +37,10 @@ function Dashboard() {
   const navigate = useNavigate()
   const { items, recent, loading } = useProgress()
   const tasks = useTasks()
-  const [year, setYear] = useState<number>(() => search.year ?? student?.year ?? (Number(load('numbat.guestYear')) || 7))
+  const [year, setYear] = useState<number>(() => {
+    const saved = Number(load('numbat.guestYear'))
+    return search.year ?? student?.year ?? (YEARS.includes(saved) ? saved : 7)
+  })
 
   useEffect(() => {
     if (search.year) setYear(search.year)
