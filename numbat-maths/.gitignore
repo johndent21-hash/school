@@ -5,3 +5,4 @@ harness/.env
 backend-test/convex/*.ts
 backend-test/convex/lib/
 *.png
+harness/dist-preview/
