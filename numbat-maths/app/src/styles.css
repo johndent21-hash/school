@@ -68,9 +68,9 @@
   --font-math: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
 }
 
-/* Dark theme follows the device setting */
+/* Dark theme follows the device setting, unless the page is told otherwise with data-theme */
 @media (prefers-color-scheme: dark) {
-  :root:not(.light) {
+  :root:not([data-theme="light"]) {
     --background: 222 34% 9%;
     --foreground: 210 30% 93%;
     --card: 222 30% 13%;
@@ -115,6 +115,52 @@
     --sidebar-ring: 170 55% 48%;
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --background: 222 34% 9%;
+  --foreground: 210 30% 93%;
+  --card: 222 30% 13%;
+  --card-foreground: 210 30% 93%;
+  --popover: 222 30% 13%;
+  --popover-foreground: 210 30% 93%;
+  --primary: 170 55% 48%;
+  --primary-foreground: 222 40% 8%;
+  --primary-soft: 172 35% 18%;
+  --secondary: 222 24% 19%;
+  --secondary-foreground: 210 30% 93%;
+  --muted: 222 24% 18%;
+  --muted-foreground: 215 18% 68%;
+  --accent: 222 24% 19%;
+  --accent-foreground: 210 30% 93%;
+  --accent-2: 352 80% 66%;
+  --accent-2-soft: 352 35% 20%;
+  --sun: 44 96% 60%;
+  --sun-soft: 42 40% 18%;
+  --success: 150 50% 55%;
+  --success-soft: 150 30% 16%;
+  --warning: 34 90% 60%;
+  --warning-soft: 34 40% 17%;
+  --destructive: 0 70% 62%;
+  --border: 222 20% 26%;
+  --input: 222 20% 32%;
+  --ring: 170 55% 48%;
+  --grid-line: 222 22% 24%;
+  --page-grid: 222 26% 13%;
+  --shape: 200 28% 18%;
+  --shape-2: 200 26% 23%;
+  --shape-3: 200 24% 28%;
+  --tile-l: 62%;
+  --tile-soft-l: 17%;
+  --sidebar: 222 30% 13%;
+  --sidebar-foreground: 210 30% 93%;
+  --sidebar-primary: 170 55% 48%;
+  --sidebar-primary-foreground: 222 40% 8%;
+  --sidebar-accent: 222 24% 19%;
+  --sidebar-accent-foreground: 210 30% 93%;
+  --sidebar-border: 222 20% 26%;
+  --sidebar-ring: 170 55% 48%;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -170,6 +216,10 @@
 body {
   margin: 0;
   overflow-x: hidden;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

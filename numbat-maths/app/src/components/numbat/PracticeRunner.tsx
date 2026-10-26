@@ -7,9 +7,11 @@ import { checkAnswer } from '@/lib/maths/check'
 import { buildSet } from '@/lib/practice'
 import { fullAnswerHtml } from '@/lib/answer'
 import { useSaveResult, type SaveResult } from '@/lib/progress'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { useSession } from '@/lib/session'
 import { cn } from '@/lib/utils'
 import { AnswerBox } from './AnswerBox'
+import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
 import { LevelPill, QuestionCard, Steps } from './QuestionCard'
 
@@ -58,6 +60,7 @@ export function PracticeRunner({
   const [working, setWorking] = useState(false)
   const [result, setResult] = useState<(SaveResult & { correct: number }) | null>(null)
   const [saving, setSaving] = useState(false)
+  const [confirmStop, setConfirmStop] = useState(false)
   const save = useSaveResult()
 
   const cur = set[i]
@@ -172,14 +175,21 @@ export function PracticeRunner({
         <button
           type="button"
           className="btn btn-ghost btn-sm ml-auto"
-          onClick={() => {
-            if (i === 0 && open) onExit()
-            else if (window.confirm('Stop this practice set? Your answers so far will not be saved.')) onExit()
-          }}
+          onClick={() => (i === 0 && open ? onExit() : setConfirmStop(true))}
         >
           <X size={16} aria-hidden="true" /> Stop
         </button>
       </div>
+      {confirmStop && (
+        <ConfirmBar
+          message="Stop this practice set? Your answers so far won’t be saved."
+          confirmLabel="Stop"
+          cancelLabel="Keep going"
+          onConfirm={onExit}
+          onCancel={() => setConfirmStop(false)}
+          danger
+        />
+      )}
 
       <QuestionCard q={cur.q} level={cur.level} number={i + 1} total={n}>
         <AnswerBox
@@ -304,7 +314,7 @@ function PracticeResults({
         </div>
         {saved && !result.saved && result.message && <p className="feedback info text-sm">{result.message}</p>}
         {!saved && <p className="text-sm text-muted-foreground">Extra practice is not saved to your results.</p>}
-        {saved && result.saved && !student && <p className="text-sm text-muted-foreground">Saved on this device only. Log in with a class code to keep your progress everywhere.</p>}
+        {saved && result.saved && !student && !PREVIEW_ONLY && <p className="text-sm text-muted-foreground">Saved on this device only. Log in with a class code to keep your progress everywhere.</p>}
         <div className="flex flex-wrap justify-center gap-2">
           <button type="button" className="btn btn-primary btn-lg" onClick={onAgain}>
             <RotateCcw size={18} aria-hidden="true" /> Practise again

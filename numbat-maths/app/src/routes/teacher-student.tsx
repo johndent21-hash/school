@@ -5,12 +5,13 @@ import { useQuery } from 'convex/react'
 import { ArrowLeft } from 'lucide-react'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
-import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
 import { MasteryBadge, ProgressBar } from '@/components/numbat/Mastery'
 import { topicsForYear, YEARS } from '@/content'
 import { ago, longDate } from '@/lib/dates'
 import { masteryOf } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, testItemId } from '@/lib/practice'
 import { topicStats, type ProgressMap } from '@/lib/progress'
 import { useSession } from '@/lib/session'
@@ -35,7 +36,9 @@ function StudentPage() {
   const { ready, teacher } = useSession()
   return (
     <Shell>
-      {!mounted || !ready ? (
+      {PREVIEW_ONLY ? (
+        <PreviewLocked what="Teacher accounts" />
+      ) : !mounted || !ready ? (
         <PageLoading />
       ) : teacher ? (
         <StudentReport />

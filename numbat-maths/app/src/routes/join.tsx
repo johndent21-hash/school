@@ -5,10 +5,11 @@ import { useMutation } from 'convex/react'
 import { ArrowLeft, ArrowRight, Search } from 'lucide-react'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
-import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
 import { PinPad } from '@/components/numbat/PinPad'
 import { cleanCode } from '@/lib/codes'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { firstName, useSession } from '@/lib/session'
 import { useSafeQuery } from '@/lib/safe-query'
 import { load, save } from '@/lib/storage'
@@ -33,7 +34,7 @@ interface Lookup {
 
 function JoinPage() {
   const mounted = useMounted()
-  return <Shell>{mounted ? <Join /> : <PageLoading />}</Shell>
+  return <Shell>{PREVIEW_ONLY ? <PreviewLocked what="Student log-ins" /> : mounted ? <Join /> : <PageLoading />}</Shell>
 }
 
 function Join() {

@@ -8,6 +8,7 @@ import { topicsForYear, YEARS } from '@/content'
 import type { Topic } from '@/lib/maths/types'
 import { ago, isOverdue, shortDate } from '@/lib/dates'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, itemLink } from '@/lib/practice'
 import { topicStats, useProgress, useTasks, type ProgressMap, type Task } from '@/lib/progress'
 import { firstName, useSession } from '@/lib/session'
@@ -61,7 +62,7 @@ function Dashboard() {
         </div>
       </section>
 
-      {!student && !teacher && (
+      {!student && !teacher && !PREVIEW_ONLY && (
         <div className="feedback info flex items-start gap-2 text-sm">
           <Info size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
           <p>

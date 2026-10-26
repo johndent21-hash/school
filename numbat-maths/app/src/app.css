@@ -32,7 +32,7 @@ h3 {
 
 .site-header {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 30;
   background: hsl(var(--card) / 0.92);
   backdrop-filter: blur(8px);
@@ -45,6 +45,21 @@ h3 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+/* Paints the phone's status-bar band above the sticky header (zero height elsewhere) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 40;
+  background: hsl(var(--card));
+}
+
+.gutter {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 
 .panel {

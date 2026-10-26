@@ -10,6 +10,7 @@ import { useSaveResult, type SaveResult } from '@/lib/progress'
 import { useSession } from '@/lib/session'
 import { cn } from '@/lib/utils'
 import { AnswerBox } from './AnswerBox'
+import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
 import { LevelPill, QuestionCard, Steps } from './QuestionCard'
 
@@ -22,6 +23,7 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
   const [marks, setMarks] = useState<boolean[] | null>(null)
   const [result, setResult] = useState<SaveResult | null>(null)
   const [saving, setSaving] = useState(false)
+  const [ask, setAsk] = useState<null | 'leave' | 'finish'>(null)
   const save = useSaveResult()
 
   const value = answers[i]
@@ -33,6 +35,7 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
   const go = (k: number) => {
     setI(k)
     setWarned(null)
+    setAsk(null)
   }
 
   const submit = async () => {
@@ -65,9 +68,8 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
     }
     if (i + 1 < n) go(i + 1)
     else {
-      const blank = answers.filter((a) => a.trim() === '').length
-      if (blank > 0 && !window.confirm(`You have ${blank} unanswered question${blank === 1 ? '' : 's'}. Finish the test anyway?`)) return
-      void submit()
+      if (answers.some((a) => a.trim() === '')) setAsk('finish')
+      else void submit()
     }
   }
 
@@ -85,6 +87,7 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
   if (marks && result) return <TestResults topic={topic} set={set} answers={answers} marks={marks} result={result} onAgain={onAgain} />
 
   const p = set[i]
+  const blank = answers.filter((a) => a.trim() === '').length
   const warning =
     warned === `${i}|${value}`
       ? value.trim() === ''
@@ -110,13 +113,14 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
         <button
           type="button"
           className="btn btn-ghost btn-sm ml-auto"
-          onClick={() => {
-            if (window.confirm('Leave this test? Your answers will not be saved.')) onExit()
-          }}
+          onClick={() => setAsk('leave')}
         >
           <X size={16} aria-hidden="true" /> Leave test
         </button>
       </div>
+      {ask === 'leave' && (
+        <ConfirmBar message="Leave this test? Your answers won’t be saved." confirmLabel="Leave test" cancelLabel="Keep going" onConfirm={onExit} onCancel={() => setAsk(null)} danger />
+      )}
 
       <QuestionCard q={p.q} level={p.level} number={i + 1} total={n}>
         <AnswerBox key={i} q={p.q} value={value} onChange={setValue} onEnter={next} />
@@ -124,6 +128,18 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
           <div className="feedback info" role="status">
             {warning}
           </div>
+        )}
+        {ask === 'finish' && (
+          <ConfirmBar
+            message={`You have ${blank} unanswered question${blank === 1 ? '' : 's'}. Finish the test anyway?`}
+            confirmLabel="Finish test"
+            cancelLabel="Go back"
+            onConfirm={() => {
+              setAsk(null)
+              void submit()
+            }}
+            onCancel={() => setAsk(null)}
+          />
         )}
         <div className="flex flex-wrap items-center gap-2">
           {i > 0 && (

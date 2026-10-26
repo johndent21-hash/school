@@ -5,8 +5,9 @@ import { useMutation, useQuery } from 'convex/react'
 import { ArrowRight, Plus, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import { api } from '@/convex/_generated/api'
-import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { firstName, useSession } from '@/lib/session'
 import { useMounted } from '@/lib/use-mounted'
 
@@ -28,7 +29,7 @@ export interface ClassSummary {
 function TeacherPage() {
   const mounted = useMounted()
   const { ready, teacher } = useSession()
-  return <Shell>{!mounted || !ready ? <PageLoading /> : teacher ? <Classes /> : <TeacherAuth />}</Shell>
+  return <Shell>{PREVIEW_ONLY ? <PreviewLocked what="Teacher accounts" /> : !mounted || !ready ? <PageLoading /> : teacher ? <Classes /> : <TeacherAuth />}</Shell>
 }
 
 function TeacherAuth() {

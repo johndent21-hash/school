@@ -5,8 +5,9 @@ import { ArrowLeft, Printer } from 'lucide-react'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
 import { Logo } from '@/components/numbat/Logo'
-import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { useSession } from '@/lib/session'
 import { useMounted } from '@/lib/use-mounted'
 
@@ -21,7 +22,9 @@ function CardsPage() {
   const { ready, teacher } = useSession()
   return (
     <Shell>
-      {!mounted || !ready ? (
+      {PREVIEW_ONLY ? (
+        <PreviewLocked what="Teacher accounts" />
+      ) : !mounted || !ready ? (
         <PageLoading />
       ) : teacher ? (
         <Cards />

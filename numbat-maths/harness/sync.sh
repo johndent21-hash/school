@@ -8,8 +8,11 @@ rm -rf src && mkdir -p src
 cp -r ../src/. src/
 cp -r ../app/src/. src/
 cp -r tpl/. src/
+# harness/src is git-ignored, and Tailwind skips ignored folders unless told to scan them
+sed -i "s#^@import 'tailwindcss';#@import 'tailwindcss';\n@source './';#" src/styles.css
 [ -n "$keep" ] && cp "$keep" src/routeTree.gen.ts || true
 # Test-only hook: expose the current answer so browser tests can answer correctly
+[ "$1" = "--no-hook" ] && exit 0
 python3 - <<'PY'
 import re
 for p in ['src/components/numbat/PracticeRunner.tsx', 'src/components/numbat/TestRunner.tsx']:

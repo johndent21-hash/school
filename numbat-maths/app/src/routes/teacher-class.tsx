@@ -6,11 +6,12 @@ import { ArrowLeft, Download, KeyRound, Pencil, Printer, Trash2, UserPlus } from
 import { toast } from 'sonner'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
-import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
 import { findTopic, topicsForYear, YEARS } from '@/content'
 import { ago, endOfDay, isOverdue, shortDate } from '@/lib/dates'
 import { masteryOf, shareState } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, testItemId } from '@/lib/practice'
 import { topicStats, type ProgressMap } from '@/lib/progress'
 import { useSession } from '@/lib/session'
@@ -60,6 +61,12 @@ interface Report {
 function ClassPage() {
   const mounted = useMounted()
   const { ready, teacher } = useSession()
+  if (PREVIEW_ONLY)
+    return (
+      <Shell>
+        <PreviewLocked what="Teacher accounts" />
+      </Shell>
+    )
   if (!mounted || !ready) return <Shell><PageLoading /></Shell>
   if (!teacher)
     return (

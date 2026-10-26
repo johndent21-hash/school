@@ -5,6 +5,7 @@ import { Shell } from '@/components/numbat/Shell'
 import { topicsForYear, YEARS } from '@/content'
 import { cleanCode } from '@/lib/codes'
 import { pageHead } from '@/lib/meta'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { firstName, useSession } from '@/lib/session'
 import { load } from '@/lib/storage'
 import { useMounted } from '@/lib/use-mounted'
@@ -21,6 +22,20 @@ function StudentLogin() {
   const [code, setCode] = useState(() => (typeof window === 'undefined' ? '' : cleanCode(load('numbat.lastCode') ?? '')))
 
   if (!mounted || !ready) return <div className="skel h-72" aria-label="Loading" />
+
+  if (PREVIEW_ONLY) {
+    return (
+      <div className="panel grid gap-4 p-6">
+        <h2 className="font-display text-2xl font-semibold">Try it now</h2>
+        <p className="text-muted-foreground">
+          On the full site, students log in here with their class code and a 4-digit PIN. In this preview you can use every lesson, practice set and topic test straight away.
+        </p>
+        <Link to="/home" className="btn btn-primary btn-lg">
+          Start practising <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+      </div>
+    )
+  }
 
   if (student) {
     return (

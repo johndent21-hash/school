@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { LogOut, Star } from 'lucide-react'
 import { Logo } from './Logo'
 import { firstName, useSession } from '@/lib/session'
+import { PREVIEW_ONLY } from '@/lib/preview'
 import { useMounted } from '@/lib/use-mounted'
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -52,14 +53,19 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </>
             )}
             {show && !student && !teacher && (
-              <Link to="/" className="btn btn-primary btn-sm">
-                Log in
+              <Link to={PREVIEW_ONLY ? '/home' : '/'} className="btn btn-primary btn-sm">
+                {PREVIEW_ONLY ? 'Topics' : 'Log in'}
               </Link>
             )}
           </nav>
         </div>
       </header>
       <main id="main" className="shell-main flex-1">
+        {PREVIEW_ONLY && (
+          <p className="feedback info mb-4 text-sm">
+            Preview copy: lessons, worked examples, practice and topic tests all work here. Student and teacher log-ins are switched off, and results stay in this browser.
+          </p>
+        )}
         {show && serverError && (
           <p className="feedback info mb-4 text-sm" role="status">
             We can’t reach the Numbat Maths server right now, so logging in and saving results won’t work. Practice questions still work. Try again in a few minutes.
@@ -68,7 +74,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="no-print border-t border-border bg-card/70">
-        <div className="mx-auto max-w-6xl px-4 py-5 text-sm text-muted-foreground">
+        <div className="gutter mx-auto max-w-6xl py-5 text-sm text-muted-foreground">
           Numbat Maths covers Years 7–9 of the NSW Mathematics K–10 Syllabus (NESA, 2022). It is an independent resource, not made or endorsed by NESA.
         </div>
       </footer>
@@ -101,6 +107,22 @@ export function NotFoundPanel({ what }: { what: string }) {
       <h1 className="font-display text-3xl font-semibold">We couldn’t find that {what}</h1>
       <Link to="/home" className="btn btn-primary">
         Go to my topics
+      </Link>
+    </div>
+  )
+}
+
+/** Shown in the preview copy in place of pages that need a log-in. */
+export function PreviewLocked({ what }: { what: string }) {
+  return (
+    <div className="mx-auto grid max-w-lg gap-4 text-center">
+      <h1 className="font-display text-3xl font-semibold">{what} are switched off in this preview</h1>
+      <p className="text-muted-foreground">
+        On the full site, teachers create a class and get a 6-character class code. Students type the code, tap their name and use a 4-digit PIN. Teachers then
+        see every result in a markbook and can set tasks.
+      </p>
+      <Link to="/home" className="btn btn-primary w-fit justify-self-center">
+        Try the lessons and practice
       </Link>
     </div>
   )
