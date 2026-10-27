@@ -1,0 +1,105 @@
+"""Layout QA: every question figure must sit inside its own cell (with a margin), nothing may spill
+into the working column or off the page, and every printed formula must fit inside its strip."""
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from weasyprint import HTML
+import wu
+
+PX = 25.4 / 96
+
+
+def check(sessions, art="plain"):
+    doc = ("<!DOCTYPE html><html><head><meta charset='utf-8'><style>" + wu.css()
+           + "</style></head><body>" + "".join(wu.page(s, art) for s in sessions) + "</body></html>")
+    r = HTML(string=doc, base_url=wu.HERE).render()
+    problems = []
+    strip_problems = check.strip_problems = []
+    for pi, pg in enumerate(r.pages):
+        rows, qcells, qheads = [], [], []
+
+        def walk(b):
+            el = getattr(b, "element", None)
+            cls = el.get("class") if el is not None else None
+            if cls == "row" and b.element_tag == "div":
+                rows.append(b)
+            if cls == "q" and b.element_tag == "div":
+                qcells.append(b)
+            if cls == "qh" and b.element_tag == "div":
+                qheads.append(b)
+            for ch in getattr(b, "children", []) or []:
+                walk(ch)
+        walk(pg._page_box)
+        # printed formula strips: every line of the formula inside the strip, none wider than it
+        fxs = []
+
+        def walk_fx(b, row):
+            el = getattr(b, "element", None)
+            if el is not None and el.get("class") == "fx" and b.element_tag == "div":
+                fxs.append((row, b))
+            for ch in getattr(b, "children", []) or []:
+                walk_fx(ch, rows.index(ch) + 1 if ch in rows else row)
+        walk_fx(pg._page_box, None)
+        for row, fx in fxs:
+            lns = []
+
+            def lb2(b):
+                if type(b).__name__ == "LineBox":
+                    lns.append(b)
+                    return
+                for ch in getattr(b, "children", []) or []:
+                    lb2(ch)
+            lb2(fx)
+            top, bot = fx.position_y, fx.position_y + fx.margin_height()
+            right = fx.position_x + fx.margin_width()
+            spare = min(min(ln.position_y for ln in lns) - top, bot - max(ln.position_y + ln.height for ln in lns))
+            wide = max(ln.position_x + ln.width for ln in lns) - right
+            if spare * PX < 0.2 or wide > 0:
+                strip_problems.append((pi + 1, row))
+
+        def extent(b, acc):
+            for ch in getattr(b, "children", []) or []:
+                el = getattr(ch, "element", None)
+                tag = getattr(ch, "element_tag", None)
+                cls = el.get("class") if el is not None else None
+                leaf = (tag or "").endswith("svg") or tag in ("table", "img") or cls in ("disp", "qt", "qn")
+                if leaf and getattr(ch, "height", None) is not None:
+                    acc.append((ch.position_x, ch.position_y,
+                                ch.position_x + ch.margin_width(), ch.position_y + ch.margin_height()))
+                    continue
+                extent(ch, acc)
+            return acc
+        for qi, q in enumerate(qcells):
+            x0, y0 = q.position_x, q.position_y
+            x1, y1 = x0 + q.margin_width(), y0 + q.margin_height()
+            acc = extent(q, [])
+            bx0 = min(a[0] for a in acc); by0 = min(a[1] for a in acc)
+            bx1 = max(a[2] for a in acc); by1 = max(a[3] for a in acc)
+            spare_b = (y1 - by1) * PX
+            spare_r = (x1 - bx1) * PX
+            # a figure too tall for its cell makes the flex layout squeeze the question text's box, so
+            # the text's last line is drawn over the figure: the drawn lines must fit inside their box
+            lines = []
+
+            def lb(b):
+                if type(b).__name__ == "LineBox":
+                    lines.append(b)
+                    return
+                for ch in getattr(b, "children", []) or []:
+                    lb(ch)
+            lb(qheads[qi])
+            text_bot = max(ln.position_y + ln.height for ln in lines)
+            spare_t = (qheads[qi].position_y + qheads[qi].margin_height() - text_bot) * PX
+            flag = "  <-- OVERFLOW" if spare_b < 1.2 or spare_r < 0.5 or (bx0 - x0) * PX < -0.1 or spare_t < -0.2 else ""
+            if flag:
+                problems.append((pi + 1, qi + 1))
+            print(f"S{pi + 1} Q{qi + 1}: bottom spare {spare_b:5.1f} mm, right spare {spare_r:5.1f} mm, "
+                  f"text fits {spare_t:5.1f} mm{flag}")
+    return problems
+
+
+if __name__ == "__main__":
+    import gen
+    for t in (1, 2, 3, 4):
+        p = check(gen.generated_sessions(t)[0])
+        print(f"T{t} PROBLEMS:", p if p else "none", "| formula strips:", check.strip_problems or "all fit")
