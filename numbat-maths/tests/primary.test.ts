@@ -1,12 +1,12 @@
-// Independent checks for the Years 3–4 (Stage 2) content.
+// Independent checks for the Years 1–4 (Stage 1 and Stage 2) content.
 // For questions with diagrams, the answer is recomputed from the SVG itself (hand angles, bar heights,
 // tally marks, liquid levels, shape coordinates, solid edges...) so a diagram can never disagree with its answer.
 // Also scans every prompt and worked step for wording slips (plurals, "a" before a vowel, 5.0-style artefacts).
-// Usage: STAGE2=1 npx tsx tests/stage2.test.ts   (N questions per skill and level, default 200)
+// Usage: npx tsx tests/primary.test.ts   (N questions per skill and level, default 200; ONLY=y1 for one year)
 import { setSeed } from '../src/lib/maths/rand'
 import { checkAnswer, answerText } from '../src/lib/maths/check'
 import type { Answer, Level, Question } from '../src/lib/maths/types'
-import { STAGE2_TOPICS } from '../src/content/index'
+import { STAGE1_TOPICS, STAGE2_TOPICS } from '../src/content/index'
 
 const N = Number(process.env.N ?? 200)
 const only = process.env.ONLY ?? ''
@@ -326,7 +326,7 @@ const statPick = (data: Map<string, number>, prompt: string): number | null => {
   }
   let m: RegExpMatchArray | null
   const vals = [...data.values()]
-  if ((m = p.match(/answered “(.+?)” than “(.+?)”/)) || (m = p.match(/How many more (\w+?)s than (\w+?)s were/)) || (m = p.match(/more \w+ for (\S+) than for (\S+?)\?/)) || (m = p.match(/How many more students chose (.+?) than (.+?)\?/)) || (m = p.match(/How many more (\w+) than (\w+) were/))) {
+  if ((m = p.match(/answered “(.+?)” than “(.+?)”/)) || (m = p.match(/How many more (\w+?)s than (\w+?)s were/)) || (m = p.match(/more \w+ for (\S+) than for (\S+?)\?/)) || (m = p.match(/How many more students chose (.+?) than (.+?)\?/)) || (m = p.match(/How many more (\w+) than (\w+) were/)) || (m = p.match(/How many more children chose (\S+) than (\S+?)\?/))) {
     const a = find(m[1])
     const b = find(m[2])
     return a === null || b === null ? null : a - b
@@ -336,8 +336,13 @@ const statPick = (data: Map<string, number>, prompt: string): number | null => {
     const s = [...vals].sort((x, y) => y - x)
     return s[0] + s[1]
   }
+  if ((m = p.match(/How many children chose (\S+) or (\S+) altogether/))) {
+    const a = find(m[1])
+    const b = find(m[2])
+    return a === null || b === null ? null : a + b
+  }
   if (/altogether|How many students are in the class/.test(p)) return vals.reduce((a, b) => a + b, 0)
-  if ((m = p.match(/answered “(.+?)”/)) || (m = p.match(/How many (\w+?)s were seen/)) || (m = p.match(/How many students chose (\S+?)\?/)) || (m = p.match(/How many (\w+) (?:were eaten|were counted)/)) || (m = p.match(/How many books were borrowed on (\w+)/)) || (m = p.match(/How many cans did class (\w+)/)) || (m = p.match(/How many votes did “(.+?)”/))) return find(m[1])
+  if ((m = p.match(/answered “(.+?)”/)) || (m = p.match(/How many (\w+?)s were seen/)) || (m = p.match(/How many students chose (\S+?)\?/)) || (m = p.match(/How many (\w+) (?:were eaten|were counted)/)) || (m = p.match(/How many books were borrowed on (\w+)/)) || (m = p.match(/How many cans did class (\w+)/)) || (m = p.match(/How many votes did “(.+?)”/)) || (m = p.match(/How many children (?:chose|have an?) (\S+?)\?/))) return find(m[1])
   return null
 }
 
@@ -530,7 +535,7 @@ const CHECKS: [RegExp, Check][] = [
       const vec = (s: string) => {
         let dx = 0
         let dy = 0
-        for (const mm of s.matchAll(/(\d+) squares? (to the right|to the left|up|down|east|west|north|south)/g)) {
+        for (const mm of s.matchAll(/(\d+) squares? (to the right|to the left|right|left|up|down|east|west|north|south)/g)) {
           const k = Number(mm[1])
           if (/right|east/.test(mm[2])) dx += k
           if (/left|west/.test(mm[2])) dx -= k
@@ -653,9 +658,317 @@ const CHECKS: [RegExp, Check][] = [
   ],
 ]
 
+// ---------------------------------------------------------------- Years 1–2 (Stage 1)
+
+const checkFor = (id: string): Check => CHECKS.find(([r]) => r.test(id))![1]
+const withDiagram = (c: Check): Check => (q, l, id) => (q.diagram ? c(q, l, id) : undefined)
+const mostLeast = (data: Map<string, number>, q: Question): string | null | undefined => {
+  if (q.answer.kind !== 'mc') return undefined
+  const p = strip(q.prompt)
+  const vals = [...data.values()]
+  const most = /\bmost\b/.test(p)
+  if (!most && !/fewest|least/.test(p)) return undefined
+  const want = most ? Math.max(...vals) : Math.min(...vals)
+  const name = [...data].find(([, v]) => v === want)![0]
+  return mcCorrect(q.answer) === name ? null : `diagram says ${name}`
+}
+const countClass = (svg: string, c: string) => els(svg).filter((e) => hasClass(e, c)).length
+
+const CHECKS1: [RegExp, Check][] = [
+  [/^y1-nsm-clock$|^y2-nsm-clock$/, withDiagram(checkFor('y3-nsm-clock'))],
+  [/^y2-gm-cm$/, withDiagram(checkFor('y3-gm-ruler'))],
+  [/^y1-2d-area$|^y2-2d-area$/, withDiagram(checkFor('y3-2d-area'))],
+  [/^y1-3d-capacity$|^y2-3d-volume$/, withDiagram(checkFor('y3-3d-cubes'))],
+  [
+    /^y1-data-tally$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const t = readTally(q.diagram)!
+      if (q.answer.kind === 'mc') return mostLeast(t, q)
+      const v = statPick(t, q.prompt)
+      return v === null ? 'cannot interpret' : v === answerValue(q.answer) ? null : `tally gives ${v}`
+    },
+  ],
+  [
+    /^y1-data-picture$|^y2-data-graphs$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const g = readPictureGraph(q.diagram)!.rows
+      if (q.answer.kind === 'mc') return mostLeast(g, q)
+      const v = statPick(g, q.prompt)
+      return v === null ? 'cannot interpret' : v === answerValue(q.answer) ? null : `picture graph gives ${v}`
+    },
+  ],
+  [
+    /^y1-as-bonds$|^y1-as-strat$/,
+    (q) => {
+      if (!q.diagram || !/Ten frame/.test(q.diagram)) return undefined
+      const a = countClass(q.diagram, 'tfa')
+      const b = countClass(q.diagram, 'tfb')
+      const want = b ? a + b : 10 - a
+      return want === answerValue(q.answer) ? null : `ten frames give ${want}`
+    },
+  ],
+  [
+    /^y1-wn-tens$|^y2-wn-place$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const v = 100 * countClass(q.diagram, 'b10h') + 10 * countClass(q.diagram, 'b10t') + countClass(q.diagram, 'b10o')
+      return v === answerValue(q.answer) ? null : `blocks show ${v}`
+    },
+  ],
+  [
+    /^y1-wn-oddeven$|^y1-fg-share$|^y1-fg-groups$|^y2-fg-halves$/,
+    (q, lvl, id) => {
+      if (!q.diagram) return undefined
+      const p = strip(q.prompt)
+      const pairs = countClass(q.diagram, 'pair')
+      if (pairs) {
+        if (q.answer.kind === 'mc') return mcCorrect(q.answer) === (pairs % 2 ? 'odd' : 'even') ? null : `${pairs} counters`
+        const m = p.match(/(?:Here are|half of) (\d+)/)
+        if (m && Number(m[1]) !== pairs) return `prompt says ${m[1]} but ${pairs} drawn`
+        return pairs / 2 === answerValue(q.answer) ? null : `half of ${pairs}`
+      }
+      const groups = countClass(q.diagram, 'grp')
+      const dots = countClass(q.diagram, 'gdot')
+      const left = countClass(q.diagram, 'left')
+      if (!groups) return undefined
+      const each = dots / groups
+      let want: number | null = null
+      if (/How many groups|full bags/.test(p)) want = groups
+      else if (/in each group|quarter of/.test(p)) want = each
+      else if (/left over/.test(p)) want = left
+      else if (/altogether/.test(p)) want = dots
+      if (want === null) return `cannot interpret (${id})`
+      const total = p.match(/^(\d+) (?:apples|counters)/)
+      if (total && Number(total[1]) !== dots + left) return `prompt total ${total[1]} but ${dots + left} drawn`
+      return want === answerValue(q.answer) ? null : `groups give ${want}`
+    },
+  ],
+  [
+    /^y2-fg-arrays$/,
+    (q) => {
+      const dots = els(q.diagram!).filter((e) => e.tag === 'circle' && hasClass(e, 'arr'))
+      const cols = new Set(dots.map((d) => d.a.cx)).size
+      const rows = new Set(dots.map((d) => d.a.cy)).size
+      const p = strip(q.prompt)
+      const want = /How many rows/.test(p) ? rows : /in each row/.test(p) ? cols : /rows of how many/.test(p) ? rows : rows * cols
+      return want === answerValue(q.answer) ? null : `array ${rows} × ${cols}`
+    },
+  ],
+  [
+    /^y1-gm-position$|^y2-gm-maps$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const p = strip(q.prompt)
+      const c = mcCorrect(q.answer)!
+      let m: RegExpMatchArray | null
+      if (/Objects in a row/.test(q.diagram)) {
+        const row = els(q.diagram)
+          .filter((e) => hasClass(e, 'rowlabel'))
+          .map((e) => e.text)
+        const at = (name: string) => row.indexOf(name)
+        let want: string | undefined
+        if ((m = p.match(/just to the (left|right) of the (\w+)/))) want = row[at(m[2]) + (m[1] === 'left' ? -1 : 1)]
+        else if ((m = p.match(/between the (\w+) and the (\w+)/))) want = Math.abs(at(m[1]) - at(m[2])) === 2 ? row[(at(m[1]) + at(m[2])) / 2] : undefined
+        else if ((m = p.match(/2 places to the right of the (\w+)/))) want = row[at(m[1]) + 2]
+        return want === c ? null : `shelf says ${want}`
+      }
+      const pos = readGridMap(q.diagram)
+      const atCell = (col: number, row: number) => [...pos].find(([, v]) => v.col === col && v.row === row)?.[0]
+      const vec = (str: string) => {
+        let dx = 0
+        let dy = 0
+        for (const mm of str.matchAll(/(\d+) squares? (right|left|up|down)/g)) {
+          const k = Number(mm[1])
+          if (mm[2] === 'right') dx += k
+          if (mm[2] === 'left') dx -= k
+          if (mm[2] === 'up') dy += k
+          if (mm[2] === 'down') dy -= k
+        }
+        return [dx, dy]
+      }
+      if ((m = p.match(/Start at the (\w+)\. Go (.*?)\. Where/))) {
+        const st = pos.get(m[1])!
+        const [dx, dy] = vec(m[2])
+        return atCell(st.col + dx, st.row + dy) === c ? null : `map destination ${atCell(st.col + dx, st.row + dy)}`
+      }
+      if ((m = p.match(/What is (directly above|directly below|just to the left of|just to the right of) the (\w+)/))) {
+        const st = pos.get(m[2])!
+        const [dx, dy] = { 'directly above': [0, 1], 'directly below': [0, -1], 'just to the left of': [-1, 0], 'just to the right of': [1, 0] }[m[1]]!
+        return atCell(st.col + dx, st.row + dy) === c ? null : `map says ${atCell(st.col + dx, st.row + dy)}`
+      }
+      if ((m = p.match(/Which path goes from the (\w+) to the (\w+)/))) {
+        const A = pos.get(m[1])!
+        const B = pos.get(m[2])!
+        const [dx, dy] = vec(c)
+        return dx === B.col - A.col && dy === B.row - A.row ? null : 'path does not reach'
+      }
+      return 'cannot interpret'
+    },
+  ],
+  [
+    /^y1-gm-informal$|^y2-gm-informal$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const E = els(q.diagram)
+      const obj = E.find((e) => hasClass(e, 'measured'))!
+      const units = E.filter((e) => hasClass(e, 'unit'))
+      const first = pathPts(units[0].a.d ?? '')[0]?.[0] ?? nfa(units[0], 'x')
+      const second = units[1] ? (pathPts(units[1].a.d ?? '')[0]?.[0] ?? nfa(units[1], 'x')) : first + 1
+      const uw = second - first
+      const len = nfa(obj, 'width') / uw
+      if (q.answer.kind === 'mc') return mcCorrect(q.answer)!.startsWith(`${Math.floor(len + 1e-9)} `) && len % 1 > 0.1 ? null : `object is ${len.toFixed(2)} units`
+      return near(len, answerValue(q.answer)!, 1e-6) ? null : `object is ${len.toFixed(2)} units`
+    },
+  ],
+  [
+    /^y1-gm-halves$|^y2-gm-eighths$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const parts = els(q.diagram).filter((e) => hasClass(e, 'fpart'))
+      const ws = parts.map((e) => nfa(e, 'width'))
+      const equal = ws.every((w) => near(w, ws[0], 0.05))
+      const on = parts.filter((e) => hasClass(e, 'on')).length
+      const p = strip(q.prompt)
+      const c = q.answer.kind === 'mc' ? mcCorrect(q.answer) : null
+      if (/cut into (halves|quarters|eighths)\?/.test(p)) {
+        const n = { halves: 2, quarters: 4, eighths: 8 }[p.match(/cut into (halves|quarters|eighths)/)![1] as 'halves']
+        return c === (equal && parts.length === n ? 'Yes' : 'No') ? null : `${parts.length} parts, equal=${equal}`
+      }
+      if (/What part is shaded/.test(p)) return c === (parts.length === 2 ? 'a half' : parts.length === 4 ? 'a quarter' : '?') ? null : `${parts.length} parts`
+      if (/How many eighths are shaded/.test(p)) return parts.length === 8 && on === answerValue(q.answer) ? null : `${on} of ${parts.length} shaded`
+      return undefined
+    },
+  ],
+  [
+    /^y1-nsm-balance$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const E = els(q.diagram)
+      const beam = E.find((e) => hasClass(e, 'beam'))!
+      const [ly, ry] = [nfa(beam, 'y1'), nfa(beam, 'y2')]
+      const labels = E.filter((e) => hasClass(e, 'panlabel')).map((e) => e.text)
+      const c = mcCorrect(q.answer)!
+      if (near(ly, ry, 0.5)) return c === 'They have the same mass' ? null : 'balance is level'
+      const heavier = ly > ry ? labels[0] : labels[1]
+      const lighter = ly > ry ? labels[1] : labels[0]
+      const want = /heavier/.test(q.prompt) ? `the ${heavier}` : `the ${lighter}`
+      return c === want ? null : `balance says ${want}`
+    },
+  ],
+  [
+    /^y2-2d-turns$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const pts = polyPts(els(q.diagram).find((e) => hasClass(e, 'arrow'))!)
+      const [tx, ty] = [pts[0][0] - 80, pts[0][1] - 80]
+      const drawn = Math.abs(tx) > Math.abs(ty) ? (tx > 0 ? 'right' : 'left') : ty < 0 ? 'up' : 'down'
+      const p = strip(q.prompt)
+      const start = p.match(/points (up|right|down|left)/)![1]
+      if (start !== drawn) return `arrow drawn ${drawn}, prompt says ${start}`
+      const k = /full turn/.test(p) ? 4 : /half turn/.test(p) ? 2 : /three quarter/.test(p) ? 3 : 1
+      const dirs = ['up', 'right', 'down', 'left']
+      const cw = !/anticlockwise/.test(p)
+      const end = dirs[(dirs.indexOf(start) + (cw ? k : 4 * 4 - k)) % 4]
+      return mcCorrect(q.answer) === end ? null : `should point ${end}`
+    },
+  ],
+  [
+    /^y1-2d-patterns$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const seq = els(q.diagram)
+        .filter((e) => hasClass(e, 'pat'))
+        .map((e) => (e.a.class.match(/pat-(\w+)/) ?? [])[1])
+      let period = 1
+      while (period < seq.length && !seq.every((x, i) => x === seq[i % period])) period++
+      if (period > seq.length / 2) return 'pattern does not repeat'
+      return mcCorrect(q.answer) === seq[seq.length % period] ? null : `next is ${seq[seq.length % period]}`
+    },
+  ],
+  [
+    /^y1-2d-shapes$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const n = polyPts(els(q.diagram).find((e) => hasClass(e, 'shape2d'))!).length
+      const names: Record<number, string> = { 3: 'triangle', 4: 'quadrilateral', 5: 'pentagon', 6: 'hexagon', 8: 'octagon' }
+      return q.answer.kind === 'mc' ? (mcCorrect(q.answer) === names[n] ? null : `${n} corners drawn`) : n === answerValue(q.answer) ? null : `${n} corners drawn`
+    },
+  ],
+  [
+    /^y1-3d-objects$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const label = (q.diagram.match(/aria-label="([^"]*)"/) ?? [])[1]
+      const want = { 'Model made of cubes': 'cube', Sphere: 'sphere', Cylinder: 'cylinder', 'Rectangular prism': 'rectangular prism' }[label as 'Sphere']
+      if (label === 'Model made of cubes' && countClass(q.diagram, 'cube-top') !== 1) return 'not a single cube'
+      return mcCorrect(q.answer) === want ? null : `drawing is ${label}`
+    },
+  ],
+  [
+    /^y2-3d-faces$/,
+    (q) => {
+      if (!q.diagram || !/aria-label="Prism"/.test(q.diagram)) return undefined
+      const { V, E, F } = solidVEF(q.diagram)
+      const what = (strip(q.prompt).match(/How many (faces|vertices|edges)/) ?? [])[1] as 'faces'
+      return { faces: F, vertices: V, edges: E }[what] === answerValue(q.answer) ? null : `drawing has V=${V} E=${E} F=${F}`
+    },
+  ],
+  [
+    /^y1-nsm-months$|^y2-nsm-duration$/,
+    (q) => {
+      if (!q.diagram || !/caltable/.test(q.diagram)) return undefined
+      const month = q.diagram.match(/<caption>(\w+)<\/caption>/)![1]
+      const heads = [...q.diagram.matchAll(/<th scope="col">(\w+)<\/th>/g)].map((m) => m[1])
+      const cells = [...q.diagram.matchAll(/<td[^>]*>(\d*)<\/td>/g)].map((m) => m[1])
+      const days = cells.filter((x) => x).length
+      const real = { January: 31, February: 28, March: 31, April: 30, May: 31, June: 30, July: 31, August: 31, September: 30, October: 31, November: 30, December: 31 }[month as 'May']
+      if (days !== real) return `${month} drawn with ${days} days`
+      const p = strip(q.prompt)
+      let m: RegExpMatchArray | null
+      if ((m = p.match(/What day of the week is \w+ (\d+)/))) {
+        const idx = cells.indexOf(m[1])
+        const day = heads[idx % 7]
+        return mcCorrect(q.answer)!.startsWith(day) ? null : `calendar says ${day}`
+      }
+      if ((m = p.match(/Today is \w+ (\d+)\. The party is on \w+ (\d+)/))) {
+        const d = Number(m[2]) - Number(m[1])
+        const want = /weeks/.test(p) && q.suffix?.startsWith('week') ? d / 7 : d
+        return want === answerValue(q.answer) ? null : `calendar gives ${want}`
+      }
+      return undefined
+    },
+  ],
+  [
+    /^y2-ch-likely$/,
+    (q) => {
+      if (!q.diagram) return undefined
+      const labels = els(q.diagram)
+        .filter((e) => e.tag === 'text')
+        .map((e) => e.text)
+      const letter = strip(q.prompt).match(/landing on (A|B)/)![1]
+      const k = labels.filter((x) => x === letter).length
+      return mcCorrect(q.answer) === (k > labels.length / 2 ? 'likely' : 'unlikely') ? null : `${k} of ${labels.length} parts`
+    },
+  ],
+  [
+    /^y1-wn-line$|^y2-wn-nearest$|^y2-as-two$/,
+    (q, lvl, id) => {
+      if (!q.diagram || !/nlmark/.test(q.diagram)) return undefined
+      const nl = readNumberLine(q.diagram)!
+      for (const [label, v] of nl.marks) if (/^\d+$/.test(label) && !near(Number(label), v, 0.05)) return `mark ${label} drawn at ${v.toFixed(2)}`
+      if (id === 'y1-wn-line' && lvl === 1) return near(nl.value, answerValue(q.answer)!, 0.05) ? null : `A is at ${nl.value}`
+      if (id === 'y1-wn-line' && lvl === 2) return mcCorrect(q.answer) === String(Math.round(nl.value / 10) * 10) ? null : 'nearest ten'
+      if (id === 'y2-wn-nearest') return Math.round(nl.value / 100) * 100 === answerValue(q.answer) ? null : 'nearest hundred'
+      return null
+    },
+  ],
+]
+
 // ---------------------------------------------------------------- wording checks
 
-const PLURAL_SLIP = /\b1 (tenths|hundredths|pieces|parts|marks|small marks|squares|litres|rows|cubes|minutes|seconds|symbols|thirds|quarters|halves|fifths|sixths|eighths|students|groups|dots|bundles|pets|goals|books|ones|tens|hundreds|thousands|kilograms|grams|right angles|lines|pairs|quarter turns)\b/
+const PLURAL_SLIP = /\b1 (counters|children|blocks|paperclips|pencils|tiles|cups|days|weeks|jumps|stickers|marbles|apples|boxes|bags|circles|tens|tenths|hundredths|pieces|parts|marks|small marks|squares|litres|rows|cubes|minutes|seconds|symbols|thirds|quarters|halves|fifths|sixths|eighths|students|groups|dots|bundles|pets|goals|books|ones|tens|hundreds|thousands|kilograms|grams|right angles|lines|pairs|quarter turns)\b/
 const ZERO_SLIP = /(?<![\d.$])\d+\.0+(?![\d])/ // "15.0", "25.00" (money such as $5.00 is fine)
 // "a isosceles", "a equilateral" (but not the point label "A is", "A and"...)
 const ARTICLE_SLIP = /(?:\ba|^A) (?!is\b|and\b|at\b|as\b|one|uni|use|usual)[aeiou]\w*/
@@ -679,15 +992,16 @@ function wording(q: Question): string | null {
 // ---------------------------------------------------------------- run
 
 const seen = new Set<string>()
-for (const t of STAGE2_TOPICS) {
-  if (t.year !== 3 && t.year !== 4) fail(t.id, 0, 'not a Stage 2 year', { prompt: '', answer: { kind: 'num', value: 0 }, steps: [] } as unknown as Question)
-  if (!t.outcomes.every((o) => /^MA2-[A-Z0-9]+-0\d$/.test(o))) console.log(`FAIL ${t.id}: outcome codes ${t.outcomes}`), failures++
+for (const t of [...STAGE1_TOPICS, ...STAGE2_TOPICS]) {
+  const stage = t.year <= 2 ? 1 : 2
+  if (![1, 2, 3, 4].includes(t.year)) console.log(`FAIL ${t.id}: not a primary year`), failures++
+  if (!t.outcomes.every((o) => new RegExp(`^MA${stage}-[A-Z0-9]+-0\\d$`).test(o))) console.log(`FAIL ${t.id}: outcome codes ${t.outcomes}`), failures++
   for (const s of t.skills) {
     if (seen.has(s.id)) console.log(`FAIL duplicate skill id ${s.id}`), failures++
     seen.add(s.id)
     if (!s.outcomes.every((o) => t.outcomes.includes(o))) console.log(`FAIL ${s.id}: skill outcomes not in topic`), failures++
     if (!s.id.startsWith(only)) continue
-    const checks = CHECKS.filter(([re]) => re.test(s.id))
+    const checks = [...CHECKS, ...CHECKS1].filter(([re]) => re.test(s.id))
     for (const lvl of [1, 2, 3] as Level[]) {
       for (let k = 0; k < N; k++) {
         setSeed(1 + k * 7919 + lvl * 104729 + s.id.length)

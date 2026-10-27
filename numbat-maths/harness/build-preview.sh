@@ -1,6 +1,6 @@
 #!/bin/bash
 # Stand-alone preview: same pages as the app with log-ins switched off, as one self-contained page.
-# Usage: ./build-preview.sh [out.html] [title]    (VITE_STAGE2=1 ./build-preview.sh ... adds Years 3 and 4)
+# Usage: ./build-preview.sh [out.html] [title]    (VITE_STAGE1=1 adds Years 1–2, VITE_STAGE2=1 adds Years 3–4)
 set -e
 cd "$(dirname "$0")"
 ./sync.sh --no-hook

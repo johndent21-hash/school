@@ -1,16 +1,16 @@
-// Renders one generated question per Stage 2 skill and level (those with diagrams) for a visual check.
+// Renders one generated question per Stage 1–2 skill and level (those with diagrams) for a visual check.
 // Usage: STAGE2=1 ONLY=y4 npx tsx tests/gallery-s2q.ts out.png
 import { readFileSync, writeFileSync } from 'node:fs'
 import { setSeed } from '../src/lib/maths/rand'
 import { answerText } from '../src/lib/maths/check'
 import type { Level } from '../src/lib/maths/types'
-import { STAGE2_TOPICS } from '../src/content/index'
+import { STAGE1_TOPICS, STAGE2_TOPICS } from '../src/content/index'
 const css = readFileSync(new URL('../src/maths.css', import.meta.url), 'utf8')
 const only = process.env.ONLY ?? ''
 const seed = Number(process.env.SEED ?? 3)
 const out = process.argv[2] ?? '/tmp/claude-0/shots/s2q.png'
 const cards: string[] = []
-for (const t of STAGE2_TOPICS)
+for (const t of [...STAGE1_TOPICS, ...STAGE2_TOPICS])
   for (const s of t.skills) {
     if (!s.id.startsWith(only)) continue
     for (const lvl of [1, 2, 3] as Level[]) {

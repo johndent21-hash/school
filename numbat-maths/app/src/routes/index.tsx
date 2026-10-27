@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { ArrowRight, BookOpen, GraduationCap, PencilLine, Trophy } from 'lucide-react'
 import { Shell } from '@/components/numbat/Shell'
-import { INCLUDE_STAGE2, stageLabel, topicsForYear, YEAR_SPAN, YEARS, yearHue } from '@/content'
+import { BUILD_CHIP, PRIMARY_STAGES, stageLabel, topicsForYear, YEAR_SPAN, YEARS, yearHue } from '@/content'
 import { cleanCode } from '@/lib/codes'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
@@ -157,7 +157,7 @@ function Landing() {
       <div className="grid gap-12">
         <section className="grid items-start gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-x-8">
           <div className="grid gap-5 pt-2">
-            <span className="chip w-fit">{INCLUDE_STAGE2 ? 'NSW Years 3, 4, 7, 8 and 9 · Stages 2, 4 and 5' : 'NSW Years 7, 8 and 9 · Stage 4 and Stage 5'}</span>
+            <span className="chip w-fit">{BUILD_CHIP}</span>
             <h1 className="font-display text-4xl font-semibold leading-tight sm:text-5xl">
               Learn it. Practise it. <span className="text-primary">Master it.</span>
             </h1>
@@ -185,9 +185,9 @@ function Landing() {
           <h2 id="years" className="font-display text-2xl font-semibold">
             What’s inside
           </h2>
-          {INCLUDE_STAGE2 && <h3 className="font-display text-lg font-semibold text-muted-foreground">Primary · Stage 2</h3>}
-          {INCLUDE_STAGE2 && <div className="grid gap-4 md:grid-cols-2">{YEARS.filter((y) => y <= 4).map((y) => <YearTile key={y} y={y} />)}</div>}
-          {INCLUDE_STAGE2 && <h3 className="font-display text-lg font-semibold text-muted-foreground">Secondary · Stages 4 and 5</h3>}
+          {PRIMARY_STAGES && <h3 className="font-display text-lg font-semibold text-muted-foreground">Primary · {PRIMARY_STAGES}</h3>}
+          {PRIMARY_STAGES && <div className="grid gap-4 md:grid-cols-2">{YEARS.filter((y) => y <= 4).map((y) => <YearTile key={y} y={y} />)}</div>}
+          {PRIMARY_STAGES && <h3 className="font-display text-lg font-semibold text-muted-foreground">Secondary · Stages 4 and 5</h3>}
           <div className="grid gap-4 md:grid-cols-3">
             {YEARS.filter((y) => y >= 7).map((y) => <YearTile key={y} y={y} />)}
           </div>

@@ -47,7 +47,7 @@ export const createClass = mutation({
     if (!t) return fail(NOT_TEACHER)
     const n = cleanName(name)
     if (n.length < 1) return fail("Give the class a name, e.g. 7MAT2.")
-    if (![3, 4, 7, 8, 9].includes(year)) return fail("Choose a year level.")
+    if (![1, 2, 3, 4, 7, 8, 9].includes(year)) return fail("Choose a year level.")
     const code = await newClassCode(ctx)
     const id = await ctx.db.insert("classes", { teacherId: t._id, name: n, year, code, createdAt: Date.now() })
     return { ok: true, classId: id, code }
@@ -62,7 +62,7 @@ export const updateClass = mutation({
     if (!t) return fail(NOT_TEACHER)
     const c = await ownedClass(ctx, t._id, classId)
     if (!c) return fail("Class not found.")
-    if (![3, 4, 7, 8, 9].includes(year)) return fail("Choose a year level.")
+    if (![1, 2, 3, 4, 7, 8, 9].includes(year)) return fail("Choose a year level.")
     await ctx.db.patch(c._id, { name: cleanName(name) || c.name, year })
     return { ok: true }
   },

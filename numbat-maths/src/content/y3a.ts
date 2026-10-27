@@ -643,7 +643,7 @@ const fr_numberline = (level: Level): Question => {
       prompt: `Which letter is at ${frac(target, parts)} on the number line?`,
       diagram: D2.numberLine({ min: 0, max: 1, parts, labels: [0, 1], marks }),
       answer: mcFixedA(['A', 'B', 'C'], correctLetter),
-      hint: `Count ${target} jumps of one-${FR_NAME[parts].replace(/s$/, '')} from 0.`,
+      hint: `Count ${plural(target, 'jump')} of one-${FR_NAME[parts].replace(/s$/, '')} from 0.`,
       steps: [`The line from 0 to 1 is cut into ${parts} equal parts.`, `${frac(target, parts)} is ${plural(target, 'part')} from 0, which is at ${correctLetter}.`],
     })
   }

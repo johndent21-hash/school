@@ -74,7 +74,7 @@ export interface Skill {
 
 export interface Topic {
   id: string
-  year: 3 | 4 | 7 | 8 | 9
+  year: 1 | 2 | 3 | 4 | 7 | 8 | 9
   title: string
   strand: 'Number and algebra' | 'Measurement and space' | 'Statistics and probability'
   outcomes: string[]

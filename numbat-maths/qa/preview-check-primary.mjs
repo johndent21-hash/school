@@ -1,4 +1,4 @@
-// Smoke test of the Years 3–9 stand-alone preview (served at :3201 inside a stand-in for the viewer's skeleton)
+// Smoke test of the Years 1–9 (or 3–9) stand-alone preview (served at :3201 inside a stand-in for the viewer's skeleton)
 import { chromium } from 'playwright'
 const url = 'http://127.0.0.1:3201/index.html'
 const browser = await chromium.launch()
@@ -12,7 +12,7 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   page.on('request', (r) => { const h = new URL(r.url()).host; if (!h.startsWith('127.0.0.1')) hosts.add(h) })
   const shot = (n) => page.screenshot({ path: `/tmp/claude-0/shots/s2pv_${w}_${n}.png`, fullPage: true })
   await page.goto(url, { waitUntil: 'networkidle' }); await page.waitForTimeout(800); await shot('landing')
-  const primary = await page.getByRole('heading', { name: 'Primary · Stage 2' }).isVisible()
+  const primary = await page.getByRole('heading', { name: /^Primary · / }).textContent()
   const tiles = await page.locator('.topic-tile .tile-mark').allTextContents()
   // Year 3 tile -> home -> Mass and time -> Reading clocks
   await page.locator('.topic-tile', { hasText: 'Year 3' }).first().click(); await page.waitForTimeout(400)
@@ -35,13 +35,24 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   await page.locator('li', { hasText: 'am and pm' }).getByRole('link', { name: 'Practise' }).click(); await page.waitForTimeout(400)
   await page.getByRole('button', { name: 'Start practice set' }).click(); await page.waitForTimeout(200)
   await shot('ampm')
+  // Year 1 o'clock practice, if this build has Year 1
+  let y1 = 'no Year 1'
+  if (tiles.includes('1')) {
+    await page.getByRole('link', { name: /Numbat Maths home/ }).click(); await page.waitForTimeout(300)
+    await page.locator('.topic-tile', { hasText: 'Year 1' }).first().click(); await page.waitForTimeout(400)
+    await page.getByRole('link', { name: /Mass and time/ }).first().click(); await page.waitForTimeout(400)
+    await page.locator('li', { hasText: 'O’clock and half past' }).getByRole('link', { name: 'Practise' }).click(); await page.waitForTimeout(400)
+    await page.getByRole('button', { name: 'Start practice set' }).click(); await page.waitForTimeout(300)
+    await shot('y1_clock')
+    y1 = (await page.locator('.q-card').first().textContent())?.replace(/\s+/g, ' ').slice(0, 60)
+  }
   // teacher area is switched off
   await page.getByRole('link', { name: /Numbat Maths home/ }).click(); await page.waitForTimeout(300)
   await page.getByRole('link', { name: /Teacher log in|Teachers/ }).first().click(); await page.waitForTimeout(300)
   const locked = await page.getByRole('heading', { name: /switched off in this preview/ }).isVisible()
   const footer = (await page.locator('footer').textContent())?.slice(0, 60)
   const sw = await page.evaluate(() => document.documentElement.scrollWidth)
-  out.push(`${w}/${scheme}: primaryHeading=${primary} tiles=${tiles.join(',')} year3Selected=${tab3} placeholder="${ph}" feedback1="${fb1}" teacherLocked=${locked} footer="${footer}" scrollW=${sw} hosts=[${[...hosts].join(', ')}] errors=[${errors.join(' | ')}]`)
+  out.push(`${w}/${scheme}: primaryHeading=${primary} tiles=${tiles.join(',')} year3Selected=${tab3} placeholder="${ph}" feedback1="${fb1}" y1="${y1}" teacherLocked=${locked} footer="${footer}" scrollW=${sw} hosts=[${[...hosts].join(', ')}] errors=[${errors.join(' | ')}]`)
   await ctx.close()
 }
 console.log(out.join('\n'))
