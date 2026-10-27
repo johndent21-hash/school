@@ -1,25 +1,30 @@
 // One class: students and PINs, the markbook, tasks and class settings.
 import { useMemo, useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery } from 'convex/react'
-import { ArrowLeft, Download, KeyRound, Pencil, Printer, Trash2, UserPlus } from 'lucide-react'
+import { useMutation } from 'convex/react'
+import { AlertTriangle, ArrowLeft, ArrowRight, Download, KeyRound, Pencil, Printer, Trash2, UserPlus, UserX } from 'lucide-react'
 import { toast } from 'sonner'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
-import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
+import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { StatTile, WeekColumns, WeekLine } from '@/components/numbat/Charts'
+import { DemoBanner } from '@/components/numbat/DemoBanner'
 import { findTopic, topicsForYear, YEARS } from '@/content'
-import { ago, endOfDay, isOverdue, shortDate } from '@/lib/dates'
+import { ago, agoInline, endOfDay, isOverdue, shortDate } from '@/lib/dates'
 import { masteryOf, shareState } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, testItemId } from '@/lib/practice'
 import { topicStats, type ProgressMap } from '@/lib/progress'
 import { useSession } from '@/lib/session'
+import { classInsights } from '@/lib/insights'
+import { previewBlocked, useClassActivity, useClassReport } from '@/lib/teacher-data'
 import { useMounted } from '@/lib/use-mounted'
 import { cn } from '@/lib/utils'
 
-type Tab = 'students' | 'markbook' | 'tasks' | 'settings'
+type Tab = 'overview' | 'students' | 'markbook' | 'tasks' | 'settings'
 const TABS: { id: Tab; label: string }[] = [
+  { id: 'overview', label: 'Overview' },
   { id: 'students', label: 'Students' },
   { id: 'markbook', label: 'Markbook' },
   { id: 'tasks', label: 'Tasks' },
@@ -53,7 +58,7 @@ interface ReportTask {
 }
 interface Report {
   ok: true
-  class: { id: Id<'classes'>; name: string; year: number; code: string }
+  class: { id: Id<'classes'>; name: string; year: number; code: string; weeklyGoal: number }
   students: ReportStudent[]
   assignments: ReportTask[]
 }
@@ -64,7 +69,10 @@ function ClassPage() {
   if (PREVIEW_ONLY)
     return (
       <Shell>
-        <PreviewLocked what="Teacher accounts" />
+        <div className="grid gap-6">
+          <DemoBanner />
+          {mounted ? <ClassView /> : <PageLoading />}
+        </div>
       </Shell>
     )
   if (!mounted || !ready) return <Shell><PageLoading /></Shell>
@@ -87,9 +95,8 @@ function ClassPage() {
 }
 
 function ClassView() {
-  const { id, tab = 'students' } = Route.useSearch()
-  const { token } = useSession()
-  const report = useQuery(api.classes.classReport, token && id ? { token, classId: id as Id<'classes'> } : 'skip') as Report | { ok: false; message: string } | undefined
+  const { id, tab = 'overview' } = Route.useSearch()
+  const report = useClassReport(id) as Report | { ok: false; message: string } | undefined
 
   if (!id) return <p className="feedback bad">No class chosen.</p>
   if (report === undefined) return <PageLoading />
@@ -130,10 +137,167 @@ function ClassView() {
         ))}
       </div>
 
+      {tab === 'overview' && <OverviewTab report={report} />}
       {tab === 'students' && <StudentsTab report={report} />}
       {tab === 'markbook' && <Markbook report={report} />}
       {tab === 'tasks' && <TasksTab report={report} />}
       {tab === 'settings' && <SettingsTab report={report} />}
+    </div>
+  )
+}
+
+/* ---------------- Overview ---------------- */
+
+function OverviewTab({ report }: { report: Report }) {
+  const activity = useClassActivity(report.class.id)
+  const ins = useMemo(
+    () => (activity && activity.ok ? classInsights(report.students, activity.attempts, activity.masteries, activity.goal, Date.now()) : null),
+    [activity, report.students],
+  )
+  if (report.students.length === 0) return <p className="panel p-5 text-muted-foreground">Add students to see how the class is going.</p>
+  if (activity === undefined) return <PageLoading />
+  if (!activity.ok || !ins) return <p className="feedback bad">{activity.ok ? 'Something went wrong.' : activity.message}</p>
+
+  const id = report.class.id
+  const avgDelta = ins.avgThisWeek !== null && ins.avgLastWeek !== null ? Math.round(ins.avgThisWeek) - Math.round(ins.avgLastWeek) : 0
+  const tasks = report.assignments.slice(0, 3)
+
+  return (
+    <div className="grid gap-6">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatTile label="Practised this week" value={`${ins.practisedThisWeek} of ${ins.total}`} sub={`Last week: ${ins.practisedLastWeek}`} />
+        <StatTile label="Reached the weekly goal" value={`${ins.metGoal} of ${ins.total}`} sub={`Goal: ${activity.goal} sets a week`} />
+        <StatTile label="Sets finished this week" value={ins.setsThisWeek.toLocaleString('en-AU')} sub={`Last week: ${ins.setsLastWeek.toLocaleString('en-AU')}`} />
+        <StatTile
+          label="Average score this week"
+          value={ins.avgThisWeek === null ? '–' : `${Math.round(ins.avgThisWeek)}%`}
+          delta={avgDelta ? { amount: avgDelta, text: `${avgDelta > 0 ? '+' : '−'}${Math.abs(avgDelta)} on last week` } : null}
+          sub={ins.avgLastWeek === null ? 'No sets last week' : `Last week: ${Math.round(ins.avgLastWeek)}%`}
+        />
+      </div>
+
+      <div className="grid items-start gap-4 lg:grid-cols-2">
+        <section className="panel grid content-start gap-3 p-4" aria-labelledby="needs-help">
+          <h2 id="needs-help" className="font-display flex items-center gap-2 text-lg font-semibold">
+            <AlertTriangle size={18} className="text-warning" aria-hidden="true" /> May need help
+          </h2>
+          {ins.needsHelp.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No one stands out right now. Students averaging under 50% on recent sets, or whose scores are dropping, show here.</p>
+          ) : (
+            <ul className="grid gap-1">
+              {ins.needsHelp.map((h) => (
+                <li key={h.student.id}>
+                  <Link to="/teacher-student" search={{ id: h.student.id }} className="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 hover:bg-muted">
+                    <span className="min-w-0">
+                      <span className="block font-bold">{h.student.name}</span>
+                      <span className="block text-sm text-muted-foreground">{h.reason}</span>
+                    </span>
+                    <ArrowRight size={16} className="shrink-0 text-muted-foreground" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="panel grid content-start gap-3 p-4" aria-labelledby="not-practised">
+          <h2 id="not-practised" className="font-display flex items-center gap-2 text-lg font-semibold">
+            <UserX size={18} className="text-muted-foreground" aria-hidden="true" /> Haven’t practised this week
+            <span className="text-muted-foreground">{ins.notPractised.length}</span>
+          </h2>
+          {ins.notPractised.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Everyone has practised this week.</p>
+          ) : (
+            <ul className="flex flex-wrap gap-1.5">
+              {ins.notPractised.map(({ student: s, neverLoggedIn }) => (
+                <li key={s.id}>
+                  <Link to="/teacher-student" search={{ id: s.id }} className="chip hover:border-primary" title={neverLoggedIn ? 'Hasn’t logged in yet' : `Last active ${agoInline(s.lastActive)}`}>
+                    {s.name}
+                    <span className="text-muted-foreground">· {neverLoggedIn ? 'never logged in' : agoInline(s.lastActive)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="panel grid content-start gap-3 p-4" aria-labelledby="hardest">
+          <h2 id="hardest" className="font-display text-lg font-semibold">
+            Skills the class finds hardest
+          </h2>
+          {ins.hardest.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nothing yet. Skills show here once at least 3 students have tried them and the class average is under 80%.</p>
+          ) : (
+            <ul className="grid gap-2">
+              {ins.hardest.map((h) => (
+                <li key={h.itemId} className="grid gap-1">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <Link to="/lesson" search={{ id: h.itemId, tab: 'learn' }} className="font-bold hover:underline">
+                      {h.title}
+                    </Link>
+                    <span className="text-sm text-muted-foreground">
+                      average best {h.avgBest}% · {h.mastered} of {h.tried} mastered
+                    </span>
+                  </div>
+                  <div className="meter" role="img" aria-label={`Class average best score ${h.avgBest}%`}>
+                    <span style={{ width: `${h.avgBest}%` }} />
+                  </div>
+                  <span className="text-xs text-muted-foreground">{h.sub}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="panel grid content-start gap-3 p-4" aria-labelledby="task-progress">
+          <div className="flex items-center justify-between gap-2">
+            <h2 id="task-progress" className="font-display text-lg font-semibold">
+              Tasks
+            </h2>
+            <Link to="/teacher-class" search={{ id, tab: 'tasks' }} className="btn btn-ghost btn-sm">
+              All tasks <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+          {tasks.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No tasks set yet.</p>
+          ) : (
+            <ul className="grid gap-3">
+              {tasks.map((t) => {
+                const finished = report.students.filter((s) => t.items.every((it) => (s.progress[it]?.updatedAt ?? 0) >= t.createdAt)).length
+                return (
+                  <li key={t.id} className="grid gap-1">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <span className="font-bold">{t.title}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {finished} of {report.students.length} finished
+                        {t.dueDate ? ` · ${isOverdue(t.dueDate) ? 'was due' : 'due'} ${shortDate(t.dueDate)}` : ''}
+                      </span>
+                    </div>
+                    <div className="meter" role="img" aria-label={`${finished} of ${report.students.length} students finished`}>
+                      <span style={{ width: `${report.students.length ? (finished / report.students.length) * 100 : 0}%` }} />
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </section>
+      </div>
+
+      <section className="grid gap-3" aria-labelledby="over-time">
+        <h2 id="over-time" className="font-display text-xl font-semibold">
+          Progress over time
+        </h2>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <WeekColumns title="Sets finished each week" subtitle="Practice sets and topic tests, whole class" data={ins.weekly.map((w) => ({ start: w.start, value: w.sets }))} unit="sets" />
+          <WeekLine
+            title="Skills mastered"
+            subtitle="Running total for the class: a skill counts once a student scores 80% or more"
+            data={ins.weekly.map((w) => ({ start: w.start, value: w.mastered }))}
+            unit="skills mastered"
+          />
+        </div>
+      </section>
     </div>
   )
 }
@@ -152,7 +316,7 @@ function StudentsTab({ report }: { report: Report }) {
 
   const addNames = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!token) return
+    if (previewBlocked() || !token) return
     const list = names
       .split(/\r?\n|,|\t/)
       .map((s) => s.trim())
@@ -218,6 +382,7 @@ function StudentsTab({ report }: { report: Report }) {
                           title="Reset PIN"
                           aria-label={`Reset ${s.name}'s PIN`}
                           onClick={() => {
+                            if (previewBlocked()) return
                             if (token && window.confirm(`Reset ${s.name}'s PIN? They will choose a new one next time they log in.`))
                               void act(() => reset({ token, studentId: s.id }), `${s.name} can now choose a new PIN.`)
                           }}
@@ -230,6 +395,7 @@ function StudentsTab({ report }: { report: Report }) {
                           title="Rename"
                           aria-label={`Rename ${s.name}`}
                           onClick={() => {
+                            if (previewBlocked()) return
                             const n = window.prompt('New name', s.name)
                             if (token && n && n.trim() && n.trim() !== s.name) void act(() => rename({ token, studentId: s.id, name: n }), 'Name changed.')
                           }}
@@ -242,6 +408,7 @@ function StudentsTab({ report }: { report: Report }) {
                           title="Remove from class"
                           aria-label={`Remove ${s.name}`}
                           onClick={() => {
+                            if (previewBlocked()) return
                             if (token && window.confirm(`Remove ${s.name} and all their results? This can’t be undone.`))
                               void act(() => remove({ token, studentId: s.id }), `${s.name} removed.`)
                           }}
@@ -279,9 +446,15 @@ function StudentsTab({ report }: { report: Report }) {
             <li>Choose a 4-digit PIN the first time, then use it every time.</li>
           </ol>
           <p className="text-muted-foreground">Forgotten PIN? Press the key button next to their name.</p>
-          <Link to="/teacher-cards" search={{ id: report.class.id }} className="btn btn-ghost btn-sm w-fit">
-            <Printer size={15} aria-hidden="true" /> Print login cards
-          </Link>
+          {PREVIEW_ONLY ? (
+            <button type="button" className="btn btn-ghost btn-sm w-fit" onClick={previewBlocked}>
+              <Printer size={15} aria-hidden="true" /> Print login cards
+            </button>
+          ) : (
+            <Link to="/teacher-cards" search={{ id: report.class.id }} className="btn btn-ghost btn-sm w-fit">
+              <Printer size={15} aria-hidden="true" /> Print login cards
+            </Link>
+          )}
         </div>
       </aside>
     </div>
@@ -314,6 +487,7 @@ function Markbook({ report }: { report: Report }) {
   if (students.length === 0) return <p className="panel p-5 text-muted-foreground">Add students to see the markbook.</p>
 
   const exportCsv = () => {
+    if (previewBlocked()) return
     if (topic) {
       const cols = [...topic.skills.map((s) => ({ id: s.id, title: s.title })), { id: testItemId(topic.id), title: 'Topic test' }]
       downloadCsv(`${report.class.name} - ${topic.title}.csv`, [
@@ -481,7 +655,7 @@ function TasksTab({ report }: { report: Report }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!token || picked.length === 0) return
+    if (previewBlocked() || !token || picked.length === 0) return
     setBusy(true)
     try {
       const auto = topic ? `${topic.title} practice` : 'Practice task'
@@ -604,6 +778,7 @@ function TaskCard({ task, students, onDelete }: { task: ReportTask; students: Re
           type="button"
           className="btn btn-danger btn-sm"
           onClick={() => {
+            if (previewBlocked()) return
             if (window.confirm(`Delete the task “${task.title}”? Students’ results are kept.`)) onDelete()
           }}
         >
@@ -635,6 +810,7 @@ function SettingsTab({ report }: { report: Report }) {
   const remove = useMutation(api.classes.deleteClass)
   const [name, setName] = useState(report.class.name)
   const [year, setYear] = useState(report.class.year)
+  const [goal, setGoal] = useState(report.class.weeklyGoal)
 
   return (
     <div className="grid max-w-xl gap-6">
@@ -642,8 +818,8 @@ function SettingsTab({ report }: { report: Report }) {
         className="panel grid gap-4 p-5"
         onSubmit={async (e) => {
           e.preventDefault()
-          if (!token) return
-          const r = (await update({ token, classId: report.class.id, name, year })) as { ok: boolean; message?: string }
+          if (previewBlocked() || !token) return
+          const r = (await update({ token, classId: report.class.id, name, year, weeklyGoal: goal })) as { ok: boolean; message?: string }
           if (r.ok) toast.success('Class updated.')
           else toast.error(r.message ?? 'Could not update the class.')
         }}
@@ -664,6 +840,17 @@ function SettingsTab({ report }: { report: Report }) {
           </select>
           <span className="text-sm text-muted-foreground">Students start on this year’s topics. They can still open the other years.</span>
         </label>
+        <label className="grid gap-1">
+          <span className="label">Weekly goal</span>
+          <select className="field" value={goal} onChange={(e) => setGoal(Number(e.target.value))}>
+            {Array.from({ length: 20 }, (_, i) => i + 1).map((g) => (
+              <option key={g} value={g}>
+                {g} {g === 1 ? 'set' : 'sets'} a week
+              </option>
+            ))}
+          </select>
+          <span className="text-sm text-muted-foreground">Practice sets and topic tests a student aims to finish each week. It fills the goal ring on their home page and builds their week streak.</span>
+        </label>
         <button type="submit" className="btn btn-primary w-fit">
           Save
         </button>
@@ -676,7 +863,7 @@ function SettingsTab({ report }: { report: Report }) {
           type="button"
           className="btn btn-danger w-fit"
           onClick={async () => {
-            if (!token) return
+            if (previewBlocked() || !token) return
             const typed = window.prompt(`Type the class name (${report.class.name}) to delete it.`)
             if (typed?.trim() !== report.class.name) return
             const r = (await remove({ token, classId: report.class.id })) as { ok: boolean; message?: string }

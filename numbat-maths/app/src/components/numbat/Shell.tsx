@@ -64,7 +64,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <main id="main" className="shell-main flex-1">
         {PREVIEW_ONLY && (
           <p className="feedback info mb-4 text-sm">
-            Preview copy: lessons, worked examples, practice and topic tests all work here. Student and teacher log-ins are switched off, and results stay in this browser.
+            Preview copy: lessons, worked examples, practice and topic tests all work here, and results stay in this browser. Log-ins are switched off; the teacher pages show a made-up example class.
           </p>
         )}
         {show && serverError && (

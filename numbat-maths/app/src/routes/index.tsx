@@ -33,6 +33,9 @@ function StudentLogin() {
         <Link to="/home" className="btn btn-primary btn-lg">
           Start practising <ArrowRight size={18} aria-hidden="true" />
         </Link>
+        <Link to="/teacher" className="btn btn-ghost">
+          See the teacher view with an example class
+        </Link>
       </div>
     )
   }

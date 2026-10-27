@@ -25,7 +25,7 @@ import { Y2C } from './y2c'
 export const STAGE1_TOPICS: Topic[] = [...Y1A, ...Y1B, ...Y1C, ...Y2A, ...Y2B, ...Y2C]
 /** Years 3–4 (Stage 2). Only included in builds made with VITE_STAGE2=1 (or STAGE2=1 for tests). */
 export const STAGE2_TOPICS: Topic[] = [...Y3A, ...Y3B, ...Y3C, ...Y4A, ...Y4B, ...Y4C]
-const SECONDARY_TOPICS: Topic[] = [...Y7A, ...Y7B, ...Y7C, ...Y8A, ...Y8B, ...Y8C, ...Y9A, ...Y9B, ...Y9C]
+export const SECONDARY_TOPICS: Topic[] = [...Y7A, ...Y7B, ...Y7C, ...Y8A, ...Y8B, ...Y8C, ...Y9A, ...Y9B, ...Y9C]
 
 const viteEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env
 export const INCLUDE_STAGE2 = viteEnv?.VITE_STAGE2 === '1' || (typeof process !== 'undefined' && process.env?.STAGE2 === '1')

@@ -4,9 +4,12 @@ import { v } from "convex/values"
 import type { Id } from "./_generated/dataModel"
 import type { MutationCtx } from "./_generated/server"
 import { cleanName, getTeacher, newClassCode, ownedClass } from "./lib/security"
+import { DEFAULT_GOAL, MAX_HISTORY } from "./learning"
 
 const fail = (message: string) => ({ ok: false as const, message })
 const NOT_TEACHER = "Please log in as a teacher."
+const ACTIVITY_WEEKS = 16
+const MAX_CLASS_ROWS = 12000
 
 export const myClasses = query({
   args: { token: v.optional(v.string()) },
@@ -55,15 +58,16 @@ export const createClass = mutation({
 })
 
 export const updateClass = mutation({
-  args: { token: v.string(), classId: v.id("classes"), name: v.string(), year: v.number() },
+  args: { token: v.string(), classId: v.id("classes"), name: v.string(), year: v.number(), weeklyGoal: v.optional(v.number()) },
   returns: v.any(),
-  handler: async (ctx, { token, classId, name, year }) => {
+  handler: async (ctx, { token, classId, name, year, weeklyGoal }) => {
     const t = await getTeacher(ctx, token)
     if (!t) return fail(NOT_TEACHER)
     const c = await ownedClass(ctx, t._id, classId)
     if (!c) return fail("Class not found.")
     if (![1, 2, 3, 4, 7, 8, 9].includes(year)) return fail("Choose a year level.")
-    await ctx.db.patch(c._id, { name: cleanName(name) || c.name, year })
+    if (weeklyGoal !== undefined && !(Number.isInteger(weeklyGoal) && weeklyGoal >= 1 && weeklyGoal <= 20)) return fail("Choose a weekly goal from 1 to 20.")
+    await ctx.db.patch(c._id, { name: cleanName(name) || c.name, year, ...(weeklyGoal !== undefined ? { weeklyGoal } : {}) })
     return { ok: true }
   },
 })
@@ -222,7 +226,7 @@ export const classReport = query({
       .collect()
     return {
       ok: true,
-      class: { id: c._id, name: c.name, year: c.year, code: c.code },
+      class: { id: c._id, name: c.name, year: c.year, code: c.code, weeklyGoal: c.weeklyGoal ?? DEFAULT_GOAL },
       students: students
         .map((s) => ({
           id: s._id,
@@ -259,13 +263,50 @@ export const studentDetail = query({
       .query("attempts")
       .withIndex("by_student", (q) => q.eq("studentId", s._id))
       .order("desc")
-      .take(100)
+      .take(MAX_HISTORY)
     return {
       ok: true,
       student: { id: s._id, name: s.name, points: s.points, lastActive: s.lastActive ?? null, hasPin: !!s.pinHash },
-      class: { id: c._id, name: c.name, year: c.year },
+      class: { id: c._id, name: c.name, year: c.year, weeklyGoal: c.weeklyGoal ?? DEFAULT_GOAL },
       progress: Object.fromEntries(progress.map((p) => [p.itemId, { best: p.best, last: p.last, attempts: p.attempts, mastered: p.mastered, updatedAt: p.updatedAt }])),
       attempts: attempts.map((a) => ({ itemId: a.itemId, kind: a.kind, score: a.score, correct: a.correct, total: a.total, finishedAt: a.finishedAt })),
+    }
+  },
+})
+
+/**
+ * Finished sets in the class over the last 16 weeks (compact rows: student, item, kind, score, time),
+ * and the first time each student mastered each skill (80%+ on a practice set), for the teacher's
+ * overview and progress-over-time charts.
+ */
+export const classActivity = query({
+  args: { token: v.optional(v.string()), classId: v.id("classes") },
+  returns: v.any(),
+  handler: async (ctx, { token, classId }) => {
+    const t = await getTeacher(ctx, token)
+    if (!t) return fail(NOT_TEACHER)
+    const c = await ownedClass(ctx, t._id, classId)
+    if (!c) return fail("Class not found.")
+    const since = Date.now() - ACTIVITY_WEEKS * 7 * 86_400_000
+    const rows = await ctx.db
+      .query("attempts")
+      .withIndex("by_class", (q) => q.eq("classId", c._id))
+      .order("desc")
+      .take(MAX_CLASS_ROWS)
+    const first = new Map<string, { studentId: Id<"students">; itemId: string; t: number }>()
+    for (const a of rows) {
+      if (a.kind !== "practice" || a.score < 80) continue
+      // rows are newest first, so the last one seen is the earliest
+      first.set(`${a.studentId}|${a.itemId}`, { studentId: a.studentId, itemId: a.itemId, t: a.finishedAt })
+    }
+    return {
+      ok: true,
+      goal: c.weeklyGoal ?? DEFAULT_GOAL,
+      since,
+      attempts: rows
+        .filter((a) => a.finishedAt >= since)
+        .map((a) => ({ studentId: a.studentId, itemId: a.itemId, kind: a.kind, score: a.score, finishedAt: a.finishedAt })),
+      masteries: [...first.values()],
     }
   },
 })

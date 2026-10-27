@@ -1,11 +1,13 @@
 // Teachers: log in / sign up, then the list of classes.
 import { useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery } from 'convex/react'
+import { useMutation } from 'convex/react'
 import { ArrowRight, Plus, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import { api } from '@/convex/_generated/api'
-import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
+import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { DemoBanner } from '@/components/numbat/DemoBanner'
+import { previewBlocked, useMyClasses } from '@/lib/teacher-data'
 import { YEARS, yearHue } from '@/content'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
@@ -30,7 +32,22 @@ export interface ClassSummary {
 function TeacherPage() {
   const mounted = useMounted()
   const { ready, teacher } = useSession()
-  return <Shell>{PREVIEW_ONLY ? <PreviewLocked what="Teacher accounts" /> : !mounted || !ready ? <PageLoading /> : teacher ? <Classes /> : <TeacherAuth />}</Shell>
+  return (
+    <Shell>
+      {PREVIEW_ONLY ? (
+        <div className="grid gap-6">
+          <DemoBanner />
+          {mounted ? <Classes /> : <PageLoading />}
+        </div>
+      ) : !mounted || !ready ? (
+        <PageLoading />
+      ) : teacher ? (
+        <Classes />
+      ) : (
+        <TeacherAuth />
+      )}
+    </Shell>
+  )
 }
 
 function TeacherAuth() {
@@ -132,7 +149,7 @@ function TeacherAuth() {
 function Classes() {
   const { teacher, token } = useSession()
   const navigate = useNavigate()
-  const data = useQuery(api.classes.myClasses, token ? { token } : 'skip') as { ok: true; classes: ClassSummary[] } | { ok: false; message: string } | undefined
+  const data = useMyClasses() as { ok: true; classes: ClassSummary[] } | { ok: false; message: string } | undefined
   const create = useMutation(api.classes.createClass)
   const [name, setName] = useState('')
   const [year, setYear] = useState(7)
@@ -143,7 +160,7 @@ function Classes() {
 
   const add = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!token) return
+    if (previewBlocked() || !token) return
     setBusy(true)
     try {
       const r = (await create({ token, name, year })) as { ok: true; classId: string; code: string } | { ok: false; message: string }
@@ -160,7 +177,7 @@ function Classes() {
   return (
     <div className="grid gap-8">
       <header>
-        <h1 className="font-display text-3xl font-semibold sm:text-4xl">Hi {firstName(teacher?.name ?? '')}</h1>
+        <h1 className="font-display text-3xl font-semibold sm:text-4xl">{PREVIEW_ONLY ? 'Teacher view' : `Hi ${firstName(teacher?.name ?? '')}`}</h1>
         <p className="text-muted-foreground">Your classes</p>
       </header>
 

@@ -22,6 +22,12 @@ export function ago(ms: number | null | undefined): string {
   return shortDate(ms)
 }
 
+/** ago() for the middle of a sentence: "yesterday", but dates keep their capitals ("Thu, 24 Sept"). */
+export function agoInline(ms: number | null | undefined): string {
+  const a = ago(ms)
+  return /^(Never|Just now|Yesterday)$/.test(a) ? a.toLowerCase() : a
+}
+
 /** End of the chosen day (local time) for a yyyy-mm-dd date input. */
 export function endOfDay(value: string): number | undefined {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return undefined

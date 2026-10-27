@@ -1,0 +1,58 @@
+// The example class on the teacher pages (preview mode: VITE_PREVIEW_ONLY=1), desktop light and phone dark.
+import { chromium } from 'playwright'
+const base = process.env.BASE ?? 'http://127.0.0.1:3102'
+const browser = await chromium.launch()
+const out = []
+const errs = []
+for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, colorScheme: scheme })
+  const page = await ctx.newPage()
+  page.on('pageerror', (e) => errs.push(`${w} ` + e.message))
+  page.on('console', (m) => m.type() === 'error' && errs.push(`${w} console ` + m.text().slice(0, 200)))
+  page.on('dialog', (d) => { errs.push(`${w} dialog opened: ${d.message()}`); d.dismiss() })
+  await page.goto(`${base}/teacher`, { waitUntil: 'networkidle' })
+  out.push(`${w} teacher home: ${(await page.locator('main').textContent()).replace(/\s+/g, ' ').slice(0, 200)}`)
+  await page.locator('.topic-tile').first().click()
+  await page.waitForTimeout(500)
+  out.push(`${w} overview tiles: ${(await page.locator('.stat-value').allTextContents()).join(' | ')}`)
+  out.push(`${w} needs help: ${(await page.locator('#needs-help + ul').textContent().catch(() => 'none')).replace(/\s+/g, ' ').slice(0, 200)}`)
+  out.push(`${w} charts: ${await page.locator('figure.chart-card svg').count()} svgs, bars ${await page.locator('.chart-bar').count()}`)
+  await page.screenshot({ path: `/tmp/claude-0/shots/td_overview_${w}.png`, fullPage: true })
+  // hover a column and focus the line
+  const hit = page.locator('rect.chart-hit').nth(5)
+  await hit.hover()
+  out.push(`${w} tooltip on hover: ${(await page.locator('.chart-tip').first().textContent().catch(() => 'none'))}`)
+  await page.mouse.move(2, 2)
+  await page.locator('figure.chart-card').nth(1).locator('rect.chart-hit').focus()
+  const lastTip = await page.locator('figure.chart-card').nth(1).locator('.chart-tip').textContent().catch(() => 'none')
+  await page.keyboard.press('ArrowLeft')
+  out.push(`${w} line tooltip via keyboard: ${lastTip} -> ArrowLeft -> ${await page.locator('figure.chart-card').nth(1).locator('.chart-tip').textContent().catch(() => 'none')}`)
+  await page.locator('figure.chart-card').first().getByRole('button', { name: 'Table' }).click()
+  out.push(`${w} table rows: ${await page.locator('figure.chart-card table tbody tr').count()}`)
+  // blocked changes show a note, never a browser dialog
+  await page.getByRole('tab', { name: 'Students' }).click()
+  await page.waitForTimeout(200)
+  await page.getByRole('button', { name: /Reset .* PIN/ }).first().click()
+  await page.waitForTimeout(300)
+  out.push(`${w} reset PIN in preview -> toast: ${(await page.locator('[data-sonner-toast]').first().textContent().catch(() => 'none')).slice(0, 90)}`)
+  await page.getByRole('tab', { name: 'Markbook' }).click()
+  await page.waitForTimeout(200)
+  out.push(`${w} markbook rows: ${await page.locator('table.markbook tbody tr').count()}`)
+  await page.getByRole('button', { name: /Download CSV/ }).click()
+  await page.getByRole('tab', { name: 'Settings' }).click()
+  await page.waitForTimeout(200)
+  out.push(`${w} settings goal: ${await page.locator('select').nth(1).inputValue()}`)
+  await page.getByRole('button', { name: /Delete this class/ }).click()
+  // student page
+  await page.getByRole('tab', { name: 'Overview' }).click()
+  await page.waitForTimeout(200)
+  await page.locator('#needs-help + ul a').first().click()
+  await page.waitForTimeout(500)
+  out.push(`${w} student page: ${(await page.locator('h1').textContent())} | ${(await page.locator('section[aria-label="Rewards"]').textContent()).replace(/\s+/g, ' ').slice(0, 200)}`)
+  out.push(`${w} student charts: ${await page.locator('figure.chart-card svg').count()}, activity rows ${await page.locator('table tbody tr').count()}`)
+  await page.screenshot({ path: `/tmp/claude-0/shots/td_student_${w}.png`, fullPage: true })
+  await ctx.close()
+}
+console.log(out.join('\n'))
+console.log('errors:', errs.length ? errs : 'none')
+await browser.close()

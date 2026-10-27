@@ -10,7 +10,8 @@ import { ago, isOverdue, shortDate } from '@/lib/dates'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, itemLink } from '@/lib/practice'
-import { topicStats, useProgress, useTasks, type ProgressMap, type Task } from '@/lib/progress'
+import { topicStats, useProgress, useRewards, useTasks, type ProgressMap, type Task } from '@/lib/progress'
+import { RewardsPanel } from '@/components/numbat/Rewards'
 import { firstName, useSession } from '@/lib/session'
 import { load, save } from '@/lib/storage'
 import { useMounted } from '@/lib/use-mounted'
@@ -37,6 +38,7 @@ function Dashboard() {
   const navigate = useNavigate()
   const { items, recent, loading } = useProgress()
   const tasks = useTasks()
+  const rewards = useRewards()
   const [year, setYear] = useState<number>(() => {
     const saved = Number(load('numbat.guestYear'))
     return search.year ?? student?.year ?? (YEARS.includes(saved) ? saved : 7)
@@ -79,6 +81,8 @@ function Dashboard() {
       )}
 
       {student && <Tasks tasks={tasks} items={items} />}
+
+      {!teacher && !rewards.loading && <RewardsPanel summary={rewards.summary} guest={!student} />}
 
       {recent.length > 0 && (
         <section className="grid gap-3" aria-labelledby="recent">

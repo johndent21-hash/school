@@ -5,6 +5,8 @@ import { getStudent, getTeacher, ownedClass } from "./lib/security"
 
 const fail = (message: string) => ({ ok: false as const, message })
 const ITEM_RE = /^[a-z0-9-]+(:[a-z0-9-]+)?$/
+export const DEFAULT_GOAL = 5
+export const MAX_HISTORY = 2000
 
 /** Saves a finished practice set or topic test and updates the student's best result. */
 export const recordAttempt = mutation({
@@ -55,16 +57,21 @@ export const myProgress = query({
       .query("progress")
       .withIndex("by_student", (q) => q.eq("studentId", s._id))
       .collect()
-    const recent = await ctx.db
+    // History for the weekly goal, streaks and badges (newest first)
+    const history = await ctx.db
       .query("attempts")
       .withIndex("by_student", (q) => q.eq("studentId", s._id))
       .order("desc")
-      .take(8)
+      .take(MAX_HISTORY)
+    const c = await ctx.db.get(s.classId)
+    const log = history.map((a) => ({ itemId: a.itemId, kind: a.kind, score: a.score, finishedAt: a.finishedAt }))
     return {
       ok: true,
       points: s.points,
+      goal: c?.weeklyGoal ?? DEFAULT_GOAL,
       items: Object.fromEntries(progress.map((p) => [p.itemId, { best: p.best, last: p.last, attempts: p.attempts, mastered: p.mastered, updatedAt: p.updatedAt }])),
-      recent: recent.map((a) => ({ itemId: a.itemId, kind: a.kind, score: a.score, finishedAt: a.finishedAt })),
+      recent: log.slice(0, 8),
+      log,
     }
   },
 })

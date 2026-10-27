@@ -1,6 +1,6 @@
 import { chromium } from 'playwright'
 import fs from 'node:fs'
-const base = 'http://127.0.0.1:3100'
+const base = process.env.BASE ?? 'http://127.0.0.1:3100'
 const data = JSON.parse(fs.readFileSync(process.env.IDS || 'qa/ids.json', 'utf8'))
 const only = process.env.ONLY
 const browser = await chromium.launch()

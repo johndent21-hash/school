@@ -7,6 +7,9 @@ import { useSession } from './session'
 import { useSafeQuery } from './safe-query'
 import { loadJson, saveJson } from './storage'
 import type { Topic } from './maths/types'
+import { DEFAULT_GOAL, pointsFor, rewardSummary, type RewardSummary } from './rewards'
+
+export { pointsFor }
 
 export interface ItemProgress {
   best: number
@@ -44,33 +47,74 @@ export interface SaveResult {
 
 const GUEST_KEY = 'numbat.guestProgress'
 const GUEST_RECENT_KEY = 'numbat.guestRecent'
+const GUEST_LOG_KEY = 'numbat.guestLog' // every finished set, newest first, with points
+const GUEST_GOAL_KEY = 'numbat.guestGoal'
+const GUEST_LOG_MAX = 1000
 
-/** Points use the same rule as the server: 10 per mark plus 20 for 80% or better. */
-export function pointsFor(correct: number, total: number): number {
-  const score = Math.round((correct / total) * 100)
-  return Math.min(400, Math.round(correct * 10) + (score >= 80 ? 20 : 0))
+type GuestLogEntry = RecentAttempt & { points: number }
+
+export interface ProgressData {
+  loading: boolean
+  items: ProgressMap
+  recent: RecentAttempt[]
+  /** Every finished set, newest first (for the weekly goal, streaks and badges) */
+  log: RecentAttempt[]
+  points: number
+  goal: number
 }
 
-export function useProgress(): { loading: boolean; items: ProgressMap; recent: RecentAttempt[] } {
+const EMPTY = { items: {}, recent: [], log: [], points: 0, goal: DEFAULT_GOAL }
+
+/** Guests choose their own weekly goal; students' goal is set by their teacher. */
+export function setGuestGoal(goal: number) {
+  saveJson(GUEST_GOAL_KEY, goal)
+  window.dispatchEvent(new Event('numbat-guest-progress'))
+}
+
+function readGuest() {
+  const log = loadJson<GuestLogEntry[]>(GUEST_LOG_KEY, [])
+  const goal = Number(loadJson<number>(GUEST_GOAL_KEY, DEFAULT_GOAL))
+  return {
+    items: loadJson<ProgressMap>(GUEST_KEY, {}),
+    recent: loadJson<RecentAttempt[]>(GUEST_RECENT_KEY, []),
+    log,
+    points: log.reduce((t, e) => t + (e.points || 0), 0),
+    goal: Number.isInteger(goal) && goal >= 1 && goal <= 20 ? goal : DEFAULT_GOAL,
+  }
+}
+
+
+export function useProgress(): ProgressData {
   const { student, token } = useSession()
   const query = useSafeQuery(api.learning.myProgress, student && token ? { token } : 'skip')
-  const data = (query.error ? { ok: false } : query.data) as { ok: true; items: ProgressMap; recent: RecentAttempt[] } | { ok: false } | undefined
-  const [guest, setGuest] = useState<{ items: ProgressMap; recent: RecentAttempt[] }>({ items: {}, recent: [] })
+  const data = (query.error ? { ok: false } : query.data) as
+    | { ok: true; items: ProgressMap; recent: RecentAttempt[]; log?: RecentAttempt[]; points: number; goal?: number }
+    | { ok: false }
+    | undefined
+  // null until this device's saved results have been read
+  const [guest, setGuest] = useState<Omit<ProgressData, 'loading'> | null>(null)
 
   useEffect(() => {
     if (student) return
-    const read = () => setGuest({ items: loadJson<ProgressMap>(GUEST_KEY, {}), recent: loadJson<RecentAttempt[]>(GUEST_RECENT_KEY, []) })
+    const read = () => setGuest(readGuest())
     read()
     window.addEventListener('numbat-guest-progress', read)
     return () => window.removeEventListener('numbat-guest-progress', read)
   }, [student])
 
   if (student) {
-    if (data === undefined) return { loading: true, items: {}, recent: [] }
-    if (!data.ok) return { loading: false, items: {}, recent: [] }
-    return { loading: false, items: data.items, recent: data.recent }
+    if (data === undefined) return { loading: true, ...EMPTY }
+    if (!data.ok) return { loading: false, ...EMPTY }
+    return { loading: false, items: data.items, recent: data.recent, log: data.log ?? data.recent, points: data.points, goal: data.goal ?? DEFAULT_GOAL }
   }
-  return { loading: false, items: guest.items, recent: guest.recent }
+  return guest ? { loading: false, ...guest } : { loading: true, ...EMPTY }
+}
+
+/** Level, weekly goal, streak and badges for the current viewer. */
+export function useRewards(): { loading: boolean; summary: RewardSummary; goal: number } {
+  const p = useProgress()
+  const summary = rewardSummary({ points: p.points, items: p.items, log: p.log, goal: p.goal, now: Date.now() })
+  return { loading: p.loading, summary, goal: p.goal }
 }
 
 export function useTasks(): Task[] | undefined {
@@ -111,9 +155,13 @@ export function useSaveResult() {
       const best = Math.max(prev?.best ?? 0, score)
       items[itemId] = { best, last: score, attempts: (prev?.attempts ?? 0) + 1, mastered: best >= 80, updatedAt: Date.now() }
       saveJson(GUEST_KEY, items)
+      const entry = { itemId, kind, score, finishedAt: Date.now() }
       const recent = loadJson<RecentAttempt[]>(GUEST_RECENT_KEY, [])
-      recent.unshift({ itemId, kind, score, finishedAt: Date.now() })
+      recent.unshift(entry)
       saveJson(GUEST_RECENT_KEY, recent.slice(0, 8))
+      const log = loadJson<GuestLogEntry[]>(GUEST_LOG_KEY, [])
+      log.unshift({ ...entry, points })
+      saveJson(GUEST_LOG_KEY, log.slice(0, GUEST_LOG_MAX))
       window.dispatchEvent(new Event('numbat-guest-progress'))
       return { saved: true, score, points, best, newBest: !prev || score > prev.best }
     },

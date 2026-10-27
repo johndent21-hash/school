@@ -32,6 +32,8 @@ export default defineSchema({
     year: v.number(),
     code: v.string(),
     createdAt: v.number(),
+    // practice sets or tests a week that count towards students' weekly goal (default 5)
+    weeklyGoal: v.optional(v.number()),
   })
     .index("by_code", ["code"])
     .index("by_teacher", ["teacherId"]),

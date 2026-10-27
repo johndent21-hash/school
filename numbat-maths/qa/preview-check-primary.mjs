@@ -46,13 +46,21 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
     await shot('y1_clock')
     y1 = (await page.locator('.q-card').first().textContent())?.replace(/\s+/g, ' ').slice(0, 60)
   }
-  // teacher area is switched off
+  // the Year 1 keypad (open on touch only; open it here with its button)
+  let pad = 'no keypad'
+  if (tiles.includes('1')) {
+    if (!(await page.locator('.mathpad').count())) await page.getByRole('button', { name: /^keypad$/i }).click()
+    pad = `big=${await page.locator('.mathpad-big').count()} keys=${await page.locator('.mathpad .pad-grid button').count()} colon=${await page.locator('.mathpad button', { hasText: /^:$/ }).count()}`
+  }
+  // teacher pages show the made-up example class
   await page.getByRole('link', { name: /Numbat Maths home/ }).click(); await page.waitForTimeout(300)
-  await page.getByRole('link', { name: /Teacher log in|Teachers/ }).first().click(); await page.waitForTimeout(300)
-  const locked = await page.getByRole('heading', { name: /switched off in this preview/ }).isVisible()
+  await page.getByRole('link', { name: /teacher view with an example class/ }).first().click(); await page.waitForTimeout(400)
+  await page.locator('.topic-tile').first().click(); await page.waitForTimeout(600)
+  const locked = `demo=${await page.getByText('Example class.', { exact: true }).isVisible()} tiles=${(await page.locator('.stat-value').allTextContents()).join('|')} charts=${await page.locator('.chart-bar').count()}`
+  await shot('teacher_demo')
   const footer = (await page.locator('footer').textContent())?.slice(0, 60)
   const sw = await page.evaluate(() => document.documentElement.scrollWidth)
-  out.push(`${w}/${scheme}: primaryHeading=${primary} tiles=${tiles.join(',')} year3Selected=${tab3} placeholder="${ph}" feedback1="${fb1}" y1="${y1}" teacherLocked=${locked} footer="${footer}" scrollW=${sw} hosts=[${[...hosts].join(', ')}] errors=[${errors.join(' | ')}]`)
+  out.push(`${w}/${scheme}: primaryHeading=${primary} tiles=${tiles.join(',')} year3Selected=${tab3} placeholder="${ph}" feedback1="${fb1}" y1="${y1}" keypad(${pad}) teacher(${locked}) footer="${footer}" scrollW=${sw} hosts=[${[...hosts].join(', ')}] errors=[${errors.join(' | ')}]`)
   await ctx.close()
 }
 console.log(out.join('\n'))

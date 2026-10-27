@@ -1,20 +1,23 @@
 // One student's report for their teacher.
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useQuery } from 'convex/react'
 import { ArrowLeft } from 'lucide-react'
-import { api } from '@/convex/_generated/api'
-import type { Id } from '@/convex/_generated/dataModel'
-import { PageLoading, PreviewLocked, Shell } from '@/components/numbat/Shell'
+import { PageLoading, Shell } from '@/components/numbat/Shell'
+import { WeekColumns, WeekLine } from '@/components/numbat/Charts'
+import { DemoBanner } from '@/components/numbat/DemoBanner'
+import { GoalRing, LevelMedal } from '@/components/numbat/Rewards'
 import { MasteryBadge, ProgressBar } from '@/components/numbat/Mastery'
 import { topicsForYear, YEARS } from '@/content'
-import { ago, longDate } from '@/lib/dates'
+import { ago, agoInline, longDate } from '@/lib/dates'
 import { masteryOf } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
 import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, testItemId } from '@/lib/practice'
 import { topicStats, type ProgressMap } from '@/lib/progress'
 import { useSession } from '@/lib/session'
+import { masteriesFrom, weeklySeries } from '@/lib/insights'
+import { rewardSummary } from '@/lib/rewards'
+import { useStudentDetail } from '@/lib/teacher-data'
 import { useMounted } from '@/lib/use-mounted'
 
 export const Route = createFileRoute('/teacher-student')({
@@ -26,7 +29,7 @@ export const Route = createFileRoute('/teacher-student')({
 interface Detail {
   ok: true
   student: { id: string; name: string; points: number; lastActive: number | null; hasPin: boolean }
-  class: { id: string; name: string; year: number }
+  class: { id: string; name: string; year: number; weeklyGoal: number }
   progress: ProgressMap
   attempts: { itemId: string; kind: 'practice' | 'test'; score: number; correct: number; total: number; finishedAt: number }[]
 }
@@ -37,7 +40,10 @@ function StudentPage() {
   return (
     <Shell>
       {PREVIEW_ONLY ? (
-        <PreviewLocked what="Teacher accounts" />
+        <div className="grid gap-6">
+          <DemoBanner />
+          {mounted ? <StudentReport /> : <PageLoading />}
+        </div>
       ) : !mounted || !ready ? (
         <PageLoading />
       ) : teacher ? (
@@ -53,13 +59,22 @@ function StudentPage() {
 
 function StudentReport() {
   const { id } = Route.useSearch()
-  const { token } = useSession()
-  const data = useQuery(api.classes.studentDetail, token && id ? { token, studentId: id as Id<'students'> } : 'skip') as Detail | { ok: false; message: string } | undefined
+  const data = useStudentDetail(id) as Detail | { ok: false; message: string } | undefined
   const [year, setYear] = useState<number | null>(null)
+  const extra = useMemo(() => {
+    if (!data || !data.ok) return null
+    const rows = data.attempts.map((a) => ({ ...a, studentId: data.student.id }))
+    const now = Date.now()
+    return {
+      weekly: weeklySeries(rows, masteriesFrom(rows), now),
+      rewards: rewardSummary({ points: data.student.points, items: data.progress, log: data.attempts, goal: data.class.weeklyGoal, now }),
+    }
+  }, [data])
 
   if (!id) return <p className="feedback bad">No student chosen.</p>
   if (data === undefined) return <PageLoading />
-  if (!data.ok) return <p className="feedback bad">{data.message}</p>
+  if (!data.ok || !extra) return <p className="feedback bad">{data.ok ? 'Something went wrong.' : data.message}</p>
+  const { weekly, rewards } = extra
 
   const y = year ?? data.class.year
   const topics = topicsForYear(y)
@@ -75,7 +90,7 @@ function StudentReport() {
         <div>
           <h1 className="font-display text-3xl font-semibold sm:text-4xl">{data.student.name}</h1>
           <p className="text-muted-foreground">
-            {data.class.name} · Year {data.class.year} · last active {ago(data.student.lastActive).toLowerCase()}
+            {data.class.name} · Year {data.class.year} · last active {agoInline(data.student.lastActive)}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -85,6 +100,42 @@ function StudentReport() {
           {!data.student.hasPin && <span className="m-badge m-none">Hasn’t logged in yet</span>}
         </div>
       </header>
+
+      <section className="grid gap-3 md:grid-cols-3" aria-label="Rewards">
+        <div className="panel flex items-center gap-3 p-4">
+          <LevelMedal level={rewards.level} size={52} />
+          <div>
+            <p className="text-sm font-bold text-muted-foreground">Level {rewards.level.n}</p>
+            <p className="font-display text-xl font-semibold">{rewards.level.name}</p>
+          </div>
+        </div>
+        <div className="panel flex items-center gap-3 p-4">
+          <GoalRing done={rewards.week.thisWeek} goal={rewards.week.goal} size={60} />
+          <div>
+            <p className="text-sm font-bold text-muted-foreground">This week</p>
+            <p className="text-sm">
+              {rewards.week.met ? 'Weekly goal reached' : `${rewards.week.thisWeek} of ${rewards.week.goal} sets`} · {rewards.week.streak}-week streak
+            </p>
+          </div>
+        </div>
+        <div className="panel grid content-center gap-1 p-4">
+          <p className="text-sm font-bold text-muted-foreground">Badges</p>
+          <p className="text-sm">
+            {rewards.earned} of {rewards.badges.length}
+            {rewards.earned > 0 ? `: ${rewards.badges.filter((b) => b.earned).map((b) => b.name).join(', ')}` : ''}
+          </p>
+        </div>
+      </section>
+
+      <section className="grid gap-3" aria-labelledby="student-over-time">
+        <h2 id="student-over-time" className="font-display text-2xl font-semibold">
+          Progress over time
+        </h2>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <WeekColumns title="Sets finished each week" subtitle={`Practice sets and topic tests · weekly goal ${data.class.weeklyGoal}`} data={weekly.map((w) => ({ start: w.start, value: w.sets }))} unit="sets" />
+          <WeekLine title="Skills mastered" subtitle="Running total: skills with a practice set at 80% or more" data={weekly.map((w) => ({ start: w.start, value: w.mastered }))} unit="skills mastered" />
+        </div>
+      </section>
 
       <section className="grid gap-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -120,7 +171,7 @@ function StudentReport() {
                           <span className="flex items-center gap-2">
                             {p && (
                               <span className="text-muted-foreground">
-                                {p.attempts}×, {ago(p.updatedAt).toLowerCase()}
+                                {p.attempts}×, {agoInline(p.updatedAt)}
                               </span>
                             )}
                             <MasteryBadge state={masteryOf(p)} best={p?.best} />
@@ -137,7 +188,7 @@ function StudentReport() {
       </section>
 
       <section className="grid gap-3">
-        <h2 className="font-display text-2xl font-semibold">Recent activity</h2>
+        <h2 className="font-display text-2xl font-semibold">Recent activity{data.attempts.length > 100 ? <span className="text-base font-normal text-muted-foreground"> (latest 100)</span> : null}</h2>
         {data.attempts.length === 0 ? (
           <p className="panel p-5 text-muted-foreground">No activity yet.</p>
         ) : (
@@ -152,7 +203,7 @@ function StudentReport() {
                 </tr>
               </thead>
               <tbody>
-                {data.attempts.map((a, k) => {
+                {data.attempts.slice(0, 100).map((a, k) => {
                   const l = itemLabel(a.itemId)
                   return (
                     <tr key={k} className="border-t border-border">

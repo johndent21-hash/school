@@ -1,12 +1,14 @@
 // A practice set: questions one at a time, two tries each, hints and worked solutions.
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ArrowRight, Check, Lightbulb, RotateCcw, Star, X } from 'lucide-react'
 import type { Level, Skill } from '@/lib/maths/types'
 import { checkAnswer } from '@/lib/maths/check'
 import { buildSet } from '@/lib/practice'
+import { findTopic } from '@/content'
 import { fullAnswerHtml } from '@/lib/answer'
-import { useSaveResult, type SaveResult } from '@/lib/progress'
+import { useRewards, useSaveResult, type SaveResult } from '@/lib/progress'
+import type { RewardSummary } from '@/lib/rewards'
 import { PREVIEW_ONLY } from '@/lib/preview'
 import { useSession } from '@/lib/session'
 import { cn } from '@/lib/utils'
@@ -14,6 +16,7 @@ import { AnswerBox } from './AnswerBox'
 import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
 import { LevelPill, QuestionCard, Steps } from './QuestionCard'
+import { RewardsCelebration } from './Rewards'
 
 interface ItemState {
   tries: number
@@ -62,6 +65,10 @@ export function PracticeRunner({
   const [saving, setSaving] = useState(false)
   const [confirmStop, setConfirmStop] = useState(false)
   const save = useSaveResult()
+  // rewards before this set, to show level-ups and new badges at the end
+  const rewards = useRewards()
+  const before = useRef<RewardSummary | null>(null)
+  if (before.current === null && !rewards.loading) before.current = rewards.summary
 
   const cur = set[i]
   const st = states[i]
@@ -155,6 +162,8 @@ export function PracticeRunner({
         onAgain={onAgain}
         nextSkill={nextSkill}
         topicId={topicId}
+        rewardsBefore={itemId ? before.current : null}
+        rewardsAfter={rewards.summary}
       />
     )
   }
@@ -205,6 +214,7 @@ export function PracticeRunner({
           locked={!open}
           wrongOptions={st.wrong}
           showCorrectOption={st.revealed}
+          year={findTopic(topicId)?.year}
         />
 
         {st.hint && open && (
@@ -275,6 +285,8 @@ function PracticeResults({
   onAgain,
   nextSkill,
   topicId,
+  rewardsBefore,
+  rewardsAfter,
 }: {
   result: SaveResult & { correct: number }
   total: number
@@ -284,6 +296,8 @@ function PracticeResults({
   onAgain: () => void
   nextSkill?: Skill
   topicId: string
+  rewardsBefore: RewardSummary | null
+  rewardsAfter: RewardSummary
 }) {
   const { student } = useSession()
   const pct = result.score
@@ -305,7 +319,7 @@ function PracticeResults({
         <p className="text-muted-foreground">{message}</p>
         <div className="flex flex-wrap justify-center gap-2">
           <span className="chip">{pct}%</span>
-          {saved && student && result.saved && result.points > 0 && (
+          {saved && result.saved && result.points > 0 && (
             <span className="points-pill celebrate">
               <Star size={16} fill="currentColor" aria-hidden="true" /> +{result.points} points
             </span>
@@ -313,6 +327,7 @@ function PracticeResults({
           {saved && result.saved && result.newBest && <span className="m-badge m-mastered">New best</span>}
         </div>
         {saved && !result.saved && result.message && <p className="feedback info text-sm">{result.message}</p>}
+        {saved && result.saved && <RewardsCelebration before={rewardsBefore} after={rewardsAfter} />}
         {!saved && <p className="text-sm text-muted-foreground">Extra practice is not saved to your results.</p>}
         {saved && result.saved && !student && !PREVIEW_ONLY && <p className="text-sm text-muted-foreground">Saved on this device only. Log in with a class code to keep your progress everywhere.</p>}
         <div className="flex flex-wrap justify-center gap-2">

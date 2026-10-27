@@ -1,18 +1,20 @@
 // A topic test: ten questions, one try each, marked at the end with a full review.
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ArrowLeft, ArrowRight, Check, Flag, RotateCcw, Star, X } from 'lucide-react'
 import type { Topic } from '@/lib/maths/types'
 import { checkAnswer } from '@/lib/maths/check'
 import { buildTest, testItemId } from '@/lib/practice'
 import { answerHtml, fullAnswerHtml } from '@/lib/answer'
-import { useSaveResult, type SaveResult } from '@/lib/progress'
+import { useRewards, useSaveResult, type SaveResult } from '@/lib/progress'
+import type { RewardSummary } from '@/lib/rewards'
 import { useSession } from '@/lib/session'
 import { cn } from '@/lib/utils'
 import { AnswerBox } from './AnswerBox'
 import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
 import { LevelPill, QuestionCard, Steps } from './QuestionCard'
+import { RewardsCelebration } from './Rewards'
 
 export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: () => void; onAgain: () => void }) {
   const set = useMemo(() => buildTest(topic), [topic])
@@ -25,6 +27,9 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
   const [saving, setSaving] = useState(false)
   const [ask, setAsk] = useState<null | 'leave' | 'finish'>(null)
   const save = useSaveResult()
+  const rewards = useRewards()
+  const before = useRef<RewardSummary | null>(null)
+  if (before.current === null && !rewards.loading) before.current = rewards.summary
 
   const value = answers[i]
   const setValue = (v: string) => {
@@ -84,7 +89,8 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
     return () => window.removeEventListener('keydown', onKey)
   })
 
-  if (marks && result) return <TestResults topic={topic} set={set} answers={answers} marks={marks} result={result} onAgain={onAgain} />
+  if (marks && result)
+    return <TestResults topic={topic} set={set} answers={answers} marks={marks} result={result} onAgain={onAgain} rewardsBefore={before.current} rewardsAfter={rewards.summary} />
 
   const p = set[i]
   const blank = answers.filter((a) => a.trim() === '').length
@@ -123,7 +129,7 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
       )}
 
       <QuestionCard q={p.q} level={p.level} number={i + 1} total={n}>
-        <AnswerBox key={i} q={p.q} value={value} onChange={setValue} onEnter={next} />
+        <AnswerBox key={i} q={p.q} value={value} onChange={setValue} onEnter={next} year={topic.year} enterLabel={i + 1 < n ? 'Next' : 'Finish'} />
         {warning && (
           <div className="feedback info" role="status">
             {warning}
@@ -172,6 +178,8 @@ function TestResults({
   marks,
   result,
   onAgain,
+  rewardsBefore,
+  rewardsAfter,
 }: {
   topic: Topic
   set: ReturnType<typeof buildTest>
@@ -179,6 +187,8 @@ function TestResults({
   marks: boolean[]
   result: SaveResult
   onAgain: () => void
+  rewardsBefore: RewardSummary | null
+  rewardsAfter: RewardSummary
 }) {
   const { student, teacher } = useSession()
   const correct = marks.filter(Boolean).length
@@ -195,7 +205,7 @@ function TestResults({
         <h2 className="font-display text-2xl font-semibold">{pct >= 80 ? 'Excellent result!' : pct >= 50 ? 'Solid effort!' : 'Good try. Let’s build on it.'}</h2>
         <div className="flex flex-wrap justify-center gap-2">
           <span className="chip">{pct}%</span>
-          {student && result.saved && result.points > 0 && (
+          {result.saved && result.points > 0 && (
             <span className="points-pill celebrate">
               <Star size={16} fill="currentColor" aria-hidden="true" /> +{result.points} points
             </span>
@@ -204,6 +214,7 @@ function TestResults({
         </div>
         {!result.saved && result.message && <p className="feedback info text-sm">{result.message}</p>}
         {result.saved && !student && !teacher && <p className="text-sm text-muted-foreground">Saved on this device only.</p>}
+        {result.saved && <RewardsCelebration before={rewardsBefore} after={rewardsAfter} />}
         {weak.length > 0 && (
           <div className="mx-auto grid max-w-lg gap-2 text-left">
             <p className="font-bold">Skills to practise next:</p>

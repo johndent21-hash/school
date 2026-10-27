@@ -49,6 +49,9 @@
   --tile-l: 40%;
   --tile-soft-l: 94%;
   --chart-1: 172 64% 32%;
+  /* charts and meters: validated for colour-blind separation, chroma and 3:1 contrast on the card */
+  --viz-1: 172 80% 31%;
+  --viz-track: 172 45% 90%;
   --chart-2: 352 70% 48%;
   --chart-3: 42 96% 52%;
   --chart-4: 222 42% 30%;
@@ -98,6 +101,8 @@
     --border: 222 20% 26%;
     --input: 222 20% 32%;
     --ring: 170 55% 48%;
+    --viz-1: 170 60% 42%;
+    --viz-track: 172 30% 22%;
     --grid-line: 222 22% 24%;
     --page-grid: 222 26% 13%;
     --shape: 200 28% 18%;
@@ -145,6 +150,8 @@
   --border: 222 20% 26%;
   --input: 222 20% 32%;
   --ring: 170 55% 48%;
+  --viz-1: 170 60% 42%;
+  --viz-track: 172 30% 22%;
   --grid-line: 222 22% 24%;
   --page-grid: 222 26% 13%;
   --shape: 200 28% 18%;
