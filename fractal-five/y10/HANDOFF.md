@@ -106,3 +106,13 @@ sources (school scope-and-sequence documents, search results). Topics marked * o
 right for the topic but where the content sits within it was not checked against NESA (arc length and
 sector area, percentages, mean from frequency tables, relative/expected frequency, substitution).
 Path content: only the Term 4 pyramid and cone questions (MA5-VOL-P-01).
+
+## Google Drive
+Final booklets and answer keys are in Kingscliff Maths Resources 7–12 / Year 10 / Warm-ups – The Fractal Five
+(folder id 1uS3rekUXkZtTd8Q7kq1v57DG5IBPVj9Z), named Yr10_The_Fractal_Five_Term_N_Warm-Ups.pdf and
+Yr10_The_Fractal_Five_Term_N_Answers.pdf. Uploaded with drive-upload/upload.sh (branch
+claude/math-resources-drive-a5l2lp: Apps Script web app, needs DRIVE_UPLOAD_URL / DRIVE_UPLOAD_KEY);
+re-upload a rebuilt file with
+    bash upload.sh out/The_Fractal_Five_Year_10_Term_1.pdf 1uS3rekUXkZtTd8Q7kq1v57DG5IBPVj9Z \
+         Yr10_The_Fractal_Five_Term_1_Warm-Ups.pdf --replace
+(the Drive connector cannot list files the Apps Script creates; check the folder in Drive itself).
