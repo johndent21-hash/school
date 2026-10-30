@@ -1,0 +1,134 @@
+import os
+"""Layout QA: every question figure must sit inside its own cell (with a margin),
+and nothing may spill into the working column or off the page."""
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from weasyprint import HTML
+import wu
+
+PX = 25.4 / 96
+
+
+def check(sessions, art="plain"):
+    doc = ("<!DOCTYPE html><html><head><meta charset='utf-8'><style>" + wu.css()
+           + "</style></head><body>" + "".join(wu.page(s, art) for s in sessions) + "</body></html>")
+    r = HTML(string=doc, base_url=wu.HERE).render()
+    problems = []
+    for pi, pg in enumerate(r.pages):
+        rows, qcells, qheads = [], [], []
+
+        def walk(b):
+            el = getattr(b, "element", None)
+            cls = el.get("class") if el is not None else None
+            if cls == "row" and b.element_tag == "div":
+                rows.append(b)
+            if cls == "q" and b.element_tag == "div":
+                qcells.append(b)
+            if cls == "qh" and b.element_tag == "div":
+                qheads.append(b)
+            for ch in getattr(b, "children", []) or []:
+                walk(ch)
+        walk(pg._page_box)
+
+        def extent(b, acc):
+            for ch in getattr(b, "children", []) or []:
+                el = getattr(ch, "element", None)
+                tag = getattr(ch, "element_tag", None)
+                cls = el.get("class") if el is not None else None
+                leaf = (tag or "").endswith("svg") or tag in ("table", "img") or cls in ("disp", "qt", "qn")
+                if leaf and getattr(ch, "height", None) is not None:
+                    acc.append((ch.position_x, ch.position_y,
+                                ch.position_x + ch.margin_width(), ch.position_y + ch.margin_height()))
+                    continue
+                extent(ch, acc)
+            return acc
+        for qi, q in enumerate(qcells):
+            x0, y0 = q.position_x, q.position_y
+            x1, y1 = x0 + q.margin_width(), y0 + q.margin_height()
+            acc = extent(q, [])
+            bx0 = min(a[0] for a in acc); by0 = min(a[1] for a in acc)
+            bx1 = max(a[2] for a in acc); by1 = max(a[3] for a in acc)
+            spare_b = (y1 - by1) * PX
+            spare_r = (x1 - bx1) * PX
+            # a figure too tall for its cell makes the flex layout squeeze the question text's box, so
+            # the text's last line is drawn over the figure: the drawn lines must fit inside their box
+            lines = []
+
+            def lb(b):
+                if type(b).__name__ == "LineBox":
+                    lines.append(b)
+                    return
+                for ch in getattr(b, "children", []) or []:
+                    lb(ch)
+            lb(qheads[qi])
+            text_bot = max(ln.position_y + ln.height for ln in lines)
+            spare_t = (qheads[qi].position_y + qheads[qi].margin_height() - text_bot) * PX
+            flag = "  <-- OVERFLOW" if spare_b < 1.2 or spare_r < 0.5 or (bx0 - x0) * PX < -0.1 or spare_t < -0.2 else ""
+            if flag:
+                problems.append((pi + 1, qi + 1))
+            print(f"S{pi + 1} Q{qi + 1}: bottom spare {spare_b:5.1f} mm, right spare {spare_r:5.1f} mm, "
+                  f"text fits {spare_t:5.1f} mm{flag}")
+    return problems
+
+
+if __name__ == "__main__":
+    from w01 import week1
+    p = check(week1())
+    print("PROBLEMS:", p if p else "none")
+
+
+def check_strips(keys=None):
+    """Every printed formula must fit its strip: at most two lines, and inside the strip's height.
+    Renders each FX formula in a real answer cell and measures the laid-out lines.
+    Returns [(key, lines, spare mm)] for the formulas that do not fit."""
+    from formulas import FX
+    keys = list(FX) if keys is None else keys
+    qs = [wu.Q("x", None, k, "", fx=FX[k][0], fx_small=FX[k][1]) for k in keys]
+    pages = []
+    for i in range(0, len(qs), 5):
+        chunk = qs[i:i + 5]
+        while len(chunk) < 5:
+            chunk.append(qs[0])
+        pages.append(wu.page(wu.Session(1, 1, 1, chunk), "plain"))
+    doc = ("<!DOCTYPE html><html><head><meta charset='utf-8'><style>" + wu.css()
+           + "</style></head><body>" + "".join(pages) + "</body></html>")
+    r = HTML(string=doc, base_url=wu.HERE).render()
+    found = []
+    for pg in r.pages:
+        def walk(b):
+            el = getattr(b, "element", None)
+            if el is not None and (el.get("class") or "").startswith("fxf") and b.element_tag == "span":
+                found.append(b)
+                return
+            for ch in getattr(b, "children", []) or []:
+                walk(ch)
+        boxes = []
+
+        def walk_fx(b):
+            el = getattr(b, "element", None)
+            if el is not None and el.get("class") == "fx" and b.element_tag == "div":
+                boxes.append(b)
+                return
+            for ch in getattr(b, "children", []) or []:
+                walk_fx(ch)
+        walk_fx(pg._page_box)
+        for fxb in boxes:
+            lines = []
+
+            def lb(b):
+                if type(b).__name__ == "LineBox":
+                    lines.append(b)
+                    return
+                for ch in getattr(b, "children", []) or []:
+                    lb(ch)
+            lb(fxb)
+            top = min(ln.position_y for ln in lines)
+            bot = max(ln.position_y + ln.height for ln in lines)
+            spare = (fxb.height - (bot - top)) * PX
+            # the label 'Formula' is one line box; the formula's own lines are the rest
+            found.append((len(lines) - 1, spare))
+    out = []
+    for k, (n, spare) in zip(keys, found[:len(keys)]):
+        if n > 2 or spare < 0.3:
+            out.append((k, n, round(spare, 2)))
+    return out
