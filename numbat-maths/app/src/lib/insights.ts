@@ -187,3 +187,25 @@ export function classInsights(students: InsightStudent[], rows: ActivityRow[], m
     weekly: weeklySeries(rows, masteries, now),
   }
 }
+
+/**
+ * Students rated below expectations (1 or 2) in at least 2 of their last 3 rated lessons
+ * (absences skipped), for the "May need help" list.
+ */
+export function ratingConcerns(
+  students: { id: string }[],
+  lessons: { id: string; date: string }[],
+  ratings: { lessonId: string; studentId: string; value: number }[],
+): Map<string, string> {
+  const order = new Map([...lessons].sort((a, b) => a.date.localeCompare(b.date)).map((l, i) => [l.id, i]))
+  const out = new Map<string, string>()
+  for (const s of students) {
+    const mine = ratings
+      .filter((r) => r.studentId === s.id && r.value > 0 && order.has(r.lessonId))
+      .sort((a, b) => order.get(a.lessonId)! - order.get(b.lessonId)!)
+      .slice(-3)
+    const below = mine.filter((r) => r.value <= 2).length
+    if (mine.length >= 2 && below >= 2) out.set(s.id, `Below expectations in ${below} of their last ${mine.length} rated lessons`)
+  }
+  return out
+}

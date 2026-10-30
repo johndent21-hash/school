@@ -79,6 +79,9 @@ function Cards() {
                 <dd className="chip-code text-lg font-bold tracking-widest">{report.class.code}</dd>
               </dl>
               <p className="text-sm text-muted-foreground">Type the class code, tap your name, then choose a 4-digit PIN. Keep your PIN secret.</p>
+              <p className="border-t border-dashed border-border pt-1 text-xs text-muted-foreground">
+                <strong className="text-foreground">Parents and carers:</strong> go to {site}/parent and log in with the same class code, your child’s name and their PIN to see their progress.
+              </p>
             </div>
           ))}
         </div>

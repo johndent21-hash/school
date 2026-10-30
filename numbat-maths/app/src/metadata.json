@@ -45,5 +45,10 @@
     "title": "Login cards · Numbat Maths",
     "description": "Printable login cards for your class.",
     "noindex": true
+  },
+  "/parent": {
+    "title": "Parents and carers · Numbat Maths",
+    "description": "See your child's lesson ratings from class and their practice on Numbat Maths. Log in with your child's class code, name and PIN.",
+    "noindex": true
   }
 }

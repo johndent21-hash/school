@@ -9,6 +9,7 @@ import type { Id } from '@/convex/_generated/dataModel'
 import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { StatTile, WeekColumns, WeekLine } from '@/components/numbat/Charts'
 import { DemoBanner } from '@/components/numbat/DemoBanner'
+import { RatingsSheet } from '@/components/numbat/RatingsSheet'
 import { findTopic, topicsForYear, YEARS } from '@/content'
 import { ago, agoInline, endOfDay, isOverdue, shortDate } from '@/lib/dates'
 import { masteryOf, shareState } from '@/lib/mastery'
@@ -17,15 +18,17 @@ import { PREVIEW_ONLY } from '@/lib/preview'
 import { itemLabel, testItemId } from '@/lib/practice'
 import { topicStats, type ProgressMap } from '@/lib/progress'
 import { useSession } from '@/lib/session'
-import { classInsights } from '@/lib/insights'
-import { previewBlocked, useClassActivity, useClassReport } from '@/lib/teacher-data'
+import { classInsights, ratingConcerns } from '@/lib/insights'
+import { previewBlocked, useClassActivity, useClassRatings, useClassReport } from '@/lib/teacher-data'
 import { useMounted } from '@/lib/use-mounted'
 import { cn } from '@/lib/utils'
+import { downloadCsv } from '@/lib/csv'
 
-type Tab = 'overview' | 'students' | 'markbook' | 'tasks' | 'settings'
+type Tab = 'overview' | 'students' | 'ratings' | 'markbook' | 'tasks' | 'settings'
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'students', label: 'Students' },
+  { id: 'ratings', label: 'Lesson ratings' },
   { id: 'markbook', label: 'Markbook' },
   { id: 'tasks', label: 'Tasks' },
   { id: 'settings', label: 'Settings' },
@@ -139,6 +142,7 @@ function ClassView() {
 
       {tab === 'overview' && <OverviewTab report={report} />}
       {tab === 'students' && <StudentsTab report={report} />}
+      {tab === 'ratings' && <RatingsSheet classId={report.class.id} className={report.class.name} students={report.students} />}
       {tab === 'markbook' && <Markbook report={report} />}
       {tab === 'tasks' && <TasksTab report={report} />}
       {tab === 'settings' && <SettingsTab report={report} />}
@@ -150,10 +154,26 @@ function ClassView() {
 
 function OverviewTab({ report }: { report: Report }) {
   const activity = useClassActivity(report.class.id)
+  const ratings = useClassRatings(report.class.id)
   const ins = useMemo(
     () => (activity && activity.ok ? classInsights(report.students, activity.attempts, activity.masteries, activity.goal, Date.now()) : null),
     [activity, report.students],
   )
+  // add students whose lesson ratings are mostly below expectations
+  const needsHelp = useMemo(() => {
+    if (!ins) return []
+    const list = ins.needsHelp.map((h) => ({ student: h.student, reasons: [h.reason] }))
+    if (ratings && ratings.ok)
+      for (const [id, reason] of ratingConcerns(report.students, ratings.lessons, ratings.ratings)) {
+        const found = list.find((h) => h.student.id === id)
+        if (found) found.reasons.push(reason)
+        else {
+          const st = report.students.find((s) => s.id === id)
+          if (st) list.push({ student: st, reasons: [reason] })
+        }
+      }
+    return list
+  }, [ins, ratings, report.students])
   if (report.students.length === 0) return <p className="panel p-5 text-muted-foreground">Add students to see how the class is going.</p>
   if (activity === undefined) return <PageLoading />
   if (!activity.ok || !ins) return <p className="feedback bad">{activity.ok ? 'Something went wrong.' : activity.message}</p>
@@ -181,16 +201,22 @@ function OverviewTab({ report }: { report: Report }) {
           <h2 id="needs-help" className="font-display flex items-center gap-2 text-lg font-semibold">
             <AlertTriangle size={18} className="text-warning" aria-hidden="true" /> May need help
           </h2>
-          {ins.needsHelp.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No one stands out right now. Students averaging under 50% on recent sets, or whose scores are dropping, show here.</p>
+          {needsHelp.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No one stands out right now. Students averaging under 50% on recent sets, whose scores are dropping, or who were below expectations in recent lessons show here.
+            </p>
           ) : (
             <ul className="grid gap-1">
-              {ins.needsHelp.map((h) => (
+              {needsHelp.map((h) => (
                 <li key={h.student.id}>
                   <Link to="/teacher-student" search={{ id: h.student.id }} className="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 hover:bg-muted">
                     <span className="min-w-0">
                       <span className="block font-bold">{h.student.name}</span>
-                      <span className="block text-sm text-muted-foreground">{h.reason}</span>
+                      {h.reasons.map((r) => (
+                        <span key={r} className="block text-sm text-muted-foreground">
+                          {r}
+                        </span>
+                      ))}
                     </span>
                     <ArrowRight size={16} className="shrink-0 text-muted-foreground" aria-hidden="true" />
                   </Link>
@@ -467,15 +493,6 @@ function cellClass(best: number | undefined, attempts: number | undefined): stri
   return `m-${masteryOf(best === undefined ? null : { best, attempts: attempts ?? 0 })}`
 }
 
-function downloadCsv(filename: string, rows: (string | number)[][]) {
-  const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n')
-  const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }))
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  a.click()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
 
 function Markbook({ report }: { report: Report }) {
   const [year, setYear] = useState(report.class.year)

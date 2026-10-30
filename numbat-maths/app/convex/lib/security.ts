@@ -79,6 +79,28 @@ export async function getStudent(ctx: QueryCtx | MutationCtx, token: string | un
   return await ctx.db.get(s.studentId)
 }
 
+/** The child a parent is signed in for (parents sign in with their child's class code, name and PIN). */
+export async function getParentChild(ctx: QueryCtx | MutationCtx, token: string | undefined): Promise<Doc<"students"> | null> {
+  const s = await getSession(ctx, token)
+  if (!s || s.kind !== "parent" || !s.studentId) return null
+  return await ctx.db.get(s.studentId)
+}
+
+/** Removes a student's lesson ratings (used when a student, lesson or class is deleted). */
+export async function deleteRatingsFor(ctx: MutationCtx, by: { studentId: Id<"students"> } | { lessonId: Id<"lessons"> }) {
+  const rows =
+    "studentId" in by
+      ? await ctx.db
+          .query("ratings")
+          .withIndex("by_student", (q) => q.eq("studentId", by.studentId))
+          .collect()
+      : await ctx.db
+          .query("ratings")
+          .withIndex("by_lesson", (q) => q.eq("lessonId", by.lessonId))
+          .collect()
+  for (const r of rows) await ctx.db.delete(r._id)
+}
+
 /** The class, if it belongs to this teacher. */
 export async function ownedClass(ctx: QueryCtx | MutationCtx, teacherId: Id<"teachers">, classId: Id<"classes">): Promise<Doc<"classes"> | null> {
   const c = await ctx.db.get(classId)
@@ -88,7 +110,7 @@ export async function ownedClass(ctx: QueryCtx | MutationCtx, teacherId: Id<"tea
 
 export async function createSession(
   ctx: MutationCtx,
-  data: { kind: "teacher"; teacherId: Id<"teachers"> } | { kind: "student"; studentId: Id<"students"> },
+  data: { kind: "teacher"; teacherId: Id<"teachers"> } | { kind: "student" | "parent"; studentId: Id<"students"> },
   days: number,
 ): Promise<string> {
   const token = randomHex(32)

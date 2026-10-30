@@ -36,6 +36,9 @@ function StudentLogin() {
         <Link to="/teacher" className="btn btn-ghost">
           See the teacher view with an example class
         </Link>
+        <Link to="/parent" className="btn btn-ghost">
+          See the parent view for an example child
+        </Link>
       </div>
     )
   }
@@ -107,6 +110,9 @@ function StudentLogin() {
         </Link>
         <Link to="/teacher" className="font-bold text-primary underline-offset-4 hover:underline">
           Teachers: log in or sign up
+        </Link>
+        <Link to="/parent" className="font-bold text-primary underline-offset-4 hover:underline">
+          Parents and carers: see your child’s progress
         </Link>
       </div>
     </form>
@@ -212,6 +218,7 @@ function Landing() {
               { text: 'Create a class and paste in your students’ names. You get a 6-character class code and printable login cards.' },
               { text: 'Students type the code, tap their name and choose a 4-digit PIN. You can reset a forgotten PIN in one click.' },
               { text: 'Set tasks with due dates, and follow every student in the markbook by skill and topic test.' },
+              { text: 'Rate each lesson from 1 to 4 on a quick colour-coded sheet. Parents log in with their child’s details to see the ratings and practice.' },
             ].map((s, k) => (
               <li key={k} className="flex gap-3">
                 <span className="tile-mark grid size-9 shrink-0 place-items-center rounded-lg bg-primary-soft font-bold text-primary">{k + 1}</span>

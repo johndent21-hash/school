@@ -199,3 +199,104 @@ test('expired sessions are not accepted', async () => {
   })
   expect(await t.query(api.accounts.me, { token: su.token })).toBeNull()
 })
+
+test('parents log in with their child’s details, and lesson ratings', async () => {
+  vi.stubEnv('TEACHER_SIGNUP_CODE', '')
+  const t = convexTest(schema, modules)
+  const tok: string = (await t.mutation(api.accounts.teacherSignUp, { name: 'Ms Lee', email: 'lee@x.au', password: 'longenough1' })).token
+  const other: string = (await t.mutation(api.accounts.teacherSignUp, { name: 'Mr Ng', email: 'ng@x.au', password: 'longenough2' })).token
+  const cc = await t.mutation(api.classes.createClass, { token: tok, name: '8MAT1', year: 8 })
+  const classId = cc.classId
+  await t.mutation(api.classes.addStudents, { token: tok, classId, names: ['Ava T', 'Ben K', 'Cara M'] })
+  const [ava, ben, cara] = (await t.query(api.accounts.classLookup, { code: cc.code })).students
+
+  // a parent can't log in before the child has chosen a PIN, and can't set one
+  expect((await t.mutation(api.accounts.parentLogIn, { code: cc.code, studentId: ava.id, pin: '2580' })).message).toMatch(/hasn’t chosen a PIN/)
+  const sToken: string = (await t.mutation(api.accounts.studentSetPin, { code: cc.code, studentId: ava.id, pin: '2580' })).token
+  expect((await t.mutation(api.accounts.parentLogIn, { code: cc.code, studentId: ava.id, pin: '0000' })).ok).toBe(false)
+  const pl = await t.mutation(api.accounts.parentLogIn, { code: ` ${cc.code.toLowerCase()} `, studentId: ava.id, pin: '2580' })
+  expect(pl.ok).toBe(true)
+  const pTok: string = pl.token
+  expect(await t.query(api.accounts.me, { token: pTok })).toMatchObject({ kind: 'parent', childName: 'Ava T', className: '8MAT1', year: 8 })
+  // the child's own log-in still works alongside
+  expect(await t.query(api.accounts.me, { token: sToken })).toMatchObject({ kind: 'student', name: 'Ava T' })
+
+  // the parent view is read-only and limited to the child
+  expect((await t.mutation(api.learning.recordAttempt, { token: pTok, itemId: 'y8-pyt-hyp', kind: 'practice', correct: 8, total: 10 })).ok).toBe(false)
+  expect((await t.query(api.learning.myProgress, { token: pTok })).ok).toBe(false)
+  expect((await t.query(api.ratings.classRatings, { token: pTok, classId })).ok).toBe(false)
+  expect((await t.query(api.classes.classReport, { token: pTok, classId })).ok).toBe(false)
+  expect((await t.query(api.parents.parentOverview, { token: sToken })).ok).toBe(false)
+  expect((await t.query(api.parents.parentOverview, { token: tok })).ok).toBe(false)
+  await t.mutation(api.learning.recordAttempt, { token: sToken, itemId: 'y8-pyt-hyp', kind: 'practice', correct: 8, total: 10 })
+  await t.mutation(api.classes.updateClass, { token: tok, classId, name: '8MAT1', year: 8, weeklyGoal: 4 })
+  let po = await t.query(api.parents.parentOverview, { token: pTok })
+  expect(po).toMatchObject({ ok: true, child: { name: 'Ava T', points: 100 }, class: { name: '8MAT1', year: 8, teacherName: 'Ms Lee', weeklyGoal: 4 } })
+  expect(po.items['y8-pyt-hyp']).toMatchObject({ best: 80, mastered: true })
+  expect(po.log).toHaveLength(1)
+  expect(po.lessons).toEqual([])
+
+  // --- lessons and ratings
+  expect((await t.mutation(api.ratings.addLesson, { token: tok, classId, date: '2026-02-30' })).ok).toBe(false)
+  expect((await t.mutation(api.ratings.addLesson, { token: tok, classId, date: '27/10/2026' })).ok).toBe(false)
+  expect((await t.mutation(api.ratings.addLesson, { token: other, classId, date: '2026-10-27' })).ok).toBe(false)
+  const l1 = (await t.mutation(api.ratings.addLesson, { token: tok, classId, date: '2026-10-27', label: '  Period   2 ' })).id
+  const l2 = (await t.mutation(api.ratings.addLesson, { token: tok, classId, date: '2026-10-28' })).id
+  const l0 = (await t.mutation(api.ratings.addLesson, { token: tok, classId, date: '2026-10-20' })).id
+  expect((await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: ava.id, value: 4 })).ok).toBe(true)
+  expect((await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: ava.id, value: 3 })).ok).toBe(true) // changed
+  expect((await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: ava.id, value: 5 })).ok).toBe(false)
+  expect((await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: ava.id, value: 2.5 })).ok).toBe(false)
+  expect((await t.mutation(api.ratings.setRating, { token: other, lessonId: l1, studentId: ava.id, value: 1 })).ok).toBe(false)
+  expect((await t.mutation(api.ratings.setRating, { token: pTok, lessonId: l1, studentId: ava.id, value: 4 })).ok).toBe(false)
+  await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: ben.id, value: 2 })
+  // a student from another class can't be rated in this lesson
+  const cc2 = await t.mutation(api.classes.createClass, { token: tok, name: '8MAT2', year: 8 })
+  await t.mutation(api.classes.addStudents, { token: tok, classId: cc2.classId, names: ['Dan P'] })
+  const dan = (await t.query(api.accounts.classLookup, { code: cc2.code })).students[0]
+  expect((await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: dan.id, value: 3 })).ok).toBe(false)
+  // fill the blanks: only Cara has no rating in lesson 1
+  expect(await t.mutation(api.ratings.fillLesson, { token: tok, lessonId: l1, value: 3 })).toMatchObject({ ok: true, filled: 1 })
+  await t.mutation(api.ratings.setRating, { token: tok, lessonId: l2, studentId: ava.id, value: 0 }) // absent
+  await t.mutation(api.ratings.setRating, { token: tok, lessonId: l1, studentId: ben.id, value: null }) // cleared
+  let cr = await t.query(api.ratings.classRatings, { token: tok, classId })
+  expect(cr.lessons.map((l: any) => [l.date, l.label])).toEqual([['2026-10-20', null], ['2026-10-27', 'Period 2'], ['2026-10-28', null]])
+  expect(cr.ratings).toHaveLength(3)
+  expect((await t.query(api.ratings.classRatings, { token: other, classId })).ok).toBe(false)
+  po = await t.query(api.parents.parentOverview, { token: pTok })
+  expect(po.lessons.map((l: any) => [l.date, l.label, l.value])).toEqual([['2026-10-20', null, null], ['2026-10-27', 'Period 2', 3], ['2026-10-28', null, 0]])
+  expect((await t.query(api.classes.studentDetail, { token: tok, studentId: ava.id })).lessons.map((l: any) => l.value)).toEqual([null, 3, 0])
+  expect((await t.mutation(api.ratings.updateLesson, { token: tok, lessonId: l2, date: '2026-10-29', label: 'Excursion' })).ok).toBe(true)
+  expect((await t.mutation(api.ratings.deleteLesson, { token: other, lessonId: l0 })).ok).toBe(false)
+  expect((await t.mutation(api.ratings.deleteLesson, { token: tok, lessonId: l2 })).ok).toBe(true)
+  cr = await t.query(api.ratings.classRatings, { token: tok, classId })
+  expect(cr.lessons.map((l: any) => l.date)).toEqual(['2026-10-20', '2026-10-27'])
+  expect(cr.ratings).toHaveLength(2)
+
+  // --- wrong PINs pause the account for longer each time (10, 20, 40 minutes ...)
+  for (let i = 0; i < 4; i++) await t.mutation(api.accounts.parentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })
+  expect((await t.mutation(api.accounts.parentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })).message).toMatch(/paused for 10 minutes/)
+  expect((await t.mutation(api.accounts.studentLogIn, { code: cc.code, studentId: ava.id, pin: '2580' })).message).toMatch(/Too many wrong PINs/)
+  const unlock = () => t.run(async (ctx: any) => ctx.db.patch(ava.id, { lockedUntil: Date.now() - 1 }))
+  await unlock()
+  for (let i = 0; i < 4; i++) await t.mutation(api.accounts.studentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })
+  expect((await t.mutation(api.accounts.studentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })).message).toMatch(/paused for 20 minutes/)
+  await unlock()
+  for (let i = 0; i < 5; i++) await t.mutation(api.accounts.studentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })
+  await unlock()
+  for (let i = 0; i < 4; i++) await t.mutation(api.accounts.studentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })
+  expect((await t.mutation(api.accounts.studentLogIn, { code: cc.code, studentId: ava.id, pin: '1111' })).message).toMatch(/paused for 1 hour 20 minutes\./)
+  await unlock()
+  expect((await t.mutation(api.accounts.parentLogIn, { code: cc.code, studentId: ava.id, pin: '2580' })).ok).toBe(true)
+  expect(await t.run(async (ctx: any) => (await ctx.db.get(ava.id)).lockCount)).toBe(0)
+
+  // a PIN reset by the teacher ends the parent's sessions too
+  await t.mutation(api.classes.resetPin, { token: tok, studentId: ava.id })
+  expect(await t.query(api.accounts.me, { token: pTok })).toBeNull()
+
+  // removing a student removes their ratings; deleting the class removes its lessons
+  await t.mutation(api.classes.removeStudent, { token: tok, studentId: cara.id })
+  expect(await t.run(async (ctx: any) => (await ctx.db.query('ratings').collect()).length)).toBe(1)
+  await t.mutation(api.classes.deleteClass, { token: tok, classId })
+  expect(await t.run(async (ctx: any) => [(await ctx.db.query('lessons').collect()).length, (await ctx.db.query('ratings').collect()).length])).toEqual([0, 0])
+})

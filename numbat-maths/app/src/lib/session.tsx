@@ -1,4 +1,5 @@
-// Who is using the site: a student (class code + PIN), a teacher, or a guest.
+// Who is using the site: a student (class code + PIN), a parent (the same details as their
+// child, but a read-only parent view), a teacher, or a guest.
 // The log-in token lives in localStorage; the server is asked who it belongs to.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useMutation } from 'convex/react'
@@ -23,7 +24,16 @@ export interface TeacherMe {
   email: string
 }
 
-export type Me = StudentMe | TeacherMe
+export interface ParentMe {
+  kind: 'parent'
+  studentId: string
+  childName: string
+  classId: string
+  className: string
+  year: number
+}
+
+export type Me = StudentMe | TeacherMe | ParentMe
 
 interface SessionValue {
   /** True once the saved log-in has been read and checked. */
@@ -34,6 +44,7 @@ interface SessionValue {
   me: Me | null
   student: StudentMe | null
   teacher: TeacherMe | null
+  parent: ParentMe | null
   signIn: (token: string) => void
   signOut: () => Promise<void>
 }
@@ -47,6 +58,7 @@ const SessionContext = createContext<SessionValue>({
   me: null,
   student: null,
   teacher: null,
+  parent: null,
   signIn: () => {},
   signOut: async () => {},
 })
@@ -100,6 +112,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       me: who,
       student: who?.kind === 'student' ? who : null,
       teacher: who?.kind === 'teacher' ? who : null,
+      parent: who?.kind === 'parent' ? who : null,
       signIn,
       signOut,
     }

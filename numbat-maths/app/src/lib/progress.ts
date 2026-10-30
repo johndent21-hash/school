@@ -131,7 +131,7 @@ export function useTasks(): Task[] | undefined {
  * stay in this browser; teachers previewing the site save nothing.
  */
 export function useSaveResult() {
-  const { student, teacher, token } = useSession()
+  const { student, teacher, parent, token } = useSession()
   const record = useMutation(api.learning.recordAttempt)
 
   return useCallback(
@@ -139,6 +139,7 @@ export function useSaveResult() {
       const score = Math.round((correct / total) * 100)
       const points = pointsFor(correct, total)
       if (teacher) return { saved: false, score, points: 0, best: score, newBest: false, message: 'Teacher preview: results are not saved.' }
+      if (parent) return { saved: false, score, points: 0, best: score, newBest: false, message: 'Parent view: practice here isn’t saved to your child’s results.' }
       if (student && token) {
         try {
           const r = (await record({ token, itemId, kind, correct, total })) as
@@ -165,7 +166,7 @@ export function useSaveResult() {
       window.dispatchEvent(new Event('numbat-guest-progress'))
       return { saved: true, score, points, best, newBest: !prev || score > prev.best }
     },
-    [student, teacher, token, record],
+    [student, teacher, parent, token, record],
   )
 }
 

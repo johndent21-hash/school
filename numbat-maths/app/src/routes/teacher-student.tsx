@@ -6,6 +6,8 @@ import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { WeekColumns, WeekLine } from '@/components/numbat/Charts'
 import { DemoBanner } from '@/components/numbat/DemoBanner'
 import { GoalRing, LevelMedal } from '@/components/numbat/Rewards'
+import { RatingKey } from '@/components/numbat/RatingsSheet'
+import { RatingsHistory, ratingSentence } from '@/components/numbat/RatingsHistory'
 import { MasteryBadge, ProgressBar } from '@/components/numbat/Mastery'
 import { topicsForYear, YEARS } from '@/content'
 import { ago, agoInline, longDate } from '@/lib/dates'
@@ -32,6 +34,7 @@ interface Detail {
   class: { id: string; name: string; year: number; weeklyGoal: number }
   progress: ProgressMap
   attempts: { itemId: string; kind: 'practice' | 'test'; score: number; correct: number; total: number; finishedAt: number }[]
+  lessons?: { id: string; date: string; label: string | null; value: number | null }[]
 }
 
 function StudentPage() {
@@ -124,6 +127,23 @@ function StudentReport() {
             {rewards.earned} of {rewards.badges.length}
             {rewards.earned > 0 ? `: ${rewards.badges.filter((b) => b.earned).map((b) => b.name).join(', ')}` : ''}
           </p>
+        </div>
+      </section>
+
+      <section className="grid gap-3" aria-labelledby="student-in-class">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 id="student-in-class" className="font-display text-2xl font-semibold">
+            In class
+          </h2>
+          <Link to="/teacher-class" search={{ id: data.class.id, tab: 'ratings' }} className="btn btn-ghost btn-sm">
+            Lesson ratings sheet
+          </Link>
+        </div>
+        <div className="panel grid gap-3 p-4">
+          <RatingKey />
+          <p className="font-bold">{ratingSentence(data.lessons ?? [], data.student.name.split(' ')[0])}</p>
+          <RatingsHistory lessons={data.lessons ?? []} first={data.student.name.split(' ')[0]} />
+          <p className="text-sm text-muted-foreground">This is what the student’s parents see in the parent view.</p>
         </div>
       </section>
 

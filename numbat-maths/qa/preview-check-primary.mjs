@@ -58,9 +58,14 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   await page.locator('.topic-tile').first().click(); await page.waitForTimeout(600)
   const locked = `demo=${await page.getByText('Example class.', { exact: true }).isVisible()} tiles=${(await page.locator('.stat-value').allTextContents()).join('|')} charts=${await page.locator('.chart-bar').count()}`
   await shot('teacher_demo')
+  await page.getByRole('tab', { name: 'Lesson ratings' }).click(); await page.waitForTimeout(300)
+  const sheet = `cols=${await page.locator('.rs-head').count()} cells=${await page.locator('.rs-cell').count()}`
+  await page.getByRole('link', { name: 'Parents' }).click(); await page.waitForTimeout(400)
+  const parentView = `${await page.locator('h1').textContent()} weeks=${await page.locator('.rh-week').count()}`
+  await shot('parent_demo')
   const footer = (await page.locator('footer').textContent())?.slice(0, 60)
   const sw = await page.evaluate(() => document.documentElement.scrollWidth)
-  out.push(`${w}/${scheme}: primaryHeading=${primary} tiles=${tiles.join(',')} year3Selected=${tab3} placeholder="${ph}" feedback1="${fb1}" y1="${y1}" keypad(${pad}) teacher(${locked}) footer="${footer}" scrollW=${sw} hosts=[${[...hosts].join(', ')}] errors=[${errors.join(' | ')}]`)
+  out.push(`${w}/${scheme}: primaryHeading=${primary} tiles=${tiles.join(',')} year3Selected=${tab3} placeholder="${ph}" feedback1="${fb1}" y1="${y1}" keypad(${pad}) teacher(${locked}) sheet(${sheet}) parent(${parentView}) footer="${footer}" scrollW=${sw} hosts=[${[...hosts].join(', ')}] errors=[${errors.join(' | ')}]`)
   await ctx.close()
 }
 console.log(out.join('\n'))

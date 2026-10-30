@@ -2,7 +2,7 @@
 // from the Convex dashboard or CLI, never from the website.
 import { internalMutation } from "./_generated/server"
 import { v } from "convex/values"
-import { hashSecret } from "./lib/security"
+import { deleteRatingsFor, hashSecret } from "./lib/security"
 
 /** Removes a teacher account together with its classes, students and results. */
 export const deleteTeacherByEmail = internalMutation({
@@ -39,6 +39,7 @@ export const deleteTeacherByEmail = internalMutation({
           .withIndex("by_student", (q) => q.eq("studentId", s._id))
           .collect())
           await ctx.db.delete(ss._id)
+        await deleteRatingsFor(ctx, { studentId: s._id })
         await ctx.db.delete(s._id)
         removed++
       }
@@ -47,6 +48,11 @@ export const deleteTeacherByEmail = internalMutation({
         .withIndex("by_class", (q) => q.eq("classId", c._id))
         .collect())
         await ctx.db.delete(a._id)
+      for (const l of await ctx.db
+        .query("lessons")
+        .withIndex("by_class", (q) => q.eq("classId", c._id))
+        .collect())
+        await ctx.db.delete(l._id)
       await ctx.db.delete(c._id)
     }
     for (const s of await ctx.db.query("sessions").collect()) {

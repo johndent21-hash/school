@@ -4,6 +4,7 @@
 import { findTopic } from '@/content'
 import { nextWeek, pointsFor, prevWeek, weekStart } from './rewards'
 import { masteriesFrom, type ActivityRow } from './insights'
+import { isoDate, type RatingValue } from './ratings'
 
 export const DEMO_CLASS_ID = 'demo-class'
 export const DEMO_GOAL = 4
@@ -183,5 +184,162 @@ export function demoStudentDetail(id: string) {
     attempts: d.rows
       .filter((x) => x.studentId === id)
       .map((x) => ({ itemId: x.itemId, kind: x.kind, score: x.score, correct: x.correct, total: x.total, finishedAt: x.finishedAt })),
+    lessons: demoLessonsFor(id),
+  }
+}
+
+/* ---------------- lesson ratings (kept in memory, so the sheet can be tried) ---------------- */
+
+interface DemoLesson {
+  id: string
+  date: string
+  label: string | null
+}
+interface RatingStore {
+  lessons: DemoLesson[]
+  ratings: Map<string, number> // "lessonId|studentId" -> value
+  version: number
+}
+
+let store: RatingStore | null = null
+let addedLessons = 0
+const listeners = new Set<() => void>()
+const changed = () => {
+  if (store) store.version++
+  listeners.forEach((fn) => fn())
+}
+export const subscribeDemoRatings = (fn: () => void) => {
+  listeners.add(fn)
+  return () => listeners.delete(fn)
+}
+export const demoRatingsVersion = () => ratings().version
+
+// How each kind of student tends to go in class: chances of 4, 3, 2, 1
+const CLASS_ODDS: Record<Kind, [number, number, number, number]> = {
+  strong: [0.65, 0.31, 0.04, 0],
+  steady: [0.2, 0.6, 0.17, 0.03],
+  struggling: [0.04, 0.32, 0.44, 0.2],
+  declining: [0.25, 0.6, 0.13, 0.02],
+  quiet: [0.1, 0.55, 0.3, 0.05],
+  never: [0.15, 0.6, 0.22, 0.03],
+}
+
+function ratings(): RatingStore {
+  if (store) return store
+  const r = rng(4242)
+  const today = new Date()
+  const lessons: DemoLesson[] = []
+  // four lessons a week (Mon, Tue, Thu, Fri) for the last six weeks, up to today
+  const monday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - ((today.getDay() + 6) % 7) - 35)
+  const LABELS: Record<number, string> = { 3: 'Quiz', 9: 'Investigation', 15: 'Quiz', 21: 'Group task' }
+  for (let w = 0; w < 6; w++)
+    for (const day of [0, 1, 3, 4]) {
+      const d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + w * 7 + day)
+      if (d > today) continue
+      lessons.push({ id: `demo-lesson-${lessons.length + 1}`, date: isoDate(d), label: LABELS[lessons.length] ?? null })
+    }
+  const map = new Map<string, number>()
+  const latest = lessons[lessons.length - 1]
+  const todays = latest && latest.date === isoDate(today) // today's lesson is left for the teacher to fill in
+  lessons.forEach((l, li) => {
+    if (todays && l === latest) return
+    const recent = li >= lessons.length - 8
+    NAMES.forEach((_, i) => {
+      const kind = PROFILES[i]
+      if (r() < (kind === 'quiet' ? 0.12 : 0.04)) {
+        map.set(`${l.id}|demo-${i + 1}`, 0)
+        return
+      }
+      const odds = kind === 'declining' && recent ? CLASS_ODDS.struggling : CLASS_ODDS[kind]
+      let x = r()
+      let v: RatingValue = 1
+      for (let k = 0; k < 4; k++) {
+        x -= odds[k]
+        if (x < 0) {
+          v = (4 - k) as RatingValue
+          break
+        }
+      }
+      map.set(`${l.id}|demo-${i + 1}`, v)
+    })
+  })
+  store = { lessons, ratings: map, version: 0 }
+  return store
+}
+
+const sortLessons = (ls: DemoLesson[]) => ls.sort((a, b) => a.date.localeCompare(b.date) || Number(a.id.split('-').pop()) - Number(b.id.split('-').pop()))
+
+export function demoClassRatings() {
+  const st = ratings()
+  return {
+    ok: true as const,
+    lessons: sortLessons([...st.lessons]),
+    ratings: [...st.ratings].map(([k, value]) => {
+      const [lessonId, studentId] = k.split('|')
+      return { lessonId, studentId, value }
+    }),
+  }
+}
+
+export function demoLessonsFor(studentId: string) {
+  const st = ratings()
+  return sortLessons([...st.lessons]).map((l) => ({ ...l, value: st.ratings.get(`${l.id}|${studentId}`) ?? null }))
+}
+
+export const demoRatingActions = {
+  setRating(lessonId: string, studentId: string, value: number | null) {
+    const st = ratings()
+    if (value === null) st.ratings.delete(`${lessonId}|${studentId}`)
+    else st.ratings.set(`${lessonId}|${studentId}`, value)
+    changed()
+  },
+  fillLesson(lessonId: string, value: number) {
+    const st = ratings()
+    let filled = 0
+    NAMES.forEach((_, i) => {
+      const k = `${lessonId}|demo-${i + 1}`
+      if (!st.ratings.has(k)) {
+        st.ratings.set(k, value)
+        filled++
+      }
+    })
+    changed()
+    return filled
+  },
+  addLesson(date: string, label: string | null) {
+    const st = ratings()
+    const id = `demo-lesson-${++addedLessons + 1000}`
+    st.lessons.push({ id, date, label })
+    changed()
+    return id
+  },
+  updateLesson(lessonId: string, date: string, label: string | null) {
+    const l = ratings().lessons.find((x) => x.id === lessonId)
+    if (l) {
+      l.date = date
+      l.label = label
+    }
+    changed()
+  },
+  deleteLesson(lessonId: string) {
+    const st = ratings()
+    st.lessons = st.lessons.filter((l) => l.id !== lessonId)
+    for (const k of [...st.ratings.keys()]) if (k.startsWith(`${lessonId}|`)) st.ratings.delete(k)
+    changed()
+  },
+}
+
+/** The parent view for one example child (Ava T unless another is chosen). */
+export function demoParentOverview(studentId = 'demo-1') {
+  const d = data()
+  const s = d.students.find((x) => x.id === studentId) ?? d.students[0]
+  return {
+    ok: true as const,
+    child: { name: s.name, points: s.points, lastActive: s.lastActive },
+    class: { name: '7MAT2 (example)', year: 7, teacherName: 'Ms Example', weeklyGoal: DEMO_GOAL },
+    items: s.progress,
+    log: d.rows.filter((x) => x.studentId === s.id).map((x) => ({ itemId: x.itemId, kind: x.kind, score: x.score, finishedAt: x.finishedAt })),
+    tasks: d.tasks,
+    lessons: demoLessonsFor(s.id),
   }
 }

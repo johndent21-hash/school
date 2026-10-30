@@ -16,6 +16,12 @@ Also:
   from results, so nothing extra is stored.
 - **Teacher overview and charts** (`app/src/lib/insights.ts`, `Charts.tsx`): who practised this week, who may need help,
   the skills the class finds hardest, task completion, and week-by-week charts for the class and each student.
+- **Lesson ratings** (`app/convex/ratings.ts`, `RatingsSheet.tsx`): a colour-coded sheet where the teacher gives each student
+  4 (excellent), 3 (good), 2 (below expectations), 1 (well below) or A (absent) for each lesson. Type or tap; the next student
+  is selected after each entry. Students rated below expectations in 2 of their last 3 rated lessons appear under "May need help".
+- **Parent view** (`app/src/routes/parent.tsx`, `app/convex/parents.ts`): parents log in at `/parent` with the same class code,
+  name and PIN their child uses and get a read-only page with the lesson ratings and Numbat Maths practice. Wrong PINs pause the
+  account for 10 minutes, then 20, 40 ... up to a day, so 4-digit PINs can't be guessed by trying them all.
 - **Example class** (`app/src/lib/demo.ts`): in the stand-alone preview the teacher pages use 24 made-up students so they
   can be tried without log-ins; changes are switched off there.
 
@@ -52,6 +58,7 @@ VITE_STAGE1=1 VITE_STAGE2=1 npm run dev; IDS=qa/ids-s1.json node qa/sweep.mjs   
 node qa/keypad-check.mjs    # (with Years 1–4 on) answers questions with the on-screen keypad (phone) and tries the calculator
 node qa/rewards-check.mjs                                                          # guest rewards: celebration after a set, home dashboard
 VITE_PREVIEW_ONLY=1 npx vite dev --port 3102; node qa/teacher-demo-check.mjs       # example class on the teacher pages
+node qa/parent-ratings-check.mjs                                                   # (same server) ratings sheet and example parent view
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)
 cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh out.html "Numbat Maths 1–9"   # preview with Years 1–4 added

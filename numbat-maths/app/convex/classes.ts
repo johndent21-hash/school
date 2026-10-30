@@ -3,8 +3,9 @@ import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
 import type { Id } from "./_generated/dataModel"
 import type { MutationCtx } from "./_generated/server"
-import { cleanName, getTeacher, newClassCode, ownedClass } from "./lib/security"
+import { cleanName, deleteRatingsFor, getTeacher, newClassCode, ownedClass } from "./lib/security"
 import { DEFAULT_GOAL, MAX_HISTORY } from "./learning"
+import { ratingsForStudent } from "./ratings"
 
 const fail = (message: string) => ({ ok: false as const, message })
 const NOT_TEACHER = "Please log in as a teacher."
@@ -73,6 +74,7 @@ export const updateClass = mutation({
 })
 
 async function deleteStudentData(ctx: MutationCtx, studentId: Id<"students">) {
+  await deleteRatingsFor(ctx, { studentId })
   for (const p of await ctx.db
     .query("progress")
     .withIndex("by_student", (q) => q.eq("studentId", studentId))
@@ -111,6 +113,11 @@ export const deleteClass = mutation({
       .withIndex("by_class", (q) => q.eq("classId", c._id))
       .collect())
       await ctx.db.delete(a._id)
+    for (const l of await ctx.db
+      .query("lessons")
+      .withIndex("by_class", (q) => q.eq("classId", c._id))
+      .collect())
+      await ctx.db.delete(l._id)
     await ctx.db.delete(c._id)
     return { ok: true }
   },
@@ -187,7 +194,7 @@ export const resetPin = mutation({
     if (!t) return fail(NOT_TEACHER)
     const s = await ctx.db.get(studentId)
     if (!s || !(await ownedClass(ctx, t._id, s.classId))) return fail("Student not found.")
-    await ctx.db.patch(s._id, { pinHash: undefined, failedAttempts: 0, lockedUntil: undefined })
+    await ctx.db.patch(s._id, { pinHash: undefined, failedAttempts: 0, lockedUntil: undefined, lockCount: 0 })
     for (const sess of await ctx.db
       .query("sessions")
       .withIndex("by_student", (q) => q.eq("studentId", s._id))
@@ -270,6 +277,7 @@ export const studentDetail = query({
       class: { id: c._id, name: c.name, year: c.year, weeklyGoal: c.weeklyGoal ?? DEFAULT_GOAL },
       progress: Object.fromEntries(progress.map((p) => [p.itemId, { best: p.best, last: p.last, attempts: p.attempts, mastered: p.mastered, updatedAt: p.updatedAt }])),
       attempts: attempts.map((a) => ({ itemId: a.itemId, kind: a.kind, score: a.score, correct: a.correct, total: a.total, finishedAt: a.finishedAt })),
+      lessons: await ratingsForStudent(ctx, c._id, s._id),
     }
   },
 })

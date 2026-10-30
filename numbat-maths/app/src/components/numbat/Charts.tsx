@@ -69,7 +69,7 @@ function Frame({ title, subtitle, data, unit, children }: ChartProps & { childre
   const [ref, w] = useWidth()
   const [table, setTable] = useState(false)
   return (
-    <figure className="panel chart-card grid gap-2 p-4">
+    <figure className="panel chart-card grid content-start gap-2 p-4">
       <figcaption className="flex flex-wrap items-start justify-between gap-2">
         <span>
           <span className="block font-display text-lg font-semibold">{title}</span>

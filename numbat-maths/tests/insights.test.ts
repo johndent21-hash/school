@@ -1,7 +1,8 @@
 // Checks the teacher overview numbers against the demo class, recounting everything independently.
 //   TZ=Australia/Sydney npx tsx tests/insights.test.ts
-import { classInsights, masteriesFrom, weeklySeries, type ActivityRow } from '../app/src/lib/insights'
-import { demoActivity, demoReport, demoStudentDetail, DEMO_GOAL } from '../app/src/lib/demo'
+import { classInsights, masteriesFrom, ratingConcerns, weeklySeries, type ActivityRow } from '../app/src/lib/insights'
+import { demoActivity, demoClassRatings, demoLessonsFor, demoParentOverview, demoRatingActions, demoReport, demoStudentDetail, DEMO_GOAL } from '../app/src/lib/demo'
+import { isoDate, lessonDate, lessonWeek, ratingSummary } from '../app/src/lib/ratings'
 import { findSkill, findTopic } from '../src/content/index'
 import { weekStart } from '../app/src/lib/rewards'
 
@@ -65,6 +66,45 @@ ok('hardest skills have names', ins.hardest.every((h) => h.title !== h.itemId &&
   ok('dropping scores flagged', x.needsHelp.length === 1 && /dropping: from 85% to 55%/.test(x.needsHelp[0].reason), JSON.stringify(x.needsHelp.map((n) => n.reason)))
   const steady = classInsights([st], rows.map((r) => ({ ...r, score: 75 })), [], 4, now)
   ok('steady scores not flagged', steady.needsHelp.length === 0)
+}
+
+// lesson ratings: counts, dates and the "below expectations" rule
+ok('rating summary', JSON.stringify(ratingSummary([4, 3, 2, 1, 0, null, 3])) === JSON.stringify({ rated: 5, ok: 3, below: 2, absent: 1 }))
+ok('lesson date', lessonDate('2026-10-30') === 'Fri 30 Oct', lessonDate('2026-10-30'))
+ok('week of a Sunday is the Monday before', lessonWeek('2026-11-01') === '2026-10-26', lessonWeek('2026-11-01'))
+ok('week of a Monday is itself', lessonWeek('2026-10-26') === '2026-10-26')
+ok('week across a month', lessonWeek('2026-10-01') === '2026-09-28', lessonWeek('2026-10-01'))
+{
+  const ls = ['2026-10-20', '2026-10-21', '2026-10-23', '2026-10-27'].map((date, i) => ({ id: `l${i}`, date }))
+  const r = (studentId: string, vals: (number | null)[]) => vals.flatMap((v, i) => (v === null ? [] : [{ lessonId: `l${i}`, studentId, value: v }]))
+  const flags = ratingConcerns(
+    [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }],
+    [...ls].reverse(), // order of the list doesn't matter, dates do
+    [...r('a', [4, 2, 1, 3]), ...r('b', [1, 1, 3, 3]), ...r('c', [3, 2, 0, 2]), ...r('d', [2, null, null, null])],
+  )
+  ok('two of the last three below', flags.has('a') && /2 of their last 3/.test(flags.get('a')!), JSON.stringify([...flags]))
+  ok('older lows ignored', !flags.has('b'))
+  ok('absence skipped', flags.has('c') && /2 of their last 3/.test(flags.get('c')!), JSON.stringify([...flags]))
+  ok('one rating is not enough', !flags.has('d'))
+}
+{
+  const cr = demoClassRatings()
+  const today = isoDate(new Date())
+  ok('demo lessons not in the future', cr.lessons.every((l) => l.date <= today))
+  ok('demo lessons in date order', cr.lessons.every((l, i) => i === 0 || l.date >= cr.lessons[i - 1].date))
+  ok('demo ratings 0 to 4', cr.ratings.every((x) => [0, 1, 2, 3, 4].includes(x.value)))
+  ok('demo ratings belong to real lessons and students', cr.ratings.every((x) => cr.lessons.some((l) => l.id === x.lessonId) && report.students.some((st) => st.id === x.studentId)))
+  const avg = (id: string) => {
+    const v = demoLessonsFor(id).map((l) => l.value).filter((x): x is number => x !== null && x > 0)
+    return v.reduce((a, b) => a + b, 0) / v.length
+  }
+  ok('strong student rated higher than struggling one', avg('demo-1') > avg('demo-3') + 0.8, `${avg('demo-1')} vs ${avg('demo-3')}`)
+  // an edit on the sheet shows in that child's parent view
+  const last = cr.lessons[cr.lessons.length - 1]
+  demoRatingActions.setRating(last.id, 'demo-1', 1)
+  ok('teacher edit reaches the parent view', demoParentOverview('demo-1').lessons.find((l) => l.id === last.id)?.value === 1)
+  ok('the parent view only has that child', demoParentOverview('demo-1').lessons.length === cr.lessons.length)
+  demoRatingActions.setRating(last.id, 'demo-1', null)
 }
 
 // a student's own series from their detail matches the class rows for them

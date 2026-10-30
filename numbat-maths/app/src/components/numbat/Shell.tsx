@@ -8,7 +8,7 @@ import { YEAR_SPAN } from '@/content'
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const mounted = useMounted()
-  const { ready, serverError, student, teacher, signOut } = useSession()
+  const { ready, serverError, student, teacher, parent, signOut } = useSession()
   const show = mounted && ready
 
   return (
@@ -16,7 +16,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <header className="site-header no-print">
         <div className="site-header-inner">
           <Link
-            to={show && teacher ? '/teacher' : show && student ? '/home' : '/'}
+            to={show && teacher ? '/teacher' : show && student ? '/home' : show && parent ? '/parent' : '/'}
             className="flex min-w-0 items-center gap-2 rounded-lg text-foreground no-underline"
             aria-label="Numbat Maths home"
           >
@@ -53,10 +53,26 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 </button>
               </>
             )}
-            {show && !student && !teacher && (
-              <Link to={PREVIEW_ONLY ? '/home' : '/'} className="btn btn-primary btn-sm">
-                {PREVIEW_ONLY ? 'Topics' : 'Log in'}
-              </Link>
+            {show && parent && (
+              <>
+                <Link to="/parent" className="btn btn-ghost btn-sm">
+                  {firstName(parent.childName)}’s progress
+                </Link>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => void signOut()}>
+                  <LogOut size={16} aria-hidden="true" />
+                  <span className="max-sm:sr-only">Log out</span>
+                </button>
+              </>
+            )}
+            {show && !student && !teacher && !parent && (
+              <>
+                <Link to="/parent" className="btn btn-ghost btn-sm">
+                  Parents
+                </Link>
+                <Link to={PREVIEW_ONLY ? '/home' : '/'} className="btn btn-primary btn-sm">
+                  {PREVIEW_ONLY ? 'Topics' : 'Log in'}
+                </Link>
+              </>
             )}
           </nav>
         </div>
@@ -64,7 +80,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <main id="main" className="shell-main flex-1">
         {PREVIEW_ONLY && (
           <p className="feedback info mb-4 text-sm">
-            Preview copy: lessons, worked examples, practice and topic tests all work here, and results stay in this browser. Log-ins are switched off; the teacher pages show a made-up example class.
+            Preview copy: lessons, worked examples, practice and topic tests all work here, and results stay in this browser. Log-ins are switched off; the teacher and parent pages show a made-up example class.
           </p>
         )}
         {show && serverError && (
