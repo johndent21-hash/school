@@ -511,11 +511,16 @@ def v_zero_neg(q):
         return [], None, "1"
     m = re.fullmatch(r"(\d*)<i>([a-z])</i><sup>(-?\d+)</sup>", d)
     if m:
-        k, p, e = m.group(1), m.group(2), int(m.group(3))
-        if e == 0:
-            return [], None, k or "1"
-        assert e < 0
-        return [], None, f"{k or 1}/{p}^{-e}"
+        k, e = m.group(1), int(m.group(3))
+        assert e == 0, "negative index on a pronumeral (Path content)"
+        return [], None, k or "1"
+    m = re.fullmatch(r"(\d+)<sup>(-\d+)</sup>", d)
+    if m and "positive index" in q.text:
+        b, n = int(m.group(1)), -int(m.group(2))
+        return [], None, f"1/{b}^{n} (= {Fraction(1, b ** n)})"
+    m = re.fullmatch(r"(\d+) × (\d+)<sup>(-?\d+)</sup>", d)
+    if m:
+        return [int(m.group(1)) * Fraction(int(m.group(2))) ** int(m.group(3))], None, ""
     total = Fraction(0)
     for term in d.split(" + "):
         mm = re.fullmatch(r"(\d+)<sup>(-?\d+)</sup>", term)

@@ -1,6 +1,7 @@
 """Build the four Year 10 'The Fractal Five' booklets: Sierpinski-triangle title page + 30 sessions each.
 
     python3 wu/build_all.py OUTDIR [1,2,3,4]     full booklets  OUTDIR/The_Fractal_Five_Year_10_Term_N.pdf
+                                                 + answer keys  OUTDIR/The_Fractal_Five_Year_10_Term_N_Answers.pdf
     python3 wu/build_all.py OUTDIR sample        OUTDIR/Year10_Sample.pdf (four title pages + Week 1 of each term)
 """
 import contextlib
@@ -125,6 +126,8 @@ if __name__ == "__main__":
         print(build_sample(outdir))
         sys.exit(0)
     terms = [int(t) for t in sys.argv[2].split(",")] if len(sys.argv) > 2 else [1, 2, 3, 4]
+    import answer_key
     for t in terms:
         out, rounds, seqs, S = build(t, outdir)
-        print(f"Term {t}: {out}  (overflow fix rounds: {rounds})")
+        key = answer_key.build_key(t, outdir)
+        print(f"Term {t}: {out}  (overflow fix rounds: {rounds})\n        {key}")

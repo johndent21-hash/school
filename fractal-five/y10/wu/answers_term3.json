@@ -1,0 +1,1352 @@
+[
+ {
+  "week": 1,
+  "session": 1,
+  "q": 1,
+  "family": "trig_bottom",
+  "formula": "trig",
+  "answer": "8.8 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 2,
+  "family": "arc",
+  "formula": "arc",
+  "answer": "7.9 cm",
+  "question": "Find the arc length, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 3,
+  "family": "salary",
+  "formula": "salary_w",
+  "answer": "$1750",
+  "question": "Ruby earns a salary of $91 000 a year. Find Ruby’s weekly pay."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 4,
+  "family": "idx",
+  "formula": "idx_pow",
+  "answer": "5^6",
+  "question": "Write as a single power."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 5,
+  "family": "linear",
+  "formula": "linear",
+  "answer": "10",
+  "question": "Find the value of <i>y</i> when <i>x</i> = −4."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 1,
+  "family": "trig_angle",
+  "formula": "trig_inv",
+  "answer": "23°",
+  "question": "Find <i>θ</i>, correct to the nearest degree."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 2,
+  "family": "v_cyl",
+  "formula": "v_cyl",
+  "answer": "197.9 cm³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 3,
+  "family": "profit_pct",
+  "formula": "loss_pct",
+  "answer": "8% loss",
+  "question": "Find the percentage loss."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "130 km/h",
+  "question": "A train travels from A to B. Find the average speed."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean_freq",
+  "answer": "4.1",
+  "question": "Find the mean of these scores, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 1,
+  "family": "trig_top",
+  "formula": "trig",
+  "answer": "8.3 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 2,
+  "family": "capacity",
+  "formula": "capacity",
+  "answer": "72 L",
+  "question": "How many litres does this tank hold?"
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 3,
+  "family": "interest",
+  "formula": "interest",
+  "answer": "$441",
+  "question": "Find the simple interest."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 4,
+  "family": "sci",
+  "formula": "sci",
+  "answer": "9 × 10^−1",
+  "question": "Write in scientific notation."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "0.65",
+  "question": "Find the probability that the team does not win."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 1,
+  "family": "similar",
+  "formula": "similar",
+  "answer": "6 cm",
+  "question": "These rectangles are similar. Find <i>x</i>."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 2,
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "414.7 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 3,
+  "family": "pct_original",
+  "formula": "pct_orig",
+  "answer": "$78",
+  "question": "Find the price before the increase."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 4,
+  "family": "ratio",
+  "formula": "ratio",
+  "answer": "$140, $210 and $280",
+  "question": "Share $630 in the ratio 2 : 3 : 4. Give all three shares."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 5,
+  "family": "freq",
+  "formula": "exp_freq",
+  "answer": "25",
+  "question": "A fair coin is tossed 50 times. How many heads would you expect?"
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 1,
+  "family": "trig_ratio",
+  "formula": "trig",
+  "answer": "4/5",
+  "question": "Write cos <i>θ</i> as a fraction."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 2,
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "70 cm³",
+  "question": "The shaded face has an area of 20 cm². Find the volume of the prism."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 3,
+  "family": "wages",
+  "formula": "wage_t15",
+  "answer": "$1222",
+  "question": "Find Kai’s total pay for the week."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 4,
+  "family": "zero_neg",
+  "formula": "zero_neg",
+  "answer": "1/7^3 (= 1/343)",
+  "question": "Write with a positive index."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "3/8",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is white."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 1,
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "11.3 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 2,
+  "family": "sa_rect",
+  "formula": "sa_rect",
+  "answer": "67 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 3,
+  "family": "holiday_pay",
+  "formula": "holiday",
+  "answer": "$7050",
+  "question": "Find Omar’s total holiday pay."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 4,
+  "family": "formula_sub",
+  "formula": "fs_F",
+  "answer": "23",
+  "question": "Find <i>F</i> when <i>C</i> = −5."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 5,
+  "family": "gradient",
+  "formula": "gradient",
+  "answer": "1",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 1,
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "7.5 cm",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 2,
+  "family": "a_circle",
+  "formula": "a_circle",
+  "answer": "63.6 m²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 3,
+  "family": "pct_change",
+  "formula": "pct_inc",
+  "answer": "$936",
+  "question": "Find the new weekly wage."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 4,
+  "family": "ratio",
+  "formula": "ratio",
+  "answer": "$80, $120 and $160",
+  "question": "Share $360 in the ratio 2 : 3 : 4. Give all three shares."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "3/5",
+  "question": "Find the probability that a goal is not scored."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 1,
+  "family": "trig_angle",
+  "formula": "trig_inv",
+  "answer": "34°",
+  "question": "Find <i>θ</i>, correct to the nearest degree."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 2,
+  "family": "sector",
+  "formula": "sector",
+  "answer": "113.1 cm²",
+  "question": "Find the area of this sector, correct to 1 decimal place."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 3,
+  "family": "commission",
+  "formula": "commission",
+  "answer": "$17 125",
+  "question": "Find Tom’s commission."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "4.5 hours",
+  "question": "A train travels from A to B at an average speed of 60 km/h. Find <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 5,
+  "family": "linear",
+  "formula": "linear",
+  "answer": "gradient −4, y-intercept 1",
+  "question": "State the gradient and the <i>y</i>-intercept."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 1,
+  "family": "trig_ratio",
+  "formula": "trig",
+  "answer": "4/3",
+  "question": "Write tan <i>θ</i> as a fraction."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 2,
+  "family": "capacity",
+  "formula": "capacity",
+  "answer": "7.6 L",
+  "question": "How many litres does this tank hold, correct to 1 decimal place?"
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 3,
+  "family": "interest",
+  "formula": "interest",
+  "answer": "$240",
+  "question": "Find the simple interest."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 4,
+  "family": "zero_neg",
+  "formula": "zero_neg",
+  "answer": "1",
+  "question": "Evaluate."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 5,
+  "family": "gradient",
+  "formula": "gradient",
+  "answer": "−1/2",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 1,
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "8.5 m",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 2,
+  "family": "sa_rect",
+  "formula": "sa_rect",
+  "answer": "98 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 3,
+  "family": "holiday_pay",
+  "formula": "holiday",
+  "answer": "$5938.45",
+  "question": "Find Nina’s total holiday pay."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 4,
+  "family": "formula_sub",
+  "formula": "fs_A",
+  "answer": "6",
+  "question": "Find <i>h</i> when <i>A</i> = 24 and <i>b</i> = 8."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 5,
+  "family": "freq",
+  "formula": "rel_freq",
+  "answer": "0.25 (or 1/4)",
+  "question": "A six came up 15 times in 60 rolls. Find the relative frequency of a six."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 1,
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "13.2 cm",
+  "question": "Find <i>c</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 2,
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "7 m",
+  "question": "The shaded face has an area of 20 m² and the volume is 140 m³. Find <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 3,
+  "family": "commission",
+  "formula": "comm_base",
+  "answer": "$773",
+  "question": "Find Ruby’s total pay for the week."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 4,
+  "family": "sci",
+  "formula": "sci",
+  "answer": "0.000016",
+  "question": "Write as a basic numeral."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "9.4",
+  "question": "Find the mean of these masses."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 1,
+  "family": "trig_bottom",
+  "formula": "trig",
+  "answer": "10.0 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 2,
+  "family": "arc",
+  "formula": "arc",
+  "answer": "11.8 cm",
+  "question": "Find the arc length, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 3,
+  "family": "salary",
+  "formula": "salary_f",
+  "answer": "$2855.77",
+  "question": "Tom earns a salary of $74 250 a year. Find Tom’s fortnightly pay, to the nearest cent."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 4,
+  "family": "idx",
+  "formula": "idx_mult",
+  "answer": "14a^7",
+  "question": "Simplify."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "5/12",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is green."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 1,
+  "family": "similar",
+  "formula": "similar",
+  "answer": "7.5 cm",
+  "question": "These rectangles are similar. Find <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 2,
+  "family": "v_cyl",
+  "formula": "v_cyl",
+  "answer": "235.6 m³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 3,
+  "family": "pct_original",
+  "formula": "pct_orig",
+  "answer": "$500",
+  "question": "Find the rent before the increase."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 4,
+  "family": "ratio",
+  "formula": "ratio",
+  "answer": "$60 and $90",
+  "question": "Share $150 in the ratio 2 : 3. Give both shares."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "0.53",
+  "question": "Find the probability that the player does not win."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 1,
+  "family": "trig_top",
+  "formula": "trig",
+  "answer": "32.7 m",
+  "question": "The angle of depression is 36°. Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 2,
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "285.9 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 3,
+  "family": "pct_change",
+  "formula": "pct_dec",
+  "answer": "$71.96",
+  "question": "Find the sale price."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 4,
+  "family": "formula_sub",
+  "formula": "fs_P",
+  "answer": "26",
+  "question": "Find <i>P</i> when <i>l</i> = 8 and <i>w</i> = 5."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 5,
+  "family": "freq",
+  "formula": "rel_freq",
+  "answer": "0.175 (or 7/40)",
+  "question": "Heads came up 7 times in 40 tosses. Find the relative frequency of heads."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 1,
+  "family": "trig_angle",
+  "formula": "trig_inv",
+  "answer": "28°",
+  "question": "Find the angle of depression, <i>θ</i>, correct to the nearest degree."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 2,
+  "family": "a_circle",
+  "formula": "a_circle",
+  "answer": "227.0 cm²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 3,
+  "family": "wages",
+  "formula": "wage",
+  "answer": "$896.80",
+  "question": "Hamish earns $23.60 an hour and works 38 hours. How much does Hamish earn?"
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 4,
+  "family": "zero_neg",
+  "formula": "zero_neg",
+  "answer": "1/1000",
+  "question": "Evaluate."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "1/2",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is green."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 1,
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "25 cm",
+  "question": "Find the length of the hypotenuse, <i>c</i>."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 2,
+  "family": "sector",
+  "formula": "sector",
+  "answer": "42.4 cm²",
+  "question": "Find the area of this sector, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 3,
+  "family": "profit_pct",
+  "formula": "profit_pct",
+  "answer": "25% profit",
+  "question": "Find the percentage profit."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "8 m/s",
+  "question": "A runner travels from A to B. Find the average speed."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean_freq",
+  "answer": "7.1",
+  "question": "Find the mean of these scores, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 1,
+  "family": "trig_top",
+  "formula": "trig",
+  "answer": "4.1 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 2,
+  "family": "v_cyl",
+  "formula": "v_cyl",
+  "answer": "502.7 m³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 3,
+  "family": "salary",
+  "formula": "salary_w",
+  "answer": "$1591.35",
+  "question": "Aisha earns a salary of $82 750 a year. Find Aisha’s weekly pay, to the nearest cent."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 4,
+  "family": "sci",
+  "formula": "sci",
+  "answer": "6.2 × 10^−3",
+  "question": "Write in scientific notation."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 5,
+  "family": "gradient",
+  "formula": "gradient",
+  "answer": "1/2",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 1,
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "7.5 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 2,
+  "family": "capacity",
+  "formula": "capacity",
+  "answer": "13.9 L",
+  "question": "How many litres does this tank hold, correct to 1 decimal place?"
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 3,
+  "family": "holiday_pay",
+  "formula": "holiday",
+  "answer": "$5640",
+  "question": "Find Jo’s total holiday pay."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 4,
+  "family": "idx",
+  "formula": "idx_div",
+  "answer": "3m^5",
+  "question": "Simplify."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 5,
+  "family": "linear",
+  "formula": "linear",
+  "answer": "gradient −2, y-intercept 6",
+  "question": "State the gradient and the <i>y</i>-intercept."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 1,
+  "family": "trig_ratio",
+  "formula": "trig",
+  "answer": "4/5",
+  "question": "Write sin <i>θ</i> as a fraction."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 2,
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "628.3 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 3,
+  "family": "pct_original",
+  "formula": "pct_orig",
+  "answer": "$80",
+  "question": "Find the original price of the backpack."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 4,
+  "family": "formula_sub",
+  "formula": "fs_v",
+  "answer": "6.4",
+  "question": "Find <i>t</i> when <i>v</i> = 20, <i>u</i> = 4 and <i>a</i> = 2.5."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "1/3",
+  "question": "A fair die is rolled. Find the probability of rolling a number less than 3."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 1,
+  "family": "similar",
+  "formula": "similar",
+  "answer": "9 cm",
+  "question": "These rectangles are similar. Find <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 2,
+  "family": "sector",
+  "formula": "sector",
+  "answer": "14.1 m²",
+  "question": "Find the area of this sector, correct to 1 decimal place."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 3,
+  "family": "wages",
+  "formula": "wage_dt",
+  "answer": "$1475.80",
+  "question": "Find Tom’s total pay for the week."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 4,
+  "family": "zero_neg",
+  "formula": "zero_neg",
+  "answer": "3/4 (or 0.75)",
+  "question": "Evaluate."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 5,
+  "family": "freq",
+  "formula": "exp_freq",
+  "answer": "50",
+  "question": "A fair die is rolled 300 times. How many times would you expect a 4?"
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 1,
+  "family": "trig_bottom",
+  "formula": "trig",
+  "answer": "26.9 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 2,
+  "family": "arc",
+  "formula": "arc",
+  "answer": "15.7 m",
+  "question": "Find the arc length, correct to 1 decimal place."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 3,
+  "family": "interest",
+  "formula": "interest",
+  "answer": "$1650",
+  "question": "Find the simple interest."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 4,
+  "family": "idx",
+  "formula": "idx_pow",
+  "answer": "27a^6",
+  "question": "Simplify."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 5,
+  "family": "linear",
+  "formula": "linear",
+  "answer": "3",
+  "question": "Find the value of <i>y</i> when <i>x</i> = 2.5."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 1,
+  "family": "trig_angle",
+  "formula": "trig_inv",
+  "answer": "54°",
+  "question": "Find <i>θ</i>, correct to the nearest degree."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 2,
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "127.5 cm³",
+  "question": "The shaded face has an area of 15 cm². Find the volume of the prism."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 3,
+  "family": "profit_pct",
+  "formula": "loss_pct",
+  "answer": "20% loss",
+  "question": "Find the percentage loss."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "8 m/s",
+  "question": "A runner travels from A to B. Find the average speed."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "0.18",
+  "question": "Find the probability that the student does not pass."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 1,
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "15.3 cm",
+  "question": "Find <i>c</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 2,
+  "family": "a_circle",
+  "formula": "a_circle",
+  "answer": "50.3 cm²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 3,
+  "family": "pct_change",
+  "formula": "pct_dec",
+  "answer": "$340",
+  "question": "Find the sale price."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 4,
+  "family": "ratio",
+  "formula": "ratio",
+  "answer": "$210 and $150",
+  "question": "Share $360 in the ratio 7 : 5. Give both shares."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 5,
+  "family": "gradient",
+  "formula": "gradient",
+  "answer": "3/2",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 1,
+  "family": "trig_ratio",
+  "formula": "trig",
+  "answer": "5/13",
+  "question": "Write sin <i>θ</i> as a fraction."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 2,
+  "family": "sa_rect",
+  "formula": "sa_rect",
+  "answer": "94 cm²",
+  "question": "Find the surface area of this prism."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 3,
+  "family": "commission",
+  "formula": "comm_base",
+  "answer": "$825",
+  "question": "Find Noah’s total pay for the week."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 4,
+  "family": "sci",
+  "formula": "sci",
+  "answer": "0.0308",
+  "question": "Write as a basic numeral."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "69",
+  "question": "Find the mean of these marks."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 1,
+  "family": "pyth_short",
+  "formula": "pyth_short",
+  "answer": "12.6 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 2,
+  "family": "sector",
+  "formula": "sector",
+  "answer": "64.1 m²",
+  "question": "Find the area of this sector, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 3,
+  "family": "interest",
+  "formula": "interest",
+  "answer": "$360",
+  "question": "Find the simple interest on this loan."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 4,
+  "family": "zero_neg",
+  "formula": "zero_neg",
+  "answer": "1",
+  "question": "Simplify."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "7/12",
+  "question": "Find the probability that the counter is not red."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 1,
+  "family": "trig_top",
+  "formula": "trig",
+  "answer": "63.8 m",
+  "question": "The angle of depression is 28°. Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 2,
+  "family": "v_cyl",
+  "formula": "v_cyl",
+  "answer": "445.3 cm³",
+  "question": "Find the volume of this cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 3,
+  "family": "pct_original",
+  "formula": "pct_orig",
+  "answer": "$80",
+  "question": "Find the original price of the jacket."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "90 km/h",
+  "question": "A car travels from A to B. Find the average speed."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "3/7",
+  "question": "A letter is chosen at random from this word. Find <i>P</i>(S)."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 1,
+  "family": "similar",
+  "formula": "similar",
+  "answer": "2 cm",
+  "question": "These rectangles are similar. Find <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 2,
+  "family": "sa_cyl",
+  "formula": "sa_cyl",
+  "answer": "245.0 cm²",
+  "question": "Find the surface area of this closed cylinder, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 3,
+  "family": "profit_pct",
+  "formula": "profit_pct",
+  "answer": "25% profit",
+  "question": "Find the percentage profit."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 4,
+  "family": "idx",
+  "formula": "idx_div",
+  "answer": "3y^5",
+  "question": "Simplify."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 5,
+  "family": "linear",
+  "formula": "linear",
+  "answer": "gradient −2, y-intercept 7",
+  "question": "State the gradient and the <i>y</i>-intercept."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 1,
+  "family": "trig_bottom",
+  "formula": "trig",
+  "answer": "12.2 cm",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 2,
+  "family": "v_prism",
+  "formula": "v_prism",
+  "answer": "81 cm³",
+  "question": "The shaded face has an area of 18 cm². Find the volume of the prism."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 3,
+  "family": "holiday_pay",
+  "formula": "holiday",
+  "answer": "$4629.50",
+  "question": "Find Ben’s total holiday pay."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 4,
+  "family": "sci",
+  "formula": "sci",
+  "answer": "1.5 × 10^5",
+  "question": "Write in scientific notation."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 5,
+  "family": "gradient",
+  "formula": "gradient",
+  "answer": "3",
+  "question": "Find the gradient of line AB."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 1,
+  "family": "pyth_hyp",
+  "formula": "pyth_hyp",
+  "answer": "14.2 cm",
+  "question": "Find <i>c</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 2,
+  "family": "arc",
+  "formula": "arc",
+  "answer": "22.0 cm",
+  "question": "Find the arc length, correct to 1 decimal place."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 3,
+  "family": "wages",
+  "formula": "wage",
+  "answer": "$750",
+  "question": "Ava earns $25 an hour and works 30 hours. How much does Ava earn?"
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 4,
+  "family": "formula_sub",
+  "formula": "fs_C",
+  "answer": "5",
+  "question": "Find <i>d</i> when <i>C</i> = 17."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 5,
+  "family": "freq",
+  "formula": "rel_freq",
+  "answer": "0.36 (or 9/25)",
+  "question": "A spinner was spun 100 times. Find the relative frequency of green."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 1,
+  "family": "trig_top",
+  "formula": "trig",
+  "answer": "9.2 m",
+  "question": "Find <i>x</i>, correct to 1 decimal place."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 2,
+  "family": "a_circle",
+  "formula": "a_circle",
+  "answer": "63.6 m²",
+  "question": "Find the area of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 3,
+  "family": "salary",
+  "formula": "salary_f",
+  "answer": "$3665.38",
+  "question": "Leo earns a salary of $95 300 a year. Find Leo’s fortnightly pay, to the nearest cent."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 4,
+  "family": "ratio",
+  "formula": "ratio",
+  "answer": "$40 and $160",
+  "question": "Share $200 in the ratio 1 : 4. Give both shares."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "10",
+  "question": "Find the mean of these scores."
+ }
+]

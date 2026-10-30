@@ -293,12 +293,13 @@ L1["idx"] = [("mult", 1, 2, 3, 1, 4), ("div", 1, 3, 8, 1, 2), ("pow", 1, 5, 2, 3
 L2["idx"] = [("mult", 4, "x", 5, 5, 1), ("div", 15, "m", 8, 5, 3), ("pow", 3, "a", 2, 3), ("div", 18, "y", 6, 6, 1),
              ("mult", 2, "a", 3, 7, 4), ("pow", 5, "x", 4, 2), ("div", 24, "p", 9, 8, 4)]
 # zero_neg: ("neg", b, n) b^-n | ("zplus", b, k) b^0 + k | ("zsum", b, c) b^0 + c^0 | ("zero", b) b^0 |
-#   ("zcoef", k, p) k p^0 | ("zbr", k, p) (k p)^0 | ("pos", p, n) p^-n | ("poscoef", k, p, n) k p^-n |
-#   ("negsum", b) b^-1 + b^0
-L1["zero_neg"] = [("neg", 2, 3), ("zplus", 7, 3), ("pos", "x", 2), ("neg", 10, 2), ("zero", 9), ("neg", 5, 1),
-                  ("zcoef", 6, "a"), ("neg", 3, 2), ("pos", "m", 4), ("zsum", 5, 2)]
-L2["zero_neg"] = [("poscoef", 3, "x", 2), ("neg", 4, 2), ("negsum", 2), ("zbr", 5, "y"), ("neg", 10, 3),
-                  ("pos", "a", 5), ("poscoef", 5, "k", 3)]
+#   ("zcoef", k, p) k p^0 | ("zbr", k, p) (k p)^0 | ("posnum", b, n) write b^-n with a positive index |
+#   ("negcoef", k, b, n) k x b^-n | ("negsum", b) b^-1 + b^0
+# Negative indices use numerical bases only (MA5-IND-C-01); pronumerals appear only with the zero index.
+L1["zero_neg"] = [("neg", 2, 3), ("zplus", 7, 3), ("posnum", 5, 2), ("neg", 10, 2), ("zero", 9), ("neg", 5, 1),
+                  ("zcoef", 6, "a"), ("neg", 3, 2), ("posnum", 3, 4), ("zsum", 5, 2)]
+L2["zero_neg"] = [("negcoef", 3, 2, 2), ("neg", 4, 2), ("negsum", 2), ("zbr", 5, "y"), ("neg", 10, 3),
+                  ("posnum", 7, 3), ("negcoef", 5, 10, 2)]
 # sci: ("to_sci", number as text) | ("to_num", a as text, power)
 L1["sci"] = [("to_sci", "45000"), ("to_sci", "3600000"), ("to_sci", "820"), ("to_sci", "7000"), ("to_sci", "150000"),
              ("to_num", "3.2", 4), ("to_num", "5", 3), ("to_num", "6.1", 5), ("to_num", "2.75", 6), ("to_num", "9.4", 2)]
@@ -829,12 +830,13 @@ def g_zero_neg(it):
     elif kind == "zbr":
         _, k, p = it
         disp, txt, ans = f"({k}{_b(p)}){sup(0)}", "Simplify.", "1"
-    elif kind == "pos":
-        _, p, n = it
-        disp, txt, ans = f"{_b(p)}{sup(-n)}", "Write with a positive index.", f"1/{p}^{n}"
-    elif kind == "poscoef":
-        _, k, p, n = it
-        disp, txt, ans = f"{k}{_b(p)}{sup(-n)}", "Write with a positive index.", f"{k}/{p}^{n}"
+    elif kind == "posnum":
+        _, b, n = it
+        disp, txt, ans = f"{b}{sup(-n)}", "Write with a positive index.", f"1/{b}^{n} (= {fstr(Fraction(1, b ** n))})"
+    elif kind == "negcoef":
+        _, k, b, n = it
+        v = Fraction(k, b ** n)
+        disp, txt, ans = f"{k} {TIMES} {b}{sup(-n)}", "Evaluate.", f"{fstr(v)} (or {nf(float(v))})"
     else:  # negsum: b^-1 + b^0
         _, b = it
         disp, txt, ans = f"{b}{sup(-1)} + {b}{sup(0)}", "Evaluate.", fstr(Fraction(1, b) + 1)
