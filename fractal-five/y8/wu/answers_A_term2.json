@@ -1,0 +1,1352 @@
+[
+ {
+  "week": 1,
+  "session": 1,
+  "q": 1,
+  "family": "ang_par",
+  "formula": "ang_alt",
+  "answer": "55°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 2,
+  "family": "a_para",
+  "formula": "a_para",
+  "answer": "36 cm²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 3,
+  "family": "frac_qty",
+  "formula": "frac_qty",
+  "answer": "$56",
+  "question": "Calculate."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 4,
+  "family": "ratio_share",
+  "formula": "ratio_share",
+  "answer": "$40 and $160",
+  "question": "Share $200 in the ratio 1 : 4. Give both shares."
+ },
+ {
+  "week": 1,
+  "session": 1,
+  "q": 5,
+  "family": "med_mode",
+  "formula": "median",
+  "answer": "15",
+  "question": "Find the median of these scores."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 1,
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "72°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 2,
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "96 cm³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 3,
+  "family": "pct_express",
+  "formula": "pct_express",
+  "answer": "75%",
+  "question": "12 of the 16 nippers at the surf club passed the swim test. What percentage passed?"
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 4,
+  "family": "subst",
+  "formula": "subst",
+  "answer": "15",
+  "question": "Find the value of this expression when <i>x</i> = 5."
+ },
+ {
+  "week": 1,
+  "session": 2,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "3/10",
+  "question": "Find the probability that the team does not win."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 1,
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "45°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 2,
+  "family": "circ",
+  "formula": "c_circ_r",
+  "answer": "81.7 cm",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 3,
+  "family": "pct_qty",
+  "formula": "pct_qty",
+  "answer": "$16",
+  "question": "Calculate."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 4,
+  "family": "ratio_simp",
+  "formula": "ratio_simp",
+  "answer": "3 : 5",
+  "question": "Simplify."
+ },
+ {
+  "week": 1,
+  "session": 3,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "1/5",
+  "question": "A letter is chosen at random from this word. Find <i>P</i>(I)."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 1,
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "70°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 2,
+  "family": "a_comp",
+  "formula": "a_comp",
+  "answer": "52 m²",
+  "question": "Find the area of this shape."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 3,
+  "family": "idx_root",
+  "formula": "idx_eval",
+  "answer": "17",
+  "question": "Evaluate."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 4,
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "15x − 10",
+  "question": "Expand."
+ },
+ {
+  "week": 2,
+  "session": 1,
+  "q": 5,
+  "family": "table_vals",
+  "formula": "tv_table",
+  "answer": "5, 7",
+  "question": "Complete the table for <i>y</i> = 2<i>x</i> + 3."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 1,
+  "family": "ang_point",
+  "formula": "ang_vert",
+  "answer": "124°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 2,
+  "family": "a_rect",
+  "formula": "a_rect",
+  "answer": "54 cm²",
+  "question": "Find the area of this rectangle."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 3,
+  "family": "order_ops",
+  "formula": "order_ops",
+  "answer": "−13",
+  "question": "Evaluate."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 4,
+  "family": "equation",
+  "formula": "eq_two",
+  "answer": "a = 7",
+  "question": "Solve."
+ },
+ {
+  "week": 2,
+  "session": 2,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "4",
+  "question": "Find the mean of these goal tallies."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 1,
+  "family": "ang_comp",
+  "formula": "ang_comp",
+  "answer": "27°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 2,
+  "family": "a_tri",
+  "formula": "a_tri",
+  "answer": "39 m²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 3,
+  "family": "fdp",
+  "formula": "f2d",
+  "answer": "0.36",
+  "question": "Write as a decimal."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 4,
+  "family": "time",
+  "formula": "t_conv",
+  "answer": "5:25 pm",
+  "question": "Write 17:25 in 12-hour time (am or pm)."
+ },
+ {
+  "week": 2,
+  "session": 3,
+  "q": 5,
+  "family": "range",
+  "formula": "range",
+  "answer": "9",
+  "question": "Find the range of these try tallies."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 1,
+  "family": "ang_par",
+  "formula": "ang_corr",
+  "answer": "115°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 2,
+  "family": "units",
+  "formula": "u_vol",
+  "answer": "2500 mL",
+  "question": "Convert 2.5 L to millilitres."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 3,
+  "family": "frac_qty",
+  "formula": "frac_qty",
+  "answer": "$60",
+  "question": "Calculate."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 4,
+  "family": "rates",
+  "formula": "rate",
+  "answer": "$27 per hour",
+  "question": "Sam earns $135 for 5 hours of work at the surf club kiosk. Find Sam’s hourly rate."
+ },
+ {
+  "week": 3,
+  "session": 1,
+  "q": 5,
+  "family": "med_mode",
+  "formula": "mode",
+  "answer": "3",
+  "question": "The dot plot shows the goals a netball team scored in each game. Find the mode."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 1,
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "105°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 2,
+  "family": "perimeter",
+  "formula": "p_square",
+  "answer": "28 cm",
+  "question": "Find the perimeter of this square."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 3,
+  "family": "pct_express",
+  "formula": "pct_express",
+  "answer": "60%",
+  "question": "The Kingscliff touch footy team won 9 of its 15 games. What percentage of its games did it win?"
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 4,
+  "family": "subst",
+  "formula": "subst",
+  "answer": "10",
+  "question": "Find the value of this expression when <i>a</i> = 13 and <i>b</i> = 7."
+ },
+ {
+  "week": 3,
+  "session": 2,
+  "q": 5,
+  "family": "exp_prob",
+  "formula": "exp_prob",
+  "answer": "1/6",
+  "question": "A die was rolled 60 times. Find the experimental probability of rolling a 6."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 1,
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "123°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 2,
+  "family": "a_para",
+  "formula": "a_para",
+  "answer": "7 cm",
+  "question": "The area of this parallelogram is 56 cm². Find <i>x</i>."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 3,
+  "family": "pow10",
+  "formula": "pow10_div",
+  "answer": "0.26",
+  "question": "Calculate."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 4,
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "12p + 3",
+  "question": "Expand."
+ },
+ {
+  "week": 3,
+  "session": 3,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "5/8",
+  "question": "Find the probability that the surf is not flat."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 1,
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "58°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 2,
+  "family": "circ",
+  "formula": "c_circ_d",
+  "answer": "44.0 m",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 3,
+  "family": "pct_qty",
+  "formula": "pct_qty",
+  "answer": "45 kg",
+  "question": "Calculate."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "5 m/s",
+  "question": "A runner runs from A to B. Find the average speed."
+ },
+ {
+  "week": 4,
+  "session": 1,
+  "q": 5,
+  "family": "table_vals",
+  "formula": "tv_point",
+  "answer": "(2, 5)",
+  "question": "A and B lie on the line <i>y</i> = 2<i>x</i> + 1. Write the coordinates of B."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 1,
+  "family": "ang_point",
+  "formula": "ang_point",
+  "answer": "95°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 2,
+  "family": "a_comp",
+  "formula": "a_comp",
+  "answer": "84 m²",
+  "question": "Find the area of this shape."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 3,
+  "family": "fdp",
+  "formula": "p2d",
+  "answer": "0.35",
+  "question": "Write as a decimal."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 4,
+  "family": "equation",
+  "formula": "eq_one",
+  "answer": "y = 23",
+  "question": "Solve."
+ },
+ {
+  "week": 4,
+  "session": 2,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "3/7",
+  "question": "A letter is chosen at random from this word. Find <i>P</i>(S)."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 1,
+  "family": "ang_comp",
+  "formula": "ang_supp",
+  "answer": "48°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 2,
+  "family": "a_rect",
+  "formula": "a_rect",
+  "answer": "8 cm",
+  "question": "The area of this rectangle is 48 cm². Find <i>x</i>."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 3,
+  "family": "idx_root",
+  "formula": "root_eval",
+  "answer": "9",
+  "question": "Evaluate."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 4,
+  "family": "ratio_share",
+  "formula": "ratio_share",
+  "answer": "48 and 36",
+  "question": "Share 84 lollies in the ratio 4 : 3. Give both shares."
+ },
+ {
+  "week": 4,
+  "session": 3,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "50",
+  "question": "Find the mean of these marks."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 1,
+  "family": "ang_par",
+  "formula": "ang_coint",
+  "answer": "70°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 2,
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "10 cm",
+  "question": "The volume of this rectangular prism is 60 cm³. Find <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 3,
+  "family": "frac_qty",
+  "formula": "frac_qty",
+  "answer": "24",
+  "question": "<span class=\"frac\"><span class=\"fn\">3</span><span class=\"fd\">4</span></span> of the 32 nippers at the surf club passed the swim test. How many passed?"
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 4,
+  "family": "ratio_simp",
+  "formula": "ratio_simp",
+  "answer": "1 : 4",
+  "question": "Write as a ratio in simplest form."
+ },
+ {
+  "week": 5,
+  "session": 1,
+  "q": 5,
+  "family": "range",
+  "formula": "range",
+  "answer": "19 cm",
+  "question": "Find the range of these heights."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 1,
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "109°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 2,
+  "family": "a_tri",
+  "formula": "a_tri",
+  "answer": "7 m",
+  "question": "The area of this triangle is 28 m². Find <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 3,
+  "family": "pct_express",
+  "formula": "pct_express",
+  "answer": "60%",
+  "question": "Write as a percentage."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 4,
+  "family": "subst",
+  "formula": "subst",
+  "answer": "41",
+  "question": "Find the value of this expression when <i>a</i> = 6."
+ },
+ {
+  "week": 5,
+  "session": 2,
+  "q": 5,
+  "family": "med_mode",
+  "formula": "median",
+  "answer": "5",
+  "question": "The dot plot shows the hours of sport some students played last week. Find the median."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 1,
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "105°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 2,
+  "family": "perimeter",
+  "formula": "p_poly",
+  "answer": "28 cm",
+  "question": "Find the perimeter of this trapezium."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 3,
+  "family": "pct_qty",
+  "formula": "pct_qty",
+  "answer": "$12",
+  "question": "Calculate."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 4,
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "6a + 6",
+  "question": "Expand."
+ },
+ {
+  "week": 5,
+  "session": 3,
+  "q": 5,
+  "family": "exp_prob",
+  "formula": "exp_prob",
+  "answer": "3/10",
+  "question": "Heads came up 27 times in 90 tosses of a coin. Find the experimental probability of heads."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 1,
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "58°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 2,
+  "family": "a_para",
+  "formula": "a_para",
+  "answer": "120 cm²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 3,
+  "family": "order_ops",
+  "formula": "order_ops",
+  "answer": "−1",
+  "question": "Evaluate."
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 4,
+  "family": "time",
+  "formula": "t_diff",
+  "answer": "35 minutes",
+  "question": "Surf club training starts at 06:30 and finishes at 07:05. How long does it last?"
+ },
+ {
+  "week": 6,
+  "session": 1,
+  "q": 5,
+  "family": "table_vals",
+  "formula": "tv_point",
+  "answer": "(4, 5)",
+  "question": "A and B lie on the line <i>y</i> = <i>x</i> + 1. Write the coordinates of B."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 1,
+  "family": "ang_comp",
+  "formula": "ang_comp",
+  "answer": "38°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 2,
+  "family": "circ",
+  "formula": "c_circ_r",
+  "answer": "12.6 m",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 3,
+  "family": "fdp",
+  "formula": "f2p",
+  "answer": "40%",
+  "question": "Write as a percentage."
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 4,
+  "family": "rates",
+  "formula": "best_buy",
+  "answer": "Bottle B ($3 per L)",
+  "question": "Which bottle of juice is the better buy?"
+ },
+ {
+  "week": 6,
+  "session": 2,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "4/7",
+  "question": "Find the probability that a goal is not scored."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 1,
+  "family": "ang_point",
+  "formula": "ang_point",
+  "answer": "118°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 2,
+  "family": "units",
+  "formula": "u_len",
+  "answer": "125 cm",
+  "question": "Convert 1.25 m to centimetres."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 3,
+  "family": "frac_qty",
+  "formula": "frac_qty",
+  "answer": "$75",
+  "question": "Calculate."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 4,
+  "family": "equation",
+  "formula": "eq_one",
+  "answer": "k = 9",
+  "question": "Solve."
+ },
+ {
+  "week": 6,
+  "session": 3,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "28",
+  "question": "Find the mean of these temperatures."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 1,
+  "family": "ang_par",
+  "formula": "ang_coint",
+  "answer": "76°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 2,
+  "family": "a_comp",
+  "formula": "a_comp",
+  "answer": "80 m²",
+  "question": "Find the area of this shape."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 3,
+  "family": "pow10",
+  "formula": "pow10_mul",
+  "answer": "1240",
+  "question": "Calculate."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "30 km",
+  "question": "A cyclist rides from A to B at an average speed of <span style=\"white-space:nowrap\">15 km/h</span>. Find <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 1,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "1/5",
+  "question": "One marble is chosen at random from this bag. Find the probability that it is red."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 1,
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "75°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 2,
+  "family": "a_rect",
+  "formula": "a_square",
+  "answer": "121 m²",
+  "question": "Find the area of this square."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 3,
+  "family": "idx_root",
+  "formula": "root_eval",
+  "answer": "12",
+  "question": "Evaluate."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 4,
+  "family": "subst",
+  "formula": "subst",
+  "answer": "21",
+  "question": "Find the value of this expression when <i>m</i> = 4."
+ },
+ {
+  "week": 7,
+  "session": 2,
+  "q": 5,
+  "family": "range",
+  "formula": "range",
+  "answer": "12",
+  "question": "Find the range of these scores."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 1,
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "95°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 2,
+  "family": "a_tri",
+  "formula": "a_tri",
+  "answer": "18 cm²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 3,
+  "family": "pct_express",
+  "formula": "pct_express",
+  "answer": "20%",
+  "question": "Write as a percentage."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 4,
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "8m + 8n",
+  "question": "Expand."
+ },
+ {
+  "week": 7,
+  "session": 3,
+  "q": 5,
+  "family": "med_mode",
+  "formula": "mode",
+  "answer": "4",
+  "question": "The dot plot shows the number of pets students in a class own. Find the mode."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 1,
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "51°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 2,
+  "family": "v_rect",
+  "formula": "v_rect",
+  "answer": "80 cm³",
+  "question": "Find the volume of this rectangular prism."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 3,
+  "family": "pct_qty",
+  "formula": "pct_qty",
+  "answer": "21 kg",
+  "question": "Calculate."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 4,
+  "family": "ratio_share",
+  "formula": "ratio_share",
+  "answer": "$45 and $75",
+  "question": "Share $120 in the ratio 3 : 5. Give both shares."
+ },
+ {
+  "week": 8,
+  "session": 1,
+  "q": 5,
+  "family": "table_vals",
+  "formula": "tv_table",
+  "answer": "2, 8",
+  "question": "Complete the table for <i>y</i> = 3<i>x</i> − 1."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 1,
+  "family": "ang_point",
+  "formula": "ang_vert",
+  "answer": "81°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 2,
+  "family": "perimeter",
+  "formula": "p_rect",
+  "answer": "46 cm",
+  "question": "Find the perimeter of this rectangle."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 3,
+  "family": "fdp",
+  "formula": "d2f",
+  "answer": "3/5",
+  "question": "Write as a fraction in simplest form."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 4,
+  "family": "ratio_simp",
+  "formula": "ratio_simp",
+  "answer": "2 : 3 : 5",
+  "question": "Simplify."
+ },
+ {
+  "week": 8,
+  "session": 2,
+  "q": 5,
+  "family": "exp_prob",
+  "formula": "exp_prob",
+  "answer": "7/25",
+  "question": "A spinner was spun 50 times. Find the experimental probability of red."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 1,
+  "family": "ang_comp",
+  "formula": "ang_supp",
+  "answer": "55°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 2,
+  "family": "a_para",
+  "formula": "a_para",
+  "answer": "42 cm²",
+  "question": "Find the area of this parallelogram."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 3,
+  "family": "frac_qty",
+  "formula": "frac_qty",
+  "answer": "15",
+  "question": "A netball team won <span class=\"frac\"><span class=\"fn\">5</span><span class=\"fd\">6</span></span> of its 18 games. How many games did it win?"
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 4,
+  "family": "equation",
+  "formula": "eq_two",
+  "answer": "m = 9",
+  "question": "Solve."
+ },
+ {
+  "week": 8,
+  "session": 3,
+  "q": 5,
+  "family": "mean",
+  "formula": "mean",
+  "answer": "14",
+  "question": "Find the mean of these marks."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 1,
+  "family": "ang_par",
+  "formula": "ang_corr",
+  "answer": "62°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 2,
+  "family": "circ",
+  "formula": "c_circ_d",
+  "answer": "62.8 cm",
+  "question": "Find the circumference of this circle, correct to 1 decimal place."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 3,
+  "family": "order_ops",
+  "formula": "order_ops",
+  "answer": "10",
+  "question": "Evaluate."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 4,
+  "family": "subst",
+  "formula": "subst",
+  "answer": "6",
+  "question": "Find the value of this expression when <i>n</i> = 4."
+ },
+ {
+  "week": 9,
+  "session": 1,
+  "q": 5,
+  "family": "prob_not",
+  "formula": "prob_not",
+  "answer": "3/5",
+  "question": "Find the probability that it does not rain."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 1,
+  "family": "ang_quad",
+  "formula": "ang_quad",
+  "answer": "66°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 2,
+  "family": "a_comp",
+  "formula": "a_comp",
+  "answer": "58 cm²",
+  "question": "Find the area of this shape."
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 3,
+  "family": "pct_express",
+  "formula": "pct_express",
+  "answer": "85%",
+  "question": "A rugby league team kicked 34 of its 40 goal attempts. What percentage did it kick?"
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 4,
+  "family": "time",
+  "formula": "t_diff",
+  "answer": "45 minutes",
+  "question": "A netball game starts at 14:25 and ends at 15:10. How long is the game?"
+ },
+ {
+  "week": 9,
+  "session": 2,
+  "q": 5,
+  "family": "prob",
+  "formula": "prob",
+  "answer": "1/2",
+  "question": "A letter is chosen at random from this word. Find <i>P</i>(A)."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 1,
+  "family": "ang_ext",
+  "formula": "ang_ext",
+  "answer": "125°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 2,
+  "family": "a_rect",
+  "formula": "a_square",
+  "answer": "400 m²",
+  "question": "Find the area of this square."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 3,
+  "family": "idx_root",
+  "formula": "idx_eval",
+  "answer": "127",
+  "question": "Evaluate."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 4,
+  "family": "distrib",
+  "formula": "distrib",
+  "answer": "5x + 10",
+  "question": "Expand."
+ },
+ {
+  "week": 9,
+  "session": 3,
+  "q": 5,
+  "family": "med_mode",
+  "formula": "mode",
+  "answer": "14",
+  "question": "Find the mode of these scores."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 1,
+  "family": "ang_tri",
+  "formula": "ang_tri",
+  "answer": "70°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 2,
+  "family": "units",
+  "formula": "u_area",
+  "answer": "5 m²",
+  "question": "Convert 50 000 cm² to square metres."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 3,
+  "family": "pct_qty",
+  "formula": "pct_qty",
+  "answer": "70 m",
+  "question": "Calculate."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 4,
+  "family": "rates",
+  "formula": "rate",
+  "answer": "$24 per hour",
+  "question": "Sam earns $96 for 4 hours of work at the surf club kiosk. Find Sam’s hourly rate."
+ },
+ {
+  "week": 10,
+  "session": 1,
+  "q": 5,
+  "family": "range",
+  "formula": "range",
+  "answer": "23",
+  "question": "Find the range of these scores."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 1,
+  "family": "ang_point",
+  "formula": "ang_point",
+  "answer": "150°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 2,
+  "family": "a_tri",
+  "formula": "a_tri",
+  "answer": "70 cm²",
+  "question": "Find the area of this triangle."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 3,
+  "family": "pow10",
+  "formula": "pow10_div",
+  "answer": "0.09",
+  "question": "Calculate."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 4,
+  "family": "speed",
+  "formula": "speed",
+  "answer": "5 km/h",
+  "question": "A walker walks from Kingscliff to Cabarita. Find the average speed."
+ },
+ {
+  "week": 10,
+  "session": 2,
+  "q": 5,
+  "family": "table_vals",
+  "formula": "tv_table",
+  "answer": "5, 7",
+  "question": "Complete the table for <i>y</i> = <i>x</i> + 4."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 1,
+  "family": "ang_comp",
+  "formula": "ang_comp",
+  "answer": "44°",
+  "question": "Find the value of <i>x</i>."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 2,
+  "family": "perimeter",
+  "formula": "p_poly",
+  "answer": "30 cm",
+  "question": "Find the perimeter of this parallelogram."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 3,
+  "family": "fdp",
+  "formula": "p2f",
+  "answer": "9/20",
+  "question": "Write as a fraction in simplest form."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 4,
+  "family": "equation",
+  "formula": "eq_two",
+  "answer": "x = 5",
+  "question": "Solve."
+ },
+ {
+  "week": 10,
+  "session": 3,
+  "q": 5,
+  "family": "exp_prob",
+  "formula": "exp_prob",
+  "answer": "9/10",
+  "question": "Kingscliff Beach was open for swimming on 27 of the last 30 days. Find the experimental probability that the beach is open."
+ }
+]
