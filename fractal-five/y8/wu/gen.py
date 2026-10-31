@@ -1296,6 +1296,30 @@ def qsig(q):
 SPECIAL = {f: (is_rev, lambda k, n: k % 4 == 1) for f in ("a_rect", "a_tri", "a_para", "v_rect", "speed")}
 
 
+
+# Mainstream v2 (slightly easier): family -> which pool items Mainstream leaves out. Advanced is unchanged.
+def _has(*keys):
+    return lambda it: any(k in repr(it) for k in keys)
+
+
+EASY_DROP = {
+    **{f: is_rev for f in ("a_rect", "a_tri", "a_para", "v_rect")},                 # working backwards
+    "speed": lambda it: is_rev(it) or "minutes" in it,                               # + time in minutes
+    "order_ops": lambda it: re.search(r"\(-\d+\)", it) is not None,                  # (-2) etc.
+    "idx_root": lambda it: len(it) > 1 and any(t[0] in "sc" for t in it if isinstance(t, tuple)),
+    "subst": lambda it: any(v_ < 0 for v_ in it[1].values()),                        # negative values
+    "equation": lambda it: it[1] == 2 and "[x]/" in it[0],                          # x/3 + 2 = 7, x/2 - 3 = 5
+    "fdp": lambda it: it in (("f2d", 3, 8), ("d2f", "0.125")),                       # three decimal places
+    "ratio_simp": lambda it: it[0] == "u" or len(it) == 3,                           # units, three parts
+    "units": _has("m²"),                                                             # m² <-> cm²
+    "med_mode": lambda it: (it[0] == "median" and len(it[1]) % 2 == 0)
+                           or (it[0] == "dot" and it[1] == "median" and len(it[2]) % 2 == 0),
+    "time": lambda it: it[0] == "add" or it[1] in ("12:30 am", "00:15"),
+    "perimeter": lambda it: it == ("poly", "pent", 1, "cm"),
+}
+# Mainstream-only additions where EASY_DROP leaves fewer than 10 items (same style, whole numbers)
+EASY_ADD = {"ratio_simp": [(20, 35), (32, 12)]}
+
 class Pools:
     """Draws items without replacement (no question repeats within a term). Within a family the formula
     used least so far this term comes next (so sub-formulas rotate); then items the previous term did
@@ -1309,12 +1333,16 @@ class Pools:
         self.keys = {}
         self.rng = random.Random(seed("pool", version, term))
 
-    @staticmethod
-    def items(fam):
-        return list(POOL[fam])
+    def items(self, fam):
+        """The family's pool for this version: Mainstream drops the harder items (EASY_DROP) and adds a
+        few easy ones (EASY_ADD) where that leaves too few; Advanced uses POOL unchanged."""
+        if self.version != "M":
+            return list(POOL[fam])
+        drop = EASY_DROP.get(fam, lambda it: False)
+        return [it for it in POOL[fam] if not drop(it)] + list(EASY_ADD.get(fam, ()))
 
     def draw(self, fam, k, n, avoid=()):
-        avail = [it for it in POOL[fam] if (fam, repr(it)) not in self.used and repr(it) not in avoid]
+        avail = [it for it in self.items(fam) if (fam, repr(it)) not in self.used and repr(it) not in avoid]
         if not avail:
             raise RuntimeError(f"{self.version} term {self.term}: the {fam} pool has run out")
         pred, slot = SPECIAL.get(fam, (lambda it: False, lambda k_, n_: False))
@@ -1389,7 +1417,7 @@ def selftest():
     """Every pool item generates, draws its figure at full size and after two shrink steps."""
     bad = []
     for fam, items in POOL.items():
-        for it in items:
+        for it in items + EASY_ADD.get(fam, []):
             try:
                 text, figf, key, ans, fx = gen(fam, it)
                 q = mk(text, figf, key, ans, fx)

@@ -118,6 +118,23 @@ code found: probably Stage 3 revision), experimental probability (MA4-PRO-C-01 p
 percentage change/profit and loss (MA4-FRC-C-01 placement unconfirmed). Beyond Stage 4: Advanced Terms 3-4
 index-law questions with pronumeral bases are Stage 5 (MA5-IND-C-01), included as requested and labelled so.
 
+## Mainstream easier (v2), Oct 2026
+Mainstream only; Advanced is untouched (its 4 x 150 questions are identical to v1). gen.EASY_DROP
+{family: predicate} removes items from the Mainstream pools in Pools.items() (version "M"); Pools.draw uses
+self.items(fam). Removed: working backwards (a_rect, a_tri, a_para, v_rect, speed - SPECIAL then finds no rev
+item and falls back to the ordinary ones); order_ops with a bracketed negative such as (-2) (8 items);
+idx_root roots combined with another term (5); subst negative values (3); equation x/3 + 2 = 7, x/2 - 3 = 5;
+fdp 3/8 and 0.125; ratio_simp three-part and unit-conversion items; units m2 <-> cm2 (4); speed with time
+in minutes (2); med_mode medians of an even number of scores (3); time 12:30 am, 00:15 and both "add"
+items; perimeter "pent". gen.EASY_ADD adds Mainstream-only ratio_simp (20, 35) and (32, 12) so the family
+keeps 10; every other family keeps >= 10 (speed 9). Layout, formulas, weighting, diagrams, covers unchanged.
+qa.py now checks each item against the version's pool (Pools(v, t).items), so a dropped item in Mainstream
+is a rule problem. Checks (Mainstream rebuild): gen.py 0 problems; overflow fixed in 3 rounds per booklet;
+qa.py 0 rule problems; verify_answers.py 600/600; labelcheck 261 figures, 806 labels, 0 touching.
+Booklets 377-393 KB, keys 29 KB. out/ now holds the v2 Mainstream files under the same local names.
+Drive (same folder), uploaded as new copies beside v1, which was kept:
+Yr8_The_Fractal_Five_Term_N_Warm-Ups_v2.pdf, Yr8_The_Fractal_Five_Term_N_Answers_v2.pdf.
+
 ## Google Drive
 Final booklets and keys: Kingscliff Maths Resources 7–12 / Year 08 / Warm-ups – The Fractal Five
 (folder id 1Aw0XtHIrUh3BXfj-iZH6NgtMH7asojUr), named

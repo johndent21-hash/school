@@ -117,9 +117,10 @@ def main():
             for sig, n in sigs.items():
                 if n > 1:
                     P(f"repeated question x{n}: {sig}")
+            vpool = gen.Pools(v, t)
             for s in S:
                 for q in s.qs:
-                    if q.item not in gen.POOL[q.fam]:
+                    if q.item not in vpool.items(q.fam):
                         P(f"W{s.week} S{s.session} {q.fam}: item {q.item!r} is not in the pool")
                     if s.given != gen.given(v, t):
                         P(f"W{s.week} S{s.session}: printed formula setting is wrong")
