@@ -145,3 +145,8 @@ DRIVE_UPLOAD_URL / DRIVE_UPLOAD_KEY); re-upload a rebuilt file with --replace (t
 files the Apps Script creates; check the folder in Drive itself), e.g.
     bash upload.sh out/The_Fractal_Five_Year_8_Term_1.pdf 1Aw0XtHIrUh3BXfj-iZH6NgtMH7asojUr \
          Yr8_The_Fractal_Five_Term_1_Warm-Ups.pdf --replace
+
+Subfolders (Oct 2026), inside the folder above: Mainstream v1 (1K5pfNPwZ5xhBby1quJg9N3ijAz7oN3ZK),
+Mainstream v2 (1WqnfI8x_sj2oo8oEP_Y36Apn5Z0bWJGy), Advanced (1KvLFL2rB9bxsdEq_NlPpRycH2qCEGBro); all 24 files
+re-uploaded into them under the names above (v1 from the v1 commit's out/). The upload web app cannot move or
+delete, so the 16 loose copies in the parent folder are to be deleted by hand in Drive.
