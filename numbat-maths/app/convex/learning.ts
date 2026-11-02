@@ -5,7 +5,7 @@ import { getStudent, getTeacher, ownedClass } from "./lib/security"
 
 const fail = (message: string) => ({ ok: false as const, message })
 const ITEM_RE = /^[a-z0-9-]+(:[a-z0-9-]+)?$/
-export const DEFAULT_GOAL = 5
+export const DEFAULT_GOAL = 3
 export const MAX_HISTORY = 2000
 
 /** Saves a finished practice set or topic test and updates the student's best result. */

@@ -34,7 +34,9 @@ function TestView() {
   if (run > 0) {
     return (
       <div className="mx-auto grid max-w-4xl gap-4" style={{ ['--hue' as string]: topic.colour }}>
-        <h1 className="font-display text-2xl font-semibold">{topic.title}: topic test</h1>
+        <h1 className="font-display text-2xl font-semibold" data-focus-hide>
+          {topic.title}: topic test
+        </h1>
         <TestRunner key={run} topic={topic} onExit={() => setRun(0)} onAgain={() => setRun(run + 1)} />
       </div>
     )

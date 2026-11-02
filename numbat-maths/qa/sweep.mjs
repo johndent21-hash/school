@@ -18,7 +18,9 @@ for (const t of data) {
     errors = []
     await page.goto(`${base}/lesson?id=${s}&tab=practice`, { waitUntil: 'domcontentloaded' })
     await page.getByRole('button', { name: 'Start practice set' }).click({ timeout: 20000 })
-    for (let k = 0; k < 10; k++) {
+    // 20 questions in Years 3–9, 10 in Years 1–2
+    const count = await page.locator('.progress-dots span').count()
+    for (let k = 0; k < count; k++) {
       const ans = await page.evaluate(() => window.__ans)
       if (ans.startsWith('MC')) await page.locator('.mc-option').nth(Number(ans.slice(2))).click()
       else await page.locator('.answer-input').fill(ans)
@@ -35,7 +37,7 @@ for (const t of data) {
       await page.getByRole('button', { name: /Next question|See my results/ }).click()
     }
     const score = (await page.locator('.q-card p').first().textContent()).replace(/\s+/g, ' ')
-    if (!score.startsWith('10 /')) problems.push(`${s} final ${score}`)
+    if (!score.startsWith(`${count} / ${count}`)) problems.push(`${s} final ${score}`)
     if (errors.length) problems.push(`${s} console: ${errors.join(' | ')}`)
   }
   process.stdout.write(`${t.topic} done (${n})\n`)

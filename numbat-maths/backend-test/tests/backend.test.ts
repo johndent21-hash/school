@@ -104,7 +104,7 @@ test('teacher accounts, classes, student PIN log-in, results, tasks and clean-up
 
   // history, weekly goal and class activity (for rewards and the teacher overview)
   expect(prog.log.map((a: any) => a.score)).toEqual([100, 30, 90, 75])
-  expect(prog.goal).toBe(5)
+  expect(prog.goal).toBe(3)
   expect((await t.mutation(api.classes.updateClass, { token: tToken, classId, name: '7MAT2', year: 7, weeklyGoal: 0 })).ok).toBe(false)
   expect((await t.mutation(api.classes.updateClass, { token: tToken, classId, name: '7MAT2', year: 7, weeklyGoal: 2.5 })).ok).toBe(false)
   expect((await t.mutation(api.classes.updateClass, { token: tToken, classId, name: '7MAT2', year: 7, weeklyGoal: 3 })).ok).toBe(true)

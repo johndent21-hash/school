@@ -1333,3 +1333,104 @@ body::before {
   color: hsl(var(--foreground));
   font-weight: 700;
 }
+
+/* ---------- Focus mode: while answering, the question gets the whole screen ---------- */
+.focus-mode [data-focus-hide] {
+  display: none !important;
+}
+.focus-mode .shell-main {
+  max-width: 84rem;
+  padding-block: 0.5rem 1rem;
+}
+.focus-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+}
+.focus-title {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display, inherit);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+.focus-mode .focus-title {
+  display: inline-flex;
+}
+.focus-bar .progress-dots {
+  flex: 1 1 12rem;
+  flex-wrap: nowrap;
+  min-width: 8rem;
+}
+.focus-bar .progress-dots > * {
+  flex: 1 1 0;
+  /* no fixed width here, or 20 dots force the bar (and the page) wider than a phone */
+  width: auto;
+  min-width: 4px;
+  max-width: 1.6rem;
+}
+.focus-bar .progress-dots {
+  gap: clamp(2px, 0.6vw, 0.3rem);
+}
+.focus-mode .q-card {
+  padding: 1rem 1.25rem;
+}
+
+/* Side by side on wide screens held sideways (laptops, iPads in landscape) */
+@media (min-width: 900px) and (orientation: landscape) {
+  .q-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(19rem, 1fr);
+    gap: 1.25rem 2rem;
+    align-items: start;
+  }
+  .q-split .q-side .mathpad,
+  .q-split .q-side .calc {
+    max-width: none;
+  }
+  .q-split .answer-input {
+    max-width: none;
+  }
+  /* safety net: a very tall diagram is scaled to fit beside the answer, so the student never has to scroll */
+  .focus-mode .q-split .q-diagram .dg {
+    max-height: calc(100dvh - 12rem);
+  }
+}
+@media not ((min-width: 900px) and (orientation: landscape)) {
+  .q-split {
+    display: grid;
+    gap: 1rem;
+  }
+}
+
+/* Short screens: shorter keypad and calculator keys (still easy to tap) */
+@media (max-height: 760px) {
+  .pad-key {
+    min-height: 2.45rem;
+  }
+  .mathpad-big .pad-key {
+    min-height: 3rem;
+  }
+  .calc-keys .pad-key {
+    min-height: 2.25rem;
+  }
+  .calc-out {
+    min-height: 1.8rem;
+    font-size: 1.35rem;
+  }
+  .calc-expr {
+    min-height: 1.2rem;
+  }
+}
+/* Very short screens (1366×768 laptops with the browser bars showing): while answering, the calculator's own
+   title bar goes (the highlighted Calculator button just above it still closes it) so the Check button stays on screen */
+@media (max-height: 640px) {
+  .focus-mode .calc-head {
+    display: none;
+  }
+  .calc-keys .pad-key {
+    min-height: 2.1rem;
+  }
+}

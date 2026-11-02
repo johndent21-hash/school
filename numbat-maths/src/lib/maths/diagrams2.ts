@@ -461,7 +461,9 @@ export function cellGrid(cols: number, rows: number, cells: [number, number][]):
   for (const [c, r] of cells) body += `<rect class="cell on" x="${f(left + c * s)}" y="${f(top + r * s)}" width="${f(s)}" height="${f(s)}"/>`
   for (let c = 0; c <= cols; c++) body += line([left + c * s, top], [left + c * s, top + rows * s], 'grid gridcell')
   for (let r = 0; r <= rows; r++) body += line([left, top + r * s], [left + cols * s, top + r * s], 'grid gridcell')
-  return svg(left * 2 + cols * s, top * 2 + rows * s, body, 'Shape on a grid of squares', 360)
+  const w = left * 2 + cols * s
+  // tall, narrow grids would otherwise be enlarged far beyond their drawn size and run off short screens
+  return svg(w, top * 2 + rows * s, body, 'Shape on a grid of squares', Math.round(Math.min(360, w * 1.5)))
 }
 
 /** A right-angled triangle drawn on a square grid: legs of w and h squares. */
@@ -483,7 +485,7 @@ export function triangleOnGrid(cols: number, rows: number, w: number, h: number)
     [x0 + w * s, y0],
     [x0, y0 - h * s],
   ])}"/>`
-  return svg(left * 2 + cols * s, top * 2 + rows * s, body, 'Triangle on a grid of squares', 360)
+  return svg(left * 2 + cols * s, top * 2 + rows * s, body, 'Triangle on a grid of squares', Math.round(Math.min(360, (left * 2 + cols * s) * 1.5)))
 }
 
 /** Two angles side by side, labelled A and B. Arm lengths are scaled to fit each half of the picture. */

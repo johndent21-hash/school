@@ -128,7 +128,7 @@ const STEPS = [
   {
     icon: PencilLine,
     title: 'Practise',
-    text: 'Ten questions per skill that start easy and get harder. Instant marking, a hint after a wrong answer, two tries, then the full working.',
+    text: '20 questions per skill (10 in Years 1–2) that start easy and get harder. Instant marking, a hint after a wrong answer, two tries, then the full working. Stop any time and carry on later.',
   },
   {
     icon: Trophy,

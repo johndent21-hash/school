@@ -12,9 +12,11 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   async function practice(skill, allRight = true) {
     await page.goto(`${base}/lesson?id=${skill}&tab=practice`, { waitUntil: 'networkidle' })
     await page.getByRole('button', { name: 'Start practice set' }).click()
-    for (let k = 0; k < 10; k++) {
+    // 20 questions in Years 3–9, 10 in Years 1–2; "not all right" gets 60% of them wrong (a 40% set)
+    const n = await page.locator('.progress-dots span').count()
+    for (let k = 0; k < n; k++) {
       const ans = await page.evaluate(() => window.__ans)
-      if (!allRight && k < 6) {
+      if (!allRight && k < Math.round(n * 0.6)) {
         await page.getByRole('button', { name: 'Show me how' }).click()
       } else if (ans.startsWith('MC')) {
         await page.locator('.mc-option').nth(Number(ans.slice(2))).click()

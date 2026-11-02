@@ -3,6 +3,17 @@ import { chromium } from 'playwright'
 const url = 'http://127.0.0.1:3201/index.html'
 const browser = await chromium.launch()
 const out = []
+// The site header is hidden while a practice set is being answered (focus mode): press Stop first
+async function home(page) {
+  const stop = page.locator('.focus-bar').getByRole('button', { name: 'Stop' })
+  if (await stop.count()) {
+    await stop.click()
+    const confirm = page.locator('[role="alert"]').getByRole('button', { name: 'Stop' })
+    if (await confirm.count()) await confirm.click()
+    await page.waitForTimeout(200)
+  }
+  await page.getByRole('link', { name: /Numbat Maths home/ }).click()
+}
 for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   const ctx = await browser.newContext({ viewport: { width: w, height: 860 }, colorScheme: scheme })
   const page = await ctx.newPage()
@@ -29,7 +40,7 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   await page.locator('.answer-input').fill('1:01'); await page.getByRole('button', { name: 'Check' }).click(); await page.waitForTimeout(200)
   await shot('clock_practice')
   // Year 4 am/pm
-  await page.getByRole('link', { name: /Numbat Maths home/ }).click(); await page.waitForTimeout(300)
+  await home(page); await page.waitForTimeout(300)
   await page.locator('.topic-tile', { hasText: 'Year 4' }).first().click(); await page.waitForTimeout(400)
   await page.getByRole('link', { name: /Mass and time/ }).first().click(); await page.waitForTimeout(400)
   await page.locator('li', { hasText: 'am and pm' }).getByRole('link', { name: 'Practise' }).click(); await page.waitForTimeout(400)
@@ -38,7 +49,7 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
   // Year 1 o'clock practice, if this build has Year 1
   let y1 = 'no Year 1'
   if (tiles.includes('1')) {
-    await page.getByRole('link', { name: /Numbat Maths home/ }).click(); await page.waitForTimeout(300)
+    await home(page); await page.waitForTimeout(300)
     await page.locator('.topic-tile', { hasText: 'Year 1' }).first().click(); await page.waitForTimeout(400)
     await page.getByRole('link', { name: /Mass and time/ }).first().click(); await page.waitForTimeout(400)
     await page.locator('li', { hasText: 'O’clock and half past' }).getByRole('link', { name: 'Practise' }).click(); await page.waitForTimeout(400)
@@ -53,7 +64,7 @@ for (const [w, scheme] of [[1280, 'light'], [390, 'dark']]) {
     pad = `big=${await page.locator('.mathpad-big').count()} keys=${await page.locator('.mathpad .pad-grid button').count()} colon=${await page.locator('.mathpad button', { hasText: /^:$/ }).count()}`
   }
   // teacher pages show the made-up example class
-  await page.getByRole('link', { name: /Numbat Maths home/ }).click(); await page.waitForTimeout(300)
+  await home(page); await page.waitForTimeout(300)
   await page.getByRole('link', { name: /teacher view with an example class/ }).first().click(); await page.waitForTimeout(400)
   await page.locator('.topic-tile').first().click(); await page.waitForTimeout(600)
   const locked = `demo=${await page.getByText('Example class.', { exact: true }).isVisible()} tiles=${(await page.locator('.stat-value').allTextContents()).join('|')} charts=${await page.locator('.chart-bar').count()}`

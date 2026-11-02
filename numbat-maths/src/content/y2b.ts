@@ -1,6 +1,6 @@
 // Year 2 (Stage 1, Part B) — Maps and length; Shapes, turns and area; 3D objects and volume; Mass and time
 import type { Level, Question, Topic } from '@/lib/maths/types'
-import { D, D2, MINUS, chance, int, mcA, mcFixedA, numA, pick, q, sample, shuffle, timeA } from './helpers'
+import { D, D2, L, MINUS, chance, int, mcA, mcFixedA, numA, pick, q, sample, shuffle, timeA } from './helpers'
 import * as D3 from '@/lib/maths/diagrams3'
 import { digital, plural, timeWords } from './s2'
 
@@ -238,10 +238,27 @@ const sh_turns = (level: Level): Question => {
 }
 
 const sh_combine = (level: Level): Question => {
+  // about half the questions: count the small squares joined to make a rectangle (different sizes)
+  if (chance(0.5)) {
+    const rows = L(level, 1, 2, int(3, 4))
+    const cols = L(level, int(2, 6), int(2, 5), int(3, 5))
+    const cells: [number, number][] = []
+    for (let c = 0; c < cols; c++) for (let r = 0; r < rows; r++) cells.push([c + 1, r + 1])
+    return q({
+      prompt: 'Small squares are joined to make this shape. How many small squares are there?',
+      diagram: D2.cellGrid(cols + 2, rows + 2, cells),
+      answer: numA(rows * cols),
+      suffix: 'squares',
+      hint: rows === 1 ? 'Count the squares.' : 'Count the squares in one row, then add a row at a time.',
+      steps: rows === 1 ? [`There are ${cols} squares in a row.`] : [`${plural(rows, 'row')} of ${cols}: ${Array.from({ length: rows }, () => cols).join(' + ')} = ${rows * cols}`],
+    })
+  }
   if (level === 1) {
+    const n = int(2, 5)
     const it = pick([
-      ['Two squares the same size are put side by side. What shape do they make?', 'a rectangle', ['a triangle', 'a circle', 'a hexagon'], 'Two squares side by side make a rectangle.'],
+      [`${n} squares the same size are put side by side in a row. What shape do they make?`, 'a rectangle', ['a triangle', 'a circle', 'a hexagon'], `${n} squares in a row make a long rectangle.`],
       ['A square is cut from corner to corner. What two shapes are made?', 'two triangles', ['two squares', 'two circles', 'two rectangles'], 'The cut makes two triangles.'],
+      ['Two triangles cut from a square are put back together. What shape can they make?', 'a square', ['a circle', 'a hexagon', 'a pentagon'], 'The two triangles fit back together to make the square again.'],
     ] as [string, string, string[], string][])
     return q({ prompt: it[0], answer: mcA(it[1], it[2]), hint: 'Draw it to check.', steps: [it[3]] })
   }
@@ -249,12 +266,14 @@ const sh_combine = (level: Level): Question => {
     const it = pick([
       ['Four small squares are put together, 2 across and 2 down. What shape do they make?', 'a bigger square', ['a triangle', 'a long rectangle', 'a pentagon'], 'A 2 by 2 block of squares is a bigger square.'],
       ['Six triangles meet in the middle with no gaps. What shape can they make?', 'a hexagon', ['a square', 'a circle', 'a pentagon'], 'Six triangles around a point can make a hexagon.'],
+      ['A rectangle is cut in half from the middle of one long side to the middle of the other. What two shapes are made?', 'two smaller rectangles', ['two triangles', 'two circles', 'two hexagons'], 'Each half still has 4 straight sides and 4 square corners, so each half is a rectangle.'],
     ] as [string, string, string[], string][])
     return q({ prompt: it[0], answer: mcA(it[1], it[2]), hint: 'Picture the pieces fitting together.', steps: [it[3]] })
   }
+  const k = int(2, 4)
   const it = pick([
     ['A square is cut along both lines from corner to corner. How many triangles are made?', 4, 'The two cuts cross in the middle and make 4 triangles.'],
-    ['How many small squares make a big square that is 3 small squares across and 3 down?', 9, '3 rows of 3 squares: 3 + 3 + 3 = 9.'],
+    [`How many small squares make a big square that is ${k} small squares across and ${k} down?`, k * k, `${k} rows of ${k} squares: ${Array.from({ length: k }, () => k).join(' + ')} = ${k * k}.`],
     ['How many triangles are in a hexagon cut from the middle to each corner?', 6, 'A hexagon has 6 corners, so there are 6 triangles.'],
   ] as [string, number, string][])
   return q({ prompt: it[0], answer: numA(it[1]), hint: 'Draw a sketch and count.', steps: [it[2]] })

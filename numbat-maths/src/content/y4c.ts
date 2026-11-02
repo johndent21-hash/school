@@ -124,7 +124,68 @@ const data_survey = (level: Level): Question => {
     ['A column graph uses a scale where each grid line is 10 more than the one below. A column stops halfway between 30 and 40. What does it show?', '35', ['3.5', '34', '40'], 'Halfway between 30 and 40 is 35.'],
     ['Which display is best for showing how many students chose each of 5 sports?', 'A column graph', ['A clock', 'A number line with one point', 'A map'], 'A column graph shows the count for each category side by side, so they are easy to compare.'],
   ]
-  const it = pick(L(level, L1, L2, L3))
+  // about half the questions use the results of a survey, with different numbers each time
+  if (chance(0.55)) {
+    const topic = pick([
+      { q: 'Which season do you like best?', head: 'Season', cats: ['Summer', 'Autumn', 'Winter', 'Spring'] },
+      { q: 'How do you get to school?', head: 'Travel', cats: ['Walk', 'Car', 'Bus', 'Bike'] },
+      { q: 'Which sport do you like best?', head: 'Sport', cats: ['Soccer', 'Netball', 'Cricket', 'Swimming'] },
+      { q: 'Which pet would you choose?', head: 'Pet', cats: ['Dog', 'Cat', 'Fish', 'Bird'] },
+    ])
+    let counts: number[]
+    do counts = topic.cats.map(() => int(2, 12))
+    while (new Set(counts).size < 4)
+    const rows = topic.cats.map((label, i) => ({ label, count: counts[i] }))
+    const total = counts.reduce((a, b) => a + b, 0)
+    if (level === 1) {
+      const i = int(0, 3)
+      return q({
+        prompt: `A class answered the survey question “${topic.q}” The tally shows their answers. How many students chose ${topic.cats[i].toLowerCase()}?`,
+        diagram: D2.tallyChart(rows, topic.head),
+        answer: numA(counts[i]),
+        suffix: 'students',
+        hint: 'Each bundle with a line across it is 5. Count the bundles in fives, then count on the single marks.',
+        steps: [
+          `${topic.cats[i]}: ${[Math.floor(counts[i] / 5) ? `${plural(Math.floor(counts[i] / 5), 'bundle')} of 5` : '', counts[i] % 5 ? plural(counts[i] % 5, 'single mark') : ''].filter(Boolean).join(' and ')}.`,
+          `That is ${counts[i]} students.`,
+        ],
+      })
+    }
+    if (level === 2) {
+      return q({
+        prompt: `A class answered the survey question “${topic.q}” Every student chose one answer. How many students answered the survey?`,
+        diagram: D2.tallyChart(rows, topic.head),
+        answer: numA(total),
+        suffix: 'students',
+        hint: 'Count the tally marks in each row, then add the totals.',
+        steps: [topic.cats.map((c, i) => `${c}: ${counts[i]}`).join('. ') + '.', `${counts.join(' + ')} = ${total} students`],
+      })
+    }
+    // the last category is missing from the recording sheet
+    const shown = rows.slice(0, 3)
+    const missing = counts[3]
+    return q({
+      prompt: `All ${total} students in a year group answered “${topic.q}” The tally shows three of the answers, but the row for ${topic.cats[3].toLowerCase()} was left off. How many students chose ${topic.cats[3].toLowerCase()}?`,
+      diagram: D2.tallyChart(shown, topic.head),
+      answer: numA(missing),
+      suffix: 'students',
+      hint: 'Add the three rows shown, then subtract from the number of students surveyed.',
+      steps: [`Shown: ${counts.slice(0, 3).join(' + ')} = ${total - missing}`, `${total} ${MINUS} ${total - missing} = ${missing} students chose ${topic.cats[3].toLowerCase()}.`],
+    })
+  }
+  if (level === 3 && chance(0.4)) {
+    // reading between the grid lines of a column graph scale
+    const step = pick([2, 10, 20, 50, 100])
+    const k = int(1, 6)
+    const lo = k * step
+    return q({
+      prompt: `A column graph of survey results has a scale where each grid line is ${step} more than the one below. A column stops halfway between the lines for ${lo} and ${lo + step}. What number does the column show?`,
+      answer: numA(lo + step / 2),
+      hint: `Halfway between two grid lines is half of ${step} more than the lower line.`,
+      steps: [`Half of ${step} is ${step / 2}.`, `${lo} + ${step / 2} = ${lo + step / 2}`],
+    })
+  }
+  const it = pick(L(level, L1, L2, L3.slice(0, 1).concat(L3.slice(2))))
   return q({
     prompt: it[0],
     answer: mcA(it[1], it[2]),

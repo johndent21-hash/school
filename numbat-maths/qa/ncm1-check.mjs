@@ -76,7 +76,8 @@ const log = (x) => {
   for (const skill of ['y7-int-add', 'y7-int-sub', 'y7-int-mul', 'y7-int-div', 'y7-int-orderops', 'y7-int-powerplus']) {
     await page.goto(`${base}/lesson?id=${skill}&tab=practice`, { waitUntil: 'networkidle' })
     await page.getByRole('button', { name: 'Start practice set' }).click()
-    for (let k = 0; k < 10; k++) {
+    const n = await page.locator('.progress-dots span').count()
+    for (let k = 0; k < n; k++) {
       const ans = await page.evaluate(() => window.__ans)
       const isOpen = await page.locator('.answer-input').getAttribute('placeholder').then((p) => p === 'e.g. −3, 10' || p === 'Type the calculation').catch(() => false)
       if (ans.startsWith('MC')) await page.locator('.mc-option').nth(Number(ans.slice(2))).click()
@@ -109,7 +110,7 @@ const log = (x) => {
       if (!(await nextBtn.count())) {
         await page.getByRole('button', { name: 'Show me how' }).click().catch(() => {})
       }
-      if (k < 9) await page.getByRole('button', { name: /Next question/ }).click().catch(() => {})
+      if (k < n - 1) await page.getByRole('button', { name: /Next question/ }).click().catch(() => {})
     }
   }
   log(`phone open answers typed on the keypad: ${right}/${tried} marked right`)

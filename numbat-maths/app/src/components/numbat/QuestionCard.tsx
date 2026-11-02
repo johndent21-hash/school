@@ -34,7 +34,10 @@ export function ReadAloud({ html, label = 'Read aloud' }: { html: string; label?
   )
 }
 
-/** The question itself: level, calculator note, prompt and diagram. The answer area goes in children. */
+/**
+ * The question itself: level, calculator note, prompt and diagram. The answer area goes in children.
+ * On wide screens held sideways the answer area sits beside the question, so everything fits without scrolling.
+ */
 export function QuestionCard({
   q,
   level,
@@ -49,27 +52,29 @@ export function QuestionCard({
   children?: React.ReactNode
 }) {
   return (
-    <section className="q-card grid gap-4" aria-label={number ? `Question ${number}` : 'Question'}>
-      <div className="flex flex-wrap items-center gap-2">
-        {number !== undefined && (
-          <span className="font-display text-lg font-semibold">
-            Question {number}
-            {total ? <span className="text-muted-foreground"> of {total}</span> : null}
+    <section className="q-card q-split" aria-label={number ? `Question ${number}` : 'Question'}>
+      <div className="q-main grid content-start gap-4">
+        <div className="flex flex-wrap items-center gap-2">
+          {number !== undefined && (
+            <span className="font-display text-lg font-semibold">
+              Question {number}
+              {total ? <span className="text-muted-foreground"> of {total}</span> : null}
+            </span>
+          )}
+          <LevelPill level={level} />
+          {q.calc && (
+            <span className="chip" title="You may use a calculator for this question">
+              <Calculator size={13} aria-hidden="true" /> Calculator allowed
+            </span>
+          )}
+          <span className="ml-auto">
+            <ReadAloud html={q.prompt} label="Read" />
           </span>
-        )}
-        <LevelPill level={level} />
-        {q.calc && (
-          <span className="chip" title="You may use a calculator for this question">
-            <Calculator size={13} aria-hidden="true" /> Calculator allowed
-          </span>
-        )}
-        <span className="ml-auto">
-          <ReadAloud html={q.prompt} label="Read" />
-        </span>
+        </div>
+        <MathHtml className="q-prompt" html={q.prompt} />
+        <Diagram svg={q.diagram} note={q.note} />
       </div>
-      <MathHtml className="q-prompt" html={q.prompt} />
-      <Diagram svg={q.diagram} note={q.note} />
-      {children}
+      <div className="q-side grid content-start gap-4">{children}</div>
     </section>
   )
 }

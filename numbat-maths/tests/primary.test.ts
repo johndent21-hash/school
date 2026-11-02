@@ -564,6 +564,8 @@ const CHECKS: [RegExp, Check][] = [
     /^y3-2d-symmetry$|^y3-2d-quads$/,
     (q, lvl, id) => {
       if (!q.diagram) return undefined
+      // shapes made of grid squares are checked in tests/variety.test.ts
+      if (id === 'y3-2d-symmetry' && q.diagram.includes('class="cell on"')) return undefined
       const P = polygonOf(q.diagram)
       if (!P) return 'no polygon'
       if (id === 'y3-2d-symmetry') return symmetryLines(P) === answerValue(q.answer) ? null : `shape has ${symmetryLines(P)} lines`

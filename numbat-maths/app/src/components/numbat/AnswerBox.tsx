@@ -151,7 +151,8 @@ export function AnswerBox({
 
   const layout = padLayout(a, year, q.prompt)
   const help = helpFor(a)
-  const keypadOpen = pad.open && !locked
+  // on touch screens the keypad and the calculator take turns, so both fit on the screen
+  const keypadOpen = pad.open && !locked && !(pad.touch && calc && calcOpen)
 
   const caret = (): [number, number] => {
     const el = inputRef.current
@@ -235,7 +236,16 @@ export function AnswerBox({
           enterKeyHint="done"
         />
         {q.suffix && <MathHtml inline className="affix" html={q.suffix} />}
-        {!locked && <KeypadToggle open={keypadOpen} onToggle={() => (keypadOpen ? actions.close() : pad.setOpen(true))} />}
+        {!locked && (
+          <KeypadToggle
+            open={keypadOpen}
+            onToggle={() => {
+              if (keypadOpen) return actions.close()
+              if (pad.touch && calcOpen) setCalcOpen(false)
+              pad.setOpen(true)
+            }}
+          />
+        )}
         {calc && <CalculatorToggle open={calcOpen} onToggle={() => setCalcOpen(!calcOpen)} />}
       </div>
       {preview && (

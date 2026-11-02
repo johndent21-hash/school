@@ -6,8 +6,15 @@ const browser = await chromium.launch()
 const report = []
 const errs = []
 
-async function open(page, skill) {
+// a fresh practice page: clear any set this guest stopped partway through (they would be offered "Carry on")
+async function practicePage(page, skill) {
   await page.goto(`${base}/lesson?id=${skill}&tab=practice`, { waitUntil: 'networkidle' })
+  await page.evaluate(() => Object.keys(localStorage).filter((k) => k.startsWith('numbat.resume')).forEach((k) => localStorage.removeItem(k)))
+  await page.reload({ waitUntil: 'networkidle' })
+}
+
+async function open(page, skill) {
+  await practicePage(page, skill)
   await page.getByRole('button', { name: 'Start practice set' }).click()
   await page.waitForTimeout(250)
 }
@@ -67,7 +74,7 @@ async function answerSet(page, n, tag) {
   page.on('pageerror', (e) => errs.push('phone ' + e.message))
   page.on('console', (m) => m.type() === 'error' && errs.push('phone console ' + m.text().slice(0, 160)))
   for (const [skill, n] of [['y7-alg-words', 10], ['y1-wn-count', 6], ['y3-gm-gridmap', 10], ['y4-nsm-ampm', 10], ['y4-nsm-ampm', 10], ['y7-frac-mixed', 6], ['y9-eq-quad', 4], ['y7-wn-primes', 5], ['y7-np-coords', 4], ['y7-rat-simplify', 4], ['y9-num-sci', 4], ['y7-alg-like', 6]]) {
-    const ok = await page.goto(`${base}/lesson?id=${skill}&tab=practice`, { waitUntil: 'networkidle' }).then(() => page.getByRole('button', { name: 'Start practice set' }).count())
+    const ok = await practicePage(page, skill).then(() => page.getByRole('button', { name: 'Start practice set' }).count())
     if (!ok) { report.push(`${skill}: skill not found`); continue }
     await open(page, skill)
     const im = await page.locator('.answer-input').getAttribute('inputmode').catch(() => 'mc')
@@ -85,7 +92,7 @@ async function answerSet(page, n, tag) {
   await page.locator('.mathpad .pad-act').first().click()
   const afterAbc = [await page.locator('.mathpad').count(), await page.locator('.answer-input').getAttribute('inputmode')]
   await page.getByRole('button', { name: /Next question/ }).count()
-  await page.reload({ waitUntil: 'networkidle' })
+  await practicePage(page, 'y7-alg-words')
   await page.getByRole('button', { name: 'Start practice set' }).click()
   const remembered = await page.locator('.mathpad').count()
   await page.locator('.pad-toggle').first().click()

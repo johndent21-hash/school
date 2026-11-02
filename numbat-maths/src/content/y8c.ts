@@ -271,10 +271,41 @@ const BIAS_CASES: [string, 'Yes' | 'No', string][] = [
   ['To find out how much exercise teenagers do, people leaving a gym are surveyed.', 'Yes', 'People at a gym are likely to exercise more than average.'],
   ['To find the average height of Year 8 students, 30 names are drawn at random from all Year 8 students.', 'No', 'A random sample from the whole year group is not biased.'],
   ['To find out what a town thinks of a new skate park, only people at the skate park are asked.', 'Yes', 'Skate park users are more likely to support it.'],
+  ['To find out how much time Year 8 students spend reading, a survey is given only to students in the library at lunch.', 'Yes', 'Students in the library at lunch are likely to read more than other students.'],
+  ['To find the favourite music of students at a school, 50 names are drawn at random from the whole school roll.', 'No', 'Every student has the same chance of being chosen.'],
+  ['To find out if residents want a new swimming pool, a council puts a survey on the swimming club’s website.', 'Yes', 'Swimming club members are more likely to want a new pool than other residents.'],
+  ['To find out how many hours of sleep Year 8 students get, every 5th name on the Year 8 roll is surveyed.', 'No', 'A systematic choice from the whole Year 8 roll gives every student a fair chance of being chosen.'],
+  ['To find out what students think of homework, only students who hand in every homework task are asked.', 'Yes', 'Students who always do their homework may feel differently about it from other students.'],
 ]
 
 const data_sample = (level: Level): Question => {
   if (level === 1) {
+    if (chance(0.5)) {
+      // population and sample with different numbers each time
+      const ctx = pick([
+        { pop: 'students', where: 'a school', N: int(4, 12) * 100, about: 'the canteen menu' },
+        { pop: 'households', where: 'a town', N: int(12, 60) * 100, about: 'bin collection' },
+        { pop: 'members', where: 'a sports club', N: int(15, 80) * 10, about: 'training times' },
+        { pop: 'workers', where: 'a factory', N: int(20, 90) * 10, about: 'shift times' },
+      ])
+      const n = pick([20, 25, 30, 40, 50, 60, 80, 100].filter((x) => x * 4 <= ctx.N))
+      const asked = chance(0.3) ? ctx.N : n
+      const isCensus = asked === ctx.N
+      if (chance(0.5) && !isCensus) {
+        return q({
+          prompt: `There are ${num(ctx.N)} ${ctx.pop} at ${ctx.where}. To find out what they think about ${ctx.about}, ${asked} ${ctx.pop} are chosen at random and surveyed. What is the sample size?`,
+          answer: numA(asked),
+          hint: 'The sample size is the number of members of the population who are actually surveyed.',
+          steps: [`The population is all ${num(ctx.N)} ${ctx.pop}.`, `Only ${asked} are surveyed, so the sample size is ${asked}.`],
+        })
+      }
+      return q({
+        prompt: `Is this a census or a sample?<div class="big">There are ${num(ctx.N)} ${ctx.pop} at ${ctx.where}. To find out what they think about ${ctx.about}, ${isCensus ? `all ${num(ctx.N)}` : `${asked} of them`} are surveyed.</div>`,
+        answer: mcFixedA(['Census', 'Sample'], isCensus ? 'Census' : 'Sample'),
+        hint: 'A census collects data from every member of the population. A sample uses only part of it.',
+        steps: [isCensus ? `Every one of the ${num(ctx.N)} ${ctx.pop} is surveyed.` : `Only ${asked} of the ${num(ctx.N)} ${ctx.pop} are surveyed.`, `It is a ${isCensus ? 'census' : 'sample'}.`],
+      })
+    }
     const [desc, ans, why] = pick(SAMPLE_CASES)
     return q({
       prompt: `Is this a census or a sample?<div class="big">${desc}</div>`,
@@ -290,6 +321,30 @@ const data_sample = (level: Level): Question => {
       answer: mcFixedA(['Yes', 'No'], ans),
       hint: 'A biased sample does not fairly represent the whole population.',
       steps: [why],
+    })
+  }
+  const kind = pick(['size', 'size', 'every', 'method'])
+  if (kind === 'size') {
+    const N = int(6, 15) * 100
+    const what = pick(['how many hours of sleep students get', 'how students travel to school', 'how much time students spend on homework', 'which new sport students would like to try'])
+    const sizes = pick([[5, 20, 150], [10, 30, 200], [8, 40, 250], [12, 50, 300], [6, 25, 120]])
+    const opts = sizes.map((k) => `A random sample of ${k} students`)
+    return q({
+      prompt: `A school has ${num(N)} students. The principal wants to estimate ${what}. Which sample is likely to give the most reliable result?`,
+      answer: mcA(opts[2], opts.slice(0, 2).concat('Any of these: sample size does not matter')),
+      hint: 'All three samples are random. Which one gives the most information about the whole school?',
+      steps: [`A larger random sample is less affected by a few unusual answers, so it represents the population better.`, `The sample of ${sizes[2]} students is the most reliable.`],
+    })
+  }
+  if (kind === 'every') {
+    const k = pick([4, 5, 8, 10, 20, 25])
+    const n = int(4, 12) * 10
+    const N = n * k
+    return q({
+      prompt: `A school roll lists ${num(N)} students in alphabetical order. To choose a sample, every ${ordinal(k)} student on the roll is surveyed. How many students are in the sample?`,
+      answer: numA(n),
+      hint: `One student is chosen from every group of ${k} on the roll.`,
+      steps: [`${num(N)} ${DIVIDE} ${k} = ${n}`, `The sample has ${n} students.`],
     })
   }
   const opts = [

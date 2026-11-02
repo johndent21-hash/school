@@ -4,7 +4,9 @@ import { Link } from '@tanstack/react-router'
 import { ArrowRight, Check, Lightbulb, RotateCcw, Star, X } from 'lucide-react'
 import type { Level, Skill } from '@/lib/maths/types'
 import { checkAnswer } from '@/lib/maths/check'
-import { buildSet } from '@/lib/practice'
+import { buildSet, setCheck } from '@/lib/practice'
+import { clearRun, saveRun, type SavedRun } from '@/lib/resume'
+import { useFocusMode } from './Shell'
 import { findTopic } from '@/content'
 import { fullAnswerHtml } from '@/lib/answer'
 import { useRewards, useSaveResult, type SaveResult } from '@/lib/progress'
@@ -44,6 +46,9 @@ export function PracticeRunner({
   onAgain,
   nextSkill,
   topicId,
+  seed,
+  resume,
+  resumeWho,
 }: {
   skill: Skill
   levels: Level[]
@@ -52,11 +57,20 @@ export function PracticeRunner({
   onAgain: () => void
   nextSkill?: Skill
   topicId: string
+  /** the set is rebuilt from this, so it can be resumed later */
+  seed: number
+  /** a set the student stopped partway through */
+  resume?: SavedRun | null
+  /** whose saved sets these are on this device (a student id or "guest"); null: don't keep the place */
+  resumeWho?: string | null
 }) {
-  const set = useMemo(() => buildSet(skill, levels), [skill, levels])
+  const set = useMemo(() => buildSet(skill, levels, seed), [skill, levels, seed])
+  const fingerprint = useMemo(() => setCheck(set), [set])
   const n = set.length
-  const [i, setI] = useState(0)
-  const [states, setStates] = useState<ItemState[]>(() => set.map(() => ({ tries: 0, credit: null, revealed: false, hint: false, wrong: [], given: '' })))
+  // only carry on if the rebuilt set is the same one that was saved
+  const carryOn = resume && resume.seed === seed && resume.check === fingerprint && resume.states.length === n ? resume : null
+  const [i, setI] = useState(carryOn ? Math.min(carryOn.i, n - 1) : 0)
+  const [states, setStates] = useState<ItemState[]>(() => carryOn?.states ?? set.map(() => ({ tries: 0, credit: null, revealed: false, hint: false, wrong: [], given: '' })))
   const [value, setValue] = useState('')
   const [wrongValue, setWrongValue] = useState<string | null>(null)
   const [fb, setFb] = useState<{ tone: 'good' | 'bad' | 'info'; text: string } | null>(null)
@@ -65,6 +79,16 @@ export function PracticeRunner({
   const [saving, setSaving] = useState(false)
   const [confirmStop, setConfirmStop] = useState(false)
   const save = useSaveResult()
+
+  // keep the student's place on this device, so they can stop and carry on later
+  const keepPlace = !!(itemId && resumeWho)
+  useEffect(() => {
+    if (!keepPlace || result) return
+    if (i === 0 && states.every((x) => x.credit === null && x.tries === 0)) return
+    saveRun(resumeWho!, { skillId: skill.id, seed, levels, states, i, check: fingerprint })
+  }, [keepPlace, result, i, states, resumeWho, skill.id, seed, levels, fingerprint])
+  // the question gets the whole screen while the student is answering
+  useFocusMode(!result)
   // rewards before this set, to show level-ups and new badges at the end
   const rewards = useRewards()
   const before = useRef<RewardSummary | null>(null)
@@ -77,6 +101,7 @@ export function PracticeRunner({
   const update = (patch: Partial<ItemState>) => setStates((all) => all.map((s, k) => (k === i ? { ...s, ...patch } : s)))
 
   const finish = useCallback(async () => {
+    if (keepPlace) clearRun(resumeWho!, skill.id)
     const correct = states.reduce((t, s) => t + (s.credit ?? 0), 0)
     if (itemId) {
       setSaving(true)
@@ -88,7 +113,7 @@ export function PracticeRunner({
       setResult({ saved: false, score, points: 0, best: score, newBest: false, correct })
     }
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [states, itemId, n, save])
+  }, [states, itemId, n, save, keepPlace, resumeWho, skill.id])
 
   const next = () => {
     if (i + 1 >= n) {
@@ -171,8 +196,12 @@ export function PracticeRunner({
   const boxState = !open ? (st.credit && st.credit > 0 ? 'right' : 'wrong') : wrongValue !== null && value === wrongValue ? 'wrong' : 'idle'
 
   return (
-    <div className="grid gap-4">
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="grid gap-3">
+      <div className="focus-bar">
+        <span className="focus-title">
+          {skill.title}
+          {skill.ref && <span className="chip chip-book">{skill.ref}</span>}
+        </span>
         <div className="progress-dots" aria-label={`Question ${i + 1} of ${n}`}>
           {states.map((s, k) => (
             <span key={k} className={dotClass(s.credit, k === i)} />
@@ -191,7 +220,7 @@ export function PracticeRunner({
       </div>
       {confirmStop && (
         <ConfirmBar
-          message="Stop this practice set? Your answers so far won’t be saved."
+          message={keepPlace ? `Stop for now? Next time you can carry on from question ${i + 1}.` : 'Stop this practice set? Your answers so far won’t be saved.'}
           confirmLabel="Stop"
           cancelLabel="Keep going"
           onConfirm={onExit}

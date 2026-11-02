@@ -337,8 +337,101 @@ const sh_quads = (level: Level): Question => {
   })
 }
 
+// Shapes made of grid squares. Their lines of symmetry are worked out from the squares themselves.
+type Cell = [number, number]
+const rectCells = (w: number, h: number): Cell[] => Array.from({ length: w * h }, (_, i) => [(i % w) + 1, Math.floor(i / w) + 1] as Cell)
+const GRID_SHAPES: Record<string, (a: number, b: number) => Cell[]> = {
+  // a: arm length, b unused
+  plus: (a) => {
+    const m = a + 1
+    const cells: Cell[] = []
+    for (let i = 1; i <= 2 * a + 1; i++) cells.push([i, m])
+    for (let i = 1; i <= 2 * a + 1; i++) if (i !== m) cells.push([m, i])
+    return cells
+  },
+  // a: width of the top bar (odd), b: height of the stem
+  T: (a, b) => [...Array.from({ length: a }, (_, i) => [i + 1, 1] as Cell), ...Array.from({ length: b }, (_, i) => [(a + 1) / 2, i + 2] as Cell)],
+  // a: width, b: height
+  U: (a, b) => {
+    const cells: Cell[] = Array.from({ length: a }, (_, i) => [i + 1, b] as Cell)
+    for (let r = 1; r < b; r++) cells.push([1, r], [a, r])
+    return cells
+  },
+  // a: height of the upright, b: length of the foot
+  L: (a, b) => [...Array.from({ length: a }, (_, i) => [1, i + 1] as Cell), ...Array.from({ length: b - 1 }, (_, i) => [i + 2, a] as Cell)],
+  // a: number of steps
+  stairs: (a) => {
+    const cells: Cell[] = []
+    for (let r = 1; r <= a; r++) for (let c = 1; c <= r; c++) cells.push([c, r])
+    return cells
+  },
+  // a: length of each bar
+  Z: (a) => [...Array.from({ length: a }, (_, i) => [i + 1, 1] as Cell), ...Array.from({ length: a }, (_, i) => [i + a, 2] as Cell)],
+}
+
+/** Which folds of a grid shape make matching halves: up-and-down, across, and the two corner-to-corner folds. */
+export function gridSymmetry(cells: Cell[]): string[] {
+  const xs = cells.map((c) => c[0])
+  const ys = cells.map((c) => c[1])
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)]
+  const has = new Set(cells.map(([c, r]) => `${c},${r}`))
+  const same = (f: (c: number, r: number) => Cell) => cells.every(([c, r]) => has.has(f(c, r).join(',')))
+  const lines: string[] = []
+  if (same((c, r) => [x0 + x1 - c, r])) lines.push('a fold straight down the middle')
+  if (same((c, r) => [c, y0 + y1 - r])) lines.push('a fold straight across the middle')
+  if (x1 - x0 === y1 - y0) {
+    if (same((c, r) => [x0 + (r - y0), y0 + (c - x0)])) lines.push('a fold from the top-left corner to the bottom-right corner')
+    if (same((c, r) => [x0 + (y1 - r), y0 + (x1 - c)])) lines.push('a fold from the top-right corner to the bottom-left corner')
+  }
+  return lines
+}
+
+const gridShapeQ = (cells: Cell[]): Question => {
+  const lines = gridSymmetry(cells)
+  const cols = Math.max(...cells.map((c) => c[0])) + 2
+  const rows = Math.max(...cells.map((c) => c[1])) + 2
+  const n = lines.length
+  return q({
+    prompt: 'How many lines of symmetry does the shaded shape have?',
+    diagram: D2.cellGrid(cols, rows, cells),
+    answer: numA(n),
+    hint: 'Imagine folding the shaded shape. Try a fold down the middle, across the middle, and from corner to corner.',
+    steps: n === 0 ? ['No fold makes two matching halves.', 'The shape has 0 lines of symmetry.'] : [`These folds make matching halves: ${lines.join('; ')}.`, `The shape has ${plural(n, 'line')} of symmetry.`],
+  })
+}
+
+const gridShapeFor = (level: Level): Cell[] => {
+  if (level === 1) {
+    // rectangles and squares
+    const w = int(2, 6)
+    const h = chance(0.35) ? w : pick([1, 2, 3, 4, 5].filter((x) => x !== w))
+    return rectCells(w, h)
+  }
+  if (level === 2) {
+    const kind = pick(['T', 'U', 'L', 'rect'])
+    if (kind === 'T') return GRID_SHAPES.T(pick([3, 5]), int(1, 4))
+    if (kind === 'U') return GRID_SHAPES.U(int(3, 5), int(2, 4))
+    if (kind === 'L') {
+      const a = int(2, 5)
+      return GRID_SHAPES.L(a, pick([2, 3, 4, 5].filter((x) => x !== a)))
+    }
+    const w = int(1, 6)
+    return rectCells(w, pick([1, 2, 3, 4].filter((x) => x !== w)))
+  }
+  const kind = pick(['plus', 'Leq', 'stairs', 'Z', 'square'])
+  if (kind === 'plus') return GRID_SHAPES.plus(int(1, 3), 0)
+  if (kind === 'Leq') {
+    const a = int(2, 5)
+    return GRID_SHAPES.L(a, a)
+  }
+  if (kind === 'stairs') return GRID_SHAPES.stairs(int(2, 5), 0)
+  if (kind === 'Z') return GRID_SHAPES.Z(int(2, 4), 0)
+  const w = int(2, 6)
+  return rectCells(w, w)
+}
+
 const sh_symmetry = (level: Level): Question => {
-  if (level === 3 && chance(0.4)) {
+  if (level === 3 && chance(0.2)) {
     const correct = pick(['parallelogram', 'scalene triangle'] as ShapeKind[])
     const opts = shuffle([correct, 'rectangle', 'kite', 'equilateral triangle'])
     return q({
@@ -348,6 +441,8 @@ const sh_symmetry = (level: Level): Question => {
       steps: [`A ${correct} cannot be folded so the halves match exactly.`, 'A rectangle has 2 lines, a kite has 1, and an equilateral triangle has 3.'],
     })
   }
+  // about half the questions use a shape made of grid squares, in many different sizes
+  if (chance(0.5)) return gridShapeQ(gridShapeFor(level))
   const pool: ShapeKind[] = L(level, ['rectangle', 'square', 'kite', 'isosceles triangle', 'isosceles trapezium'], ['parallelogram', 'scalene triangle', 'rhombus', 'equilateral triangle', 'rectangle', 'kite'], ['regular pentagon', 'regular hexagon', 'regular octagon', 'equilateral triangle', 'square'])
   const kind = pick(pool)
   const n = SYMMETRY[kind]!
@@ -406,33 +501,59 @@ const sh_area = (level: Level): Question => {
 
 const sh_turns = (level: Level): Question => {
   const TURN = ['quarter turn', 'half turn', 'three-quarter turn', 'full turn']
+  // where the minute hand points after k quarter turns from `from`, clockwise or anticlockwise
+  const after = (from: number, k: number, cw: boolean) => ((((from + (cw ? 3 : -3) * k - 1) % 12) + 12) % 12) + 1
+  const from = pick([12, 3, 6, 9])
   if (level === 1) {
     const k = int(1, 3)
+    const to = after(from, k, true)
     return q({
-      prompt: `The minute hand starts at 12 and makes a ${TURN[k - 1]} clockwise. Which number does it point to now?`,
-      answer: numA(3 * k),
-      hint: 'A quarter turn moves the hand from 12 to 3.',
-      steps: k === 1 ? ['A quarter turn moves the hand 3 numbers.', 'From 12, it points to 3.'] : [`A ${TURN[k - 1]} is ${plural(k, 'quarter turn')}.`, `Each quarter turn moves 3 numbers: ${k} ${TIMES} 3 = ${3 * k}, so it points to ${3 * k}.`],
+      prompt: `The minute hand points to ${from}. It makes a ${TURN[k - 1]} clockwise. Which number does it point to now?`,
+      answer: numA(to),
+      hint: 'A quarter turn moves the minute hand 3 numbers, like from 12 to 3.',
+      steps: [k === 1 ? 'A quarter turn moves the hand 3 numbers.' : `A ${TURN[k - 1]} is ${plural(k, 'quarter turn')}, so the hand moves ${k} ${TIMES} 3 = ${3 * k} numbers.`, `Counting on clockwise from ${from}, it points to ${to}.`],
     })
   }
   if (level === 2) {
-    const from = pick([12, 3, 6, 9])
     const k = int(1, 3)
-    const to = ((from + 3 * k - 1) % 12) + 1
+    const cw = chance(0.6)
+    const to = after(from, k, cw)
+    const way = cw ? 'clockwise' : 'anticlockwise'
     return q({
-      prompt: `The minute hand moves clockwise from ${from} to ${to}. What turn is that?`,
+      prompt: `The minute hand moves ${way} from ${from} to ${to}. What turn is that?`,
       answer: mcFixedA(TURN, TURN[k - 1]),
       hint: 'Every 3 numbers on a clock is a quarter turn.',
-      steps: [`From ${from} to ${to} clockwise is ${3 * k} numbers = ${plural(k, 'quarter turn')}.`, `That is a ${TURN[k - 1]}.`],
+      steps: [`From ${from} to ${to} ${way} is ${3 * k} numbers, which is ${plural(k, 'quarter turn')}.`, `That is a ${TURN[k - 1]}.`],
     })
   }
-  const k = pick([1, 3])
-  const other = 4 - k
+  const kind = pick(['same', 'anti', 'anti', 'minutes'])
+  if (kind === 'same') {
+    const k = pick([1, 3])
+    const other = 4 - k
+    return q({
+      prompt: `A ${TURN[k - 1]} clockwise ends in the same position as which turn anticlockwise?`,
+      answer: mcFixedA(['a quarter turn', 'a half turn', 'a three-quarter turn', 'a full turn'], `a ${TURN[other - 1]}`),
+      hint: 'Together, the two turns must make a full turn (4 quarter turns).',
+      steps: [`${plural(k, 'quarter turn')} one way + ${plural(other, 'quarter turn')} the other way bring you to the same place, because ${k} + ${other} = 4.`, `So it is the same as a ${TURN[other - 1]} anticlockwise.`],
+    })
+  }
+  if (kind === 'minutes') {
+    const k = int(1, 4)
+    return q({
+      prompt: `The minute hand takes 60 minutes to make a full turn. How many minutes does it take to make a ${TURN[k - 1]}?`,
+      answer: numA(15 * k),
+      suffix: 'minutes',
+      hint: 'A full turn is 4 quarter turns. How many minutes is one quarter turn?',
+      steps: ['A quarter turn is one quarter of 60 minutes, which is 15 minutes.', k === 1 ? 'So a quarter turn takes 15 minutes.' : `A ${TURN[k - 1]} is ${plural(k, 'quarter turn')}: ${k} ${TIMES} 15 = ${15 * k} minutes.`],
+    })
+  }
+  const k = int(1, 3)
+  const to = after(from, k, false)
   return q({
-    prompt: `A ${TURN[k - 1]} clockwise ends in the same position as which turn anticlockwise?`,
-    answer: mcFixedA(['a quarter turn', 'a half turn', 'a three-quarter turn', 'a full turn'], `a ${TURN[other - 1]}`),
-    hint: 'Together, the two turns must make a full turn (4 quarter turns).',
-    steps: [`${plural(k, 'quarter turn')} one way + ${plural(other, 'quarter turn')} the other way bring you to the same place, because ${k} + ${other} = 4.`, `So it is the same as a ${TURN[other - 1]} anticlockwise.`],
+    prompt: `The minute hand points to ${from}. It makes a ${TURN[k - 1]} anticlockwise (backwards). Which number does it point to now?`,
+    answer: numA(to),
+    hint: 'Anticlockwise is the opposite way to the hands of a clock. A quarter turn moves the hand 3 numbers.',
+    steps: [`A ${TURN[k - 1]} moves the hand ${3 * k} numbers.`, `Counting back anticlockwise from ${from}, it points to ${to}.`],
   })
 }
 
@@ -462,6 +583,25 @@ const td_objects = (level: Level): Question => {
     })
   }
   if (level === 2) {
+    if (chance(0.4)) {
+      // name the object from a description of its faces
+      const NOUN: Record<string, [string, number]> = { triangular: ['triangle', 3], rectangular: ['rectangle', 4], square: ['square', 4], pentagonal: ['pentagon', 5], hexagonal: ['hexagon', 6] }
+      const right = pick(SOLIDS.filter((x) => x.kind !== 'cylinder'))
+      const [adj] = right.label.split(' ')
+      const [base, n] = NOUN[adj]
+      const twin = SOLIDS.find((x) => x.kind !== right.kind && x.kind !== 'cylinder' && NOUN[x.label.split(' ')[0]][0] === base)
+      const others = SOLIDS.filter((x) => x !== right && x !== twin).map((x) => x.label)
+      const wrong = twin ? [twin.label, ...sample(others, 2)] : sample(others, 3)
+      return q({
+        prompt:
+          right.kind === 'prism'
+            ? `An object has 2 matching ${base} ends joined by ${n} rectangles. What is its name?`
+            : `An object has a ${base} base and ${n} triangles that meet at a point. What is its name?`,
+        answer: mcA(right.label, wrong),
+        hint: 'Two matching ends joined by rectangles: a prism. One base with triangles meeting at a point: a pyramid. Then name it after the shape of its end or base.',
+        steps: [right.kind === 'prism' ? `Two matching ends joined by rectangles make a prism. The ends are ${base}s.` : `A base with triangles meeting at a point makes a pyramid. The base is a ${base}.`, `It is a ${right.label}.`],
+      })
+    }
     const s = pick(SOLIDS.filter((x) => x.kind !== 'cylinder'))
     const correct = s.kind === 'prism' ? 'A prism, because both ends are the same shape' : 'A pyramid, because its sides meet at a point'
     return q({
@@ -472,12 +612,32 @@ const td_objects = (level: Level): Question => {
       steps: [`It is a ${s.label}.`, correct + '.'],
     })
   }
-  const ask = pick([
-    ['How many squares make a net of a cube?', 6, 'A cube has 6 square faces, so its net has 6 squares.'],
-    ['A net of a triangular prism has 2 triangles. How many rectangles does it have?', 3, 'A triangular prism has 3 rectangular faces joining its 2 triangles.'],
-    ['A net of a square pyramid has 1 square. How many triangles does it have?', 4, 'Each of the 4 sides of the square base has a triangle, so there are 4 triangles.'],
-    ['A net of a rectangular prism is made of how many rectangles?', 6, 'A rectangular prism has 6 faces, so its net has 6 rectangles.'],
-  ] as [string, number, string][])
+  // nets: one shape for every face
+  const BASES: [string, string, number][] = [
+    ['triangular', 'triangle', 3],
+    ['pentagonal', 'pentagon', 5],
+    ['hexagonal', 'hexagon', 6],
+  ]
+  const kind = pick(['cube', 'prism', 'prism', 'pyramid', 'pyramid', 'cylinder'])
+  let ask: [string, number, string]
+  if (kind === 'cube') {
+    ask = pick([
+      ['How many squares make a net of a cube?', 6, 'A cube has 6 square faces, so its net has 6 squares.'],
+      ['A net of a rectangular prism is made of how many rectangles?', 6, 'A rectangular prism has 6 faces, so its net has 6 rectangles.'],
+    ] as [string, number, string][])
+  } else if (kind === 'cylinder') {
+    ask = ['A net of a cylinder has one rectangle for the curved surface. How many circles does it have?', 2, 'A cylinder has a circle at each end, so its net has 2 circles.']
+  } else if (kind === 'prism') {
+    const [adj, base, n] = pick(BASES)
+    ask = chance()
+      ? [`A net of a ${adj} prism has 2 ${base}s. How many rectangles does it have?`, n, `A ${base} has ${n} sides. Each side joins a rectangle, so there are ${n} rectangles.`]
+      : [`How many shapes altogether make a net of a ${adj} prism?`, n + 2, `There are 2 ${base}s for the ends and ${n} rectangles, one for each side of the ${base}: 2 + ${n} = ${n + 2}.`]
+  } else {
+    const [adj, base, n] = pick([...BASES, ['square', 'square', 4]] as [string, string, number][])
+    ask = chance()
+      ? [`A net of a ${adj} pyramid has 1 ${base} for its base. How many triangles join onto it?`, n, `A ${base} has ${n} sides. Each side has a triangle, so there are ${n} triangles.`]
+      : [`How many shapes altogether make a net of a ${adj} pyramid?`, n + 1, `There is 1 ${base} for the base and ${n} triangles, one for each side: 1 + ${n} = ${n + 1}.`]
+  }
   return q({
     prompt: ask[0],
     answer: numA(ask[1]),

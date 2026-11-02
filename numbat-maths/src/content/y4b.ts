@@ -427,6 +427,21 @@ const sh_combine = (level: Level): Question => {
     ['A right-angled triangle is cut off one end of a parallelogram and moved to the other end. What shape is made?', 'a rectangle', ['a kite', 'a rhombus', 'a triangle'], 'Moving the triangle makes all four corners right angles: a rectangle.'],
   ]
   if (level === 3) {
+    if (chance(0.6)) {
+      // squares joined to make a bigger rectangle
+      const side = pick([2, 3, 5, 10])
+      const across = int(2, 6)
+      const down = pick([2, 3, 4].filter((x) => x !== across))
+      const len = across * side
+      const wid = down * side
+      return q({
+        prompt: `Squares with sides of ${side} cm are joined, with no gaps or overlaps, to make a rectangle ${len} cm long and ${wid} cm wide. How many squares are used?`,
+        answer: numA(across * down),
+        suffix: 'squares',
+        hint: `How many ${side} cm squares fit along the length? How many fit down the width?`,
+        steps: [`Along the length: ${len} ${DIVIDE} ${side} = ${across} squares.`, `Down the width: ${wid} ${DIVIDE} ${side} = ${down} squares.`, `${down} rows of ${across}: ${down} ${TIMES} ${across} = ${across * down} squares.`],
+      })
+    }
     const ask = pick([
       ['How many identical equilateral triangles fit together, meeting at the centre, to make a regular hexagon?', 6, 'Joining the centre to each of the 6 corners makes 6 equilateral triangles.'],
       ['How many identical right-angled triangles, made by cutting a rectangle along its diagonal, make the whole rectangle?', 2, 'One diagonal cuts a rectangle into 2 identical right-angled triangles.'],
@@ -434,6 +449,18 @@ const sh_combine = (level: Level): Question => {
       ['An isosceles trapezium is split into one rectangle and some right-angled triangles. How many triangles?', 2, 'Cutting straight down from the two top corners leaves a rectangle in the middle and a triangle at each end: 2 triangles.'],
     ] as [string, number, string][])
     return q({ prompt: ask[0], answer: numA(ask[1]), hint: 'Draw a sketch to help.', steps: [ask[2]] })
+  }
+  if (chance(0.5)) {
+    // squares joined in a row make a rectangle: how long is it?
+    const n = level === 1 ? int(2, 4) : int(3, 6)
+    const side = level === 1 ? int(2, 5) : int(4, 12)
+    return q({
+      prompt: `${n} squares with sides of ${side} cm are joined side to side in a row to make a rectangle. How long is the rectangle?`,
+      answer: numA(n * side),
+      suffix: 'cm',
+      hint: 'Draw the squares in a row. The length is made of one side from each square.',
+      steps: [`The length is ${n} sides of ${side} cm.`, `${n} ${TIMES} ${side} = ${n * side} cm`],
+    })
   }
   const it = pick(level === 1 ? L1 : L2)
   return q({
@@ -444,23 +471,72 @@ const sh_combine = (level: Level): Question => {
   })
 }
 
+const TESSELLATE_YES = ['square', 'equilateral triangle', 'regular hexagon', 'rectangle', 'rhombus', 'parallelogram', 'right-angled triangle', 'isosceles triangle']
+const TESSELLATE_NO = ['circle', 'regular pentagon', 'regular octagon']
+
 const sh_tessellate = (level: Level): Question => {
   if (level === 1) {
-    const yes = pick(['square', 'equilateral triangle', 'regular hexagon', 'rectangle'])
+    if (chance(0.4)) {
+      // square tiles covering a floor, drawn on a grid
+      const across = int(3, 7)
+      const down = int(2, 4)
+      const cells: [number, number][] = []
+      for (let c = 0; c < across; c++) for (let r = 0; r < down; r++) cells.push([c + 1, r + 1])
+      return q({
+        prompt: 'Square tiles tessellate to cover this floor, with no gaps and no overlaps. How many tiles are there?',
+        diagram: D2.cellGrid(across + 2, down + 2, cells),
+        answer: numA(across * down),
+        suffix: 'tiles',
+        hint: 'Count the tiles in one row, then multiply by the number of rows.',
+        steps: [`There are ${plural(down, 'row')} of ${across} tiles.`, `${down} ${TIMES} ${across} = ${across * down} tiles`],
+      })
+    }
+    const yes = pick(TESSELLATE_YES)
     return q({
       prompt: 'Which shape will tessellate on its own (fit together with no gaps and no overlaps)?',
-      answer: mcA(yes, ['circle', 'regular pentagon', 'regular octagon']),
+      answer: mcA(yes, TESSELLATE_NO),
       hint: 'Picture lots of the same shape covering a floor. Would there be gaps?',
       steps: [`Copies of ${/^[aeiou]/.test(yes) ? 'an' : 'a'} ${yes} fit together with no gaps or overlaps.`, 'Circles, regular pentagons and regular octagons leave gaps.'],
     })
   }
   if (level === 2) {
-    const no = pick(['circle', 'regular pentagon', 'regular octagon'])
+    if (chance(0.4)) {
+      // rows of tiles in a tessellating pattern
+      const [shape, unit] = pick([
+        ['square tiles', 'tiles'],
+        ['hexagon tiles', 'tiles'],
+        ['rectangular pavers', 'pavers'],
+        ['triangle tiles', 'tiles'],
+      ])
+      const rows = int(3, 8)
+      const per = int(6, 12)
+      return q({
+        prompt: `A path is covered with ${shape} that tessellate. There are ${rows} rows with ${per} ${unit} in each row. How many ${unit} are there altogether?`,
+        answer: numA(rows * per),
+        suffix: unit,
+        hint: 'Equal rows: multiply the number of rows by the number in each row.',
+        steps: [`${rows} ${TIMES} ${per} = ${rows * per} ${unit}`],
+      })
+    }
+    const no = pick(TESSELLATE_NO)
     return q({
       prompt: 'Which shape will <b>not</b> tessellate on its own?',
-      answer: mcA(no, sample(['square', 'equilateral triangle', 'regular hexagon', 'rectangle'], 3)),
+      answer: mcA(no, sample(TESSELLATE_YES, 3)),
       hint: 'Which shape would leave gaps when you put copies together?',
       steps: [`Copies of a ${no} leave gaps, so it does not tessellate on its own.`],
+    })
+  }
+  if (chance(0.5)) {
+    // square tiles covering a rectangular board
+    const side = pick([5, 10])
+    const across = int(3, 8)
+    const down = int(2, 5)
+    return q({
+      prompt: `Square tiles with sides of ${side} cm tessellate to cover a board ${across * side} cm long and ${down * side} cm wide. How many tiles are needed?`,
+      answer: numA(across * down),
+      suffix: 'tiles',
+      hint: `How many ${side} cm tiles fit along the length? How many fit across the width?`,
+      steps: [`Along the length: ${across * side} ${DIVIDE} ${side} = ${across} tiles.`, `Across the width: ${down * side} ${DIVIDE} ${side} = ${down} tiles.`, `${down} ${TIMES} ${across} = ${across * down} tiles`],
     })
   }
   const [shape, n] = pick([

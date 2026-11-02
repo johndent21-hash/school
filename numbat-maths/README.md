@@ -12,7 +12,7 @@ Also:
 - **Calculator** (`Calculator.tsx`, arithmetic in `src/lib/maths/calc.ts`): only on questions marked "Calculator allowed".
   Basic in Year 7; √, x², xʸ, π and Ans from Year 8; sin, cos, tan and their inverses (degrees) in Year 9 for trigonometry.
 - **Rewards** (`app/src/lib/rewards.ts`, `Rewards.tsx`): levels from points (Joey to Numbat), 19 badges, a weekly goal ring
-  (default 5 sets a week, set per class by the teacher) and a streak of weeks in a row the goal was met. All worked out
+  (default 3 sets a week, set per class by the teacher) and a streak of weeks in a row the goal was met. All worked out
   from results, so nothing extra is stored.
 - **Teacher overview and charts** (`app/src/lib/insights.ts`, `Charts.tsx`): who practised this week, who may need help,
   the skills the class finds hardest, task completion, and week-by-week charts for the class and each student.
@@ -27,6 +27,15 @@ Also:
   test in the order of Test Yourself 1. The questions are the site's own (no textbook wording or numbers), matching each
   exercise's question types from easy to hard. Questions with many right answers use the `open` answer kind, which checks
   the student's own numbers or calculation against the rule.
+- **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
+  10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
+  the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
+  (`app/src/lib/resume.ts`; kept for 21 days, one per skill for each student or guest, and only offered while the set still
+  rebuilds the same questions).
+- **Focus mode** (`useFocusMode` in `Shell.tsx`, styles in `app.css`): while a practice set or test is being answered, the
+  site header, footer and lesson tabs are hidden and, on wide landscape screens (iPads sideways, laptops), the question and
+  diagram sit beside the answer box and keypad, so everything needed to answer fits on the screen without scrolling.
+  Short screens (under 760 px) get a more compact keypad and calculator.
 - **Example class** (`app/src/lib/demo.ts`): in the stand-alone preview the teacher pages use 24 made-up students so they
   can be tried without log-ins; changes are switched off there.
 
@@ -48,6 +57,8 @@ npx tsx tests/engine.test.ts                 # answer checker and formatting
 N=400 npx tsx tests/content.test.ts          # every generator: self-check + independent re-calculation
 STAGE1=1 STAGE2=1 N=300 npx tsx tests/content.test.ts # the same, including Years 1–4
 npx tsx tests/primary.test.ts                # Years 1–4: answers recomputed from the drawn diagrams, plus wording checks
+STAGE1=1 STAGE2=1 npx tsx tests/practice.test.ts  # set sizes and level mix, same seed = same set, no repeated questions
+STAGE1=1 STAGE2=1 npx tsx tests/variety.test.ts   # the widened shape, turn, survey and sampling skills, re-worked independently
 ONLY=y8-pyt-hyp K=5 npx tsx tests/dump.ts    # print sample questions for one skill
 npx tsx tests/keypad.test.ts                 # every typed answer (Years 1–9) can be entered with the keypad and is marked right
 npx tsx tests/calc.test.ts                   # calculator arithmetic, errors and display
@@ -68,6 +79,8 @@ node qa/rewards-check.mjs                                                       
 VITE_PREVIEW_ONLY=1 npx vite dev --port 3102; node qa/teacher-demo-check.mjs       # example class on the teacher pages
 node qa/ncm1-check.mjs        # (dev server) Integers topic page, worked example, 12-question test, open answers on the keypad
 node qa/parent-ratings-check.mjs                                                   # (same server) ratings sheet and example parent view
+node qa/resume-check.mjs      # (same server) stop a practice set, come back, carry on; finishing clears the saved place
+node qa/fit-sweep.mjs ipad    # (Years 1–4 on) every question fits without scrolling: laptop, chromebook, ipad or ipadair
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)
 cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh out.html "Numbat Maths 1–9"   # preview with Years 1–4 added

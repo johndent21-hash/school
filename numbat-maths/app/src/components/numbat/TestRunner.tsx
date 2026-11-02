@@ -15,6 +15,7 @@ import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
 import { LevelPill, QuestionCard, Steps } from './QuestionCard'
 import { RewardsCelebration } from './Rewards'
+import { useFocusMode } from './Shell'
 
 export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: () => void; onAgain: () => void }) {
   const set = useMemo(() => buildTest(topic), [topic])
@@ -27,6 +28,7 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
   const [saving, setSaving] = useState(false)
   const [ask, setAsk] = useState<null | 'leave' | 'finish'>(null)
   const save = useSaveResult()
+  useFocusMode(!marks)
   const rewards = useRewards()
   const before = useRef<RewardSummary | null>(null)
   if (before.current === null && !rewards.loading) before.current = rewards.summary
@@ -102,8 +104,12 @@ export function TestRunner({ topic, onExit, onAgain }: { topic: Topic; onExit: (
       : null
 
   return (
-    <div className="grid gap-4">
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="grid gap-3">
+      <div className="focus-bar">
+        <span className="focus-title">
+          {topic.title}: topic test
+          {topic.ref && <span className="chip chip-book">{topic.ref}</span>}
+        </span>
         <div className="progress-dots" aria-label={`Question ${i + 1} of ${n}`}>
           {answers.map((a, k) => (
             <button

@@ -16,7 +16,7 @@ export interface LogEntry {
   finishedAt: number
 }
 
-export const DEFAULT_GOAL = 5
+export const DEFAULT_GOAL = 3
 
 /** Points use the same rule as the server: 10 per mark plus 20 for 80% or better. */
 export function pointsFor(correct: number, total: number): number {

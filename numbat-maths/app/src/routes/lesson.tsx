@@ -13,7 +13,8 @@ import { findSkill } from '@/content'
 import { LEVEL_NAMES, type Level, type Skill, type Topic } from '@/lib/maths/types'
 import { masteryOf } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
-import { EXTRA_COUNT, SET_LEVELS } from '@/lib/practice'
+import { EXTRA_COUNT, buildSet, newSeed, setCheck, setLevelsFor } from '@/lib/practice'
+import { clearRun, loadRun, runProgress, type SavedRun } from '@/lib/resume'
 import { useProgress } from '@/lib/progress'
 import { useSession } from '@/lib/session'
 import { useMounted } from '@/lib/use-mounted'
@@ -53,7 +54,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
 
   return (
     <div className="grid gap-6" style={{ ['--hue' as string]: topic.colour }}>
-      <nav className="flex flex-wrap items-center gap-1 text-sm" aria-label="Breadcrumb">
+      <nav className="flex flex-wrap items-center gap-1 text-sm" aria-label="Breadcrumb" data-focus-hide>
         <Link to="/home" search={{ year: topic.year }} className="font-bold text-primary">
           Year {topic.year}
         </Link>
@@ -67,7 +68,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
         </span>
       </nav>
 
-      <header className="grid gap-2">
+      <header className="grid gap-2" data-focus-hide>
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="font-display text-3xl font-semibold sm:text-4xl">{skill.title}</h1>
           <MasteryBadge state={masteryOf(p)} best={p?.best} />
@@ -83,7 +84,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
         </div>
       </header>
 
-      <div className="tabs w-fit" role="tablist" aria-label="Lesson sections">
+      <div className="tabs w-fit" role="tablist" aria-label="Lesson sections" data-focus-hide>
         <Link to="/lesson" search={{ id: skill.id, tab: 'learn' }} role="tab" aria-selected={tab === 'learn'} className={tab === 'learn' ? 'active' : ''} replace>
           Learn
         </Link>
@@ -98,7 +99,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
         <Practise skill={skill} topic={topic} next={next} best={p?.best} />
       )}
 
-      <nav className="flex flex-wrap justify-between gap-2 border-t border-border pt-4" aria-label="Other skills">
+      <nav className="flex flex-wrap justify-between gap-2 border-t border-border pt-4" aria-label="Other skills" data-focus-hide>
         {prev ? (
           <Link to="/lesson" search={{ id: prev.id, tab: 'learn' }} className="btn btn-ghost">
             <ArrowLeft size={18} aria-hidden="true" /> {prev.title}
@@ -170,11 +171,25 @@ function Learn({ skill, onPractise }: { skill: Skill; onPractise: () => void }) 
   )
 }
 
-type Run = { id: number; levels: Level[]; saved: boolean }
+type Run = { id: number; levels: Level[]; saved: boolean; seed: number; resume?: SavedRun | null }
 
 function Practise({ skill, topic, next, best }: { skill: Skill; topic: Topic; next?: Skill; best?: number }) {
-  const { student, teacher } = useSession()
+  const { student, teacher, parent } = useSession()
   const [run, setRun] = useState<Run | null>(null)
+  // whose place to keep on this device: the student, or a guest (not teachers or parents)
+  const who = student ? student.studentId : teacher || parent ? null : 'guest'
+  const levels = setLevelsFor(topic.year)
+  // a saved set is only offered if it still rebuilds the same questions (an update may have changed the skill)
+  const loadSaved = () => {
+    const r = who ? loadRun(who, skill.id) : null
+    if (r && setCheck(buildSet(skill, r.levels, r.seed)) !== r.check) {
+      clearRun(who!, skill.id)
+      return null
+    }
+    return r
+  }
+  const [saved, setSaved] = useState<SavedRun | null>(loadSaved)
+  const fresh = () => setRun({ id: Date.now(), levels, saved: true, seed: newSeed() })
 
   if (run) {
     return (
@@ -183,29 +198,64 @@ function Practise({ skill, topic, next, best }: { skill: Skill; topic: Topic; ne
         skill={skill}
         levels={run.levels}
         itemId={run.saved ? skill.id : null}
-        onExit={() => setRun(null)}
-        onAgain={() => setRun({ ...run, id: run.id + 1 })}
+        seed={run.seed}
+        resume={run.resume}
+        resumeWho={run.saved ? who : null}
+        onExit={() => {
+          setRun(null)
+          setSaved(loadSaved())
+        }}
+        onAgain={fresh}
         nextSkill={next}
         topicId={topic.id}
       />
     )
   }
+  const sp = saved ? runProgress(saved) : null
 
   return (
     <div className="grid gap-5">
       <section className="q-card grid gap-4">
         <h2 className="font-display text-2xl font-semibold">Practice set</h2>
         <ul className="grid gap-1 text-muted-foreground">
-          <li>10 questions that start easy and get harder.</li>
+          <li>{levels.length} questions that start easy and get harder. You can stop and carry on later.</li>
           <li>Two tries at each question. A hint appears after a wrong answer.</li>
           <li>Full marks on the first try, half a mark on the second.</li>
           <li>Score 80% or more to master this skill.</li>
         </ul>
         {best !== undefined && <p className="font-bold">Your best so far: {best}%</p>}
         {teacher && <p className="feedback info text-sm">Teacher preview: results are not saved.</p>}
-        <button type="button" className="btn btn-primary btn-lg w-fit" onClick={() => setRun({ id: 1, levels: SET_LEVELS, saved: true })}>
-          Start practice set
-        </button>
+        {saved && sp ? (
+          <div className="grid gap-3 rounded-xl border border-primary/40 bg-primary-soft p-4">
+            <p className="font-bold">
+              You were up to question {Math.min(saved.i + 1, sp.total)} of {sp.total}, with {sp.marks} {sp.marks === 1 ? 'mark' : 'marks'} so far.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                className="btn btn-primary btn-lg"
+                onClick={() => setRun({ id: Date.now(), levels: saved.levels, saved: true, seed: saved.seed, resume: saved })}
+              >
+                Carry on
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost btn-lg"
+                onClick={() => {
+                  if (who) clearRun(who, skill.id)
+                  setSaved(null)
+                  fresh()
+                }}
+              >
+                Start a new set
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button type="button" className="btn btn-primary btn-lg w-fit" onClick={fresh}>
+            Start practice set
+          </button>
+        )}
         {!student && !teacher && <p className="text-sm text-muted-foreground">You’re a guest: results are saved on this device only.</p>}
       </section>
 
@@ -214,7 +264,7 @@ function Practise({ skill, topic, next, best }: { skill: Skill; topic: Topic; ne
         <p className="text-sm text-muted-foreground">{EXTRA_COUNT} questions at one level. Good for warming up or stretching yourself. Extra practice isn’t saved to your results.</p>
         <div className="flex flex-wrap gap-2">
           {([1, 2, 3] as Level[]).map((l) => (
-            <button key={l} type="button" className="btn btn-ghost" onClick={() => setRun({ id: 1, levels: Array(EXTRA_COUNT).fill(l), saved: false })}>
+            <button key={l} type="button" className="btn btn-ghost" onClick={() => setRun({ id: Date.now(), levels: Array(EXTRA_COUNT).fill(l), saved: false, seed: newSeed() })}>
               <span className={`level-pill level-${l}`}>{LEVEL_NAMES[l]}</span>
             </button>
           ))}

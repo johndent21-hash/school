@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from '@tanstack/react-router'
 import { LogOut, Star } from 'lucide-react'
 import { Logo } from './Logo'
@@ -13,7 +14,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="page-bg flex min-h-screen flex-col">
-      <header className="site-header no-print">
+      <header className="site-header no-print" data-focus-hide>
         <div className="site-header-inner">
           <Link
             to={show && teacher ? '/teacher' : show && student ? '/home' : show && parent ? '/parent' : '/'}
@@ -79,7 +80,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       </header>
       <main id="main" className="shell-main flex-1">
         {PREVIEW_ONLY && (
-          <p className="feedback info mb-4 text-sm">
+          <p className="feedback info mb-4 text-sm" data-focus-hide>
             Preview copy: lessons, worked examples, practice and topic tests all work here, and results stay in this browser. Log-ins are switched off; the teacher and parent pages show a made-up example class.
           </p>
         )}
@@ -90,13 +91,27 @@ export function Shell({ children }: { children: React.ReactNode }) {
         )}
         {children}
       </main>
-      <footer className="no-print border-t border-border bg-card/70">
+      <footer className="no-print border-t border-border bg-card/70" data-focus-hide>
         <div className="gutter mx-auto max-w-6xl py-5 text-sm text-muted-foreground">
           Numbat Maths covers {YEAR_SPAN} of the NSW Mathematics K–10 Syllabus (NESA, 2022). It is an independent resource, not made or endorsed by NESA.
         </div>
       </footer>
     </div>
   )
+}
+
+/**
+ * While active, the page shows only the question and its answer area: the site header, footer and
+ * page titles step aside (anything marked data-focus-hide), so nothing needs scrolling.
+ */
+export function useFocusMode(active: boolean) {
+  useEffect(() => {
+    if (!active) return
+    const root = document.documentElement
+    root.classList.add('focus-mode')
+    window.scrollTo({ top: 0 })
+    return () => root.classList.remove('focus-mode')
+  }, [active])
 }
 
 /** Placeholder shown while a page waits for the browser or the server. */
