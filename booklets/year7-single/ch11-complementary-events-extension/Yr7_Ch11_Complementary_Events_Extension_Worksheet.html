@@ -1,0 +1,321 @@
+<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><title>Year 7 · Complementary events (extension)</title><style>/* Year 7 single worksheet · Mandelbrot theme in the booklet blue. */
+@font-face { font-family: Lexend; font-weight: 400; src: url(../../assets/lexend-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: Lexend; font-weight: 600; src: url(../../assets/lexend-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: Lexend; font-weight: 700; src: url(../../assets/lexend-latin-700-normal.woff2) format("woff2"); }
+:root {
+  --blue: #3f63be; --blue-dark: #2b4a99; --blue-soft: #e6ecf8; --blue-line: #b9c8ea;
+  --charcoal: #3d3b3c; --grey-soft: #f1f1f1; --grey-line: #8a8a8a;
+  --ink: #26292e; --muted: #6b6a64; --line: #cfd6e6;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Lexend, "Liberation Sans", sans-serif; color: var(--ink); font-size: 9.2pt; line-height: 1.28; }
+b { font-weight: 600; }
+p { margin: 0; }
+
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
+.page:last-child { break-after: auto; }
+.content { position: absolute; left: 11mm; right: 11mm; bottom: 11mm; display: flex; flex-direction: column; gap: 2mm; }
+.p1 .content { top: 30mm; }
+.p2 .content { top: 15mm; }
+
+/* ---------- page 1 hero ---------- */
+.hero { position: absolute; top: 0; left: 0; right: 0; height: 27mm; background: url(../ch11-complementary-events/img/hero.jpg) center / cover no-repeat var(--blue-soft); border-bottom: 1mm solid var(--blue); }
+.hero-card { position: absolute; left: 11mm; top: 3mm; height: 21mm; display: flex; align-items: center; gap: 4mm; background: rgba(255,255,255,0.94); border-radius: 3mm; padding: 2mm 6mm 2mm 3mm; box-shadow: 0 0.5mm 2mm rgba(30,40,80,0.18); }
+.hero-card img { height: 16mm; }
+.kicker { font-size: 7.5pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.hero-card h1 { margin: 0.3mm 0 0.2mm; font-size: 21pt; line-height: 1.05; color: var(--blue); font-weight: 700; }
+.sub { display: inline-block; font-size: 7.5pt; letter-spacing: 0.1em; text-transform: uppercase; background: var(--charcoal); color: #fff; padding: 0.3mm 2.2mm; border-radius: 1mm; font-weight: 600; }
+
+/* ---------- page 2 band and header ---------- */
+.band { position: absolute; top: 0; left: 0; right: 0; height: 7mm; background: url(../ch11-complementary-events/img/band.jpg) center / cover no-repeat var(--blue-soft); }
+.page-head { position: absolute; top: 8.5mm; left: 11mm; right: 11mm; display: flex; justify-content: space-between; align-items: center; font-size: 8pt; color: var(--muted); border-bottom: 0.6mm solid var(--blue); padding-bottom: 0.8mm; }
+.page-head .sec { color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.chip { display: inline-block; background: var(--blue); color: #fff; font-weight: 700; font-size: 7.5pt; padding: 0.2mm 2mm; border-radius: 1mm; margin-right: 2mm; }
+
+.page-foot { position: absolute; bottom: 3.5mm; left: 11mm; right: 11mm; height: 6mm; display: flex; justify-content: space-between; align-items: center; font-size: 7pt; color: #8a887f; }
+.page-foot .pn { width: 6mm; height: 6mm; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 7.5pt; }
+
+/* ---------- meta strip ---------- */
+.meta { display: flex; justify-content: space-between; gap: 4mm; font-size: 7.6pt; color: var(--muted); border-bottom: 0.3mm solid var(--line); padding-bottom: 1.2mm; flex: none; }
+.meta b { color: var(--blue); }
+
+/* ---------- key words and formulas ---------- */
+.top-row { display: grid; grid-template-columns: 1fr 62mm; gap: 3mm; flex: none; }
+.card { background: #fff; border: 0.4mm solid var(--blue-line); border-top: 1.4mm solid var(--blue); border-radius: 2.5mm; padding: 1.8mm 3.5mm 2mm; }
+.card-title { font-weight: 700; color: var(--blue); font-size: 9pt; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1mm; }
+.card-title span { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--muted); font-size: 8pt; margin-left: 2mm; }
+dl { margin: 0; display: grid; grid-template-columns: 21mm 1fr; row-gap: 0.6mm; column-gap: 2mm; font-size: 8.5pt; }
+dt { font-weight: 700; background: var(--blue-soft); color: var(--blue-dark); border-radius: 1.2mm; padding: 0.2mm 1.8mm; align-self: start; text-align: center; }
+dd { margin: 0; }
+.note-line { margin-top: 1.4mm; font-size: 8.6pt; background: var(--grey-soft); border-radius: 1.5mm; padding: 1mm 2mm; }
+.formula { display: flex; flex-direction: column; align-items: stretch; gap: 1.1mm; }
+.fbox { border: 0.5mm solid var(--blue); background: var(--blue-soft); border-radius: 1.8mm; text-align: center; font-weight: 700; font-size: 11pt; padding: 0.7mm 0; color: var(--ink); }
+.bar { width: 100%; height: 15mm; }
+.tip { font-size: 8.2pt; text-align: center; }
+
+/* ---------- worked examples: pale grey, dashed border ---------- */
+.ex { background: var(--grey-soft); border: 0.45mm dashed var(--grey-line); border-radius: 2.5mm; padding: 1.5mm 3.5mm 1.8mm; flex: none; }
+.ex-head { display: flex; align-items: center; gap: 2.5mm; margin-bottom: 0.9mm; }
+.ex-tag { background: var(--charcoal); color: #fff; font-weight: 700; font-size: 8pt; padding: 0.3mm 2.2mm; border-radius: 1.2mm; text-transform: uppercase; letter-spacing: 0.06em; }
+.ex-title { font-weight: 700; font-size: 10pt; }
+.ex-use { margin-left: auto; font-size: 8pt; color: var(--blue-dark); background: #fff; border: 0.3mm solid var(--blue-line); border-radius: 3mm; padding: 0.2mm 2.5mm; }
+.ex-q { margin-bottom: 0.8mm; }
+.steps { display: flex; flex-direction: column; gap: 0.7mm; }
+.steps > div { display: flex; align-items: center; gap: 2mm; flex-wrap: wrap; }
+.st { flex: none; width: 4.6mm; height: 4.6mm; border-radius: 50%; background: #fff; border: 0.35mm solid var(--charcoal); font-size: 7.5pt; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.hl { background: #fff; border: 0.35mm solid var(--charcoal); border-radius: 1.2mm; padding: 0.2mm 1.8mm; font-weight: 600; }
+.note { font-size: 8pt; color: var(--muted); }
+.ex-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.ex-cols > div + div { border-left: 0.3mm dashed var(--grey-line); padding-left: 4mm; }
+.die-row { display: inline-flex; gap: 1mm; }
+.die-row span { width: 5.4mm; height: 5.4mm; border: 0.35mm solid var(--charcoal); border-radius: 1mm; background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 8.5pt; position: relative; }
+.die-row span.x { color: #9a9a9a; }
+.die-row span.x::after { content: ""; position: absolute; left: -0.6mm; right: -0.6mm; top: 50%; border-top: 0.55mm solid #c0392b; transform: rotate(-35deg); }
+
+/* ---------- rounds: pale blue ---------- */
+.round { background: var(--blue-soft); border: 0.5mm solid var(--blue); border-radius: 2.5mm; padding: 1.5mm 3mm 2mm; flex: none; }
+.round-head { display: flex; align-items: center; gap: 2mm; margin-bottom: 1mm; }
+.round-tag { background: var(--blue); color: #fff; font-weight: 700; font-size: 8.5pt; padding: 0.3mm 2.4mm; border-radius: 1.2mm; text-transform: uppercase; letter-spacing: 0.06em; }
+.lvl { font-weight: 700; color: var(--blue-dark); font-size: 8.6pt; }
+.who { font-size: 7.8pt; color: var(--muted); border: 0.3mm solid var(--blue-line); background: #fff; border-radius: 3mm; padding: 0 2mm; }
+.round-use { margin-left: auto; font-size: 8pt; color: var(--charcoal); font-weight: 600; }
+.round-use::before { content: "↑ "; }
+.hint { font-size: 8.3pt; color: var(--charcoal); margin: -0.2mm 0 1mm; }
+.qgrid { display: grid; gap: 1.6mm 2mm; }
+.qgrid.c2 { grid-template-columns: 1fr 1fr; }
+.q { background: #fff; border-radius: 1.8mm; padding: 1.3mm 2.2mm 1.6mm 1.5mm; display: flex; gap: 1.8mm; align-items: flex-start; border: 0.25mm solid var(--blue-line); }
+.qn { flex: none; width: 5.4mm; height: 5.4mm; border-radius: 50%; background: var(--blue); color: #fff; font-weight: 700; font-size: 8pt; display: flex; align-items: center; justify-content: center; margin-top: 0.2mm; }
+.qb { flex: 1; min-width: 0; line-height: 1.5; }
+.qgrid.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.q.span2 { grid-column: span 2; }
+.inline-work { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; align-items: end; }
+.inline-work .work { margin: 0.5mm 0 0; }
+.with-fig { display: flex; align-items: center; gap: 2mm; justify-content: space-between; }
+.with-fig > div { flex: 1; min-width: 0; }
+.spin { flex: none; }
+.calc { margin-top: 0.4mm; }
+.blank { display: inline-block; border-bottom: 0.35mm solid var(--charcoal); height: 4.6mm; vertical-align: -0.6mm; text-align: center; }
+.fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.05; font-size: 0.92em; margin: 0 0.4mm; }
+.fr > span { padding: 0 0.6mm; }
+.fr > span:first-child { border-bottom: 0.3mm solid currentColor; }
+.blankfr .blank { height: 4.2mm; vertical-align: 0; }
+.blankfr > span:first-child { border-bottom: 0.35mm solid var(--charcoal); padding-bottom: 0.4mm; }
+.blankfr > span:last-child { padding-top: 0.4mm; }
+.blankfr > span .blank { border-bottom: 0; background: repeating-linear-gradient(90deg, transparent 0 0.01mm); }
+.blankfr { min-width: 8mm; }
+.blankfr > span:first-child .blank, .blankfr > span:last-child .blank { border: 0.3mm dashed #9aa6c4; border-radius: 0.8mm; background: #fff; }
+.yn { display: inline-block; border: 0.35mm solid var(--charcoal); border-radius: 3mm; padding: 0 2.4mm; line-height: 1.35; font-size: 8.5pt; margin-right: 1mm; }
+.work { border: 0.3mm dashed var(--blue-line); border-radius: 1.2mm; margin: 0.8mm 0 1mm; }
+.ans-line { display: flex; gap: 2mm; align-items: flex-end; line-height: 1.3; }
+.ans-line b { font-size: 8.6pt; }
+.ans-line i { flex: 1; border-bottom: 0.35mm solid var(--charcoal); height: 5mm; }
+
+/* ---------- end of page 2 ---------- */
+.end-row { display: grid; grid-template-columns: 1fr 72mm; gap: 3mm; flex: 1; min-height: 0; }
+.traffic table { width: 100%; border-collapse: collapse; font-size: 8.2pt; }
+.traffic th { font-size: 7.2pt; font-weight: 600; padding: 0 1mm 0.8mm; width: 15mm; text-align: center; line-height: 1.15; }
+.traffic th.g { color: #1e7b3c; } .traffic th.a { color: #a86a00; } .traffic th.r { color: #b0302a; }
+.traffic td { padding: 0.9mm 1mm; border-top: 0.25mm solid var(--line); }
+.traffic td:not(:first-child) { text-align: center; }
+.traffic td i { display: inline-block; width: 5.5mm; height: 5.5mm; border-radius: 50%; border: 0.6mm solid; vertical-align: middle; }
+.traffic td i.g { border-color: #2e9e52; } .traffic td i.a { border-color: #e0a100; } .traffic td i.r { border-color: #d0453c; }
+.key { border: 0.3mm solid var(--line); border-radius: 2.5mm; padding: 1.5mm 2.5mm; background: #fafbfe; display: flex; align-items: center; }
+.key-inner { transform: rotate(180deg); width: 100%; }
+.key-title { font-size: 7pt; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6mm; }
+.key-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3mm 2.5mm; font-size: 6.6pt; line-height: 1.3; }
+.key-grid b { color: var(--blue); margin-right: 0.6mm; }
+.key-grid .fr { font-size: 0.95em; }
+
+/* compact pieces */
+.content { gap: 1.7mm; }
+.q { padding: 1.1mm 2mm 1.2mm 1.4mm; }
+.blankfr > span:first-child .blank, .blankfr > span:last-child .blank { height: 3.6mm; min-width: 5mm !important; }
+.side { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; align-items: stretch; }
+.wbox { border: 0.3mm dashed #9aa6c4; border-radius: 1.2mm; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 1.5mm 1mm; }
+.wbox .wl { position: absolute; top: 0.4mm; left: 1.4mm; font-size: 6.5pt; color: #8a93ad; line-height: 1; }
+.wbox .ans-line i { height: 4.5mm; }
+table.r1 { width: 100%; border-collapse: separate; border-spacing: 0 1.1mm; font-size: 9pt; margin-top: -1mm; }
+table.r1 th { text-align: left; font-size: 7.8pt; color: var(--blue-dark); font-weight: 600; padding: 0 2mm; }
+table.r1 td { background: #fff; padding: 1mm 2mm; border-top: 0.25mm solid var(--blue-line); border-bottom: 0.25mm solid var(--blue-line); vertical-align: middle; line-height: 1.45; }
+table.r1 td:first-child { border-left: 0.25mm solid var(--blue-line); border-radius: 1.8mm 0 0 1.8mm; width: 8mm; }
+table.r1 td:last-child { border-right: 0.25mm solid var(--blue-line); border-radius: 0 1.8mm 1.8mm 0; }
+table.r1 td:nth-child(2) { width: 62mm; }
+table.r1 td:nth-child(3) { width: 52mm; }
+.qgrid.c1 { grid-template-columns: 1fr; }
+
+.outcome { position: absolute; right: 11mm; top: 5mm; width: 58mm; background: rgba(255,255,255,0.94); border-radius: 2.5mm; padding: 1.8mm 3mm; font-size: 7.6pt; line-height: 1.3; box-shadow: 0 0.5mm 2mm rgba(30,40,80,0.18); }
+.outcome b { display: block; color: var(--blue); font-size: 9pt; }
+.howto { margin-top: 1.2mm; font-size: 8.5pt; color: var(--blue-dark); }
+.fbox { font-size: 10pt; padding: 0.4mm 0; }
+.bar { height: 13mm; }
+table.r1 td { padding: 0.6mm 2mm; line-height: 1.35; }
+table.r1 td:nth-child(2) { width: 68mm; }
+table.r1 td:nth-child(3) { width: 50mm; }
+.side { grid-template-columns: 1.25fr 1fr; }
+.fr { line-height: 1; font-size: 0.86em; }
+.qb { line-height: 1.42; }
+.end-row { grid-template-columns: 1fr 70mm; }
+.traffic th { width: 13mm; font-size: 6.8pt; }
+.traffic td { padding: 0.6mm 1mm; }
+.traffic td i { width: 5mm; height: 5mm; }
+.key-grid { font-size: 7pt; }
+
+.nw { white-space: nowrap; }
+.steps > div { display: block; }
+.st { display: inline-flex; vertical-align: middle; margin-right: 1.6mm; }
+.die-row { vertical-align: middle; margin-left: 1mm; }
+.traffic td:first-child { font-size: 8pt; }
+.key-grid { font-size: 7.4pt; gap: 0.6mm 2.5mm; }
+.side { grid-template-columns: 1.3fr 1fr; }
+.p2 .content { gap: 1.5mm; }
+.p2 .round { padding-bottom: 1.6mm; }
+
+.hl { display: inline-block; line-height: 1.45; }
+.traffic { display: flex; flex-direction: column; }
+.tricky { margin-top: auto; padding-top: 1.5mm; font-size: 8pt; }
+.tricky i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
+.p2 .content { gap: 1.2mm; } .p2 .ex { padding-top: 1.2mm; padding-bottom: 1.4mm; }
+
+/* thin upside-down answer strip */
+.key { flex: none; display: block; border: 0.3mm dashed var(--blue-line); border-radius: 2mm; background: #fafbfe; padding: 1mm 2.5mm; }
+.key-inner { transform: rotate(180deg); font-size: 6.8pt; line-height: 1.35; color: var(--muted); }
+.key-title { color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 2mm; font-size: 6.8pt; }
+.key-items span { white-space: nowrap; margin-right: 2.6mm; }
+.key-items b { color: var(--blue); margin-right: 0.6mm; }
+.key-items { display: inline; }
+/* page 2: the rounds share the spare height, so the working boxes grow */
+.p2 .round { flex: 1 1 auto; display: flex; flex-direction: column; }
+.p2 .qgrid { flex: 1; grid-auto-rows: 1fr; }
+.p2 .q { align-items: stretch; }
+.p2 .qn { align-self: flex-start; }
+.p2 .qb:has(> .side) { display: flex; flex-direction: column; }
+.p2 .qb > .side { flex: 1; }
+
+.p2 .qgrid { grid-auto-rows: auto; grid-template-rows: auto 1fr; }
+.p2 .round-c .qgrid { grid-template-rows: 1fr; }
+.key-inner { text-align: left; }
+/* extension sheet only */
+.ex-cols.three { grid-template-columns: 1fr 1fr 1fr; }
+.ex-cols.three > div + div { border-left: 0.3mm dashed var(--grey-line); padding-left: 4mm; }
+table.mini { border-collapse: collapse; margin: 0.6mm 0; font-size: 8.4pt; }
+table.mini td { border: 0.3mm solid var(--blue-line); padding: 0.1mm 2mm; text-align: center; line-height: 1.3; }
+table.mini tr:first-child td { background: var(--blue-soft); font-weight: 600; }
+.q.q-wide { margin-top: 0.4mm; }
+.words dl { grid-template-columns: 25mm 1fr; }
+</style></head><body>
+<section class="page p1">
+  <div class="hero">
+    <div class="hero-card">
+      <img src="../../assets/kingscliff-logo.png" alt="Kingscliff High School">
+      <div><p class="kicker">Year 7 Mathematics · Chapter 11 Probability</p><h1>Complementary events</h1><p class="sub">Extension worksheet · work on your own</p></div>
+    </div>
+    <div class="outcome"><b>MA4-PRO-C-01</b><span>Solves problems involving the probabilities of simple chance experiments</span></div>
+  </div>
+  <div class="content">
+    <div class="top-row">
+      <div class="card words">
+        <p class="card-title">Key words</p>
+        <dl>
+          <dt>complement</dt><dd>all the outcomes that are <b>not</b> in the event.</dd>
+          <dt>more than 4</dt><dd>5, 6, … (4 is <b>not</b> included). Its complement is “4 or less”.</dd>
+          <dt>at least 4</dt><dd>4 or more (4 <b>is</b> included). Its complement is “less than 4”.</dd>
+          <dt>prime</dt><dd>has exactly two factors: 2, 3, 5, 7, … (1 is not prime).</dd>
+        </dl>
+        <p class="howto"><b>How to use this sheet:</b> read each grey <b>Example</b>, then do the blue <b>Round</b> under it. The first question in a round is started for you.</p>
+        <p class="note-line"><b>Notes:</b> If the only outcomes are A, B and C, then P(A) + P(B) + P(C) = 1. Probabilities are never below 0 or above 1.</p>
+      </div>
+      <div class="card formula">
+        <p class="card-title">Formulas</p>
+        <div class="fbox">P(not A) = 1 − P(A)</div>
+        <div class="fbox">P(A) + P(not A) = 1</div>
+        <svg class="bar" viewBox="-1 0 86 24">
+  <text x="42" y="3.6" font-size="3.4" text-anchor="middle" fill="#3d3b3c" font-weight="700">All the outcomes = 1 = 100%</text>
+  <rect x="0" y="6" width="29.4" height="9" fill="#3f63be" stroke="#3d3b3c" stroke-width="0.4"/><rect x="29.4" y="6" width="54.6" height="9" fill="#e6ecf8" stroke="#3d3b3c" stroke-width="0.4"/>
+  <text x="14.7" y="10.6" font-size="3.6" text-anchor="middle" dominant-baseline="central" fill="#fff" font-weight="700">rain 35%</text>
+  <text x="56.7" y="10.6" font-size="3.6" text-anchor="middle" dominant-baseline="central" fill="#26292e" font-weight="700">no rain 65%</text>
+  <text x="42" y="21" font-size="3.2" text-anchor="middle" fill="#26292e">35% + 65% = 100%</text></svg>
+        <p class="tip"><b>Tip:</b> 1 = <span class="fr"><span>8</span><span>8</span></span> = 1.00 = 100%</p>
+      </div>
+    </div>
+    
+<div class="ex">
+  <div class="ex-head"><span class="ex-tag">Example 1</span><span class="ex-title">Complements with “more than” and “at least”</span><span class="ex-use">Use me for <b>Round 1</b> ↓</span></div>
+  <div class="ex-body">
+  <div class="ex-q">Cards numbered 1 to 10. <b>Event:</b> picking a number greater than 6. Write the complement and list its outcomes.</div>
+  <div class="steps">
+    <div><span class="st">1</span>List all the outcomes and cross out the event (7, 8, 9, 10): <span class="die-row"><span class="">1</span><span class="">2</span><span class="">3</span><span class="">4</span><span class="">5</span><span class="">6</span><span class="x">7</span><span class="x">8</span><span class="x">9</span><span class="x">10</span></span></div>
+    <div><span class="st">2</span><span class="hl">Complement: 6 or less. Outcomes: 1, 2, 3, 4, 5, 6</span> &nbsp;<span class="note">Careful: 6 is in the complement. It is not “less than 6”.</span></div>
+  </div></div>
+</div>
+    
+<div class="round">
+  <div class="round-head"><span class="round-tag">Round 1</span><span class="lvl">Medium</span><span class="who">Extension</span><span class="round-use">Use Example 1</span></div>
+  <div class="qgrid c1"><table class="r1"><tr><th></th><th>What happens</th><th>Complement (in words)</th><th>Outcomes in the complement</th></tr><tr><td class="tn"><span class="qn">1</span></td><td>A die is rolled.<br><b>Event:</b> rolling more than 2</td><td>rolling <span class="blank" style="min-width:7mm"></span> or less</td><td><span class="blank" style="min-width:6mm"></span>, <span class="blank" style="min-width:6mm"></span></td></tr><tr><td class="tn"><span class="qn">2</span></td><td>A die is rolled.<br><b>Event:</b> rolling a prime number</td><td><span class="blank" style="min-width:40mm"></span></td><td><span class="blank" style="min-width:36mm"></span></td></tr><tr><td class="tn"><span class="qn">3</span></td><td><div class="with-fig"><div>This spinner is spun.<br><b>Event:</b> a multiple of 3</div><svg class="spin" viewBox="0 0 22 22" style="width:12mm;height:12mm"><path d="M11,11 L11.000,1.000 A10,10 0 0 1 18.071,3.929 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="13.37" y="5.27" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">1</text><path d="M11,11 L18.071,3.929 A10,10 0 0 1 21.000,11.000 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="16.73" y="8.63" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">2</text><path d="M11,11 L21.000,11.000 A10,10 0 0 1 18.071,18.071 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="16.73" y="13.37" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">3</text><path d="M11,11 L18.071,18.071 A10,10 0 0 1 11.000,21.000 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="13.37" y="16.73" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">4</text><path d="M11,11 L11.000,21.000 A10,10 0 0 1 3.929,18.071 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="8.63" y="16.73" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">5</text><path d="M11,11 L3.929,18.071 A10,10 0 0 1 1.000,11.000 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="5.27" y="13.37" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">6</text><path d="M11,11 L1.000,11.000 A10,10 0 0 1 3.929,3.929 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="5.27" y="8.63" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">7</text><path d="M11,11 L3.929,3.929 A10,10 0 0 1 11.000,1.000 Z" fill="#ffffff" stroke="#3d3b3c" stroke-width="0.35"/><text x="8.63" y="5.27" font-size="3" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">8</text><line x1="11" y1="11" x2="15" y2="6" stroke="#26292e" stroke-width="0.7" stroke-linecap="round"/><circle cx="11" cy="11" r="0.9" fill="#26292e"/></svg></div></td><td><span class="blank" style="min-width:40mm"></span></td><td><span class="blank" style="min-width:36mm"></span></td></tr><tr><td class="tn"><span class="qn">4</span></td><td>Cards numbered 1 to 10. One is picked.<br><b>Event:</b> at least 7</td><td><span class="blank" style="min-width:40mm"></span></td><td><span class="blank" style="min-width:36mm"></span></td></tr></table><div class="q q-wide"><span class="qn">5</span><div class="qb"><div class="side"><div>A die is rolled. Are “rolling an even number” and “rolling a 1” complementary events? Explain.</div><div class="wbox" style="min-height:12mm"><span class="wl">Working</span><div class="ans-line"><b>Yes / No because</b><i></i></div></div></div></div></div></div>
+</div>
+    
+<div class="ex">
+  <div class="ex-head"><span class="ex-tag">Example 2</span><span class="ex-title">Fractions, decimals and percentages</span><span class="ex-use">Use me for <b>Round 2</b> ↓</span></div>
+  <div class="ex-body">
+  <div class="ex-cols three">
+    <div><div class="ex-q"><b>a</b> P(A) = <span class="fr"><span>3</span><span>8</span></span></div><div class="steps"><div><span class="fr"><span>8</span><span>8</span></span> − <span class="fr"><span>3</span><span>8</span></span> = <span class="hl"><span class="fr"><span>5</span><span>8</span></span></span></div></div></div>
+    <div><div class="ex-q"><b>b</b> P(A) = 0.35</div><div class="steps"><div>1.00 − 0.35 = <span class="hl">0.65</span></div><div class="note">Write 1 as 1.00 to line up.</div></div></div>
+    <div><div class="ex-q"><b>c</b> P(A) = 72%</div><div class="steps"><div>100% − 72% = <span class="hl">28%</span></div><div class="note">1 whole = 100%</div></div></div>
+  </div>
+  <div class="note" style="margin-top:0.6mm">In each part, find P(not A). Simplify a fraction answer if you can, e.g. <span class="fr"><span>9</span><span>15</span></span> = <span class="fr"><span>3</span><span>5</span></span>.</div></div>
+</div>
+    
+<div class="round">
+  <div class="round-head"><span class="round-tag">Round 2</span><span class="lvl">Medium</span><span class="who">Extension</span><span class="round-use">Use Example 2</span></div>
+  <div class="qgrid c2"><div class="q"><span class="qn">6</span><div class="qb">P(A) = 0.23. Find P(not A).<div class="calc">P(not A) = 1.00 − 0.23 = <span class="blank" style="min-width:14mm"></span></div></div></div><div class="q"><span class="qn">7</span><div class="qb"><div class="side"><div>P(A) = <span class="fr"><span>4</span><span>9</span></span>. Find P(not A).</div><div class="wbox" style="min-height:13mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">8</span><div class="qb"><div class="side"><div>The chance of rain is 64%. Find the chance of <b>no</b> rain.</div><div class="wbox" style="min-height:13mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">9</span><div class="qb"><div class="side"><div>P(the train is on time) = 0.875. Find P(the train is <b>not</b> on time).</div><div class="wbox" style="min-height:13mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q span2"><span class="qn">10</span><div class="qb"><div class="side"><div>P(win) = <span class="fr"><span>6</span><span>15</span></span>. Find P(not win) in <b>simplest form</b>.</div><div class="wbox" style="min-height:13mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div></div>
+</div>
+  </div>
+  <footer class="page-foot"><span>Kingscliff High School · Year 7 Mathematics</span><span class="pn">1</span><span>Ch 11 · Complementary events (extension) · Turn over →</span></footer>
+</section>
+<section class="page p2">
+  <div class="band"></div>
+  <header class="page-head"><span><b class="chip">Ch 11</b>Complementary events</span><span class="sec">Extension</span></header>
+  <div class="content">
+    
+<div class="ex">
+  <div class="ex-head"><span class="ex-tag">Example 3</span><span class="ex-title">More than two outcomes</span><span class="ex-use">Use me for <b>Round 3</b> ↓</span></div>
+  <div class="ex-body">
+  <div class="with-fig"><div>
+  <div class="ex-q">A spinner is red, blue or green. P(red) = <span class="fr"><span>1</span><span>4</span></span> and P(blue) = <span class="fr"><span>1</span><span>3</span></span>. Find P(green) and P(not green).</div>
+  <div class="steps">
+    <div><span class="st">1</span>All the outcomes add to 1. Use the same bottom number: &nbsp;<span class="fr"><span>1</span><span>4</span></span> + <span class="fr"><span>1</span><span>3</span></span> = <span class="fr"><span>3</span><span>12</span></span> + <span class="fr"><span>4</span><span>12</span></span> = <span class="fr"><span>7</span><span>12</span></span></div>
+    <div><span class="st">2</span>P(green) = <span class="fr"><span>12</span><span>12</span></span> − <span class="fr"><span>7</span><span>12</span></span> = <span class="hl"><span class="fr"><span>5</span><span>12</span></span></span> &nbsp; P(not green) = 1 − <span class="fr"><span>5</span><span>12</span></span> = <span class="hl"><span class="fr"><span>7</span><span>12</span></span></span> <span class="note">(red or blue)</span></div>
+  </div></div><svg class="spin" viewBox="0 0 22 22" style="width:17mm;height:17mm"><path d="M11,11 L11.000,1.000 A10,10 0 0 1 16.000,2.340 Z" fill="#f4b6b0" stroke="#3d3b3c" stroke-width="0.35"/><text x="12.86" y="4.05" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">R</text><path d="M11,11 L16.000,2.340 A10,10 0 0 1 19.660,6.000 Z" fill="#f4b6b0" stroke="#3d3b3c" stroke-width="0.35"/><text x="16.09" y="5.91" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">R</text><path d="M11,11 L19.660,6.000 A10,10 0 0 1 21.000,11.000 Z" fill="#f4b6b0" stroke="#3d3b3c" stroke-width="0.35"/><text x="17.95" y="9.14" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">R</text><path d="M11,11 L21.000,11.000 A10,10 0 0 1 19.660,16.000 Z" fill="#a9c0ee" stroke="#3d3b3c" stroke-width="0.35"/><text x="17.95" y="12.86" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">B</text><path d="M11,11 L19.660,16.000 A10,10 0 0 1 16.000,19.660 Z" fill="#a9c0ee" stroke="#3d3b3c" stroke-width="0.35"/><text x="16.09" y="16.09" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">B</text><path d="M11,11 L16.000,19.660 A10,10 0 0 1 11.000,21.000 Z" fill="#a9c0ee" stroke="#3d3b3c" stroke-width="0.35"/><text x="12.86" y="17.95" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">B</text><path d="M11,11 L11.000,21.000 A10,10 0 0 1 6.000,19.660 Z" fill="#a9c0ee" stroke="#3d3b3c" stroke-width="0.35"/><text x="9.14" y="17.95" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">B</text><path d="M11,11 L6.000,19.660 A10,10 0 0 1 2.340,16.000 Z" fill="#b5dfb9" stroke="#3d3b3c" stroke-width="0.35"/><text x="5.91" y="16.09" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">G</text><path d="M11,11 L2.340,16.000 A10,10 0 0 1 1.000,11.000 Z" fill="#b5dfb9" stroke="#3d3b3c" stroke-width="0.35"/><text x="4.05" y="12.86" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">G</text><path d="M11,11 L1.000,11.000 A10,10 0 0 1 2.340,6.000 Z" fill="#b5dfb9" stroke="#3d3b3c" stroke-width="0.35"/><text x="4.05" y="9.14" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">G</text><path d="M11,11 L2.340,6.000 A10,10 0 0 1 6.000,2.340 Z" fill="#b5dfb9" stroke="#3d3b3c" stroke-width="0.35"/><text x="5.91" y="5.91" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">G</text><path d="M11,11 L6.000,2.340 A10,10 0 0 1 11.000,1.000 Z" fill="#b5dfb9" stroke="#3d3b3c" stroke-width="0.35"/><text x="9.14" y="4.05" font-size="2.6" text-anchor="middle" dominant-baseline="central" font-weight="700" fill="#26292e">G</text><line x1="11" y1="11" x2="15" y2="6" stroke="#26292e" stroke-width="0.7" stroke-linecap="round"/><circle cx="11" cy="11" r="0.9" fill="#26292e"/></svg></div></div>
+</div>
+    
+<div class="round">
+  <div class="round-head"><span class="round-tag">Round 3</span><span class="lvl">Challenging</span><span class="who">Extension</span><span class="round-use">Use Example 3</span></div>
+  <div class="qgrid c2"><div class="q"><span class="qn">11</span><div class="qb">A spinner is red, blue or yellow. P(red) = 0.2 and P(blue) = 0.45.<div class="calc">0.2 + 0.45 = <span class="blank" style="min-width:12mm"></span></div><div class="calc">P(yellow) = 1 − <span class="blank" style="min-width:12mm"></span> = <span class="blank" style="min-width:12mm"></span></div><div class="calc">P(not yellow) = <span class="blank" style="min-width:12mm"></span></div></div></div><div class="q"><span class="qn">12</span><div class="qb"><div class="side"><div>How students get to school:<table class="mini"><tr><td>Bus</td><td>Car</td><td>Bike</td><td>Walk</td></tr><tr><td>35%</td><td>40%</td><td>10%</td><td>?</td></tr></table>Find P(walk) and P(<b>not</b> car).</div><div class="wbox" style="min-height:16mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">13</span><div class="qb"><div class="side"><div>Only A, B or C can happen. P(A) = <span class="fr"><span>1</span><span>6</span></span> and P(B) = <span class="fr"><span>1</span><span>3</span></span>.<br>Find P(C) and P(<b>not</b> B).</div><div class="wbox" style="min-height:16mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">14</span><div class="qb"><div class="side"><div>Jo says: “The chance my team wins is 0.6 and the chance it loses is 0.5.” Draws can’t happen. Explain why Jo must be wrong.</div><div class="wbox" style="min-height:16mm"><span class="wl">Working</span><div class="ans-line"><b>Because</b><i></i></div></div></div></div></div></div>
+</div>
+    
+<div class="ex">
+  <div class="ex-head"><span class="ex-tag">Example 4</span><span class="ex-title">Work backwards to find how many</span><span class="ex-use">Use me for <b>Round 4</b> ↓</span></div>
+  <div class="ex-body">
+  <div class="ex-q">A bag has 30 lollies. P(<b>not</b> red) = <span class="fr"><span>3</span><span>5</span></span>. How many red lollies are in the bag?</div>
+  <div class="steps">
+    <div><span class="st">1</span>P(red) = 1 − <span class="fr"><span>3</span><span>5</span></span> = <span class="fr"><span>2</span><span>5</span></span></div>
+    <div><span class="st">2</span><span class="fr"><span>2</span><span>5</span></span> of 30: &nbsp;30 ÷ 5 = 6, &nbsp;6 × 2 = 12. &nbsp;<span class="hl">12 red lollies</span> &nbsp;<span class="note">Check: 18 not red, <span class="fr"><span>18</span><span>30</span></span> = <span class="fr"><span>3</span><span>5</span></span> ✓</span></div>
+  </div></div>
+</div>
+    
+<div class="round">
+  <div class="round-head"><span class="round-tag">Round 4</span><span class="lvl">Challenging</span><span class="who">Extension</span><span class="round-use">Use Example 4</span></div>
+  <div class="qgrid c2"><div class="q"><span class="qn">15</span><div class="qb">A bag has 40 marbles. P(<b>not</b> blue) = <span class="fr"><span>3</span><span>4</span></span>. How many are blue?<div class="calc">P(blue) = 1 − <span class="fr"><span>3</span><span>4</span></span> = <span class="fr blankfr"><span><span class="blank" style="min-width:6mm"></span></span><span><span class="blank" style="min-width:6mm"></span></span></span> &nbsp; <span class="fr blankfr"><span><span class="blank" style="min-width:6mm"></span></span><span><span class="blank" style="min-width:6mm"></span></span></span> of 40 = <span class="blank" style="min-width:10mm"></span> blue</div></div></div><div class="q"><span class="qn">16</span><div class="qb"><div class="side"><div>A class has 28 students. P(a student is <b>not</b> left-handed) = <span class="fr"><span>6</span><span>7</span></span>. How many are left-handed?</div><div class="wbox" style="min-height:18mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">17</span><div class="qb"><div class="side"><div>200 raffle tickets are sold. P(Ana does <b>not</b> win) = 0.95. How many tickets did Ana buy?</div><div class="wbox" style="min-height:18mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">18</span><div class="qb"><div class="side"><div>A spinner has 20 equal parts. P(<b>not</b> red) = 0.65. How many parts are red?</div><div class="wbox" style="min-height:18mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div></div>
+</div>
+    
+<div class="round round-c">
+  <div class="round-head"><span class="round-tag">Challenge</span><span class="lvl">Challenging</span><span class="who">Extension (stretch)</span><span class="round-use">Use all the examples</span></div>
+  <div class="qgrid c2"><div class="q"><span class="qn">19</span><div class="qb"><div class="side"><div>A box has only red, blue and green counters. P(<b>not</b> red) = <span class="fr"><span>5</span><span>8</span></span> and P(<b>not</b> blue) = <span class="fr"><span>3</span><span>4</span></span>. Find P(green).</div><div class="wbox" style="min-height:20mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div><div class="q"><span class="qn">20</span><div class="qb"><div class="side"><div>P(A) is 3 times as big as P(not A). Find P(A) and P(not A).<br><span class="note">Hint: draw a bar split into 4 equal parts.</span></div><div class="wbox" style="min-height:20mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div></div></div></div>
+</div>
+    <div class="key">
+      <div class="key-inner"><b class="key-title">Answers</b><span class="key-items"><span><b>1</b> rolling 2 or less; 1, 2</span> <span><b>2</b> not a prime; 1, 4, 6</span> <span><b>3</b> not a multiple of 3; 1, 2, 4, 5, 7, 8</span> <span><b>4</b> less than 7 (6 or less); 1 to 6</span> <span><b>5</b> No: 3 and 5 are in neither event</span> <span><b>6</b> 0.77</span> <span><b>7</b> 5/9</span> <span><b>8</b> 36%</span> <span><b>9</b> 0.125</span> <span><b>10</b> 9/15 = 3/5</span> <span><b>11</b> P(yellow) = 0.35; P(not yellow) = 0.65</span> <span><b>12</b> P(walk) = 15%; P(not car) = 60%</span> <span><b>13</b> P(C) = 1/2 (3/6); P(not B) = 2/3</span> <span><b>14</b> 0.6 + 0.5 = 1.1, more than 1</span> <span><b>15</b> P(blue) = 1/4; 10 blue</span> <span><b>16</b> 1/7 of 28 = 4</span> <span><b>17</b> P(win) = 0.05; 10 tickets</span> <span><b>18</b> P(red) = 0.35; 7 parts</span> <span><b>19</b> P(red) = 3/8, P(blue) = 2/8; P(green) = 3/8</span> <span><b>20</b> P(A) = 3/4; P(not A) = 1/4</span></span></div>
+    </div>
+  </div>
+  <footer class="page-foot"><span>Kingscliff High School · Year 7 Mathematics</span><span class="pn">2</span><span>Artwork: part of the Mandelbrot set</span></footer>
+</section></body></html>

@@ -1,0 +1,8 @@
+/* extension sheet only */
+.ex-cols.three { grid-template-columns: 1fr 1fr 1fr; }
+.ex-cols.three > div + div { border-left: 0.3mm dashed var(--grey-line); padding-left: 4mm; }
+table.mini { border-collapse: collapse; margin: 0.6mm 0; font-size: 8.4pt; }
+table.mini td { border: 0.3mm solid var(--blue-line); padding: 0.1mm 2mm; text-align: center; line-height: 1.3; }
+table.mini tr:first-child td { background: var(--blue-soft); font-weight: 600; }
+.q.q-wide { margin-top: 0.4mm; }
+.words dl { grid-template-columns: 25mm 1fr; }
