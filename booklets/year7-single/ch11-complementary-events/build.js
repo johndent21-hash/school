@@ -23,7 +23,7 @@ const F = (n, d) => `<span class="fr"><span>${n}</span><span>${d}</span></span>`
 const B = (w = 9, ans = '') => `<span class="blank" style="min-width:${w}mm">${ans}</span>`;   // fill-in blank
 const BF = () => `<span class="fr blankfr"><span>${B(6)}</span><span>${B(6)}</span></span>`; // blank fraction
 const ansLine = (label = 'Answer') => `<div class="ans-line"><b>${label}:</b><i></i></div>`;
-const side = (text, mm = 15) => `<div class="side"><div>${text}</div><div class="wbox" style="height:${mm}mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div>`;
+const side = (text, mm = 15) => `<div class="side"><div>${text}</div><div class="wbox" style="min-height:${mm}mm"><span class="wl">Working</span><div class="ans-line"><b>Answer:</b><i></i></div></div></div>`;
 const work = (mm) => `<div class="work" style="height:${mm}mm"></div>`;
 
 // Spinner with equal sectors. parts: array of {t: label, c: fill}
@@ -92,8 +92,8 @@ const r2 = [
 const r3 = [
   Q(11, `Add: ${F(2, 7)} + ${F(5, 7)} = ${BF()} = ${B(8)}<br>Do they add to 1? &nbsp; <span class="yn">Yes</span> <span class="yn">No</span>`, `${F(7, 7)} = 1. Yes`),
   Q(12, `P(A) = ${F(4, 9)} and P(not A) = ${F(5, 9)}.<br>Add: ${BF()} + ${BF()} = ${BF()}<br>Do they add to 1? &nbsp; <span class="yn">Yes</span> <span class="yn">No</span>`, `${F(4, 9)} + ${F(5, 9)} = ${F(9, 9)} = 1. Yes`),
-  Q(13, side(`Ben says P(win) = ${F(1, 6)}<br>and P(not win) = ${F(4, 6)}.<br>Do they add to 1? If not, what should P(not win) be?`), `${F(1, 6)} + ${F(4, 6)} = ${F(5, 6)}, not 1. P(not win) = ${F(5, 6)}`),
-  Q(14, side(`Mia says P(goal) = ${F(3, 10)}<br>and P(no goal) = ${F(7, 10)}.<br>Is Mia right? Show how you know.`), `Yes: ${F(3, 10)} + ${F(7, 10)} = ${F(10, 10)} = 1`),
+  Q(13, side(`Ben says P(win) = ${F(1, 6)}<br>and P(not win) = ${F(4, 6)}.<br>Do they add to 1? If not, what should P(not win) be?`, 21), `${F(1, 6)} + ${F(4, 6)} = ${F(5, 6)}, not 1. P(not win) = ${F(5, 6)}`),
+  Q(14, side(`Mia says P(goal) = ${F(3, 10)}<br>and P(no goal) = ${F(7, 10)}.<br>Is Mia right? Show how you know.`, 21), `Yes: ${F(3, 10)} + ${F(7, 10)} = ${F(10, 10)} = 1`),
 ];
 check('Q11 2/7 + 5/7 = 1', eq(add([2, 7], [5, 7]), [1, 1]));
 check('Q12 4/9 + 5/9 = 1', eq(add([4, 9], [5, 9]), [1, 1]));
@@ -104,8 +104,8 @@ check('Q14 3/10 + 7/10 = 1', eq(add([3, 10], [7, 10]), [1, 1]));
 const r4 = [
   Q(15, `The chance Jack wins is 0.4.<br>Find the chance he does <b>not</b> win.<div class="calc">1 − 0.4 = ${B(12)}</div>`, '0.6'),
   Q(16, `9 lollies. 4 are orange. One is picked.<br>How many are <b>not</b> orange? ${B(8)}<br>P(not orange) = ${BF()}`, `5 lollies; ${F(5, 9)}`),
-  Q(17, side(`A die is rolled.<br>P(1 or 2) = ${F(2, 6)}.<br>Find P(<b>not</b> 1 or 2).`, 14), `${F(4, 6)} (or ${F(2, 3)})`),
-  Q(18, side(`3 of the 11 students in a team wear glasses. One is picked. Find P(<b>not</b> glasses).`, 14), F(8, 11)),
+  Q(17, side(`A die is rolled.<br>P(1 or 2) = ${F(2, 6)}.<br>Find P(<b>not</b> 1 or 2).`, 21), `${F(4, 6)} (or ${F(2, 3)})`),
+  Q(18, side(`3 of the 11 students in a team wear glasses. One is picked. Find P(<b>not</b> glasses).`, 21), F(8, 11)),
 ];
 check('Q15 1 − 0.4 = 0.6', Math.abs(1 - 0.4 - 0.6) < 1e-9);
 check('Q16 9 − 4 = 5, P = 5/9', 9 - 4 === 5 && eq(sub1([4, 9]), [5, 9]));
@@ -115,8 +115,8 @@ check('Q18 1 − 3/11 = 8/11', eq(sub1([3, 11]), [8, 11]));
 // Challenge
 const spin12 = [...'RRRRRBBBBYYY'].map((t) => ({ t, c: C[t] }));
 const r5 = [
-  Q(19, side(`<div class="with-fig"><div>12 equal parts:<br>5 red, 4 blue, the rest yellow. Find P(<b>not</b> yellow).</div>${spinner(spin12, 15)}</div>`, 16), `3 yellow, so P(yellow) = ${F(3, 12)}; P(not yellow) = ${F(9, 12)} (or ${F(3, 4)})`),
-  Q(20, side(`10 marbles, each red or blue.<br>P(<b>not</b> red) = ${F(3, 10)}.<br>How many are red?`, 16), `P(red) = ${F(7, 10)}, so 7 red marbles`),
+  Q(19, side(`<div class="with-fig"><div>12 equal parts:<br>5 red, 4 blue, the rest yellow. Find P(<b>not</b> yellow).</div>${spinner(spin12, 15)}</div>`, 22), `3 yellow, so P(yellow) = ${F(3, 12)}; P(not yellow) = ${F(9, 12)} (or ${F(3, 4)})`),
+  Q(20, side(`10 marbles, each red or blue.<br>P(<b>not</b> red) = ${F(3, 10)}.<br>How many are red?`, 22), `P(red) = ${F(7, 10)}, so 7 red marbles`),
 ];
 check('Q19 12 − 5 − 4 = 3 yellow; 1 − 3/12 = 9/12 = 3/4', 12 - 5 - 4 === 3 && eq(sub1([3, 12]), [9, 12]) && eq([9, 12], [3, 4]));
 check('Q20 1 − 3/10 = 7/10 → 7 red of 10', eq(sub1([3, 10]), [7, 10]) && 10 * 7 / 10 === 7);
@@ -183,12 +183,28 @@ const ex4 = example(4, 4, 'Decimals and everyday problems', `
   </div>`);
 
 const round = (n, level, who, ex, hint, qs, cols = 2) => `
-<div class="round">
+<div class="round${n === 'C' ? ' round-c' : ''}">
   <div class="round-head"><span class="round-tag">${n === 'C' ? 'Challenge' : 'Round ' + n}</span><span class="lvl">${level}</span><span class="who">${who}</span><span class="round-use">${ex}${n === 1 || n === 2 ? ' · fill in the blanks' : ''}</span></div>
   ${hint ? `<div class="hint">${hint}</div>` : ''}
   <div class="qgrid c${cols}">${qs.join('')}</div>
 </div>`;
 
+const KEY = {
+  1: '5; 1, 2, 3, 4, 6', 2: 'odd; 1, 3, 5', 3: 'red; blue, green, yellow', 4: 'green; red or orange', 5: 'getting tails; tails',
+  6: '3/4', 7: '5; 3/5', 8: '3/8; 5/8', 9: '1/10; 9/10', 10: '5/7',
+  11: '7/7 = 1; Yes', 12: '4/9 + 5/9 = 9/9 = 1; Yes', 13: '1/6 + 4/6 = 5/6, not 1; P(not win) = 5/6', 14: 'Yes: 3/10 + 7/10 = 10/10 = 1',
+  15: '0.6', 16: '5; 5/9', 17: '4/6 (or 2/3)', 18: '8/11', 19: '3 yellow; 9/12 (or 3/4)', 20: 'P(red) = 7/10, so 7 red',
+};
+// The short key must say the same as the full answers.
+const plain = (h) => String(h).replace(/<span class="fr"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>/g, '$1/$2').replace(/\s+/g, ' ');
+const fracsIn = (t) => (t.match(/\d+\/\d+|\d\.\d/g) || []).map((x) => x.includes('/') ? (([a, b]) => a / b)(x.split('/').map(Number)) : +x);
+for (let n = 1; n <= 20; n++) {
+  const want = fracsIn(plain(answers[n]).replace(/\(.*?\)/g, '')).pop(), got = fracsIn(KEY[n].replace(/\(.*?\)/g, ''));
+  // Rounds 1 has word answers: compare the text after the semicolon instead.
+  const ok = n <= 5 ? plain(answers[n]).toLowerCase().includes(KEY[n].split(';')[0].replace('getting ', '')) : got.some((g) => Math.abs(g - want) < 1e-9);
+  check(`Key ${n} matches the answer`, ok);
+}
+const keyShort = `<span class="key-items">${Object.entries(KEY).map(([n, t]) => `<span><b>${n}</b> ${t}</span>`).join(' ')}</span>`;
 const keyRow = (from, to) => Array.from({ length: to - from + 1 }, (_, i) => from + i).map((n) => `<span><b>${n}</b> ${String(answers[n]).replace(/<span class="fr"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>/g, '$1/$2')}</span>`).join('');
 
 // ---------- pages ----------
@@ -242,23 +258,8 @@ const page2 = `
     ${ex4}
     ${round(4, 'Medium', 'Core', 'Use Example 4', '', r4)}
     ${round('C', 'Challenging', 'Core (stretch)', 'Use all the examples', '', r5)}
-    <div class="end-row">
-      <div class="card traffic">
-        <p class="card-title">How did I go? <span>Colour one light for each row.</span></p>
-        <table>
-          <tr><th></th><th class="g">On my own</th><th class="a">With the examples</th><th class="r">I need help</th></tr>
-          <tr><td>I can name the complement.</td><td><i class="g"></i></td><td><i class="a"></i></td><td><i class="r"></i></td></tr>
-          <tr><td>I can use <span class="nw">P(not A) = 1 − P(A).</span></td><td><i class="g"></i></td><td><i class="a"></i></td><td><i class="r"></i></td></tr>
-          <tr><td>I can check <span class="nw">P(A) + P(not A) = 1.</span></td><td><i class="g"></i></td><td><i class="a"></i></td><td><i class="r"></i></td></tr>
-        </table>
-        <div class="tricky"><b>Something I found tricky (ask my teacher):</b><i></i></div>
-      </div>
-      <div class="key">
-        <div class="key-inner">
-          <p class="key-title">Answers: check when you finish a round</p>
-          <div class="key-grid">${keyRow(1, 20)}</div>
-        </div>
-      </div>
+    <div class="key">
+      <div class="key-inner"><b class="key-title">Answers</b>${keyShort}</div>
     </div>
   </div>
   <footer class="page-foot"><span>Kingscliff High School · Year 7 Mathematics</span><span class="pn">2</span><span>Artwork: part of the Mandelbrot set</span></footer>
@@ -297,7 +298,7 @@ const shotsDir = shotsIdx > 0 ? process.argv[shotsIdx + 1] : null;
         if (e.scrollHeight > e.clientHeight + 2 || e.scrollWidth > e.clientWidth + 2) out.push(`page ${i + 1}: text cut off in ${e.className || e.tagName}: "${e.textContent.trim().slice(0, 40)}"`);
       });
       // siblings in grids/flex rows must not overlap
-      p.querySelectorAll('.qgrid, .top-row, .end-row, .ex-cols, .with-fig, .content').forEach((g) => {
+      p.querySelectorAll('.qgrid, .top-row, .ex-cols, .with-fig, .content').forEach((g) => {
         const k = [...g.children].map(r);
         for (let a = 0; a < k.length; a++) for (let b = a + 1; b < k.length; b++) {
           const A = k[a], Bb = k[b];

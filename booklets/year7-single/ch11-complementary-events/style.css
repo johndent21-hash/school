@@ -177,3 +177,22 @@ table.r1 td:nth-child(3) { width: 50mm; }
 .tricky { margin-top: auto; padding-top: 1.5mm; font-size: 8pt; }
 .tricky i { display: block; border-bottom: 0.3mm solid var(--line); height: 6.5mm; }
 .p2 .content { gap: 1.2mm; } .p2 .ex { padding-top: 1.2mm; padding-bottom: 1.4mm; }
+
+/* thin upside-down answer strip */
+.key { flex: none; display: block; border: 0.3mm dashed var(--blue-line); border-radius: 2mm; background: #fafbfe; padding: 1mm 2.5mm; }
+.key-inner { transform: rotate(180deg); font-size: 6.8pt; line-height: 1.35; color: var(--muted); }
+.key-title { color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 2mm; font-size: 6.8pt; }
+.key-items span { white-space: nowrap; margin-right: 2.6mm; }
+.key-items b { color: var(--blue); margin-right: 0.6mm; }
+.key-items { display: inline; }
+/* page 2: the rounds share the spare height, so the working boxes grow */
+.p2 .round { flex: 1 1 auto; display: flex; flex-direction: column; }
+.p2 .qgrid { flex: 1; grid-auto-rows: 1fr; }
+.p2 .q { align-items: stretch; }
+.p2 .qn { align-self: flex-start; }
+.p2 .qb:has(> .side) { display: flex; flex-direction: column; }
+.p2 .qb > .side { flex: 1; }
+
+.p2 .qgrid { grid-auto-rows: auto; grid-template-rows: auto 1fr; }
+.p2 .round-c .qgrid { grid-template-rows: 1fr; }
+.key-inner { text-align: left; }
