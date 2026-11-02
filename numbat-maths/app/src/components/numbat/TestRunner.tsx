@@ -1,4 +1,4 @@
-// A topic test: ten questions, one try each, marked at the end with a full review.
+// A topic test: ten questions (or the topic's own test plan), one try each, marked at the end with a full review.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { ArrowLeft, ArrowRight, Check, Flag, RotateCcw, Star, X } from 'lucide-react'

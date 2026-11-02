@@ -3,6 +3,7 @@ import type { Level, Question, Skill, Topic } from '@/lib/maths/types'
 import { setSeed, shuffle } from '@/lib/maths/rand'
 import { findSkill, findTopic } from '@/content'
 
+
 /** A saved practice set: 3 Foundation, 4 Standard, 3 Challenge questions. */
 export const SET_LEVELS: Level[] = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3]
 export const EXTRA_COUNT = 5
@@ -56,10 +57,19 @@ export function buildSet(skill: Skill, levels: Level[]): Posed[] {
   return levels.map((l) => pose(skill, l, seen))
 }
 
-/** Ten questions from across a topic, easy to hard, every skill used at least once where possible. */
+/**
+ * A topic test. Topics with a fixed plan (e.g. following the textbook's chapter test) use it;
+ * otherwise ten questions from across the topic, easy to hard, every skill used at least once where possible.
+ */
 export function buildTest(topic: Topic): Posed[] {
   reseed()
   const seen = new Set<string>()
+  if (topic.test) {
+    return topic.test.map((item) => {
+      const skill = topic.skills.find((s) => s.id === item.skill) ?? topic.skills[0]
+      return pose(item.gen ? { ...skill, gen: item.gen } : skill, item.level, seen)
+    })
+  }
   const order = shuffle(topic.skills)
   const picks = SET_LEVELS.map((_, i) => order[i % order.length])
   // keep the topic's own skill order within each level band so the test flows naturally
@@ -85,7 +95,9 @@ export function itemLabel(itemId: string): { title: string; sub: string; year?: 
     return t ? { title: `${t.title}: topic test`, sub: `Year ${t.year}`, year: t.year } : { title: 'Topic test', sub: '' }
   }
   const f = findSkill(itemId)
-  return f ? { title: f.skill.title, sub: `Year ${f.topic.year} · ${f.topic.title}`, year: f.topic.year } : { title: itemId, sub: '' }
+  return f
+    ? { title: f.skill.title, sub: `Year ${f.topic.year} · ${f.topic.title}${f.skill.ref ? ` · ${f.skill.ref}` : ''}`, year: f.topic.year }
+    : { title: itemId, sub: '' }
 }
 
 /** Where a progress item is practised. */

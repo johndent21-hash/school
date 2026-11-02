@@ -22,6 +22,11 @@ Also:
 - **Parent view** (`app/src/routes/parent.tsx`, `app/convex/parents.ts`): parents log in at `/parent` with the same class code,
   name and PIN their child uses and get a read-only page with the lesson ratings and Numbat Maths practice. Wrong PINs pause the
   account for 10 minutes, then 20, 40 ... up to a day, so 4-digit PINs can't be guessed by trying them all.
+- **Textbook alignment, Year 7 Integers** (`src/content/y7-ncm1.ts`): follows New Century Maths 7 (3rd edition) Chapter 1.
+  One skill per exercise (Ex 1.01–1.10, labelled on the site), Power plus as an extension set, and a 12-question topic
+  test in the order of Test Yourself 1. The questions are the site's own (no textbook wording or numbers), matching each
+  exercise's question types from easy to hard. Questions with many right answers use the `open` answer kind, which checks
+  the student's own numbers or calculation against the rule.
 - **Example class** (`app/src/lib/demo.ts`): in the stand-alone preview the teacher pages use 24 made-up students so they
   can be tried without log-ins; changes are switched off there.
 
@@ -46,6 +51,9 @@ npx tsx tests/primary.test.ts                # Years 1–4: answers recomputed f
 ONLY=y8-pyt-hyp K=5 npx tsx tests/dump.ts    # print sample questions for one skill
 npx tsx tests/keypad.test.ts                 # every typed answer (Years 1–9) can be entered with the keypad and is marked right
 npx tsx tests/calc.test.ts                   # calculator arithmetic, errors and display
+npx tsx tests/open.test.ts                   # marking of questions with many right answers
+npx tsx tests/ncm7-ch1.test.ts               # Year 7 Integers: every answer re-worked from its data, diagrams read back, wording
+npx tsx tests/gallery-ncm1.ts                # screenshots of each kind of Integers question, for a visual check
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 
@@ -58,6 +66,7 @@ VITE_STAGE1=1 VITE_STAGE2=1 npm run dev; IDS=qa/ids-s1.json node qa/sweep.mjs   
 node qa/keypad-check.mjs    # (with Years 1–4 on) answers questions with the on-screen keypad (phone) and tries the calculator
 node qa/rewards-check.mjs                                                          # guest rewards: celebration after a set, home dashboard
 VITE_PREVIEW_ONLY=1 npx vite dev --port 3102; node qa/teacher-demo-check.mjs       # example class on the teacher pages
+node qa/ncm1-check.mjs        # (dev server) Integers topic page, worked example, 12-question test, open answers on the keypad
 node qa/parent-ratings-check.mjs                                                   # (same server) ratings sheet and example parent view
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)

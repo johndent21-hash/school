@@ -2,7 +2,7 @@
 // Form problems (e.g. "simplify your fraction") come back as invalid with feedback,
 // so the student can fix them without losing the attempt.
 
-import type { Answer, CheckResult } from './types'
+import type { Answer, CheckResult, OpenRule } from './types'
 import {
   equivalent,
   hasPositiveIndicesOnly,
@@ -11,6 +11,7 @@ import {
   isIndexForm,
   isSimplified,
   isSingleFraction,
+  evaluate,
   normalise,
   parse,
   type Node,
@@ -95,6 +96,73 @@ const UNREADABLE: CheckResult = {
   correct: false,
   invalid: true,
   feedback: 'I couldn’t read that answer. Type a number, e.g. 12, −3.5 or 3/4.',
+}
+
+/** Numbers written in an expression, with their signs: in "4 + (−8) × 3" they are 4, −8 and 3; in "4 − 8" they are 4 and 8. */
+export function signedLiterals(expr: string): number[] {
+  const s = normalise(expr)
+  const out: number[] = []
+  for (const m of s.matchAll(/\d+(\.\d+)?/g)) {
+    let i = (m.index ?? 0) - 1
+    while (i >= 0 && s[i] === ' ') i--
+    let neg = false
+    if (i >= 0 && s[i] === '-') {
+      let j = i - 1
+      while (j >= 0 && s[j] === ' ') j--
+      neg = j < 0 || '([+-*/^'.includes(s[j])
+    }
+    out.push((neg ? -1 : 1) * Number(m[0]))
+  }
+  return out
+}
+
+function evalExpr(s: string): number | null {
+  try {
+    const v = evaluate(parse(s), {})
+    return Number.isFinite(v) ? v : null
+  } catch {
+    return null
+  }
+}
+
+const listNums = (xs: number[]) => xs.map((x) => String(x).replace('-', '−')).join(', ').replace(/, ([^,]*)$/, ' and $1')
+
+function checkOpen(rule: OpenRule, input: string): CheckResult {
+  if (rule.type === 'blanks') {
+    const count = (rule.template.match(/_/g) ?? []).length
+    const parts = normalise(input)
+      .replace(/\band\b/gi, ',')
+      .split(/[,;]/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+    const vals = parts.map((p) => parseNumber(p))
+    if (vals.length !== count || vals.some((v) => v === null))
+      return { correct: false, invalid: true, feedback: `Type ${count} numbers in order, separated by commas, e.g. ${count === 2 ? '−3, 10' : '−3, 10, 2'}.` }
+    const xs = vals as number[]
+    if (xs.some((x) => !Number.isInteger(x))) return { correct: false, invalid: true, feedback: 'Use whole numbers (integers) only.' }
+    if (rule.negative && !xs.some((x) => x < 0)) return { correct: false, invalid: true, feedback: 'At least one of your numbers must be negative.' }
+    if (rule.noZero && xs.some((x) => x === 0)) return { correct: false, invalid: true, feedback: 'Zero isn’t allowed in this question.' }
+    let k = 0
+    const filled = normalise(rule.template).replace(/_/g, () => `(${xs[k++]})`)
+    const [l, r] = filled.split('=')
+    const lv = evalExpr(l)
+    const rv = evalExpr(r)
+    if (lv === null || rv === null) return { correct: false }
+    return { correct: close(lv, rv) }
+  }
+  const s = normalise(input).replace(/=.*$/, '')
+  const value = evalExpr(s)
+  if (value === null) return { correct: false, invalid: true, feedback: 'I couldn’t read that. Type the calculation, e.g. (4 + 3) × 2.' }
+  if (rule.type === 'use') {
+    const used = signedLiterals(s).sort((a, b) => a - b)
+    const want = rule.numbers.slice().sort((a, b) => a - b)
+    if (used.length !== want.length || used.some((x, i) => x !== want[i]))
+      return { correct: false, invalid: true, feedback: `Use each of the numbers ${listNums(rule.numbers)} exactly once. Write negative numbers with brackets, e.g. (−8).` }
+    return { correct: close(value, rule.target) }
+  }
+  const bare = (t: string) => normalise(t).replace(/[\s()[\]]/g, '')
+  if (bare(s) !== bare(rule.expr)) return { correct: false, invalid: true, feedback: 'Keep the numbers and operations in the same order. Only add brackets.' }
+  return { correct: close(value, rule.target) }
 }
 
 export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
@@ -198,6 +266,9 @@ export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
       if (answer.ampm && !given) return { correct: false, invalid: true, feedback: 'Say whether it is am or pm, e.g. 7:45 pm.' }
       return { correct: h === target && mins === answer.m && (!answer.ampm || given === answer.ampm) }
     }
+
+    case 'open':
+      return checkOpen(answer.rule, input)
 
     case 'text': {
       const norm = (t: string) => normalise(t).toLowerCase().replace(/\s+/g, ' ').replace(/[.!]$/, '').trim()
@@ -345,6 +416,8 @@ export function answerText(a: Answer): string {
     }
     case 'text':
       return a.accept[0]
+    case 'open':
+      return a.example
     case 'time':
       return `${a.h % 12 === 0 ? 12 : a.h % 12}:${String(a.m).padStart(2, '0')}${a.ampm ? ' ' + a.ampm : ''}`
     case 'nums': {

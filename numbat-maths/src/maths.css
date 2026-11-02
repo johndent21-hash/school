@@ -408,3 +408,13 @@
   background: hsl(var(--primary) / 0.22);
   font-weight: 700;
 }
+
+/* Integers (diagrams4) */
+.dg .nlring {
+  fill: hsl(var(--card));
+  stroke: hsl(var(--primary));
+  stroke-width: 2;
+}
+.dg .water {
+  fill: hsl(200 80% 60% / 0.22);
+}

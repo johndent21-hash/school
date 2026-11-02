@@ -7,6 +7,7 @@ import { MasteryBadge } from '@/components/numbat/Mastery'
 import { MathHtml } from '@/components/numbat/MathHtml'
 import { ReadAloud } from '@/components/numbat/QuestionCard'
 import { WorkedExample } from '@/components/numbat/WorkedExample'
+import { SkillTags } from '@/components/numbat/TextbookTags'
 import { PracticeRunner } from '@/components/numbat/PracticeRunner'
 import { findSkill } from '@/content'
 import { LEVEL_NAMES, type Level, type Skill, type Topic } from '@/lib/maths/types'
@@ -73,6 +74,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
         </div>
         <p className="text-muted-foreground">{skill.summary}</p>
         <div className="flex flex-wrap gap-2">
+          <SkillTags skill={skill} />
           {skill.outcomes.map((o) => (
             <span key={o} className="chip chip-code" title="NSW syllabus outcome">
               {o}

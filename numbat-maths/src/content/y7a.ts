@@ -1,5 +1,6 @@
 // Year 7 (Stage 4) — Integers, Angles, Whole numbers & indices, Fractions & percentages
 import type { Level, Question, Topic } from '@/lib/maths/types'
+import { NCM1_SKILLS, NCM1_TEST } from './y7-ncm1'
 import { checkAnswer, isPrime, primeFactors } from '@/lib/maths/check'
 import {
   D, L, MINUS, TIMES, DIVIDE, bnum, chance, deg, ex, frac, fracA, fracS, gcd, int, intExcept, lcm, mcA, mcFixedA, mixed,
@@ -10,66 +11,6 @@ void checkAnswer
 const it = (s: string) => `<tspan class="it">${s}</tspan>`
 
 // ------------------------------------------------------------------ Integers
-
-const int_compare = (level: Level): Question => {
-  if (level === 1) {
-    let a = nonZero(-12, 12)
-    let b = intExcept(-12, 12, [a])
-    if (a > 0 && b > 0) a = -a
-    const sym = a < b ? '&lt;' : '&gt;'
-    return q({
-      prompt: `Which symbol makes this statement true?<div class="big">${num(a)} &#9633; ${num(b)}</div>`,
-      answer: mcFixedA(['&lt; (is less than)', '&gt; (is greater than)'], sym === '&lt;' ? '&lt; (is less than)' : '&gt; (is greater than)'),
-      hint: 'Picture a number line. Numbers get bigger as you move to the right.',
-      steps: [
-        `On a number line, ${num(Math.min(a, b))} is to the left of ${num(Math.max(a, b))}.`,
-        `So ${num(a)} ${sym} ${num(b)}.`,
-      ],
-    })
-  }
-  if (level === 2) {
-    const vals = [...sample([-28, -21, -17, -15, -12, -9, -8, -6, -4, -3, -1], int(2, 3)), ...sample([0, 2, 5, 7, 11, 14, 19, 23], 2)].slice(0, 4)
-    const asc = vals.slice().sort((x, y) => x - y)
-    const desc = asc.slice().reverse()
-    const byAbs = vals.slice().sort((x, y) => Math.abs(x) - Math.abs(y) || x - y)
-    const fmt = (arr: number[]) => arr.map((x) => num(x)).join(', ')
-    let other = shuffle(vals)
-    while (fmt(other) === fmt(asc) || fmt(other) === fmt(byAbs)) other = shuffle(vals)
-    return q({
-      prompt: `Which list shows these integers in <b>ascending</b> order (smallest to largest)?<div class="big">${fmt(vals)}</div>`,
-      answer: mcA(fmt(asc), [fmt(desc), fmt(byAbs), fmt(other)]),
-      hint: 'Ascending means going up. The most negative number is the smallest.',
-      steps: [
-        'Negative numbers are smaller than zero, and the further a negative number is from zero, the smaller it is.',
-        `From smallest to largest: ${fmt(asc)}.`,
-      ],
-    })
-  }
-  const towns = sample(['Perisher', 'Thredbo', 'Cooma', 'Orange', 'Oberon', 'Goulburn', 'Bathurst', 'Armidale', 'Tamworth'], 4)
-  const temps = sample([-9, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6], 4)
-  const rows = towns.map((t, i) => [t, num(temps[i]) + '°C'])
-  const hi = Math.max(...temps)
-  const lo = Math.min(...temps)
-  if (chance()) {
-    return q({
-      prompt: `These are the temperatures at 6 am on a winter morning.${D.table(['Town', 'Temperature'], rows)}What is the difference between the highest and the lowest temperature?`,
-      answer: numA(hi - lo),
-      suffix: '°C',
-      hint: 'Find the highest and lowest temperatures, then count the degrees between them on a number line.',
-      steps: [
-        `Highest: ${num(hi)}°C. Lowest: ${num(lo)}°C.`,
-        `Difference = ${num(hi)} ${MINUS} ${bnum(lo)} = ${num(hi - lo)}°C.`,
-      ],
-    })
-  }
-  const coldest = towns[temps.indexOf(lo)]
-  return q({
-    prompt: `These are the temperatures at 6 am on a winter morning.${D.table(['Town', 'Temperature'], rows)}Which town was the coldest?`,
-    answer: mcFixedA(towns, coldest),
-    hint: 'The coldest temperature is the smallest (most negative) number.',
-    steps: [`The smallest number is ${num(lo)}°C, so ${coldest} was the coldest.`],
-  })
-}
 
 const int_addsub = (level: Level): Question => {
   if (level === 1) {
@@ -254,122 +195,6 @@ const int_muldiv = (level: Level): Question => {
     answer: numA(r),
     hint: `Write it out as repeated multiplication: ${Array(e).fill(bnum(base)).join(` ${TIMES} `)}`,
     steps: [`${pow(base, e)} = ${Array(e).fill(bnum(base)).join(` ${TIMES} `)}`, `There ${e === 1 ? 'is 1 negative' : `are ${e} negatives`}: an ${e % 2 ? 'odd' : 'even'} number, so the answer is ${e % 2 ? 'negative' : 'positive'}.`, `= ${num(r)}`],
-  })
-}
-
-const int_orderops = (level: Level): Question => {
-  const rule = 'Order of operations: Brackets, then Powers/roots, then × and ÷ (left to right), then + and − (left to right).'
-  if (level === 1) {
-    const t = int(0, 2)
-    if (t === 0) {
-      const a = int(2, 20)
-      const b = int(2, 9)
-      const c = int(2, 9)
-      const neg = chance()
-      const A = neg ? -a : a
-      return q({
-        prompt: `Calculate:<div class="big">${num(A)} + ${b} ${TIMES} ${c}</div>`,
-        answer: numA(A + b * c),
-        hint: 'Multiply before you add.',
-        steps: [`Multiply first: ${b} ${TIMES} ${c} = ${b * c}`, `Then add: ${num(A)} + ${b * c} = ${num(A + b * c)}`],
-      })
-    }
-    if (t === 1) {
-      const a = int(2, 9)
-      const b = int(2, 9)
-      const c = int(5, 60)
-      return q({
-        prompt: `Calculate:<div class="big">${a} ${TIMES} ${b} ${MINUS} ${c}</div>`,
-        answer: numA(a * b - c),
-        hint: 'Multiply before you subtract.',
-        steps: [`Multiply first: ${a} ${TIMES} ${b} = ${a * b}`, `Then subtract: ${a * b} ${MINUS} ${c} = ${num(a * b - c)}`],
-      })
-    }
-    const c = int(2, 9)
-    const k = int(2, 9)
-    const b = c * k
-    const a = int(1, 15)
-    return q({
-      prompt: `Calculate:<div class="big">${a} ${MINUS} ${b} ${DIVIDE} ${c}</div>`,
-      answer: numA(a - k),
-      hint: 'Divide before you subtract.',
-      steps: [`Divide first: ${b} ${DIVIDE} ${c} = ${k}`, `Then subtract: ${a} ${MINUS} ${k} = ${num(a - k)}`],
-    })
-  }
-  if (level === 2) {
-    const t = int(0, 2)
-    if (t === 0) {
-      const a = nonZero(-9, 9)
-      const b = nonZero(-9, 9)
-      const c = nonZero(-6, 6)
-      const s = a + b
-      return q({
-        prompt: `Calculate:<div class="big">(${num(a)} + ${bnum(b)}) ${TIMES} ${bnum(c)}</div>`,
-        answer: numA(s * c),
-        hint: 'Work out the brackets first.',
-        steps: [`Brackets: ${num(a)} + ${bnum(b)} = ${num(s)}`, `Then multiply: ${num(s)} ${TIMES} ${bnum(c)} = ${num(s * c)}`],
-      })
-    }
-    if (t === 1) {
-      const a = nonZero(-12, 12)
-      const b = nonZero(-6, 6)
-      const c = nonZero(-6, 6)
-      return q({
-        prompt: `Calculate:<div class="big">${num(a)} ${MINUS} ${bnum(b)} ${TIMES} ${bnum(c)}</div>`,
-        answer: numA(a - b * c),
-        hint: 'Multiply before you subtract. Watch the signs.',
-        steps: [`Multiply first: ${bnum(b)} ${TIMES} ${bnum(c)} = ${num(b * c)}`, `Then: ${num(a)} ${MINUS} ${bnum(b * c)} = ${num(a - b * c)}`],
-      })
-    }
-    const a = nonZero(-8, 8)
-    const b = nonZero(-8, 8)
-    const c = nonZero(-8, 8)
-    const d = nonZero(-8, 8)
-    return q({
-      prompt: `Calculate:<div class="big">${num(a)} ${TIMES} ${bnum(b)} + ${bnum(c)} ${TIMES} ${bnum(d)}</div>`,
-      answer: numA(a * b + c * d),
-      hint: 'Do both multiplications first, then add.',
-      steps: [`${num(a)} ${TIMES} ${bnum(b)} = ${num(a * b)}`, `${bnum(c)} ${TIMES} ${bnum(d)} = ${num(c * d)}`, `${num(a * b)} + ${bnum(c * d)} = ${num(a * b + c * d)}`],
-    })
-  }
-  const t = int(0, 2)
-  if (t === 0) {
-    const a = nonZero(-6, 6)
-    const b = nonZero(-7, 7)
-    const c = nonZero(-7, 7)
-    const r = a * a - b * c
-    return q({
-      prompt: `Calculate:<div class="big">${pow(a, 2)} ${MINUS} ${bnum(b)} ${TIMES} ${bnum(c)}</div>`,
-      answer: numA(r),
-      hint: rule,
-      steps: [`Power first: ${pow(a, 2)} = ${a * a}`, `Then multiply: ${bnum(b)} ${TIMES} ${bnum(c)} = ${num(b * c)}`, `Finally: ${a * a} ${MINUS} ${bnum(b * c)} = ${num(r)}`],
-    })
-  }
-  if (t === 1) {
-    const c = pick([2, 3, 4, 5, 6, 8, 9])
-    let diff = nonZero(-9, 9)
-    while ((diff * diff) % c !== 0) diff = nonZero(-9, 9)
-    const b = int(-6, 6)
-    const a = b + diff
-    const r = (diff * diff) / c
-    return q({
-      prompt: `Calculate:<div class="big">(${num(a)} ${MINUS} ${bnum(b)})${'<sup>2</sup>'} ${DIVIDE} ${c}</div>`,
-      answer: numA(r),
-      hint: rule,
-      steps: [`Brackets: ${num(a)} ${MINUS} ${bnum(b)} = ${num(diff)}`, `Power: ${pow(diff, 2)} = ${diff * diff}`, `Divide: ${diff * diff} ${DIVIDE} ${c} = ${num(r)}`],
-    })
-  }
-  const a = nonZero(-20, 20)
-  const b = nonZero(-5, 5)
-  const c = nonZero(-4, 6)
-  const d = intExcept(-4, 6, [0, c])
-  const inner = c - d
-  const r = a + b * inner * inner
-  return q({
-    prompt: `Calculate:<div class="big">${num(a)} + ${bnum(b)} ${TIMES} (${num(c)} ${MINUS} ${bnum(d)})<sup>2</sup></div>`,
-    answer: numA(r),
-    hint: rule,
-    steps: [`Brackets: ${num(c)} ${MINUS} ${bnum(d)} = ${num(inner)}`, `Power: ${pow(inner, 2)} = ${inner * inner}`, `Multiply: ${bnum(b)} ${TIMES} ${inner * inner} = ${num(b * inner * inner)}`, `Add: ${num(a)} + ${bnum(b * inner * inner)} = ${num(r)}`],
   })
 }
 
@@ -1240,29 +1065,20 @@ export const Y7A: Topic[] = [
     id: 'y7-integers',
     year: 7,
     title: 'Integers',
+    ref: 'NCM 7 Chapter 1',
     strand: 'Number and algebra',
     outcomes: ['MA4-INT-C-01'],
-    blurb: 'Compare, add, subtract, multiply and divide positive and negative whole numbers.',
+    blurb: 'Positive and negative numbers: number lines, ordering, the four operations, order of operations and problems.',
     colour: 205,
+    test: NCM1_TEST,
     skills: [
-      {
-        id: 'y7-int-compare',
-        title: 'Comparing and ordering integers',
-        outcomes: ['MA4-INT-C-01'],
-        summary: 'Use a number line to compare and order positive and negative numbers.',
-        learn: {
-          intro: '<p><b>Integers</b> are whole numbers that can be positive, negative or zero: …, −3, −2, −1, 0, 1, 2, 3, …</p><p>On a number line, numbers increase as you move to the right. So −2 is greater than −5, even though 5 is bigger than 2.</p>',
-          keyPoints: ['&lt; means “is less than” and &gt; means “is greater than”.', 'Any positive number is greater than any negative number.', 'The further a negative number is from zero, the smaller it is.', '<b>Ascending</b> means smallest to largest; <b>descending</b> means largest to smallest.'],
-          vocab: [['integer', 'a positive or negative whole number, or zero'], ['ascending', 'increasing order'], ['descending', 'decreasing order']],
-        },
-        gen: int_compare,
-        levels: { 1: 'Compare two integers with < or >', 2: 'Order four integers', 3: 'Temperature problems' },
-      },
+      ...NCM1_SKILLS,
       {
         id: 'y7-int-addsub',
-        title: 'Adding and subtracting integers',
+        title: 'Mixed practice: adding and subtracting',
+        tag: 'extra',
         outcomes: ['MA4-INT-C-01'],
-        summary: 'Add and subtract integers, including subtracting a negative.',
+        summary: 'Adding and subtracting integers mixed together, for review.',
         learn: {
           intro: '<p>Use a number line: adding moves you right, subtracting moves you left.</p><p>When two signs sit side by side, combine them first.</p>',
           keyPoints: ['Adding a negative is the same as subtracting: 5 + (−3) = 5 − 3 = 2.', 'Subtracting a negative is the same as adding: 5 − (−3) = 5 + 3 = 8.', 'Work from left to right when there are several additions and subtractions.'],
@@ -1272,27 +1088,16 @@ export const Y7A: Topic[] = [
       },
       {
         id: 'y7-int-muldiv',
-        title: 'Multiplying and dividing integers',
+        title: 'Mixed practice: multiplying and dividing',
+        tag: 'extra',
         outcomes: ['MA4-INT-C-01'],
-        summary: 'Use the sign rules to multiply and divide integers.',
+        summary: 'Multiplying and dividing integers mixed together, for review.',
         learn: {
           intro: '<p>Multiply or divide the numbers as usual, then decide the sign.</p>',
           keyPoints: ['Same signs → positive answer: (−4) × (−3) = 12.', 'Different signs → negative answer: (−4) × 3 = −12.', 'With several factors, count the negatives: an even number gives a positive answer, an odd number gives a negative answer.', 'A negative number squared is positive: (−5)² = 25.'],
         },
         gen: int_muldiv,
         levels: { 1: 'One negative factor', 2: 'Both negative, division', 3: 'Three factors, powers of negatives' },
-      },
-      {
-        id: 'y7-int-orderops',
-        title: 'Order of operations',
-        outcomes: ['MA4-INT-C-01'],
-        summary: 'Apply the order of operations to expressions with integers.',
-        learn: {
-          intro: '<p>To get the same answer as everyone else, we follow an agreed order of operations.</p>',
-          keyPoints: ['1. Brackets', '2. Powers and square roots', '3. Multiplication and division, from left to right', '4. Addition and subtraction, from left to right'],
-        },
-        gen: int_orderops,
-        levels: { 1: 'Two operations', 2: 'Brackets and negatives', 3: 'Powers, brackets and negatives' },
       },
     ],
   },

@@ -34,6 +34,18 @@ export type Answer =
   | { kind: 'text'; accept: string[] }
   // A time of day such as 3:45 (12-hour). With ampm, the student must say am or pm.
   | { kind: 'time'; h: number; m: number; ampm?: 'am' | 'pm' }
+  // Questions with many right answers. The student's own answer is checked against the rule.
+  // example: one correct answer, shown after marking.
+  | { kind: 'open'; rule: OpenRule; example: string }
+
+export type OpenRule =
+  // Fill the blanks (_) so the equation is true, e.g. "_ + _ = 7". The student types the numbers in order,
+  // separated by commas. Whole numbers only. negative: at least one must be negative. noZero: zeros not allowed.
+  | { type: 'blanks'; template: string; negative?: boolean; noZero?: boolean }
+  // An expression that uses each of these numbers exactly once (any operations and brackets) to make target.
+  | { type: 'use'; numbers: number[]; target: number }
+  // The same expression with brackets added so that it equals target.
+  | { type: 'brackets'; expr: string; target: number }
 
 export type ExprForm =
   | 'any'
@@ -54,6 +66,8 @@ export interface Question {
   steps: string[] // worked solution, one HTML string per step
   calc?: boolean // calculator allowed
   note?: string // e.g. "Diagram not to scale"
+  /** The numbers a question was made from, so tests can re-work the answer independently. Never shown. */
+  meta?: { t: string } & Record<string, unknown>
 }
 
 export type Generator = (level: Level) => Question
@@ -70,6 +84,19 @@ export interface Skill {
   }
   gen: Generator
   levels?: Partial<Record<Level, string>> // what each level covers, for teachers
+  /** Textbook cross-reference, e.g. "NCM 7 Ex 1.04" */
+  ref?: string
+  /** extension: harder work beyond the exercises; extra: practice that isn't in the textbook */
+  tag?: 'extension' | 'extra'
+  /** Worked examples, if they should differ from practice questions (e.g. drawn on a number line) */
+  example?: Generator
+}
+
+/** One question of a fixed topic test: which skill it practises, its level, and how it's made. */
+export interface TestItem {
+  skill: string
+  level: Level
+  gen?: Generator
 }
 
 export interface Topic {
@@ -81,6 +108,10 @@ export interface Topic {
   blurb: string
   skills: Skill[]
   colour: number // hue 0-360 used for the topic tile
+  /** Textbook cross-reference, e.g. "NCM 7 Chapter 1" */
+  ref?: string
+  /** A fixed topic test (e.g. following the textbook's chapter test); otherwise 10 questions are drawn from the skills */
+  test?: TestItem[]
 }
 
 export interface CheckResult {

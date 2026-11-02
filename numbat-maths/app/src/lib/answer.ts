@@ -19,6 +19,10 @@ export function answerHtml(a: Answer): string {
       const [n, d] = t.split('/')
       return n.startsWith('-') ? '−' + frac(n.slice(1), d) : frac(n, d)
     }
+    case 'open': {
+      const shown = a.example.replace(/-/g, '−').replace(/\*/g, '×').replace(/\//g, '÷')
+      return `${shown} <span class="text-muted-foreground">(one possible answer)</span>`
+    }
     case 'sci':
     case 'primefactors':
       return ex(answerText(a).replace(/ × /g, '*'))

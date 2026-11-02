@@ -17,7 +17,9 @@ const kinds: Record<string, number> = {}
 /** Turn an expected answer into the text the keypad would produce, or null if a character has no key. */
 function typeWith(target: string, inserts: string[]): string | null {
   // the keypad shows − and ×; the marker reads both the same as - and *
-  const t = target.replace(/-/g, '−').replace(/\*/g, '×')
+  let t = target.replace(/-/g, '−').replace(/\*/g, '×')
+  // where the keypad has ÷ but no fraction bar, "/" is typed with ÷
+  if (inserts.includes('÷') && !inserts.includes('/')) t = t.replace(/\//g, '÷')
   const keys = [...inserts, ...'0123456789'.split('')].sort((a, b) => b.length - a.length)
   let out = ''
   let i = 0
@@ -58,7 +60,7 @@ for (const t of [...STAGE1_TOPICS, ...STAGE2_TOPICS, ...SECONDARY_TOPICS]) {
         if (!r.correct || r.invalid) fail(`typed "${typed}" was marked ${r.invalid ? 'unreadable' : 'wrong'}${r.feedback ? ` (${r.feedback})` : ''}`)
         // every key on the pad must also be readable on its own in a sensible place: no key types a character the marker can't read
         for (const ins of inserts) {
-          if (/[^0-9a-zA-Z.,:()^/+×−± ]/.test(ins)) fail(`key inserts an unexpected character ${JSON.stringify(ins)}`)
+          if (/[^0-9a-zA-Z.,:()^/+×÷−± ]/.test(ins)) fail(`key inserts an unexpected character ${JSON.stringify(ins)}`)
         }
       }
     }

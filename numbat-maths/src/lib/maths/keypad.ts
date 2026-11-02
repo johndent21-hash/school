@@ -31,6 +31,7 @@ const CLOSE = k(')', ')', 'close bracket')
 const COMMA = k(',', ', ', 'comma')
 const SPACE = k('space', ' ', 'space between the whole number and the fraction')
 const COLON = k(':', ':', 'colon')
+const DIVIDE = k('÷', '÷', 'divide')
 
 /** Letters used as pronumerals: those in the answer and any shown in italics in the question. */
 export function padLetters(a: Answer, prompt: string): string[] {
@@ -67,6 +68,10 @@ export function padLayout(a: Answer, year: number, prompt = ''): PadLayout {
     }
     case 'time':
       return { extras: [COLON], symbols: a.ampm ? [k('am', ' am', 'am: midnight to midday'), k('pm', ' pm', 'pm: midday to midnight')] : [] }
+    case 'open':
+      return a.rule.type === 'blanks'
+        ? { extras: [COMMA], symbols: [MINUS] }
+        : { extras: [], symbols: [PLUS, MINUS, TIMES, DIVIDE, OPEN, CLOSE] }
     case 'text':
       // Grid references such as B3
       return { extras: [], symbols: 'ABCDEF'.split('').map((l) => k(l, l, `letter ${l}`)) }

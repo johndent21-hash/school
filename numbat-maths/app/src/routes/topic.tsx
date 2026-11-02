@@ -3,6 +3,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeft, BookOpen, ClipboardCheck, PencilLine } from 'lucide-react'
 import { NotFoundPanel, PageLoading, Shell } from '@/components/numbat/Shell'
 import { MasteryBadge } from '@/components/numbat/Mastery'
+import { SkillTags, TopicRef } from '@/components/numbat/TextbookTags'
 import { findTopic } from '@/content'
 import { LEVEL_NAMES, type Level } from '@/lib/maths/types'
 import { masteryOf } from '@/lib/mastery'
@@ -42,6 +43,7 @@ function TopicView() {
       <header className="topic-tile cursor-default hover:transform-none">
         <div className="flex flex-wrap items-center gap-2">
           <span className="chip">Year {topic.year}</span>
+          <TopicRef topic={topic} />
           <span className="chip">{topic.strand}</span>
           {topic.outcomes.map((o) => (
             <span key={o} className="chip chip-code" title="NSW syllabus outcome">
@@ -68,8 +70,9 @@ function TopicView() {
                 <div className="grid gap-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-display text-lg font-semibold">
-                      {k + 1}. {s.title}
+                      {s.ref?.startsWith('NCM 7 Ex ') ? s.ref.slice(9) : k + 1}. {s.title}
                     </span>
+                    <SkillTags skill={s} />
                     <MasteryBadge state={masteryOf(p)} best={p?.best} />
                   </div>
                   <p className="text-sm text-muted-foreground">{s.summary}</p>
@@ -108,7 +111,11 @@ function TopicView() {
           <h2 id="test" className="font-display flex items-center gap-2 text-2xl font-semibold">
             <ClipboardCheck aria-hidden="true" /> Topic test
           </h2>
-          <p className="text-muted-foreground">10 questions from across the topic, easy to hard. One try at each, then a full review with worked solutions.</p>
+          <p className="text-muted-foreground">
+            {topic.test
+              ? `${topic.test.length} questions in the same order as the textbook’s chapter test${topic.ref ? ` (${topic.ref})` : ''}. One try at each, then a full review with worked solutions.`
+              : '10 questions from across the topic, easy to hard. One try at each, then a full review with worked solutions.'}
+          </p>
           {test ? (
             <p className="text-sm font-bold">
               Best {test.best}% · {test.attempts} attempt{test.attempts === 1 ? '' : 's'}

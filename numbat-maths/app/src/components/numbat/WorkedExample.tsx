@@ -14,7 +14,8 @@ export function WorkedExample({ skill }: { skill: Skill }) {
   const [shown, setShown] = useState(0)
 
   const fresh = (l: Level) => {
-    setEx(buildSet(skill, [l])[0])
+    // some skills have their own worked examples (e.g. drawn on a number line)
+    setEx(buildSet(skill.example ? { ...skill, gen: skill.example } : skill, [l])[0])
     setShown(0)
   }
 

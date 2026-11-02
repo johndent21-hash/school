@@ -10,6 +10,7 @@ import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { StatTile, WeekColumns, WeekLine } from '@/components/numbat/Charts'
 import { DemoBanner } from '@/components/numbat/DemoBanner'
 import { RatingsSheet } from '@/components/numbat/RatingsSheet'
+import { shortRefTitle } from '@/components/numbat/TextbookTags'
 import { findTopic, topicsForYear, YEARS } from '@/content'
 import { ago, agoInline, endOfDay, isOverdue, shortDate } from '@/lib/dates'
 import { masteryOf, shareState } from '@/lib/mastery'
@@ -577,7 +578,7 @@ function Markbook({ report }: { report: Report }) {
                 <th className="text-left">Student</th>
                 {topic.skills.map((s) => (
                   <th key={s.id} className="rot" title={s.title}>
-                    <div>{s.title}</div>
+                    <div>{shortRefTitle(s)}</div>
                   </th>
                 ))}
                 <th className="rot" title="Topic test">
@@ -717,7 +718,7 @@ function TasksTab({ report }: { report: Report }) {
         {topic && (
           <fieldset className="grid gap-1">
             <legend className="label">Choose skills and tests</legend>
-            {[...topic.skills.map((s) => ({ id: s.id, title: s.title })), { id: testItemId(topic.id), title: 'Topic test' }].map((it) => (
+            {[...topic.skills.map((s) => ({ id: s.id, title: shortRefTitle(s) })), { id: testItemId(topic.id), title: 'Topic test' }].map((it) => (
               <label key={it.id} className="flex items-start gap-2 rounded-lg px-1 py-1 hover:bg-muted">
                 <input type="checkbox" className="mt-1 size-4 accent-primary" checked={picked.includes(it.id)} onChange={() => toggle(it.id)} />
                 <span className={it.id.startsWith('test:') ? 'font-bold' : ''}>{it.title}</span>

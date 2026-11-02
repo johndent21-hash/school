@@ -49,7 +49,7 @@ function TestView() {
         <ClipboardCheck size={36} className="text-primary" aria-hidden="true" />
         <h1 className="font-display text-3xl font-semibold">{topic.title}: topic test</h1>
         <ul className="grid list-disc gap-1 pl-5 text-muted-foreground">
-          <li>10 questions from across the topic, from Foundation to Challenge.</li>
+          <li>{topic.test ? `${topic.test.length} questions in the same order as the textbook’s chapter test.` : '10 questions from across the topic, from Foundation to Challenge.'}</li>
           <li>One try at each question. You won’t see if you’re right until the end.</li>
           <li>You can go back and change answers before you finish.</li>
           <li>Have some paper ready for working. Some questions say a calculator is allowed.</li>

@@ -6,6 +6,7 @@ export * from '@/lib/maths/format'
 export * from '@/lib/maths/rand'
 export * as D from '@/lib/maths/diagrams'
 export * as D2 from '@/lib/maths/diagrams2'
+export * as D4 from '@/lib/maths/diagrams4'
 
 /** Pick a value by level. */
 export function L<T>(level: Level, a: T, b: T, c: T): T {
