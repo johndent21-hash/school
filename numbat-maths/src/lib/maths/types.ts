@@ -55,6 +55,8 @@ export type ExprForm =
   | 'positiveIndices' // no negative indices
   | 'singlePower' // a single power such as a^7 or 5^9
   | 'singleFraction' // one fraction with a simplified numerator, e.g. (5x - 3)/6
+  | 'lowestTerms' // one fraction (or term) with nothing left to cancel: 2r/5 not 4r/10, 7p/(3w) not 35p²/(15pw)
+  | 'negFactorised' // fully factorised, taking out the negative HCF: −x(x − 3), not x(3 − x)
 
 export interface Question {
   prompt: string // HTML

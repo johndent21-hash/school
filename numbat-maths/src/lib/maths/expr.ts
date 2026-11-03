@@ -545,3 +545,66 @@ export function isSingleFraction(input: Node): { ok: boolean; why?: string } {
   if (!res.ok) return { ok: false, why: 'Simplify the numerator.' }
   return { ok: true }
 }
+
+/** A product/quotient split into the factors on top and the factors underneath. */
+function splitFraction(n: Node, top: Node[] = [], bottom: Node[] = []): { top: Node[]; bottom: Node[] } {
+  n = stripParen(n)
+  if (n.t === 'mul') {
+    splitFraction(n.a, top, bottom)
+    splitFraction(n.b, top, bottom)
+  } else if (n.t === 'div') {
+    splitFraction(n.a, top, bottom)
+    splitFraction(n.b, bottom, top)
+  } else if (n.t === 'neg') {
+    top.push({ t: 'num', v: -1 })
+    splitFraction(n.a, top, bottom)
+  } else top.push(n)
+  return { top, bottom }
+}
+
+function productPoly(factors: Node[]): Poly | null {
+  let r: Poly | null = constPoly(1)
+  for (const f of factors) {
+    const p = toPoly(f)
+    if (!p || !r) return null
+    r = polyMul(r, p)
+  }
+  return r
+}
+
+/**
+ * One fraction (or a single term) in lowest terms: no number divides every coefficient on top and the
+ * number underneath, and no pronumeral is in every term on top and also underneath. 2r/5, 3k/(4h), 12/(cd),
+ * (15 + 14a)/20 pass; 4r/10, 6/(2k), 35p²/(15pw) and (30 + 28a)/40 don't.
+ */
+export function isLowestTerms(input: Node): { ok: boolean; why?: string } {
+  const single = isSingleFraction(input)
+  if (!single.ok) return single
+  if (hasNegativeIndex(input)) return { ok: false, why: 'Write it as a fraction, without negative indices.' }
+  const { top, bottom } = splitFraction(input)
+  const T = productPoly(top)
+  const B = productPoly(bottom)
+  if (!T || !B || B.size === 0) return { ok: true }
+  const coefs = [...Array.from(T.values()), ...Array.from(B.values())].map((x) => x.c)
+  if (coefs.every((c) => Number.isInteger(c))) {
+    const g = coefs.reduce((a, c) => gcdInt(a, Math.abs(c)), 0)
+    if (g > 1) return { ok: false, why: `Cancel the common factor ${g}.` }
+  } else if (bottom.length > 0 && !(B.size === 1 && Array.from(B.values())[0].c === 1 && Object.keys(Array.from(B.values())[0].m).length === 0)) {
+    return { ok: false, why: 'Use whole numbers in the fraction.' }
+  }
+  const topMonos = Array.from(T.values()).map((x) => x.m)
+  const bottomMonos = Array.from(B.values()).map((x) => x.m)
+  const vars = new Set([...topMonos, ...bottomMonos].flatMap((m) => Object.keys(m)))
+  for (const v of vars) {
+    if (topMonos.every((m) => (m[v] || 0) > 0) && bottomMonos.every((m) => (m[v] || 0) > 0)) return { ok: false, why: `Cancel the common factor ${v}.` }
+  }
+  return { ok: true }
+}
+
+/** Fully factorised with the negative HCF taken out, so the expression starts with a minus sign. */
+export function isNegFactorised(input: Node, written: string): { ok: boolean; why?: string } {
+  const f = isFullyFactorised(input)
+  if (!f.ok) return f
+  if (!/^\s*-/.test(written)) return { ok: false, why: 'Take out the negative HCF, so your answer starts with a minus sign.' }
+  return { ok: true }
+}

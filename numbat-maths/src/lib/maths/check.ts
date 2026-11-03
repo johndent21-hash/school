@@ -11,6 +11,8 @@ import {
   isIndexForm,
   isSimplified,
   isSingleFraction,
+  isLowestTerms,
+  isNegFactorised,
   evaluate,
   normalise,
   parse,
@@ -360,7 +362,18 @@ export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
           feedback: 'I couldn’t read that expression. Use ^ for powers, e.g. 3x^2 + 2x, and check your brackets.',
         }
       }
-      if (!equivalent(inputNode, expectedNode)) return { correct: false }
+      if (!equivalent(inputNode, expectedNode)) {
+        // "12/cd" means 12 ÷ c × d. If the student meant 12/(cd), say so rather than just marking it wrong.
+        const grouped = normalise(input).replace(/^[a-zA-Z]\s*=\s*/, '').replace(/\/\s*(\d*[a-zA-Z](?:\^\(?\d+\)?)?(?:[a-zA-Z](?:\^\(?\d+\)?)?)*)/g, '/($1)')
+        try {
+          if (grouped !== normalise(input) && equivalent(parse(grouped), expectedNode)) {
+            return { correct: false, invalid: true, feedback: 'Put the whole denominator in brackets, for example 3k/(4h) or 12/(cd).' }
+          }
+        } catch {
+          // fall through
+        }
+        return { correct: false }
+      }
       const form = answer.form ?? 'any'
       let res: { ok: boolean; why?: string } = { ok: true }
       if (form === 'simplified') res = isSimplified(inputNode)
@@ -369,6 +382,8 @@ export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
       else if (form === 'positiveIndices') res = hasPositiveIndicesOnly(inputNode)
       else if (form === 'singlePower') res = isIndexForm(inputNode, expectedNode)
       else if (form === 'singleFraction') res = isSingleFraction(inputNode)
+      else if (form === 'lowestTerms') res = isLowestTerms(inputNode)
+      else if (form === 'negFactorised') res = isNegFactorised(inputNode, normalise(input).replace(/^[a-zA-Z]\s*=\s*/, ''))
       if (!res.ok) return { correct: false, invalid: true, feedback: 'That’s equivalent, but not finished. ' + (res.why ?? '') }
       return { correct: true }
     }

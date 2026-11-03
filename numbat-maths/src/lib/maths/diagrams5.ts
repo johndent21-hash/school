@@ -311,3 +311,34 @@ export function sketch(o: SketchOpts): string {
   }
   return svg(W, H, body, 'Sketch graph', 230)
 }
+
+/**
+ * An area diagram for expanding: a rectangle split into columns (labelled along the top) and rows
+ * (labelled down the left). cells: what to write in each part ('' for blank); shade: parts to shade.
+ */
+export function areaGrid(o: { cols: string[]; rows: string[]; cells?: string[][]; widths?: number[]; heights?: number[] }): string {
+  const widths = o.widths ?? o.cols.map((_, i) => (i === 0 ? 2.2 : 1))
+  const heights = o.heights ?? o.rows.map((_, i) => (i === 0 ? 1.6 : 1))
+  const unit = Math.min(200 / widths.reduce((a, b) => a + b, 0), 150 / heights.reduce((a, b) => a + b, 0))
+  const left = 70
+  const top = 36
+  const W = left + widths.reduce((a, b) => a + b, 0) * unit + 24
+  const H = top + heights.reduce((a, b) => a + b, 0) * unit + 16
+  let body = ''
+  let y = top
+  o.rows.forEach((r, j) => {
+    let x = left
+    o.cols.forEach((c, i) => {
+      const w = widths[i] * unit
+      const h = heights[j] * unit
+      body += `<rect class="sh" x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}"/>`
+      const cell = o.cells?.[j]?.[i]
+      if (cell) body += text([x + w / 2, y + h / 2], cell, 'dl small')
+      if (j === 0) body += text([x + w / 2, top - 12], c, 'dl small')
+      x += w
+    })
+    body += text([left - 10, y + (heights[j] * unit) / 2], r, 'dl small', 'end')
+    y += heights[j] * unit
+  })
+  return svg(W, H, body, 'Area diagram', Math.round(Math.min(340, W * 1.3)))
+}

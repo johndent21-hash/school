@@ -33,6 +33,10 @@ Also:
   (Ex 11.01–11.11) and a 12-question topic test in the order of Test Yourself 11. Ex 11.09 Direct variation is Path content
   (MA5-RAT-P-01) and, like Power plus, is labelled Extension. The distance, midpoint and gradient formulas are shown as
   optional (Path) notes, as in the textbook; questions can all be done by counting the run and rise.
+- **Textbook alignment, Year 9 Algebra** (`src/content/y9-ncm1.ts`): follows New Century Maths 9 Chapter 1 (Ex 1.01–1.09,
+  Power plus as an extension, and a 12-question test in the order of Test Yourself 1). New answer forms in the marking:
+  `lowestTerms` (a single fraction with nothing left to cancel, so 4r/10 is "not finished") and `negFactorised` (the
+  negative HCF taken out). A denominator typed without brackets, such as 12/cd, gets a message asking for 12/(cd).
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -49,7 +53,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 35 topics, 141 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 35 topics, 147 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -73,6 +77,8 @@ npx tsx tests/ncm7-ch1.test.ts               # Year 7 Integers: every answer re-
 npx tsx tests/gallery-ncm1.ts                # screenshots of each kind of Integers question, for a visual check
 npx tsx tests/ncm9-ch11.test.ts              # Year 9 Chapter 11: answers re-worked from the printed equations and the diagrams
 npx tsx tests/gallery-ncm11.ts               # screenshots of each kind of Chapter 11 diagram question
+npx tsx tests/ncm9-ch1.test.ts               # Year 9 Algebra: answers checked against the printed expression at random values
+npx tsx tests/gallery-ncm9-1.ts              # screenshots of Chapter 1 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 

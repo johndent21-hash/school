@@ -68,7 +68,9 @@ function htmlToExpr(html: string): string | null {
   for (let k = 0; k < 3; k++)
     s = s.replace(/<span class="frac"[^>]*><span class="fn">((?:(?!<span class="frac").)*?)<\/span><span class="fd">((?:(?!<span class="frac").)*?)<\/span><\/span>/g, '(($1)/($2))')
   s = s.replace(/<sup>(.*?)<\/sup>/g, '^($1)')
-  s = s.replace(/<[^>]*>/g, '').replace(/\u2212/g, '-').replace(/×/g, '*').replace(/÷/g, '/').replace(/\u2009/g, '')
+  s = s.replace(/<[^>]*>/g, '').replace(/\u2212/g, '-').replace(/×/g, '*').replace(/\u2009/g, '')
+  // in algebra, "a ÷ 9gz" divides by the whole term 9gz
+  s = s.replace(/÷\s*(-?[\d.]*[a-zA-Z](?:[a-zA-Z]|\^\(\d+\))*)/g, '/ ($1)').replace(/÷/g, '/')
   if (/[^0-9a-zA-Z+\-*/^(). =]/.test(s)) return null
   return s
 }
