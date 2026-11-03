@@ -1,8 +1,9 @@
-// Year 9 (Stage 5) — Trigonometry, Measurement (error, surface area, volume), Coordinate geometry
+// Year 9 (Stage 5) — Trigonometry, Measurement (error, surface area, volume), Coordinate geometry and graphs (NCM 9 Chapter 11, in y9-ncm11.ts)
 import type { Level, Question, Topic } from '@/lib/maths/types'
+import { NCM11_SKILLS, NCM11_TEST } from './y9-ncm11'
 import {
-  D, L, MINUS, TIMES, DIVIDE, bnum, chance, clean, frac, fracA, fracS, gcd, int, intExcept, mcA, mcFixedA, nonZero, num,
-  numA, pick, pointA, q, sample, exprA, v, ex, lin, round, name, sqrt, approx, NOT_TO_SCALE,
+  D, L, MINUS, TIMES, DIVIDE, chance, clean, frac, fracA, fracS, gcd, int, mcA, mcFixedA, num,
+  numA, pick, q, sample, v, round, name, sqrt, approx, NOT_TO_SCALE,
 } from './helpers'
 
 const R = Math.PI / 180
@@ -111,7 +112,7 @@ const trg_side = (level: Level): Question => {
       diagram: diag,
       answer: numA(ans, 1),
       suffix: u,
-      calc: true,
+      calc: 'trig',
       hint: `Label the sides (O, A, H) relative to ${ang}°. Choose the ratio that uses the side you know and the side you want: here, ${ratio}.`,
       steps: [`${ratio} ${ang}° = ${type === 'opp-hyp' ? frac(v('x'), known) : type === 'adj-hyp' ? frac(v('x'), known) : type === 'opp-adj' ? frac(v('x'), known) : frac(known, v('x'))}`, eqn, `${v('x')} ≈ ${r1(ans)} ${u}`],
     })
@@ -125,7 +126,7 @@ const trg_side = (level: Level): Question => {
     diagram: D.rightTriangle(cosD(ang), sinD(ang), { ...labels, angleAt: 'base', angleLabel: `${ang}°` }),
     answer: numA(ans, 1),
     suffix: u,
-    calc: true,
+    calc: 'trig',
     hint: `The unknown is in the denominator: rearrange to ${v('x')} = ${known} ÷ ${ratio} ${ang}°.`,
     steps: [`${ratio} ${ang}° = ${frac(known, v('x'))}`, `${v('x')} = ${known} ${DIVIDE} ${ratio} ${ang}°`, `${v('x')} ≈ ${r1(ans)} ${u}`],
   })
@@ -160,7 +161,7 @@ const trg_angle = (level: Level): Question => {
       diagram: D.rightTriangle(a, b, { ...labels, angleAt: 'base', angleLabel: TH }),
       answer: numA(theta, 0),
       suffix: '°',
-      calc: true,
+      calc: 'trig',
       hint: `Choose the ratio, then use the inverse function (${type}<sup>−1</sup>) on your calculator.`,
       steps: [`${type} ${TH} = ${type === 'tan' ? frac(b, a) : type === 'sin' ? frac(labels.height!.split(' ')[0], c) : frac(labels.base!.split(' ')[0], c)}`, `${TH} = ${type}<sup>${MINUS}1</sup>(${type === 'tan' ? frac(b, a) : type === 'sin' ? frac(labels.height!.split(' ')[0], c) : frac(labels.base!.split(' ')[0], c)}) ≈ ${num(round(theta, 2), 2)}°`, `${TH} ≈ ${round(theta, 0)}°`],
     })
@@ -172,7 +173,7 @@ const trg_angle = (level: Level): Question => {
     prompt: `A wheelchair ramp is ${len} m long and rises ${num(rise)} m vertically. What angle does the ramp make with the ground, correct to the nearest degree?`,
     answer: numA(theta, 0),
     suffix: '°',
-    calc: true,
+    calc: 'trig',
     hint: 'The ramp is the hypotenuse; the rise is opposite the angle. Use sin.',
     steps: [`sin ${TH} = ${frac(num(rise), len)}`, `${TH} = sin<sup>${MINUS}1</sup>(${num(clean(rise / len))}) ≈ ${num(round(theta, 2), 2)}°`, `${TH} ≈ ${round(theta, 0)}°`],
   })
@@ -187,7 +188,7 @@ const trg_elev = (level: Level): Question => {
       prompt: `From a point ${d} m from the base of a tree, the angle of elevation to the top of the tree is ${ang}°. How tall is the tree, correct to 1 decimal place?`,
       answer: numA(h, 1),
       suffix: 'm',
-      calc: true,
+      calc: 'trig',
       hint: 'The height is opposite the angle and the distance along the ground is adjacent. Use tan.',
       steps: [`tan ${ang}° = ${frac(v('h'), d)}`, `${v('h')} = ${d} ${TIMES} tan ${ang}° ≈ ${r1(h)} m`],
     })
@@ -200,7 +201,7 @@ const trg_elev = (level: Level): Question => {
       prompt: `From the top of a ${h} m cliff at Cape Byron, the angle of depression to a boat is ${ang}°. How far is the boat from the base of the cliff, correct to 1 decimal place?`,
       answer: numA(d, 1),
       suffix: 'm',
-      calc: true,
+      calc: 'trig',
       hint: 'The angle of depression equals the angle of elevation from the boat to the clifftop (alternate angles). Then use tan.',
       steps: [`Angle of elevation from the boat = ${ang}° (alternate angles).`, `tan ${ang}° = ${frac(h, v('d'))}`, `${v('d')} = ${h} ${DIVIDE} tan ${ang}° ≈ ${r1(d)} m`],
     })
@@ -213,7 +214,7 @@ const trg_elev = (level: Level): Question => {
     prompt: `A drone hovers ${h} m above the ground. ${nm} stands ${d} m from the point directly below the drone. What is the angle of elevation of the drone from ${nm}’s position, correct to the nearest degree?`,
     answer: numA(theta, 0),
     suffix: '°',
-    calc: true,
+    calc: 'trig',
     hint: 'Opposite = height, adjacent = distance along the ground. Use tan⁻¹.',
     steps: [`tan ${TH} = ${frac(h, d)}`, `${TH} = tan<sup>${MINUS}1</sup>(${frac(h, d)}) ≈ ${num(round(theta, 2), 2)}°`, `${TH} ≈ ${round(theta, 0)}°`],
   })
@@ -466,183 +467,6 @@ const vol_composite = (level: Level): Question => {
   })
 }
 
-// ------------------------------------------------------------------ Coordinate geometry
-
-const pt = (x: number, y: number) => `(${num(x)}, ${num(y)})`
-
-const cg_distance = (level: Level): Question => {
-  if (level === 1) {
-    const [a, b, c] = pick([[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 6, 10], [4, 3, 5], [12, 5, 13]])
-    const x1 = int(-4, 2)
-    const y1 = int(-4, 2)
-    const x2 = x1 + a * pick([1, -1])
-    const y2 = y1 + b * pick([1, -1])
-    if (Math.abs(x2) > 9 || Math.abs(y2) > 9) return cg_distance(1)
-    return q({
-      prompt: `Find the distance between the points ${pt(x1, y1)} and ${pt(x2, y2)}.`,
-      answer: numA(c),
-      hint: 'Use Pythagoras: d² = (difference in x)² + (difference in y)².',
-      steps: [`Horizontal difference: ${Math.abs(x2 - x1)}; vertical difference: ${Math.abs(y2 - y1)}`, `d = ${sqrt(`${a}<sup>2</sup> + ${b}<sup>2</sup>`)} = ${sqrt(c * c)} = ${c}`],
-    })
-  }
-  const x1 = int(-6, 6)
-  const y1 = int(-6, 6)
-  const x2 = intExcept(-6, 8, [x1])
-  const y2 = intExcept(-6, 8, [y1])
-  const d2 = (x2 - x1) ** 2 + (y2 - y1) ** 2
-  const d = Math.sqrt(d2)
-  if (Number.isInteger(d)) return cg_distance(level)
-  if (level === 2) {
-    return q({
-      prompt: `Find the distance between ${pt(x1, y1)} and ${pt(x2, y2)}, correct to 2 decimal places.`,
-      answer: numA(d, 2),
-      calc: true,
-      hint: 'd = √((x₂ − x₁)² + (y₂ − y₁)²)',
-      steps: [`d = ${sqrt(`(${num(x2)} ${MINUS} ${bnum(x1)})<sup>2</sup> + (${num(y2)} ${MINUS} ${bnum(y1)})<sup>2</sup>`)}`, `= ${sqrt(`${(x2 - x1) ** 2} + ${(y2 - y1) ** 2}`)} = ${sqrt(d2)}`, `≈ ${num(round(d, 2), 2)}`],
-    })
-  }
-  const [A, B, C] = [
-    [int(-5, 0), int(-5, 0)],
-    [int(1, 6), int(-5, 0)],
-    [int(-3, 3), int(2, 7)],
-  ]
-  const side = (p: number[], qq: number[]) => Math.sqrt((p[0] - qq[0]) ** 2 + (p[1] - qq[1]) ** 2)
-  const P = side(A, B) + side(B, C) + side(C, A)
-  return q({
-    prompt: `Find the perimeter of the triangle with vertices A${pt(A[0], A[1])}, B${pt(B[0], B[1])} and C${pt(C[0], C[1])}, correct to 1 decimal place.`,
-    answer: numA(P, 1),
-    calc: true,
-    hint: 'Find the length of each side with the distance formula, then add.',
-    steps: [`AB ≈ ${num(round(side(A, B), 3), 3)}`, `BC ≈ ${num(round(side(B, C), 3), 3)}`, `CA ≈ ${num(round(side(C, A), 3), 3)}`, `Perimeter ≈ ${r1(P)}`],
-  })
-}
-
-const cg_midpoint = (level: Level): Question => {
-  if (level <= 2) {
-    const x1 = L(level, int(0, 10), int(-9, 9), 0)
-    const y1 = L(level, int(0, 10), int(-9, 9), 0)
-    let x2 = L(level, int(0, 10), int(-9, 9), 0)
-    let y2 = L(level, int(0, 10), int(-9, 9), 0)
-    if (level === 1) {
-      if ((x1 + x2) % 2) x2 = x2 === 10 ? 8 : x2 + 1
-      if ((y1 + y2) % 2) y2 = y2 === 10 ? 8 : y2 + 1
-    }
-    if (x1 === x2 && y1 === y2) return cg_midpoint(level)
-    const mx = (x1 + x2) / 2
-    const my = (y1 + y2) / 2
-    return q({
-      prompt: `Find the midpoint of the interval joining ${pt(x1, y1)} and ${pt(x2, y2)}.`,
-      answer: pointA(mx, my),
-      hint: 'Average the x-coordinates and average the y-coordinates.',
-      steps: [`x: (${num(x1)} + ${bnum(x2)}) ${DIVIDE} 2 = ${num(mx)}`, `y: (${num(y1)} + ${bnum(y2)}) ${DIVIDE} 2 = ${num(my)}`, `Midpoint = ${pt(mx, my)}`],
-    })
-  }
-  const x1 = int(-6, 6)
-  const y1 = int(-6, 6)
-  const mx = int(-5, 5)
-  const my = int(-5, 5)
-  const x2 = 2 * mx - x1
-  const y2 = 2 * my - y1
-  return q({
-    prompt: `M${pt(mx, my)} is the midpoint of the interval AB. If A is ${pt(x1, y1)}, find the coordinates of B.`,
-    answer: pointA(x2, y2),
-    hint: 'The step from A to M is the same as the step from M to B.',
-    steps: [`x: ${num(x1)} → ${num(mx)} is a change of ${num(mx - x1)}, so B has x = ${num(mx)} + ${bnum(mx - x1)} = ${num(x2)}`, `y: ${num(y1)} → ${num(my)} is a change of ${num(my - y1)}, so B has y = ${num(my)} + ${bnum(my - y1)} = ${num(y2)}`, `B = ${pt(x2, y2)}`],
-  })
-}
-
-const cg_gradient = (level: Level): Question => {
-  if (level === 1) {
-    const m = pick([1, 2, 3, -1, -2, 0.5, -0.5])
-    const c = int(-2, 2)
-    const xa = pick([-3, -2, -1, 0])
-    const xb = xa + pick([2, 4])
-    const pts = [xa, xb].map((x) => ({ x, y: m * x + c }))
-    if (pts.some((p) => !Number.isInteger(p.y) || Math.abs(p.y) > 6)) return cg_gradient(1)
-    return q({
-      prompt: 'Find the gradient of the line passing through the two marked points.',
-      diagram: D.numberPlane({ xmin: -5, xmax: 5, ymin: -6, ymax: 6, lines: [{ m, c }], points: pts }),
-      answer: fracA(Math.round(m * 2), 2, { allowDecimal: true }),
-      hint: 'Gradient = rise ÷ run. Count how far up (or down) and how far across you go between the points.',
-      steps: [`Rise = ${num(pts[1].y)} ${MINUS} ${bnum(pts[0].y)} = ${num(pts[1].y - pts[0].y)}`, `Run = ${num(pts[1].x)} ${MINUS} ${bnum(pts[0].x)} = ${num(pts[1].x - pts[0].x)}`, `Gradient = ${frac(num(pts[1].y - pts[0].y), num(pts[1].x - pts[0].x))} = ${num(m)}`],
-    })
-  }
-  if (level === 2) {
-    const x1 = int(-6, 6)
-    const y1 = int(-6, 6)
-    const x2 = intExcept(-6, 8, [x1])
-    const y2 = int(-6, 8)
-    const rise = y2 - y1
-    const run = x2 - x1
-    return q({
-      prompt: `Find the gradient of the interval joining ${pt(x1, y1)} and ${pt(x2, y2)}.`,
-      answer: fracA(rise, run, { allowDecimal: true }),
-      hint: 'm = (y₂ − y₁) ÷ (x₂ − x₁). Keep the order of the points the same on top and bottom.',
-      steps: [`m = ${frac(`${num(y2)} ${MINUS} ${bnum(y1)}`, `${num(x2)} ${MINUS} ${bnum(x1)}`)}`, `= ${frac(num(rise), num(run))}${gcd(rise, run) > 1 || run < 0 ? ' = ' + fracS(rise, run) : ''}`],
-    })
-  }
-  const m = nonZero(-4, 4)
-  const x1 = int(-4, 4)
-  const x2 = x1 + int(1, 4)
-  const y2 = int(-6, 10)
-  const k = y2 - m * (x2 - x1)
-  return q({
-    prompt: `The line through ${pt(x1, NaN).replace('NaN', v('k'))} and ${pt(x2, y2)} has a gradient of ${num(m)}. Find the value of ${v('k')}.`,
-    answer: numA(k),
-    prefix: `${v('k')} =`,
-    hint: 'Write the gradient formula with k in it, then solve the equation.',
-    steps: [`${frac(`${num(y2)} ${MINUS} ${v('k')}`, `${num(x2)} ${MINUS} ${bnum(x1)}`)} = ${num(m)}`, `${num(y2)} ${MINUS} ${v('k')} = ${num(m * (x2 - x1))}`, `${v('k')} = ${num(k)}`],
-  })
-}
-
-const cg_ymxc = (level: Level): Question => {
-  if (level === 1) {
-    const m = nonZero(-6, 6)
-    const c = int(-9, 9)
-    const askM = chance()
-    const order = chance(0.3)
-    const eqn = order && c !== 0 ? `y = ${c} ${m < 0 ? '- ' + (m === -1 ? '' : -m) : '+ ' + (m === 1 ? '' : m)}x` : `y = ${lin(m, c)}`
-    return q({
-      prompt: `What is the ${askM ? 'gradient' : 'y-intercept'} of the line ${ex(eqn)}?`,
-      answer: numA(askM ? m : c),
-      hint: 'In y = mx + c, m is the gradient and c is the y-intercept.',
-      steps: [`Written as y = mx + c: ${ex(`y = ${lin(m, c)}`)}`, askM ? `Gradient m = ${num(m)}` : `y-intercept c = ${num(c)}`],
-    })
-  }
-  if (level === 2) {
-    const a = nonZero(-5, 5)
-    const cc = int(-9, 9)
-    // a x + y = cc  → y = -a x + cc
-    return q({
-      prompt: `Find the gradient of the line ${ex(`${a === 1 ? '' : a === -1 ? '-' : a}x + y = ${cc}`)}.`,
-      answer: numA(-a),
-      hint: 'Rearrange into the form y = mx + c first.',
-      steps: [`y = ${ex(lin(-a, cc))}`, `Gradient = ${num(-a)}`],
-    })
-  }
-  const m = nonZero(-4, 4)
-  const c = int(-5, 5)
-  if (chance()) {
-    return q({
-      prompt: `Write the equation of the line with gradient ${num(m)} and y-intercept ${num(c)}.`,
-      answer: exprA(lin(m, c)),
-      prefix: `${v('y')} =`,
-      hint: 'Substitute into y = mx + c.',
-      steps: [`y = ${ex(lin(m, c))}`],
-    })
-  }
-  const pts = [-2, 0, 2].map((x) => ({ x, y: m * x + c })).filter((p) => Math.abs(p.y) <= 6)
-  if (pts.length < 2) return cg_ymxc(3)
-  return q({
-    prompt: 'Find the equation of this line.',
-    diagram: D.numberPlane({ xmin: -5, xmax: 5, ymin: -6, ymax: 6, lines: [{ m, c }], points: pts }),
-    answer: exprA(lin(m, c)),
-    prefix: `${v('y')} =`,
-    hint: 'Read the y-intercept, then find the gradient (rise ÷ run) from two marked points.',
-    steps: [`y-intercept: ${num(c)}`, `Gradient: from ${pt(pts[0].x, pts[0].y)} to ${pt(pts[1].x, pts[1].y)}, rise ${num(pts[1].y - pts[0].y)}, run ${num(pts[1].x - pts[0].x)}, so m = ${num(m)}`, `y = ${ex(lin(m, c))}`],
-  })
-}
-
 // ------------------------------------------------------------------ Topics
 
 export const Y9B: Topic[] = [
@@ -779,61 +603,14 @@ export const Y9B: Topic[] = [
   {
     id: 'y9-coordinate',
     year: 9,
-    title: 'Coordinate geometry',
+    title: 'Coordinate geometry and graphs',
+    ref: 'NCM 9 Chapter 11',
     strand: 'Number and algebra',
-    outcomes: ['MA5-LIN-C-01', 'MA5-LIN-C-02'],
-    blurb: 'Distance, midpoint, gradient and the equation y = mx + c.',
+    outcomes: ['MA5-LIN-C-01', 'MA5-LIN-C-02', 'MA5-NLI-C-01'],
+    blurb: 'Length, midpoint and gradient of intervals; graphing straight lines and y = mx + c; solving and applying linear equations; parabolas y = ax² + c.',
     colour: 225,
-    skills: [
-      {
-        id: 'y9-cg-distance',
-        title: 'Length of an interval',
-        outcomes: ['MA5-LIN-C-01'],
-        summary: 'Find the distance between two points using Pythagoras’ theorem.',
-        learn: {
-          intro: '<p>The distance between two points is the hypotenuse of a right-angled triangle: d = √((x₂ − x₁)² + (y₂ − y₁)²).</p>',
-          keyPoints: ['Square the differences, add, then take the square root.', 'Squaring makes negative differences positive.'],
-        },
-        gen: cg_distance,
-        levels: { 1: 'Whole-number distances', 2: 'Rounded distances', 3: 'Perimeters' },
-      },
-      {
-        id: 'y9-cg-midpoint',
-        title: 'Midpoint of an interval',
-        outcomes: ['MA5-LIN-C-01'],
-        summary: 'Find midpoints and missing endpoints.',
-        learn: {
-          intro: '<p>The midpoint is halfway between two points: M = ((x₁ + x₂)/2, (y₁ + y₂)/2).</p>',
-          keyPoints: ['Average the x-coordinates and average the y-coordinates.', 'Type points like (2.5, −1).'],
-        },
-        gen: cg_midpoint,
-        levels: { 1: 'Positive coordinates', 2: 'Negative and halves', 3: 'Find an endpoint' },
-      },
-      {
-        id: 'y9-cg-gradient',
-        title: 'Gradient',
-        outcomes: ['MA5-LIN-C-01'],
-        summary: 'Find the gradient of a line or interval.',
-        learn: {
-          intro: '<p>Gradient measures steepness: m = rise ÷ run = (y₂ − y₁) ÷ (x₂ − x₁).</p>',
-          keyPoints: ['Lines going up to the right have a positive gradient; down to the right, negative.', 'Horizontal lines have gradient 0.'],
-        },
-        gen: cg_gradient,
-        levels: { 1: 'From a graph', 2: 'Gradient formula', 3: 'Find a missing coordinate' },
-      },
-      {
-        id: 'y9-cg-ymxc',
-        title: 'The equation y = mx + c',
-        outcomes: ['MA5-LIN-C-02'],
-        summary: 'Use the gradient–intercept form of a straight line.',
-        learn: {
-          intro: '<p>In y = mx + c, <i>m</i> is the gradient and <i>c</i> is the y-intercept.</p>',
-          keyPoints: ['y = 4 − 3x has gradient −3 and y-intercept 4.', 'Rearrange other forms first: 2x + y = 5 → y = −2x + 5.'],
-        },
-        gen: cg_ymxc,
-        levels: { 1: 'Read m and c', 2: 'Rearrange first', 3: 'Write the equation' },
-      },
-    ],
+    test: NCM11_TEST,
+    skills: NCM11_SKILLS,
   },
 ]
 

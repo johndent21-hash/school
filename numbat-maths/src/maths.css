@@ -185,6 +185,10 @@
 .dg .pt {
   fill: currentColor;
 }
+/* a second line or curve on the same graph */
+.dg .plot2 {
+  stroke: hsl(var(--accent-2));
+}
 .dg .hlfill {
   fill: hsl(var(--primary));
 }

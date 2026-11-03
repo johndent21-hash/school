@@ -64,7 +64,7 @@ export interface Question {
   suffix?: string // shown after the input, e.g. "cm²"
   hint: string // HTML
   steps: string[] // worked solution, one HTML string per step
-  calc?: boolean // calculator allowed
+  calc?: boolean | 'trig' // calculator allowed; 'trig' also shows sin, cos and tan (Year 9 trigonometry)
   note?: string // e.g. "Diagram not to scale"
   /** The numbers a question was made from, so tests can re-work the answer independently. Never shown. */
   meta?: { t: string } & Record<string, unknown>

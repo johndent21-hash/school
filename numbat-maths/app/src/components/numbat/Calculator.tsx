@@ -1,6 +1,6 @@
 // The on-screen calculator, offered only on questions marked "Calculator allowed".
 // Year 7: a basic calculator with the sign-change key, x² and Ans. Years 8 and up: scientific keys (√, x², xʸ, π, Ans).
-// Year 9 also gets sin, cos and tan (degrees) for trigonometry.
+// Year 9 trigonometry questions also get sin, cos and tan (degrees).
 import { useState } from 'react'
 import { Calculator as CalcIcon, Delete, X } from 'lucide-react'
 import { calcDisplay, calculate } from '@/lib/maths/calc'
@@ -83,13 +83,14 @@ export function CalculatorToggle({ open, onToggle }: { open: boolean; onToggle: 
   )
 }
 
-export function Calculator({ year, onUse, onClose }: { year: number; onUse?: (text: string) => void; onClose: () => void }) {
+export function Calculator({ year, trig: trigKeys = false, onUse, onClose }: { year: number; trig?: boolean; onUse?: (text: string) => void; onClose: () => void }) {
   const [expr, setExpr] = useState('')
   const [out, setOut] = useState<{ ok: true; value: number } | { ok: false; message: string } | null>(null)
   const [done, setDone] = useState(false) // just pressed "="
   const [second, setSecond] = useState(false)
   const sci = year >= 8
-  const trig = year >= 9
+  // sin, cos and tan only on Year 9 trigonometry questions, so other questions keep a shorter calculator
+  const trig = year >= 9 && trigKeys
 
   const press = (k: CKey) => {
     if (k.act === 'clear') {

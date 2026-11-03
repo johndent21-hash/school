@@ -3,7 +3,7 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeft, BookOpen, ClipboardCheck, PencilLine } from 'lucide-react'
 import { NotFoundPanel, PageLoading, Shell } from '@/components/numbat/Shell'
 import { MasteryBadge } from '@/components/numbat/Mastery'
-import { SkillTags, TopicRef } from '@/components/numbat/TextbookTags'
+import { SkillTags, TopicRef, exerciseNumber } from '@/components/numbat/TextbookTags'
 import { findTopic } from '@/content'
 import { LEVEL_NAMES, type Level } from '@/lib/maths/types'
 import { masteryOf } from '@/lib/mastery'
@@ -70,7 +70,7 @@ function TopicView() {
                 <div className="grid gap-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-display text-lg font-semibold">
-                      {s.ref?.startsWith('NCM 7 Ex ') ? s.ref.slice(9) : k + 1}. {s.title}
+                      {exerciseNumber(s) ?? k + 1}. {s.title}
                     </span>
                     <SkillTags skill={s} />
                     <MasteryBadge state={masteryOf(p)} best={p?.best} />
