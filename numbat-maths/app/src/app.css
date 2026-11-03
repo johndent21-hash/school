@@ -493,6 +493,29 @@ body::before {
 .calc-keys .pad-key {
   min-height: 2.7rem;
 }
+/* above multiple-choice options: shorter screen and keys (still comfortable to tap) */
+.calc-compact {
+  gap: 0.35rem;
+  padding: 0.5rem 0.6rem;
+}
+.calc-compact .calc-screen {
+  padding: 0.3rem 0.7rem;
+}
+.calc-compact .calc-expr {
+  min-height: 1.2rem;
+}
+.calc-compact .calc-out {
+  min-height: 1.6rem;
+  font-size: 1.35rem;
+}
+.calc-compact .calc-keys .pad-key {
+  min-height: 2.2rem;
+}
+.calc-compact .calc-head .btn {
+  min-height: 0;
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+}
 .calc-small {
   font-size: 0.95rem;
 }

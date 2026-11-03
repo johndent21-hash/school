@@ -111,7 +111,8 @@ export function AnswerBox({
             <CalculatorToggle open={calcOpen} onToggle={() => setCalcOpen(!calcOpen)} />
           </div>
         )}
-        {calc && calcOpen && <Calculator year={year} trig={q.calc === 'trig'} onClose={() => setCalcOpen(false)} />}
+        {/* a slightly shorter calculator above choices, so the choices and the Check button still fit on screen */}
+        {calc && calcOpen && <Calculator year={year} trig={q.calc === 'trig'} compact onClose={() => setCalcOpen(false)} />}
         <div className={cn('mc-options', !long && 'cols-2')} role="radiogroup" aria-label="Choose an answer">
           {a.options.map((opt, i) => {
             const selected = value === String(i)

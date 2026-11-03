@@ -37,6 +37,11 @@ Also:
   Power plus as an extension, and a 12-question test in the order of Test Yourself 1). New answer forms in the marking:
   `lowestTerms` (a single fraction with nothing left to cancel, so 4r/10 is "not finished") and `negFactorised` (the
   negative HCF taken out). A denominator typed without brackets, such as 12/cd, gets a message asking for 12/(cd).
+- **Textbook alignment, Year 9 Pythagoras’ theorem** (`src/content/y9-ncm2.ts`, diagrams in `src/lib/maths/diagrams6.ts`):
+  follows New Century Maths 9 Chapter 2 (Ex 2.01–2.08, Power plus as an extension, a 12-question test in the order of
+  Test Yourself 2). A new Year 9 topic; the Year 8 Pythagoras topic is unchanged. Every triangle, rectangle and
+  trapezium is drawn to scale from the question's own numbers (squashed ones and 3D drawings say "Diagram not drawn
+  to scale."). A calculator opened above multiple-choice options is a little shorter, so the choices and Check still fit.
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -53,7 +58,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 35 topics, 147 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 36 topics, 156 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -79,6 +84,8 @@ npx tsx tests/ncm9-ch11.test.ts              # Year 9 Chapter 11: answers re-wor
 npx tsx tests/gallery-ncm11.ts               # screenshots of each kind of Chapter 11 diagram question
 npx tsx tests/ncm9-ch1.test.ts               # Year 9 Algebra: answers checked against the printed expression at random values
 npx tsx tests/gallery-ncm9-1.ts              # screenshots of Chapter 1 (Year 9) questions
+npx tsx tests/ncm9-ch2.test.ts               # Year 9 Pythagoras: answers re-worked from the diagrams and the printed numbers
+npx tsx tests/gallery-ncm9-2.ts              # screenshots of Chapter 2 (Year 9) questions and diagrams
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 

@@ -83,7 +83,7 @@ export function CalculatorToggle({ open, onToggle }: { open: boolean; onToggle: 
   )
 }
 
-export function Calculator({ year, trig: trigKeys = false, onUse, onClose }: { year: number; trig?: boolean; onUse?: (text: string) => void; onClose: () => void }) {
+export function Calculator({ year, trig: trigKeys = false, compact = false, onUse, onClose }: { year: number; trig?: boolean; compact?: boolean; onUse?: (text: string) => void; onClose: () => void }) {
   const [expr, setExpr] = useState('')
   const [out, setOut] = useState<{ ok: true; value: number } | { ok: false; message: string } | null>(null)
   const [done, setDone] = useState(false) // just pressed "="
@@ -165,7 +165,7 @@ export function Calculator({ year, trig: trigKeys = false, onUse, onClose }: { y
   const shown = out?.ok ? calcDisplay(out.value) : null
 
   return (
-    <div className="calc" role="group" aria-label="Calculator" onKeyDown={onKey}>
+    <div className={cn('calc', compact && 'calc-compact')} role="group" aria-label="Calculator" onKeyDown={onKey}>
       <div className="calc-head">
         <span className="text-sm font-bold text-muted-foreground">
           {trig ? 'Scientific calculator · degrees' : sci ? 'Scientific calculator' : 'Calculator'}

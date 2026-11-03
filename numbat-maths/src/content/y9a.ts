@@ -1,6 +1,7 @@
-// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Indices and numbers of any magnitude, Equations, Financial mathematics
+// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Indices and numbers of any magnitude, Equations, Financial mathematics
 import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_9_SKILLS, NCM1_9_TEST } from './y9-ncm1'
+import { NCM2_9_SKILLS, NCM2_9_TEST } from './y9-ncm2'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, ex, frac, fracA, fracS, gcd, lcm, int, intExcept, mcA, mcFixedA,
   nonZero, num, numA, pick, q, sample, exprA, v, terms, coef, round, roundSF, name, sqrt, money, signed, approx, pow,
@@ -585,6 +586,18 @@ export const Y9A: Topic[] = [
     colour: 330,
     test: NCM1_9_TEST,
     skills: NCM1_9_SKILLS,
+  },
+  {
+    id: 'y9-pythagoras',
+    year: 9,
+    title: 'Pythagoras’ theorem',
+    ref: 'NCM 9 Chapter 2',
+    strand: 'Measurement and space',
+    outcomes: ['MA4-PYT-C-01', 'MA4-IND-C-01'],
+    blurb: 'Squares, square roots and surds; finding the hypotenuse or a shorter side; testing for right angles; Pythagorean triads; problems.',
+    colour: 190,
+    test: NCM2_9_TEST,
+    skills: NCM2_9_SKILLS,
   },
   {
     id: 'y9-indices',
