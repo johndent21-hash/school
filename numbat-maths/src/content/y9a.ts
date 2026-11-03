@@ -1,7 +1,8 @@
-// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Indices and numbers of any magnitude, Equations, Financial mathematics
+// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Indices and numbers of any magnitude, Equations, Financial mathematics
 import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_9_SKILLS, NCM1_9_TEST } from './y9-ncm1'
 import { NCM2_9_SKILLS, NCM2_9_TEST } from './y9-ncm2'
+import { NCM3_9_SKILLS, NCM3_9_TEST } from './y9-ncm3'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, ex, frac, fracA, fracS, gcd, lcm, int, intExcept, mcA, mcFixedA,
   nonZero, num, numA, pick, q, sample, exprA, v, terms, coef, round, roundSF, name, sqrt, money, signed, approx, pow,
@@ -523,55 +524,6 @@ const fin_commission = (level: Level): Question => {
   })
 }
 
-const fin_interest = (level: Level): Question => {
-  const P = int(20, 300) * 100
-  const r = pick([2, 2.5, 3, 3.5, 4, 4.5, 5, 6])
-  if (level === 1) {
-    const n = int(2, 8)
-    const I = P * (r / 100) * n
-    return q({
-      prompt: `Find the simple interest earned on $${num(P)} invested at ${num(r)}% p.a. for ${n} years.`,
-      answer: numA(round(I, 2), 2),
-      prefix: '$',
-      calc: true,
-      hint: `I = Prn, where r is written as a decimal (${num(r)}% = ${num(r / 100)}) and n is in years.`,
-      steps: [`I = ${num(P)} ${TIMES} ${num(r / 100)} ${TIMES} ${n}`, `= ${money(I)}`],
-    })
-  }
-  if (level === 2) {
-    const months = pick([6, 9, 18, 30, 15])
-    const I = P * (r / 100) * (months / 12)
-    return q({
-      prompt: `$${num(P)} is borrowed at ${num(r)}% p.a. simple interest for ${months} months. What is the total amount to be repaid?`,
-      answer: numA(round(P + I, 2), 2),
-      prefix: '$',
-      calc: true,
-      hint: `Change months to years: ${months} months = ${frac(months, 12)} of a year. Then add the interest to the principal.`,
-      steps: [`n = ${months} ${DIVIDE} 12 = ${num(months / 12)} years`, `I = ${num(P)} ${TIMES} ${num(r / 100)} ${TIMES} ${num(months / 12)} = ${money(I)}`, `Total = $${num(P)} + ${money(I)} = ${money(P + I)}`],
-    })
-  }
-  const n = int(2, 6)
-  const I = P * (r / 100) * n
-  if (chance()) {
-    return q({
-      prompt: `An investment of $${num(P)} earns $${num(I)} simple interest in ${n} years. What is the annual interest rate?`,
-      answer: numA(r),
-      suffix: '% p.a.',
-      calc: true,
-      hint: 'Substitute into I = Prn and solve for r. Then write r as a percentage.',
-      steps: [`${num(I)} = ${num(P)} ${TIMES} r ${TIMES} ${n}`, `r = ${num(I)} ${DIVIDE} ${num(P * n)} = ${num(r / 100)}`, `r = ${num(r)}% p.a.`],
-    })
-  }
-  return q({
-    prompt: `How much must be invested at ${num(r)}% p.a. simple interest to earn $${num(I)} interest in ${n} years?`,
-    answer: numA(P),
-    prefix: '$',
-    calc: true,
-    hint: 'Substitute into I = Prn and solve for P.',
-    steps: [`${num(I)} = P ${TIMES} ${num(r / 100)} ${TIMES} ${n}`, `P = ${num(I)} ${DIVIDE} ${num(clean((r / 100) * n))} = $${num(P)}`],
-  })
-}
-
 // ------------------------------------------------------------------ Topics
 
 export const Y9A: Topic[] = [
@@ -598,6 +550,18 @@ export const Y9A: Topic[] = [
     colour: 190,
     test: NCM2_9_TEST,
     skills: NCM2_9_SKILLS,
+  },
+  {
+    id: 'y9-numeracy',
+    year: 9,
+    title: 'Numeracy and calculation',
+    ref: 'NCM 9 Chapter 3',
+    strand: 'Number and algebra',
+    outcomes: ['MA4-INT-C-01', 'MA4-FRC-C-01', 'MA4-RAT-C-01', 'MA5-FIN-C-01'],
+    blurb: 'Integers, decimals and fractions; percentages, profit, discounts and GST; simple interest; ratios and rates.',
+    colour: 52,
+    test: NCM3_9_TEST,
+    skills: NCM3_9_SKILLS,
   },
   {
     id: 'y9-indices',
@@ -720,10 +684,11 @@ export const Y9A: Topic[] = [
   {
     id: 'y9-finance',
     year: 9,
-    title: 'Earning money and interest',
+    title: 'Earning money',
     strand: 'Number and algebra',
     outcomes: ['MA5-FIN-C-01'],
-    blurb: 'Wages and salaries, overtime and leave loading, commission, and simple interest.',
+    // simple interest is in Numeracy and calculation (NCM 9 Ex 3.07)
+    blurb: 'Wages and salaries, overtime and leave loading, commission and piecework.',
     colour: 145,
     skills: [
       {
@@ -761,18 +726,6 @@ export const Y9A: Topic[] = [
         },
         gen: fin_commission,
         levels: { 1: 'Commission', 2: 'Retainer; piecework', 3: 'Sliding scale' },
-      },
-      {
-        id: 'y9-fin-interest',
-        title: 'Simple interest',
-        outcomes: ['MA5-FIN-C-01'],
-        summary: 'Use I = Prn to calculate interest, rates and principals.',
-        learn: {
-          intro: '<p>Simple interest is calculated only on the original amount (the principal): I = P<i>rn</i>.</p>',
-          keyPoints: ['P = principal, r = interest rate per year as a decimal, n = number of years', 'Months → years: divide by 12', 'Total amount = P + I'],
-        },
-        gen: fin_interest,
-        levels: { 1: 'Find the interest', 2: 'Months; total amount', 3: 'Find the rate or principal' },
       },
     ],
   },

@@ -54,6 +54,23 @@
   top: -0.7em;
 }
 
+/* Recurring decimals: a dot over the first and last repeating digits, e.g. 0.2̇73̇. Measured up from the
+   bottom of the text (not down from the top of the line), so it sits just above the digit in any font and line height. */
+.rec {
+  position: relative;
+}
+.rec::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 1.04em;
+  width: 0.19em;
+  height: 0.19em;
+  margin-left: -0.095em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 /* Tables used in questions */
 .tablewrap {
   overflow-x: auto;
