@@ -90,7 +90,7 @@ export function tick(a: P, b: P, count = 1): string {
   return s
 }
 
-function arrowOnLine(a: P, b: P, count = 1, at = 0.5): string {
+export function arrowOnLine(a: P, b: P, count = 1, at = 0.5): string {
   const m: P = [a[0] + (b[0] - a[0]) * at, a[1] + (b[1] - a[1]) * at]
   const dx = b[0] - a[0]
   const dy = b[1] - a[1]

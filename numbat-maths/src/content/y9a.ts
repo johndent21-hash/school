@@ -1,10 +1,11 @@
-// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Trigonometry (Chapter 4, y9-ncm4.ts), Indices (Chapter 5, y9-ncm5.ts), Equations, Financial mathematics
+// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Trigonometry (Chapter 4, y9-ncm4.ts), Indices (Chapter 5, y9-ncm5.ts), Geometry and networks (Chapter 6, y9-ncm6.ts), Equations, Financial mathematics
 import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_9_SKILLS, NCM1_9_TEST } from './y9-ncm1'
 import { NCM2_9_SKILLS, NCM2_9_TEST } from './y9-ncm2'
 import { NCM3_9_SKILLS, NCM3_9_TEST } from './y9-ncm3'
 import { NCM4_SKILLS, NCM4_TEST } from './y9-ncm4'
 import { NCM5_SKILLS, NCM5_TEST } from './y9-ncm5'
+import { NCM6_SKILLS, NCM6_TEST } from './y9-ncm6'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, ex, frac, fracA, fracS, gcd, lcm, int, intExcept, mcA, mcFixedA,
   nonZero, num, numA, pick, q, sample, exprA, v, terms, coef, round, roundSF, name, sqrt, money, signed, approx, pow,
@@ -410,6 +411,18 @@ export const Y9A: Topic[] = [
     colour: 265,
     test: NCM5_TEST,
     skills: NCM5_SKILLS,
+  },
+  {
+    id: 'y9-geometry',
+    year: 9,
+    title: 'Geometry and networks',
+    ref: 'NCM 9 Chapter 6',
+    strand: 'Measurement and space',
+    outcomes: ['MA4-GEO-C-01', 'MA4-ANG-C-01'],
+    blurb: 'Angles in triangles and quadrilaterals, the special quadrilaterals, and (Path) networks and planar graphs.',
+    colour: 320,
+    test: NCM6_TEST,
+    skills: NCM6_SKILLS,
   },
   {
     id: 'y9-equations',

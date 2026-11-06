@@ -71,6 +71,12 @@ Also:
   Significant figures and scientific notation are MA5-MAG-C-01 (the old topic said MA5-NUM-C-01, which isn’t a NESA code).
   New expression form `negativeIndex` (“write using a negative index”: 5k^-2, not 5/k^2). Number marking now compares
   relative to the size of the numbers, so 0.000 000 03 is no longer accepted for 0.000 000 030 2.
+- **Textbook alignment, Year 9 Geometry and networks** (`src/content/y9-ncm6.ts`): follows New Century Maths 9 Chapter 6.
+  A new Year 9 topic, after Indices. 6.01 Triangle geometry and 6.02 Quadrilateral geometry are Stage 4 content that
+  NCM 9 revisits (MA4-GEO-C-01, MA4-ANG-C-01); 6.03 Networks and 6.04 Planar graphs and Euler’s formula are Path
+  (MA5-NET-P-01), so they are extension skills, as is Power plus. The 12-question test uses 6.01 and 6.02 only. Angle
+  diagrams are drawn to scale from the question's own angles (reflex angles and parallel arrows added to `fig`), and
+  network diagrams keep every edge clear of vertices it doesn't join.
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -88,7 +94,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 37 topics, 175 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 38 topics, 180 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -122,6 +128,8 @@ npx tsx tests/ncm9-ch4.test.ts               # Year 9 Trigonometry: answers re-w
 npx tsx tests/gallery-ncm9-4.ts              # screenshots of Chapter 4 (Year 9) questions
 npx tsx tests/ncm9-ch5.test.ts               # Year 9 Indices: question and answer evaluated at random values; sig figs and scientific notation re-done exactly
 npx tsx tests/gallery-ncm9-5.ts              # screenshots of Chapter 5 (Year 9) questions
+npx tsx tests/ncm9-ch6.test.ts               # Year 9 Geometry and networks: every angle measured back from the drawing; networks re-worked
+npx tsx tests/gallery-ncm9-6.ts              # screenshots of Chapter 6 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 

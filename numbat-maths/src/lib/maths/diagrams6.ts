@@ -3,7 +3,7 @@
 // drawn to scale. When a shape is too thin to read and has to be squashed, the content file says so on the page
 // ("Diagram not drawn to scale."). Same CSS classes as the other diagrams, so they follow the light and dark themes.
 
-import { angleMark, dot, line, poly, rightMark, sideLabel, svg, text, tick } from './diagrams'
+import { angleMark, arrowOnLine, dot, line, poly, rightMark, sideLabel, svg, text, tick } from './diagrams'
 
 export type P = [number, number]
 const f = (x: number) => Number(x.toFixed(2))
@@ -22,8 +22,10 @@ export interface Fig {
   segs?: { a: string; b: string; dash?: boolean }[]
   /** right-angle squares: [a, corner, b] */
   rights?: [string, string, string][]
-  /** angle marks: an arc at `at` between the lines to a and b (the smaller angle), labelled on the bisector */
-  angles?: { at: string; a: string; b: string; text: string; r?: number }[]
+  /** angle marks: an arc at `at` between the lines to a and b (the smaller angle, or the reflex one), labelled on the bisector */
+  angles?: { at: string; a: string; b: string; text: string; r?: number; reflex?: boolean }[]
+  /** parallel marks: n arrowheads in the middle of the side a–b, pointing from a to b */
+  arrows?: { a: string; b: string; n: number }[]
   /** labels beside a side, placed on the far side from `away` (default: the middle of the shape the side belongs to) */
   sides?: { a: string; b: string; text: string; away?: string; gap?: number; on?: boolean }[]
   /** points whose names are written beside them */
@@ -100,9 +102,10 @@ export function fig(o: Fig): string {
     let a2 = dir(S[an.at], S[an.b])
     let sweep = a2 - a1
     while (sweep < 0) sweep += 360
-    if (sweep > 180) [a1, a2] = [a2, a1]
+    if (sweep > 180 !== !!an.reflex) [a1, a2] = [a2, a1]
     body += angleMark(S[an.at], a1, a2, an.text, an.r ?? 22)
   }
+  for (const ar of o.arrows ?? []) body += arrowOnLine(S[ar.a], S[ar.b], ar.n)
   for (const t of o.ticks ?? []) body += tick(S[t.a], S[t.b], t.n)
   for (const d of o.dots ?? []) body += dot(S[d], 3)
   for (const sd of o.sides ?? []) {
