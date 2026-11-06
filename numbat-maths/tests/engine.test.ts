@@ -28,7 +28,7 @@ function t(a: Answer, input: string, expectCorrect: boolean, expectInvalid = fal
   t(a, '36°52′12″', false, true) // seconds given: round to the nearest minute
   t(a, '36.87', false, true) // decimal degrees of the right size
   t(a, '36.87°', false, true)
-  t(a, '40.5', false)
+  t(a, '40.5', false, true) // a decimal angle is the wrong form: a hint, not a wrong attempt
   t(a, '37', false, true) // degrees only
   t(a, '36', false)
   t(a, '36°72′', false, true) // more than 60 minutes
@@ -55,6 +55,25 @@ function t(a: Answer, input: string, expectCorrect: boolean, expectInvalid = fal
   t(sec(45), '45°', true)
   t(sec(45), '45°0′0″', true)
 }
+
+// "write using a negative index"
+{
+  const a: Answer = { kind: 'expr', expr: '5*k^(-2)', form: 'negativeIndex' }
+  t(a, '5k^-2', true)
+  t(a, '5k^(-2)', true)
+  t(a, '5/k^2', false, true) // right value, but not with a negative index
+  t(a, '5k^2', false)
+  const b: Answer = { kind: 'expr', expr: '8^(-3)', form: 'negativeIndex' }
+  t(b, '8^-3', true)
+  t(b, '1/512', false, true)
+}
+
+// very small numbers are compared relative to their size
+t({ kind: 'num', value: 3.02e-8 }, '0.0000000302', true)
+t({ kind: 'num', value: 3.02e-8 }, '0.000000030', false)
+t({ kind: 'num', value: 5.9e-10 }, '0', false)
+t({ kind: 'num', value: 0 }, '0', true)
+t({ kind: 'num', value: 0.1 + 0.2 }, '0.3', true)
 
 // numbers
 t({ kind: 'num', value: -7 }, '-7', true)

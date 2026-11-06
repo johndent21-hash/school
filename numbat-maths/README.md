@@ -64,6 +64,13 @@ Also:
   from their own angle, with the angle marked (`angles` in `fig`, `diagrams6.ts`). New answer kind `dms` (an angle in
   degrees and minutes, or seconds): it accepts 36°52′, 36°52', 36 52, and gives hints for a decimal angle, missing
   minutes or unrounded seconds; the keypad gets ° and ′ (and ″) keys.
+- **Textbook alignment, Year 9 Indices** (`src/content/y9-ncm5.ts`): follows New Century Maths 9 Chapter 5 (Ex 5.01–5.09,
+  Power plus as an extension, a 16-question test in the order of Test Yourself 5 without its Path question), replacing the
+  old Year 9 indices topic. Index laws are MA5-IND-C-01 (algebraic terms with positive and zero indices, negative indices
+  with numbers); negative indices with pronumerals are Path content (MA5-IND-P-01), so they are a separate extension skill.
+  Significant figures and scientific notation are MA5-MAG-C-01 (the old topic said MA5-NUM-C-01, which isn’t a NESA code).
+  New expression form `negativeIndex` (“write using a negative index”: 5k^-2, not 5/k^2). Number marking now compares
+  relative to the size of the numbers, so 0.000 000 03 is no longer accepted for 0.000 000 030 2.
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -81,7 +88,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 37 topics, 168 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 37 topics, 175 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -113,6 +120,8 @@ npx tsx tests/ncm9-ch3.test.ts               # Year 9 Numeracy: answers re-worke
 npx tsx tests/gallery-ncm9-3.ts              # screenshots of Chapter 3 (Year 9) questions
 npx tsx tests/ncm9-ch4.test.ts               # Year 9 Trigonometry: answers re-worked from the triangle read back out of each diagram
 npx tsx tests/gallery-ncm9-4.ts              # screenshots of Chapter 4 (Year 9) questions
+npx tsx tests/ncm9-ch5.test.ts               # Year 9 Indices: question and answer evaluated at random values; sig figs and scientific notation re-done exactly
+npx tsx tests/gallery-ncm9-5.ts              # screenshots of Chapter 5 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 

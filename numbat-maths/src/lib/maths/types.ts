@@ -57,6 +57,7 @@ export type ExprForm =
   | 'expanded' // no brackets
   | 'factorised' // fully factorised with a bracket
   | 'positiveIndices' // no negative indices
+  | 'negativeIndex' // no fraction bar, with a negative index: 5k^-2 rather than 5/k^2
   | 'singlePower' // a single power such as a^7 or 5^9
   | 'singleFraction' // one fraction with a simplified numerator, e.g. (5x - 3)/6
   | 'lowestTerms' // one fraction (or term) with nothing left to cancel: 2r/5 not 4r/10, 7p/(3w) not 35p²/(15pw)

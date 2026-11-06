@@ -6,6 +6,7 @@ import type { Answer, CheckResult, OpenRule } from './types'
 import {
   equivalent,
   hasPositiveIndicesOnly,
+  usesNegativeIndex,
   isExpanded,
   isFullyFactorised,
   isIndexForm,
@@ -90,8 +91,9 @@ export function parseNumber(raw: string): number | null {
   return r ? r.n / r.d : null
 }
 
+/** equal up to rounding error, relative to the size of the numbers (so 0.000 000 03 isn't "close" to 0.000 000 030 2) */
 function close(a: number, b: number): boolean {
-  return Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b))
+  return Math.abs(a - b) <= 1e-9 * Math.max(Math.abs(a), Math.abs(b)) + 1e-20
 }
 
 const UNREADABLE: CheckResult = {
@@ -186,8 +188,9 @@ function checkDms(value: number, to: 'minute' | 'second', raw: string): CheckRes
   if (!Number.isInteger(d)) {
     if (mins !== undefined) return { correct: false, invalid: true, feedback: DMS_FORMAT }
     // a decimal number of degrees
-    if (Math.abs(d - value) < (to === 'minute' ? 1 / 120 : 1 / 7200)) return { correct: false, invalid: true, feedback: 'Right size. Now write it in degrees and minutes, e.g. 36°52′.' }
-    return { correct: false }
+    // a decimal isn't the form asked for: say so rather than counting it as a wrong attempt
+    if (Math.abs(d - value) < 1 / 60) return { correct: false, invalid: true, feedback: 'Right size. Now write it in degrees and minutes, e.g. 36°52′.' }
+    return { correct: false, invalid: true, feedback: DMS_FORMAT }
   }
   if ((mins ?? 0) >= 60 || (secs ?? 0) >= 60) return { correct: false, invalid: true, feedback: 'There are only 60 minutes in a degree, and 60 seconds in a minute.' }
   if (mins !== undefined && !Number.isInteger(mins) && secs !== undefined) return { correct: false, invalid: true, feedback: DMS_FORMAT }
@@ -425,6 +428,7 @@ export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
       else if (form === 'expanded') res = isExpanded(inputNode)
       else if (form === 'factorised') res = isFullyFactorised(inputNode)
       else if (form === 'positiveIndices') res = hasPositiveIndicesOnly(inputNode)
+      else if (form === 'negativeIndex') res = usesNegativeIndex(inputNode)
       else if (form === 'singlePower') res = isIndexForm(inputNode, expectedNode)
       else if (form === 'singleFraction') res = isSingleFraction(inputNode)
       else if (form === 'lowestTerms') res = isLowestTerms(inputNode)

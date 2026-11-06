@@ -487,6 +487,13 @@ function hasNegativeIndex(n: Node): boolean {
   }
 }
 
+/** "Write using a negative index": no fraction bar, and a negative index somewhere (5k^-2, not 5/k^2) */
+export function usesNegativeIndex(input: Node): { ok: boolean; why?: string } {
+  const hasDiv = (n: Node): boolean => (n.t === 'div' ? true : n.t === 'num' || n.t === 'var' ? false : n.t === 'neg' || n.t === 'paren' ? hasDiv(n.a) : hasDiv(n.a) || hasDiv(n.b))
+  if (hasDiv(input) || !hasNegativeIndex(input)) return { ok: false, why: 'Write it without a fraction, using a negative index, e.g. 5k^-2.' }
+  return { ok: true }
+}
+
 export function hasPositiveIndicesOnly(input: Node): { ok: boolean; why?: string } {
   if (hasNegativeIndex(input)) return { ok: false, why: 'Write your answer using positive indices only.' }
   return { ok: true }

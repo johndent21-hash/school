@@ -1,9 +1,10 @@
-// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Indices and numbers of any magnitude, Equations, Financial mathematics
+// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Trigonometry (Chapter 4, y9-ncm4.ts), Indices (Chapter 5, y9-ncm5.ts), Equations, Financial mathematics
 import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_9_SKILLS, NCM1_9_TEST } from './y9-ncm1'
 import { NCM2_9_SKILLS, NCM2_9_TEST } from './y9-ncm2'
 import { NCM3_9_SKILLS, NCM3_9_TEST } from './y9-ncm3'
 import { NCM4_SKILLS, NCM4_TEST } from './y9-ncm4'
+import { NCM5_SKILLS, NCM5_TEST } from './y9-ncm5'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, ex, frac, fracA, fracS, gcd, lcm, int, intExcept, mcA, mcFixedA,
   nonZero, num, numA, pick, q, sample, exprA, v, terms, coef, round, roundSF, name, sqrt, money, signed, approx, pow,
@@ -12,184 +13,6 @@ import {
 const letter = () => pick(['a', 'b', 'm', 'n', 'p', 'x', 'y', 'k', 'h', 't'])
 
 // ------------------------------------------------------------------ Indices and numbers of any magnitude
-
-const ind_laws = (level: Level): Question => {
-  const b = letter()
-  if (level === 1) {
-    const m = int(2, 4)
-    const n = int(2, 3)
-    const p = int(1, 6)
-    const r = int(1, 8)
-    const e = m * n + p - r
-    if (e < 1) return ind_laws(1)
-    return q({
-      prompt: `Simplify:<div class="big">${frac(`(${ex(`${b}^${m}`)})<sup>${n}</sup> ${TIMES} ${ex(p === 1 ? b : `${b}^${p}`)}`, ex(r === 1 ? b : `${b}^${r}`))}</div>`,
-      answer: exprA(e === 1 ? b : `${b}^${e}`, 'singlePower'),
-      hint: 'Power of a power: multiply indices. Multiplying: add. Dividing: subtract.',
-      steps: [`(${ex(`${b}^${m}`)})<sup>${n}</sup> = ${ex(`${b}^${m * n}`)}`, `${ex(`${b}^${m * n}`)} ${TIMES} ${ex(p === 1 ? b : `${b}^${p}`)} = ${ex(`${b}^${m * n + p}`)}`, `${ex(`${b}^${m * n + p}`)} ${DIVIDE} ${ex(r === 1 ? b : `${b}^${r}`)} = ${ex(e === 1 ? b : `${b}^${e}`)}`],
-    })
-  }
-  const [p, r] = sample(['a', 'b', 'x', 'y', 'm', 'n'], 2).sort()
-  if (level === 2) {
-    const A = int(2, 4)
-    const m = int(1, 4)
-    const k = int(1, 3)
-    const n = 2
-    const B = int(2, 5)
-    const s1 = int(1, 3)
-    const s2 = int(1, 4)
-    const C = A * A * B
-    const res = `${C}${p}^${m * n + s1}${r}^${k * n + s2}`
-    return q({
-      prompt: `Simplify:<div class="big">(${ex(`${A}${m === 1 ? p : `${p}^${m}`}${k === 1 ? r : `${r}^${k}`}`)})<sup>2</sup> ${TIMES} ${ex(`${B}${s1 === 1 ? p : `${p}^${s1}`}${s2 === 1 ? r : `${r}^${s2}`}`)}</div>`,
-      answer: exprA(res, 'singlePower'),
-      hint: 'Square everything in the brackets first (including the number), then multiply.',
-      steps: [`(${ex(`${A}${m === 1 ? p : `${p}^${m}`}${k === 1 ? r : `${r}^${k}`}`)})<sup>2</sup> = ${ex(`${A * A}${p}^${2 * m}${r}^${2 * k}`)}`, `${ex(`${A * A}${p}^${2 * m}${r}^${2 * k}`)} ${TIMES} ${ex(`${B}${s1 === 1 ? p : `${p}^${s1}`}${s2 === 1 ? r : `${r}^${s2}`}`)} = ${ex(res)}`],
-    })
-  }
-  const A = int(2, 3)
-  const m = int(2, 4)
-  const k = int(1, 3)
-  const n = pick([2, 3])
-  const res = `${Math.pow(A, n)}${p}^${m * n}/${r}^${k * n}`
-  return q({
-    prompt: `Simplify:<div class="big">(${frac(ex(`${A}${p}^${m}`), ex(k === 1 ? r : `${r}^${k}`))})<sup>${n}</sup></div>`,
-    answer: exprA(res, 'simplified'),
-    hint: 'Raise the numerator and the denominator to the power.',
-    steps: [`= ${frac(`${A}<sup>${n}</sup>(${ex(`${p}^${m}`)})<sup>${n}</sup>`, `(${ex(k === 1 ? r : `${r}^${k}`)})<sup>${n}</sup>`)}`, `= ${frac(ex(`${Math.pow(A, n)}${p}^${m * n}`), ex(`${r}^${k * n}`))}`],
-  })
-}
-
-const ind_neg = (level: Level): Question => {
-  if (level === 1) {
-    const [b, e] = pick([[2, 3], [2, 1], [3, 2], [5, 1], [10, 2], [4, 2], [10, 3], [2, 4], [6, 1], [3, 3]] as [number, number][])
-    return q({
-      prompt: `Evaluate, as a fraction:<div class="big">${b}<sup>${MINUS}${e}</sup></div>`,
-      answer: fracA(1, Math.pow(b, e), { allowDecimal: true }),
-      hint: `A negative index means “one over”: ${b}<sup>${MINUS}${e}</sup> = 1 ÷ ${b}<sup>${e}</sup>.`,
-      steps: [`${b}<sup>${MINUS}${e}</sup> = ${frac(1, `${b}<sup>${e}</sup>`)}`, `= ${frac(1, Math.pow(b, e))}`],
-    })
-  }
-  const x = letter()
-  if (level === 2) {
-    const A = pick([1, 2, 3, 5, 7])
-    const e = int(1, 6)
-    return q({
-      prompt: `Write with a positive index:<div class="big">${A === 1 ? '' : A}${ex(x)}<sup>${MINUS}${e}</sup></div>`,
-      answer: exprA(e === 1 ? `${A}/${x}` : `${A}/${x}^${e}`, 'positiveIndices'),
-      hint: `Only ${v(x)} has the negative index, so only ${v(x)} moves to the denominator.`,
-      steps: [`${ex(x)}<sup>${MINUS}${e}</sup> = ${frac(1, ex(e === 1 ? x : `${x}^${e}`))}`, `So the answer is ${frac(A, ex(e === 1 ? x : `${x}^${e}`))}`],
-    })
-  }
-  if (chance()) {
-    const A = int(2, 9)
-    const m = int(1, 4)
-    const n = int(m + 2, m + 7)
-    const e = n - m
-    return q({
-      prompt: `Simplify, writing your answer with positive indices:<div class="big">${ex(`${A}${x}^${m}`)} ${TIMES} ${ex(x)}<sup>${MINUS}${n}</sup></div>`,
-      answer: exprA(e === 1 ? `${A}/${x}` : `${A}/${x}^${e}`, 'positiveIndices'),
-      hint: `Add the indices: ${m} + (${MINUS}${n}).`,
-      steps: [`${m} + (${MINUS}${n}) = ${MINUS}${e}`, `= ${A}${ex(x)}<sup>${MINUS}${e}</sup> = ${frac(A, ex(e === 1 ? x : `${x}^${e}`))}`],
-    })
-  }
-  const [a, b] = pick([[2, 3], [3, 4], [1, 2], [2, 5], [3, 2], [4, 5]] as [number, number][])
-  const e = pick([1, 2])
-  return q({
-    prompt: `Evaluate:<div class="big">(${frac(a, b)})<sup>${MINUS}${e}</sup></div>`,
-    answer: fracA(Math.pow(b, e), Math.pow(a, e), { allowDecimal: true }),
-    hint: 'A negative index flips the fraction: (a/b)<sup>−n</sup> = (b/a)<sup>n</sup>.',
-    steps: [`(${frac(a, b)})<sup>${MINUS}${e}</sup> = (${frac(b, a)})<sup>${e}</sup>`, `= ${frac(Math.pow(b, e), Math.pow(a, e))}`],
-  })
-}
-
-const SF_WORD = ['', 'one', 'two', 'three', 'four']
-
-const num_sigfig = (level: Level): Question => {
-  const sf = L(level, pick([1, 2]), pick([2, 3]), pick([2, 3, 4]))
-  let x: number
-  if (level === 1) x = int(1000, 99999) + (chance() ? 0 : int(1, 9) / 10)
-  else if (level === 2) x = int(1001, 99999) / Math.pow(10, int(5, 7))
-  else x = clean(int(101, 999) / int(7, 97))
-  const r = roundSF(x, sf)
-  if (level === 3) {
-    const a = int(12, 99) / 10
-    const b = int(2, 9) + int(1, 9) / 10
-    const val = (a * a) / b
-    const rr = roundSF(val, sf)
-    return q({
-      prompt: `Use a calculator to evaluate ${frac(`${num(a)}<sup>2</sup>`, num(b))}, correct to ${sf} significant figures.`,
-      answer: numA(rr),
-      calc: true,
-      hint: 'Count significant figures from the first non-zero digit.',
-      steps: [`${frac(`${num(a)}<sup>2</sup>`, num(b))} = ${num(Number(val.toPrecision(8)))}…`, `Correct to ${sf} significant figures: ${num(rr)}`],
-    })
-  }
-  const digits = x.toPrecision(15).replace(/[-.]/g, '').replace(/^0+/, '')
-  const next = Number(digits[sf])
-  return q({
-    prompt: `Round ${num(x)} correct to ${sf} significant figure${sf > 1 ? 's' : ''}.`,
-    answer: numA(r),
-    hint: 'Start counting at the first non-zero digit. Leading zeros are not significant.',
-    steps: [`Counting from the first non-zero digit, the ${sf === 1 ? 'first significant figure is' : SF_WORD[sf] + ' significant figures are'} ${digits.slice(0, sf).split('').join(', ')}.`, `The next digit is ${next}, so round ${next >= 5 ? 'up' : 'down'}.`, `${num(x)} ≈ ${num(r)}`],
-  })
-}
-
-function sciParts(v0: number): [number, number] {
-  const n = Math.floor(Math.log10(Math.abs(v0)))
-  return [Number((v0 / Math.pow(10, n)).toPrecision(10)), n]
-}
-const sciHtml = (v0: number) => {
-  const [m, n] = sciParts(v0)
-  return `${num(m)} ${TIMES} 10<sup>${n < 0 ? MINUS + -n : n}</sup>`
-}
-
-const num_sci = (level: Level): Question => {
-  if (level === 1) {
-    const m = int(11, 99) / 10
-    const n = int(3, 9)
-    const val = clean(m * Math.pow(10, n))
-    return q({
-      prompt: `Write ${num(val)} in scientific notation.`,
-      answer: { kind: 'sci', value: val },
-      hint: 'Move the decimal point so there is one non-zero digit in front of it. Count the places moved: that is the power of 10. Type it like 3.2 × 10^5.',
-      steps: [`Move the decimal point ${n} places to the left.`, `${num(val)} = ${sciHtml(val)}`],
-    })
-  }
-  if (level === 2) {
-    const m = int(11, 99) / 10
-    const n = -int(2, 7)
-    const val = clean(m * Math.pow(10, n))
-    if (chance()) {
-      return q({
-        prompt: `Write ${num(val)} in scientific notation.`,
-        answer: { kind: 'sci', value: val },
-        hint: 'For small numbers the power of 10 is negative. Type it like 4.07 × 10^-3.',
-        steps: [`Move the decimal point ${-n} places to the right.`, `${num(val)} = ${sciHtml(val)}`],
-      })
-    }
-    return q({
-      prompt: `Write ${sciHtml(val)} as a decimal number.`,
-      answer: numA(val),
-      hint: `A power of 10<sup>${MINUS}${-n}</sup> means divide by 10 ${-n} times: move the decimal point ${-n} places to the left.`,
-      steps: [`Move the decimal point ${-n} places left: ${num(val)}`],
-    })
-  }
-  const a = int(11, 99) / 10
-  const b = int(11, 99) / 10
-  const m = int(2, 8)
-  const n = pick([int(2, 6), -int(2, 6)])
-  const op = pick(['*', '/'])
-  const val = op === '*' ? a * Math.pow(10, m) * b * Math.pow(10, n) : (a * Math.pow(10, m)) / (b * Math.pow(10, n))
-  const r = roundSF(val, 3)
-  return q({
-    prompt: `Evaluate, giving your answer in scientific notation correct to 3 significant figures:<div class="big">(${sciHtml(a * Math.pow(10, m))}) ${op === '*' ? TIMES : DIVIDE} (${sciHtml(b * Math.pow(10, n))})</div>`,
-    answer: { kind: 'sci', value: r },
-    calc: true,
-    hint: 'Use the ×10ˣ (or EXP) key on your calculator.',
-    steps: [`= ${num(Number(val.toPrecision(8)))}…`, `≈ ${sciHtml(r)}`],
-  })
-}
 
 // ------------------------------------------------------------------ Equations
 
@@ -579,61 +402,14 @@ export const Y9A: Topic[] = [
   {
     id: 'y9-indices',
     year: 9,
-    title: 'Indices and scientific notation',
+    title: 'Indices',
+    ref: 'NCM 9 Chapter 5',
     strand: 'Number and algebra',
-    outcomes: ['MA5-IND-C-01', 'MA5-NUM-C-01'],
-    blurb: 'Index laws, negative indices, significant figures and scientific notation.',
+    outcomes: ['MA5-IND-C-01', 'MA5-MAG-C-01'],
+    blurb: 'The index laws, the zero index and negative indices, significant figures and scientific notation.',
     colour: 265,
-    skills: [
-      {
-        id: 'y9-ind-laws',
-        title: 'Using the index laws',
-        outcomes: ['MA5-IND-C-01'],
-        summary: 'Simplify expressions using several index laws.',
-        learn: {
-          intro: '<p>Apply the index laws one step at a time.</p>',
-          keyPoints: ['a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup>', 'a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup>', '(a<sup>m</sup>)<sup>n</sup> = a<sup>mn</sup>', '(ab)<sup>n</sup> = a<sup>n</sup>b<sup>n</sup> and (a/b)<sup>n</sup> = a<sup>n</sup>/b<sup>n</sup>'],
-        },
-        gen: ind_laws,
-        levels: { 1: 'One pronumeral', 2: 'Powers of products', 3: 'Powers of fractions' },
-      },
-      {
-        id: 'y9-ind-neg',
-        title: 'Negative indices',
-        outcomes: ['MA5-IND-C-01'],
-        summary: 'Evaluate and simplify expressions with negative indices.',
-        learn: {
-          intro: '<p>A negative index means a reciprocal: a<sup>−n</sup> = 1/a<sup>n</sup>.</p>',
-          keyPoints: ['2<sup>−3</sup> = 1/2<sup>3</sup> = 1/8', '3<i>x</i><sup>−2</sup> = 3/<i>x</i><sup>2</sup> (only <i>x</i> moves)', '(2/3)<sup>−2</sup> = (3/2)<sup>2</sup> = 9/4'],
-        },
-        gen: ind_neg,
-        levels: { 1: 'Evaluate', 2: 'Positive indices', 3: 'Simplify; fractions' },
-      },
-      {
-        id: 'y9-num-sigfig',
-        title: 'Significant figures',
-        outcomes: ['MA5-NUM-C-01'],
-        summary: 'Round numbers to a given number of significant figures.',
-        learn: {
-          intro: '<p>Significant figures are counted from the first non-zero digit.</p>',
-          keyPoints: ['48 362 ≈ 48 000 (2 s.f.)', '0.004 567 ≈ 0.004 57 (3 s.f.) — the leading zeros are not significant', 'Zeros between non-zero digits are significant: 3.07 has 3 s.f.'],
-        },
-        gen: num_sigfig,
-        levels: { 1: 'Large numbers', 2: 'Small decimals', 3: 'Calculations' },
-      },
-      {
-        id: 'y9-num-sci',
-        title: 'Scientific notation',
-        outcomes: ['MA5-NUM-C-01'],
-        summary: 'Write very large and very small numbers in scientific notation and calculate with them.',
-        learn: {
-          intro: '<p>Scientific notation writes a number as a × 10<sup>n</sup>, where 1 ≤ a &lt; 10.</p>',
-          keyPoints: ['320 000 = 3.2 × 10<sup>5</sup>', '0.004 07 = 4.07 × 10<sup>−3</sup>', 'Use your calculator’s ×10ˣ (EXP) key.', 'Type answers like 3.2 × 10^5 or 4.07 × 10^-3.'],
-        },
-        gen: num_sci,
-        levels: { 1: 'Large numbers', 2: 'Small numbers; back to decimals', 3: 'Calculations' },
-      },
-    ],
+    test: NCM5_TEST,
+    skills: NCM5_SKILLS,
   },
   {
     id: 'y9-equations',
