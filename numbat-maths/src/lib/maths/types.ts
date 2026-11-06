@@ -34,6 +34,10 @@ export type Answer =
   | { kind: 'text'; accept: string[] }
   // A time of day such as 3:45 (12-hour). With ampm, the student must say am or pm.
   | { kind: 'time'; h: number; m: number; ampm?: 'am' | 'pm' }
+  // An angle in degrees and minutes (to: 'minute') or degrees, minutes and seconds (to: 'second').
+  // value is the exact size in degrees; the student's answer must equal it rounded to the nearest minute
+  // (or second). Accepts 36°52′, 36°52', 36° 52′ and 36 52; with seconds, 36°52′11″ or 36 52 11.
+  | { kind: 'dms'; value: number; to: 'minute' | 'second' }
   // Questions with many right answers. The student's own answer is checked against the rule.
   // example: one correct answer, shown after marking.
   | { kind: 'open'; rule: OpenRule; example: string }

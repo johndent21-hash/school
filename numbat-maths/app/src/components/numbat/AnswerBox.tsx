@@ -31,6 +31,8 @@ function placeholderFor(a: Answer): string {
       return a.ampm ? 'e.g. 7:45 pm' : 'e.g. 3:45'
     case 'open':
       return a.rule.type === 'blanks' ? 'e.g. −3, 10' : 'Type the calculation'
+    case 'dms':
+      return a.to === 'second' ? 'e.g. 36°52′11″' : 'e.g. 36°52′'
     default:
       return 'Type your answer'
   }
@@ -54,6 +56,10 @@ function helpFor(a: Answer, stacked = false): string | null {
       return 'Use ^ for powers (x^2) and / for fractions. The keypad has these keys.'
     case 'time':
       return a.ampm ? 'Type the time with a colon, then am or pm, e.g. 7:45 pm.' : 'Type the time with a colon, e.g. 3:45.'
+    case 'dms':
+      return a.to === 'second'
+        ? 'Type the degrees, minutes and seconds, e.g. 36°52′11″ (or 36 52 11). The keypad has ° ′ ″ keys.'
+        : 'Type the degrees, then the minutes, e.g. 36°52′ (or 36 52). The keypad has ° and ′ keys.'
     case 'open':
       return a.rule.type === 'blanks'
         ? 'Type the numbers for the blanks in order, separated by commas. There’s more than one right answer.'

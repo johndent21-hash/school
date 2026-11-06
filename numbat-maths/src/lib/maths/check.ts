@@ -18,7 +18,7 @@ import {
   parse,
   type Node,
 } from './expr'
-import { gcd, round } from './format'
+import { dmsRound, dmsStr, gcd, round } from './format'
 
 export interface Rational {
   n: number
@@ -167,6 +167,48 @@ function checkOpen(rule: OpenRule, input: string): CheckResult {
   return { correct: close(value, rule.target) }
 }
 
+const DMS_FORMAT = 'Write the angle in degrees and minutes, e.g. 36°52′ (or 36 52).'
+/** An angle in degrees and minutes (or seconds). The rounded parts must match; near misses get a hint. */
+function checkDms(value: number, to: 'minute' | 'second', raw: string): CheckResult {
+  const t = raw
+    .replace(/[’‘`´ʹ′]/g, "'")
+    .replace(/[”“″ʺ]/g, '"')
+    .replace(/''/g, '"')
+    .replace(/[º˚]/g, '°')
+    .replace(/\s+/g, ' ')
+    .trim()
+  const m = t.match(/^(\d+(?:\.\d+)?) ?(?:°|d|deg)? ?(?:(\d+(?:\.\d+)?) ?(?:'|m|min)? ?(?:(\d+(?:\.\d+)?) ?(?:"|s|sec)?)?)?$/i)
+  if (!m) return { correct: false, invalid: true, feedback: DMS_FORMAT }
+  const want = dmsRound(value, to)
+  const d = Number(m[1])
+  const mins = m[2] === undefined ? undefined : Number(m[2])
+  const secs = m[3] === undefined ? undefined : Number(m[3])
+  if (!Number.isInteger(d)) {
+    if (mins !== undefined) return { correct: false, invalid: true, feedback: DMS_FORMAT }
+    // a decimal number of degrees
+    if (Math.abs(d - value) < (to === 'minute' ? 1 / 120 : 1 / 7200)) return { correct: false, invalid: true, feedback: 'Right size. Now write it in degrees and minutes, e.g. 36°52′.' }
+    return { correct: false }
+  }
+  if ((mins ?? 0) >= 60 || (secs ?? 0) >= 60) return { correct: false, invalid: true, feedback: 'There are only 60 minutes in a degree, and 60 seconds in a minute.' }
+  if (mins !== undefined && !Number.isInteger(mins) && secs !== undefined) return { correct: false, invalid: true, feedback: DMS_FORMAT }
+  const given = d + (mins ?? 0) / 60 + (secs ?? 0) / 3600
+  const exact = (to === 'minute' ? secs === undefined || secs === 0 : true) && Number.isInteger(mins ?? 0) && Number.isInteger(secs ?? 0)
+  const r = dmsRound(given, to)
+  const same = r.d === want.d && r.m === want.m && r.s === want.s
+  if (same && exact) {
+    if (mins === undefined && (want.m !== 0 || want.s !== 0)) return { correct: false }
+    return { correct: true }
+  }
+  if (same) return { correct: false, invalid: true, feedback: `Nearly there: round to the nearest ${to}.` }
+  // degrees only, when minutes were wanted
+  if (mins === undefined && d === Math.round(value)) return { correct: false, invalid: true, feedback: 'Give the minutes too, e.g. 36°52′.' }
+  // degrees and minutes, when seconds were wanted
+  if (to === 'second' && secs === undefined && mins !== undefined && Number.isInteger(mins) && dmsRound(value, 'minute').d === d && dmsRound(value, 'minute').m === mins) {
+    return { correct: false, invalid: true, feedback: 'Give the seconds too, e.g. 36°52′11″.' }
+  }
+  return { correct: false }
+}
+
 export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
   const input = (rawInput ?? '').trim()
   if (input === '') return { correct: false, invalid: true, feedback: 'Type an answer first.' }
@@ -271,6 +313,9 @@ export function checkAnswer(answer: Answer, rawInput: string): CheckResult {
 
     case 'open':
       return checkOpen(answer.rule, input)
+
+    case 'dms':
+      return checkDms(answer.value, answer.to, input)
 
     case 'text': {
       const norm = (t: string) => normalise(t).toLowerCase().replace(/\s+/g, ' ').replace(/[.!]$/, '').trim()
@@ -433,6 +478,8 @@ export function answerText(a: Answer): string {
       return a.accept[0]
     case 'open':
       return a.example
+    case 'dms':
+      return dmsStr(a.value, a.to)
     case 'time':
       return `${a.h % 12 === 0 ? 12 : a.h % 12}:${String(a.m).padStart(2, '0')}${a.ampm ? ' ' + a.ampm : ''}`
     case 'nums': {

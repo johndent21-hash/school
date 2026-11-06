@@ -111,7 +111,7 @@ async function answerSet(page, n, tag) {
   const page = await ctx.newPage()
   page.on('pageerror', (e) => errs.push('desktop ' + e.message))
   page.on('console', (m) => m.type() === 'error' && errs.push('desktop console ' + m.text().slice(0, 160)))
-  await open(page, 'y9-trg-side')
+  await open(page, 'y9-trg-calc') // Foundation questions here always have the trig calculator and a typed answer
   const padClosed = await page.locator('.mathpad').count()
   const focused = await page.evaluate(() => document.activeElement?.classList.contains('answer-input'))
   const calcBtn = page.getByRole('button', { name: /calculator/i }).first()

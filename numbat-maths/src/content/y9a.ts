@@ -3,6 +3,7 @@ import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_9_SKILLS, NCM1_9_TEST } from './y9-ncm1'
 import { NCM2_9_SKILLS, NCM2_9_TEST } from './y9-ncm2'
 import { NCM3_9_SKILLS, NCM3_9_TEST } from './y9-ncm3'
+import { NCM4_SKILLS, NCM4_TEST } from './y9-ncm4'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, ex, frac, fracA, fracS, gcd, lcm, int, intExcept, mcA, mcFixedA,
   nonZero, num, numA, pick, q, sample, exprA, v, terms, coef, round, roundSF, name, sqrt, money, signed, approx, pow,
@@ -562,6 +563,18 @@ export const Y9A: Topic[] = [
     colour: 52,
     test: NCM3_9_TEST,
     skills: NCM3_9_SKILLS,
+  },
+  {
+    id: 'y9-trigonometry',
+    year: 9,
+    title: 'Trigonometry',
+    ref: 'NCM 9 Chapter 4',
+    strand: 'Measurement and space',
+    outcomes: ['MA5-TRG-C-01'],
+    blurb: 'Naming the sides, sin, cos and tan, similar triangles, the calculator with degrees and minutes, unknown sides and unknown angles.',
+    colour: 18,
+    test: NCM4_TEST,
+    skills: NCM4_SKILLS,
   },
   {
     id: 'y9-indices',

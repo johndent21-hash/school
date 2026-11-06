@@ -11,6 +11,51 @@ function t(a: Answer, input: string, expectCorrect: boolean, expectInvalid = fal
   }
 }
 
+// angles in degrees and minutes (or seconds)
+{
+  const m = (value: number): Answer => ({ kind: 'dms', value, to: 'minute' })
+  const sec = (value: number): Answer => ({ kind: 'dms', value, to: 'second' })
+  const a = m(36.8698976) // 36°52′11.6″ → 36°52′
+  t(a, '36°52′', true)
+  t(a, "36°52'", true)
+  t(a, '36° 52′', true)
+  t(a, '36 52', true)
+  t(a, '36d 52m', true)
+  t(a, '36º52’', true)
+  t(a, '36°52', true)
+  t(a, '36°53′', false)
+  t(a, '36°51′', false)
+  t(a, '36°52′12″', false, true) // seconds given: round to the nearest minute
+  t(a, '36.87', false, true) // decimal degrees of the right size
+  t(a, '36.87°', false, true)
+  t(a, '40.5', false)
+  t(a, '37', false, true) // degrees only
+  t(a, '36', false)
+  t(a, '36°72′', false, true) // more than 60 minutes
+  t(a, 'abc', false, true)
+  t(a, '36°52.2′', false, true)
+  // 30″ rounds up; 59′30″ carries into the next degree
+  t(m(33 + 53 / 60 + 30 / 3600), '33°54′', true)
+  t(m(33 + 53 / 60 + 29 / 3600), '33°53′', true)
+  t(m(44 + 59 / 60 + 30 / 3600), '45°0′', true)
+  t(m(44 + 59 / 60 + 30 / 3600), '45°', true)
+  t(m(44 + 59 / 60 + 30 / 3600), '45 0', true)
+  t(m(7.875), '7°53′', true) // 7°52′30″
+  t(m(60.81), '60°49′', true) // 60°48′36″
+  t(m(82.5), '82°30′', true)
+  // to the nearest second
+  const b = sec(75.0837839) // 75°5′1.6″ → 75°5′2″
+  t(b, '75°5′2″', true)
+  t(b, '75 5 2', true)
+  t(b, `75°5'2"`, true)
+  t(b, "75°5'2''", true)
+  t(b, '75°5′1.6″', false, true)
+  t(b, '75°5′', false, true) // seconds missing
+  t(b, '75°5′3″', false)
+  t(sec(45), '45°', true)
+  t(sec(45), '45°0′0″', true)
+}
+
 // numbers
 t({ kind: 'num', value: -7 }, '-7', true)
 t({ kind: 'num', value: -7 }, '−7', true)

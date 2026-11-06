@@ -68,6 +68,11 @@ export function padLayout(a: Answer, year: number, prompt = ''): PadLayout {
     }
     case 'time':
       return { extras: [COLON], symbols: a.ampm ? [k('am', ' am', 'am: midnight to midday'), k('pm', ' pm', 'pm: midday to midnight')] : [] }
+    case 'dms':
+      return {
+        extras: [k('°', '°', 'degrees'), k('′', '′', 'minutes')],
+        symbols: a.to === 'second' ? [k('″', '″', 'seconds')] : [],
+      }
     case 'open':
       return a.rule.type === 'blanks'
         ? { extras: [COMMA], symbols: [MINUS] }

@@ -3,7 +3,7 @@
 // drawn to scale. When a shape is too thin to read and has to be squashed, the content file says so on the page
 // ("Diagram not drawn to scale."). Same CSS classes as the other diagrams, so they follow the light and dark themes.
 
-import { dot, line, poly, rightMark, sideLabel, svg, text, tick } from './diagrams'
+import { angleMark, dot, line, poly, rightMark, sideLabel, svg, text, tick } from './diagrams'
 
 export type P = [number, number]
 const f = (x: number) => Number(x.toFixed(2))
@@ -22,6 +22,8 @@ export interface Fig {
   segs?: { a: string; b: string; dash?: boolean }[]
   /** right-angle squares: [a, corner, b] */
   rights?: [string, string, string][]
+  /** angle marks: an arc at `at` between the lines to a and b (the smaller angle), labelled on the bisector */
+  angles?: { at: string; a: string; b: string; text: string; r?: number }[]
   /** labels beside a side, placed on the far side from `away` (default: the middle of the shape the side belongs to) */
   sides?: { a: string; b: string; text: string; away?: string; gap?: number; on?: boolean }[]
   /** points whose names are written beside them */
@@ -92,6 +94,14 @@ export function fig(o: Fig): string {
     while (sweep < 0) sweep += 360
     const size = Math.max(6, Math.min(12, 0.3 * Math.min(len(B, S[a]), len(B, S[c]))))
     body += rightMark(B, Math.abs(sweep - 90) < 2 ? a1 : a2, size)
+  }
+  for (const an of o.angles ?? []) {
+    let a1 = dir(S[an.at], S[an.a])
+    let a2 = dir(S[an.at], S[an.b])
+    let sweep = a2 - a1
+    while (sweep < 0) sweep += 360
+    if (sweep > 180) [a1, a2] = [a2, a1]
+    body += angleMark(S[an.at], a1, a2, an.text, an.r ?? 22)
   }
   for (const t of o.ticks ?? []) body += tick(S[t.a], S[t.b], t.n)
   for (const d of o.dots ?? []) body += dot(S[d], 3)

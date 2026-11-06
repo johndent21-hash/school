@@ -60,7 +60,8 @@ for (const t of [...STAGE1_TOPICS, ...STAGE2_TOPICS, ...SECONDARY_TOPICS]) {
         if (!r.correct || r.invalid) fail(`typed "${typed}" was marked ${r.invalid ? 'unreadable' : 'wrong'}${r.feedback ? ` (${r.feedback})` : ''}`)
         // every key on the pad must also be readable on its own in a sensible place: no key types a character the marker can't read
         for (const ins of inserts) {
-          if (/[^0-9a-zA-Z.,:()^/+×÷−± ]/.test(ins)) fail(`key inserts an unexpected character ${JSON.stringify(ins)}`)
+          // ° ′ ″ are read by the degrees-and-minutes marking
+          if (/[^0-9a-zA-Z.,:()^/+×÷−± °′″]/.test(ins)) fail(`key inserts an unexpected character ${JSON.stringify(ins)}`)
         }
       }
     }

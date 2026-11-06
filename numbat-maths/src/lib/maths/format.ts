@@ -26,6 +26,23 @@ export function round(x: number, k = 0): number {
 }
 
 /** Round to s significant figures. */
+/** An angle in degrees rounded to the nearest minute (or second); 30″ (or 0.5″) rounds up, and 60′ carries. */
+export function dmsRound(value: number, to: 'minute' | 'second' = 'minute'): { d: number; m: number; s: number } {
+  const unit = to === 'minute' ? 60 : 3600
+  const total = Math.round(Number((value * unit).toFixed(6)))
+  if (to === 'minute') return { d: Math.floor(total / 60), m: total % 60, s: 0 }
+  return { d: Math.floor(total / 3600), m: Math.floor((total % 3600) / 60), s: total % 60 }
+}
+/** degrees, minutes and seconds as a size in degrees */
+export const degOf = (d: number, m = 0, s = 0) => d + m / 60 + s / 3600
+/** "36°52′" (or "36°52′11″" to the nearest second) */
+export function dmsStr(value: number, to: 'minute' | 'second' = 'minute'): string {
+  const r = dmsRound(value, to)
+  return `${r.d}°${r.m}′` + (to === 'second' ? `${r.s}″` : '')
+}
+/** an angle written exactly as given: angleText(38, 25) = "38°25′", angleText(33, 53, 30) = "33°53′30″" */
+export const angleText = (d: number, m?: number, s?: number) => `${d}°` + (m !== undefined ? `${m}′` : '') + (s !== undefined ? `${s}″` : '')
+
 export function roundSF(x: number, s: number): number {
   if (x === 0) return 0
   const k = s - 1 - Math.floor(Math.log10(Math.abs(x)))
