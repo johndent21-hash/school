@@ -875,7 +875,11 @@ function boxFraction(): Question {
     })
   }
 }
+/** fraction word problems (3.03 Q12–19): the textbook allows a calculator here, so the fraction calculator appears */
 function fracWords(): Question {
+  return { ...fracWordsBase(), calc: true }
+}
+function fracWordsBase(): Question {
   const kind = pick(['sum', 'oranges', 'half', 'lessons', 'rest', 'carnival', 'laps'] as const)
   if (kind === 'sum') {
     for (;;) {
@@ -2163,6 +2167,7 @@ function ppBetween(): Question {
   const which = int(1, 3)
   const ans = fr(start + which * step, L)
   return q({
+    calc: true,
     prompt: `Three fractions ${v('A')}, ${v('B')} and ${v('C')} are equally spaced between ${frac(1, a)} and ${frac(1, b)} on a number line, in that order. What fraction is ${v(['A', 'B', 'C'][which - 1])}?`,
     answer: fAns(ans),
     hint: `Write ${frac(1, a)} and ${frac(1, b)} with the denominator ${L}, then split the gap into 4 equal steps.`,
@@ -2298,16 +2303,21 @@ export const exPowerPlus3 = (level: Level): Question => {
 
 const T = (skill: string, level: Level, gen: () => Question): TestItem => ({ skill, level, gen: () => gen() })
 export const NCM3_9_TEST: TestItem[] = [
+  // about two questions per exercise (16 in all), in the order of Test Yourself 3
   T('y9-num-integers', 2, mixedOpsInts),
   T('y9-num-decimals', 1, orderDecs),
-  T('y9-num-decimals', 2, () => pick([addSubDec, mulDivDec, powersOf10])()),
-  T('y9-num-decimals', 2, () => (chance() ? roundDec() : fracToRecurring())),
+  T('y9-num-decimals', 2, () => pick([addSubDec, mulDivDec, powersOf10, roundDec, fracToRecurring])()),
+  T('y9-num-fractions', 1, largerFrac),
   T('y9-num-fractions', 2, () => pick([fracAddSub, fracMul, fracDiv])()),
   T('y9-num-percent', 1, pctToFrac),
   T('y9-num-percent', 2, pctOfQuantity),
   T('y9-num-applypct', 1, incDecBy),
+  T('y9-num-applypct', 2, expressPct),
   T('y9-num-profit', 1, profitLoss),
+  T('y9-num-profit', 2, () => (chance() ? discountMC() : originalPrice())),
   T('y9-num-interest', 2, () => (chance() ? siYears() : siPart())),
+  T('y9-num-interest', 3, siRate),
+  T('y9-num-ratios', 1, simplifyRatio),
   T('y9-num-ratios', 2, divideRatio),
   T('y9-num-convert', 2, () => convertQ(TWO_STEP, true)),
 ]

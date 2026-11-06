@@ -612,7 +612,7 @@ for (let i = 0; i < 100; i++) {
 }
 // the topic is wired up: 12 test questions, skills in exercise order, every test skill exists
 const topic = findTopic('y9-pythagoras')
-if (!topic || topic.test?.length !== 12) fail('topic', 'topic missing or test is not 12 questions')
+if (!topic || topic.test?.length !== 16) fail('topic', 'topic missing or test is not 16 questions')
 for (const it of NCM2_9_TEST) if (!NCM2_9_SKILLS.some((s) => s.id === it.skill)) fail('topic', `test skill ${it.skill} missing`)
 console.log(`${failures === 0 ? 'PASS' : 'FAIL'}: ${failures} failures, ${independent} answers re-worked independently, ${diagramReads} diagrams read back`)
 console.log(Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(' · '))

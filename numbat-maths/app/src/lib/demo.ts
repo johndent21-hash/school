@@ -55,7 +55,6 @@ interface DemoData {
 let cache: DemoData | null = null
 
 function build(now: number): DemoData {
-  const r = rng(20251027)
   const thisWeek = weekStart(now)
   const weeks: number[] = []
   let w = thisWeek
@@ -67,6 +66,9 @@ function build(now: number): DemoData {
   const students: DemoStudent[] = NAMES.map((name, i) => {
     const kind = PROFILES[i]
     const id = `demo-${i + 1}`
+    // each student has their own random stream, so how many sets fall in this week so far
+    // for one student never changes another student's results
+    const r = rng(20251027 + 7919 * i)
     const ability = { strong: 0.8, steady: 0.62, struggling: 0.36, declining: 0.7, quiet: 0.6, never: 0 }[kind] + (r() - 0.5) * 0.12
     const perWeek = { strong: 5, steady: 3.5, struggling: 3, declining: 4, quiet: 1.2, never: 0 }[kind] + (r() - 0.5)
     const tries: Record<string, number> = {}
@@ -95,7 +97,7 @@ function build(now: number): DemoData {
         }
         const done = tries[itemId] ?? 0
         tries[itemId] = done + 1
-        let p = ability + (kind === 'struggling' ? 0.02 : 0.07) * Math.min(done, 4)
+        let p = ability + (kind === 'struggling' ? 0.01 : 0.07) * Math.min(done, 4)
         if (kind === 'declining' && wi >= 10) p -= 0.35 // a slump over the last fortnight
         const raw = (p + (r() - 0.5) * 0.26) * 100
         const step = test ? 10 : 5

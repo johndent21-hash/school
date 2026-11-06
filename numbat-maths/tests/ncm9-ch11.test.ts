@@ -765,7 +765,7 @@ for (const skill of NCM11_SKILLS)
 
 // the topic test follows Test Yourself 11 and only uses this chapter's skills
 const topic = findTopic('y9-coordinate')!
-if (topic.test !== NCM11_TEST || NCM11_TEST.length !== 12) fail('test', 'topic test is not the 12-question chapter test')
+if (topic.test !== NCM11_TEST || NCM11_TEST.length !== 16) fail('test', 'topic test is not the 16-question chapter test')
 for (const t of NCM11_TEST) {
   if (!NCM11_SKILLS.some((s) => s.id === t.skill)) fail('test', `unknown skill ${t.skill}`)
   setSeed(42)

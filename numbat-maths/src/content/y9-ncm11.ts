@@ -1785,16 +1785,21 @@ export const exPowerPlus11 = (level: Level): Question => {
 const T = (skill: string, level: Level, gen: () => Question): TestItem => ({ skill, level, gen: () => gen() })
 
 export const NCM11_TEST: TestItem[] = [
+  // about two questions per core exercise (16 in all), in the order of Test Yourself 11; 11.09 (Path) is left out
   T('y9-cg-distance', 2, () => (chance() ? lenText('surd') : lenText('dp'))),
   T('y9-cg-midpoint', 2, () => midPoint(false, true, true)),
+  T('y9-cg-gradient', 1, gradGrid),
   T('y9-cg-gradient', 2, gradPoints),
   T('y9-cg-graphing', 2, intercepts),
   T('y9-cg-graphing', 2, onLine),
   T('y9-cg-graphing', 3, rectangleArea),
   T('y9-cg-ymxc', 2, () => readMC(2)),
+  T('y9-cg-ymxc', 3, writeEquation),
+  T('y9-cg-equation', 1, equationFromGrid),
   T('y9-cg-equation', 2, () => equationFromSketch(2)),
   T('y9-cg-solve', 1, () => solveGraph(1)),
   T('y9-cg-apply', 2, () => fixedPlusRate(2)),
+  T('y9-cg-parabola', 1, () => ex1110(1)),
   T('y9-cg-parabola', 2, () => (chance() ? quadVertexOrShape() : wider())),
   T('y9-cg-quadapply', 2, () => droppedObject(2)),
 ]

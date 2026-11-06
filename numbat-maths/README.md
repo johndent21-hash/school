@@ -11,7 +11,17 @@ Also:
   (never on the answer itself); Years 1–2 get bigger keys.
 - **Calculator** (`Calculator.tsx`, arithmetic in `src/lib/maths/calc.ts`): only on questions marked "Calculator allowed".
   Basic in Year 7; √, x², xʸ, π and Ans from Year 8; sin, cos, tan and their inverses (degrees) on Year 9 trigonometry
-  questions (`calc: 'trig'`), so other questions keep a shorter calculator that fits on the screen.
+  questions (`calc: 'trig'`), with a ° ′ ″ key for angles in degrees and minutes, so other questions keep a shorter
+  calculator that fits on the screen. Arithmetic is exact (fractions are kept as fractions, using whole-number ratios),
+  so 1/3 + 1/6 gives 1/2, not 0.5000000001.
+- **Fraction answers** (`AnswerBox.tsx`): in Years 7–9 every fraction answer is typed into stacked boxes, a top box and a
+  bottom box, plus a whole-number box for mixed numerals (shown when the answer must be mixed, or on request). A minus sign
+  goes at the front. Typing "/" or a space moves to the next box, so "2 1/3" typed straight through still works.
+- **Fraction calculator** (`Calculator.tsx`): on a calculator-allowed question whose answer is a fraction, the calculator
+  gets a fraction key (a stacked fraction with an empty box on top and underneath), a mixed-numeral key, ◂ ▸ to move between
+  boxes, and F⇄D, which shows the result as a fraction, then a mixed numeral, then a decimal. "Put … in my answer box"
+  fills the stacked answer boxes. Other questions keep the ordinary scientific keys, and fraction sums practised by hand
+  stay calculator-free.
 - **Rewards** (`app/src/lib/rewards.ts`, `Rewards.tsx`): levels from points (Joey to Numbat), 19 badges, a weekly goal ring
   (default 3 sets a week, set per class by the teacher) and a streak of weeks in a row the goal was met. All worked out
   from results, so nothing extra is stored.
@@ -30,20 +40,20 @@ Also:
   the student's own numbers or calculation against the rule.
 - **Textbook alignment, Year 9 Coordinate geometry and graphs** (`src/content/y9-ncm11.ts`, diagrams in
   `src/lib/maths/diagrams5.ts`): follows New Century Maths 9 (3rd edition) Chapter 11 the same way, one skill per exercise
-  (Ex 11.01–11.11) and a 12-question topic test in the order of Test Yourself 11. Ex 11.09 Direct variation is Path content
+  (Ex 11.01–11.11) and a 16-question topic test in the order of Test Yourself 11. Ex 11.09 Direct variation is Path content
   (MA5-RAT-P-01) and, like Power plus, is labelled Extension. The distance, midpoint and gradient formulas are shown as
   optional (Path) notes, as in the textbook; questions can all be done by counting the run and rise.
 - **Textbook alignment, Year 9 Algebra** (`src/content/y9-ncm1.ts`): follows New Century Maths 9 Chapter 1 (Ex 1.01–1.09,
-  Power plus as an extension, and a 12-question test in the order of Test Yourself 1). New answer forms in the marking:
+  Power plus as an extension, and a 16-question test in the order of Test Yourself 1). New answer forms in the marking:
   `lowestTerms` (a single fraction with nothing left to cancel, so 4r/10 is "not finished") and `negFactorised` (the
   negative HCF taken out). A denominator typed without brackets, such as 12/cd, gets a message asking for 12/(cd).
 - **Textbook alignment, Year 9 Pythagoras’ theorem** (`src/content/y9-ncm2.ts`, diagrams in `src/lib/maths/diagrams6.ts`):
-  follows New Century Maths 9 Chapter 2 (Ex 2.01–2.08, Power plus as an extension, a 12-question test in the order of
+  follows New Century Maths 9 Chapter 2 (Ex 2.01–2.08, Power plus as an extension, a 16-question test in the order of
   Test Yourself 2). A new Year 9 topic; the Year 8 Pythagoras topic is unchanged. Every triangle, rectangle and
   trapezium is drawn to scale from the question's own numbers (squashed ones and 3D drawings say "Diagram not drawn
   to scale."). A calculator opened above multiple-choice options is a little shorter, so the choices and Check still fit.
 - **Textbook alignment, Year 9 Numeracy and calculation** (`src/content/y9-ncm3.ts`): follows New Century Maths 9
-  Chapter 3 (Ex 3.01–3.09, Power plus as an extension, a 12-question test in the order of Test Yourself 3). Simple
+  Chapter 3 (Ex 3.01–3.09, Power plus as an extension, a 16-question test in the order of Test Yourself 3). Simple
   interest moved here from the Year 9 "Earning money" topic. Recurring decimals use dot notation (`.rec` in
   `src/maths.css`: a dot over the first and last repeating digits).
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
@@ -56,7 +66,8 @@ Also:
   diagram sit beside the answer box and keypad, so everything needed to answer fits on the screen without scrolling.
   Short screens (under 760 px) get a more compact keypad and calculator.
 - **Example class** (`app/src/lib/demo.ts`): in the stand-alone preview the teacher pages use 24 made-up students so they
-  can be tried without log-ins; changes are switched off there.
+  can be tried without log-ins; changes are switched off there. Each made-up student has their own random stream, so the
+  students meant to stand out (struggling, declining, never logged in) do so on every day of the week.
 
 The live app is built on Macaly (TanStack Start + Convex). This folder is the source of truth for the parts written here:
 
@@ -107,6 +118,7 @@ VITE_PREVIEW_ONLY=1 npx vite dev --port 3102; node qa/teacher-demo-check.mjs    
 node qa/ncm1-check.mjs        # (dev server) Integers topic page, worked example, 12-question test, open answers on the keypad
 node qa/parent-ratings-check.mjs                                                   # (same server) ratings sheet and example parent view
 node qa/resume-check.mjs      # (same server) stop a practice set, come back, carry on; finishing clears the saved place
+node qa/fraction-calc-check.mjs  # (same server) stacked fraction boxes, fraction and mixed keys, F⇄D, "Put … in my answer box"
 node qa/fit-sweep.mjs ipad    # (Years 1–4 on) every question fits without scrolling: laptop, chromebook, ipad or ipadair
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)

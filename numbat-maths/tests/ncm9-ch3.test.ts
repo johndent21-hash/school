@@ -701,7 +701,7 @@ for (let i = 0; i < 100; i++) {
   NCM3_9_TEST.forEach((it, k) => check(`test Q${k + 1}`, it.gen!(it.level)))
 }
 const topic = findTopic('y9-numeracy')
-if (!topic || topic.test?.length !== 12) fail('topic', 'topic missing or the test is not 12 questions')
+if (!topic || topic.test?.length !== 16) fail('topic', 'topic missing or the test is not 16 questions')
 for (const it of NCM3_9_TEST) if (!NCM3_9_SKILLS.some((s) => s.id === it.skill)) fail('topic', `test skill ${it.skill} missing`)
 if (findTopic('y9-finance')?.skills.some((s) => s.id === 'y9-fin-interest')) fail('topic', 'simple interest is still in Earning money')
 console.log(`${failures === 0 ? 'PASS' : 'FAIL'}: ${failures} failures, ${independent} answers re-worked independently`)

@@ -1,6 +1,6 @@
 // Checks the on-screen calculator's arithmetic against hand-worked values.
 // Usage: npx tsx tests/calc.test.ts
-import { calcDisplay, calculate } from '../src/lib/maths/calc'
+import { calcDisplay, calculate, dmsText, fractionParts } from '../src/lib/maths/calc'
 
 let failures = 0
 const near = (a: number, b: number) => Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(b))
@@ -85,7 +85,62 @@ for (const [x, want] of SHOW) {
   }
 }
 
-console.log(`${CASES.length + ERRORS.length + SHOW.length} calculator checks`)
+// Fractions keyed with the fraction keys (⟦n|d⟧ and ⟦w|n|d⟧) are worked out exactly
+const EXACT: [string, string][] = [
+  ['⟦2|3⟧+⟦1|4⟧', '11/12'],
+  ['⟦2|1|3⟧×⟦3|4⟧', '7/4'],
+  ['⟦−2|1|3⟧+1', '-4/3'], // −2⅓ + 1
+  ['⟦3|4⟧÷⟦9|10⟧', '5/6'],
+  ['⟦1|2⟧−⟦5|6⟧', '-1/3'],
+  ['(⟦2|3⟧)²', '4/9'],
+  ['⟦2|3⟧^−2', '9/4'],
+  ['√(⟦9|16⟧)', '3/4'],
+  ['0.75', '3/4'],
+  ['⟦1.5|2⟧', '3/4'],
+  ['1÷3×3', '1/1'],
+  ['36°52′30″', '295/8'], // 36.875°
+]
+for (const [x, want] of EXACT) {
+  const r = calculate(x)
+  const got = r.ok && r.exact ? `${r.exact.n}/${r.exact.d}` : JSON.stringify(r)
+  if (got !== want) {
+    failures++
+    console.log(`FAIL exact ${x}: got ${got}, want ${want}`)
+  }
+}
+// π, √ of a non-square and trig give decimals only
+for (const x of ['π×⟦1|2⟧', '√(2)', 'sin(30)']) {
+  const r = calculate(x)
+  if (!r.ok || r.exact) {
+    failures++
+    console.log(`FAIL ${x} should be a decimal only`)
+  }
+}
+for (const [x, want] of [['⟦|3⟧', 'Fill in every box'], ['⟦3|0⟧', 'Maths error'], ['⟦2|⟧', 'Fill in every box']] as const) {
+  const r = calculate(x)
+  if (r.ok || r.message !== want) {
+    failures++
+    console.log(`FAIL ${x}: want ${want}`)
+  }
+}
+const parts = fractionParts({ n: -11n, d: 4n })
+if (!(parts.neg && parts.whole === 2n && parts.rest === 3n)) {
+  failures++
+  console.log('FAIL mixed parts of −11/4')
+}
+for (const [x, want] of [[36.86989764584402, '36°52′11.63″'], [59.99999, '59°59′59.96″'], [-12.5, '−12°30′0″']] as const) {
+  if (dmsText(x) !== want) {
+    failures++
+    console.log(`FAIL dms ${x}: ${dmsText(x)}`)
+  }
+}
+const ansExact = calculate('Ans+1', { value: 0.75, exact: { n: 3n, d: 4n } })
+if (!ansExact.ok || ansExact.exact?.n !== 7n || ansExact.exact.d !== 4n) {
+  failures++
+  console.log('FAIL Ans keeps the exact fraction')
+}
+
+console.log(`${CASES.length + ERRORS.length + SHOW.length + EXACT.length + 10} calculator checks`)
 if (failures) {
   console.log(`${failures} failures`)
   process.exit(1)

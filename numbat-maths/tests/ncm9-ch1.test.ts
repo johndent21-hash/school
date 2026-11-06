@@ -383,7 +383,7 @@ for (const skill of NCM1_9_SKILLS)
     }
 
 const topic = findTopic('y9-algebra')!
-if (topic.test !== NCM1_9_TEST || NCM1_9_TEST.length !== 12) fail('test', 'topic test is not the 12-question chapter test')
+if (topic.test !== NCM1_9_TEST || NCM1_9_TEST.length !== 16) fail('test', 'topic test is not the 16-question chapter test')
 const order = NCM1_9_TEST.map((t) => NCM1_9_SKILLS.findIndex((s) => s.id === t.skill))
 if (order.some((x, i) => x < 0 || (i > 0 && x < order[i - 1]))) fail('test', 'test questions are not in textbook order')
 for (const t of NCM1_9_TEST) {

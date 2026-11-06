@@ -1581,14 +1581,19 @@ export const exPowerPlus1 = (level: Level): Question => {
 const T = (skill: string, level: Level, gen: () => Question): TestItem => ({ skill, level, gen: () => gen() })
 
 export const NCM1_9_TEST: TestItem[] = [
+  // about two questions per exercise (16 in all), in the order of Test Yourself 1
   T('y9-alg-words', 2, () => (chance() ? wordsTwo() : thinkOfANumber())),
   T('y9-alg-sub', 2, subTwo),
+  T('y9-alg-sub', 3, () => ex102(3)),
   T('y9-alg-addsub', 2, likeTermsMany),
+  T('y9-alg-addsub', 3, () => ex103(3)),
   T('y9-alg-muldiv', 1, products),
   T('y9-alg-muldiv', 2, quotients),
   T('y9-alg-frac-addsub', 1, likeDenominators),
   T('y9-alg-frac-addsub', 2, unlikeNumeric),
   T('y9-alg-frac-muldiv', 2, () => fractionOps(2, 2)),
+  T('y9-alg-frac-muldiv', 3, () => ex106(3)),
+  T('y9-alg-expand', 2, () => ex107(2)),
   T('y9-alg-expand', 3, expandSimplify),
   T('y9-alg-factorise', 2, () => factorise(2)),
   T('y9-alg-binomial', 1, binomialArea),

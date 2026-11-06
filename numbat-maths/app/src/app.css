@@ -331,6 +331,44 @@ body::before {
   border-color: hsl(var(--accent-2));
   background: hsl(var(--accent-2-soft));
 }
+/* Fraction answers (Years 7–9): a top box over a bottom box, and a whole-number box for mixed numerals */
+.frac-answer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.frac-answer-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.22rem;
+}
+.frac-answer .frac-box {
+  flex: none;
+  width: 4.8rem;
+  max-width: none;
+  padding: 0.18rem 0.4rem;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.frac-answer .frac-whole {
+  width: 3.8rem;
+  align-self: center;
+}
+.frac-answer-bar {
+  height: 2.5px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.frac-box.is-right {
+  border-color: hsl(var(--success));
+  background: hsl(var(--success-soft));
+}
+.frac-box.is-wrong {
+  border-color: hsl(var(--accent-2));
+  background: hsl(var(--accent-2-soft));
+}
 /* Maths keypad */
 .mathpad {
   display: grid;
@@ -493,6 +531,76 @@ body::before {
 .calc-keys .pad-key {
   min-height: 2.7rem;
 }
+/* Fractions in the calculator: stacked boxes to type in, and stacked answers */
+.cfrac {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  vertical-align: middle;
+  margin: 0 0.1em;
+}
+.cstack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.05;
+}
+.cbar {
+  align-self: stretch;
+  height: 1.5px;
+  min-width: 0.9em;
+  margin: 1px 0;
+  background: currentColor;
+}
+.cbox {
+  display: inline-block;
+  min-width: 1.15em;
+  padding: 0 0.12em;
+  text-align: center;
+  border-radius: 3px;
+  border: 1.5px solid transparent;
+  cursor: text;
+}
+.cbox.empty {
+  border: 1.5px dashed hsl(var(--muted-foreground));
+}
+.cbox.active {
+  border: 1.5px solid hsl(var(--primary));
+  background: hsl(var(--primary) / 0.12);
+}
+/* the fraction calculator has one more row of keys, so its keys are a little shorter */
+.calc-fractions .calc-keys .pad-key {
+  min-height: 2.45rem;
+}
+.calc-fractions .calc-expr {
+  min-height: 2.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.cres .cstack {
+  font-size: 0.75em;
+}
+.ckey-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.ckey-icon .cbar {
+  min-width: 0.75rem;
+  margin: 1.5px 0;
+}
+.ckey-box {
+  display: inline-block;
+  width: 0.62rem;
+  height: 0.5rem;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+}
+.ckey-icon > .ckey-box {
+  height: 0.62rem;
+}
 /* above multiple-choice options: shorter screen and keys (still comfortable to tap) */
 .calc-compact {
   gap: 0.35rem;
@@ -509,7 +617,7 @@ body::before {
   font-size: 1.35rem;
 }
 .calc-compact .calc-keys .pad-key {
-  min-height: 2.2rem;
+  min-height: 2.1rem;
 }
 .calc-compact .calc-head .btn {
   min-height: 0;
@@ -1446,6 +1554,13 @@ body::before {
   .calc-expr {
     min-height: 1.2rem;
   }
+  /* the fraction calculator's extra row of keys, on a short screen */
+  .calc-fractions .calc-keys .pad-key {
+    min-height: 2.02rem;
+  }
+  .calc-fractions .calc-expr {
+    min-height: 2.15rem;
+  }
 }
 /* Very short screens (1366×768 laptops with the browser bars showing): while answering, the calculator's own
    title bar goes (the highlighted Calculator button just above it still closes it) so the Check button stays on screen */
@@ -1455,5 +1570,8 @@ body::before {
   }
   .calc-keys .pad-key {
     min-height: 2.1rem;
+  }
+  .calc-fractions .calc-keys .pad-key {
+    min-height: 1.95rem;
   }
 }

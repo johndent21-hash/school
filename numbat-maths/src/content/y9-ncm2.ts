@@ -1801,16 +1801,21 @@ export const exPowerPlus2 = (level: Level): Question => {
 
 const T = (skill: string, level: Level, gen: () => Question): TestItem => ({ skill, level, gen: () => gen() })
 export const NCM2_9_TEST: TestItem[] = [
+  // about two questions per exercise (16 in all), in the order of Test Yourself 2
   T('y9-pyt-surds', 1, evalSquare),
   T('y9-pyt-surds', 2, () => (chance() ? rootDp() : rootOfSum())),
   T('y9-pyt-theorem', 1, nameHyp),
   T('y9-pyt-theorem', 2, writeTheorem),
+  T('y9-pyt-hyp', 1, hypTriad),
   T('y9-pyt-hyp', 2, hypSurd),
+  T('y9-pyt-short', 1, legTriad),
   T('y9-pyt-short', 2, legDp),
   T('y9-pyt-mixed', 2, mixedExact),
   T('y9-pyt-mixed', 2, () => contextProblem('walk')),
   T('y9-pyt-converse', 1, () => testRight(false)),
+  T('y9-pyt-converse', 2, whichSet),
   T('y9-pyt-triads', 1, isTriad),
+  T('y9-pyt-triads', 2, missingTriad),
   T('y9-pyt-problems', 2, () => everydayProblems()),
   T('y9-pyt-mixed', 3, trapezium),
 ]
