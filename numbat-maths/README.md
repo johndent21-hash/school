@@ -77,6 +77,12 @@ Also:
   (MA5-NET-P-01), so they are extension skills, as is Power plus. The 12-question test uses 6.01 and 6.02 only. Angle
   diagrams are drawn to scale from the question's own angles (reflex angles and parallel arrows added to `fig`), and
   network diagrams keep every edge clear of vertices it doesn't join.
+- **Textbook alignment, Year 9 Equations** (`src/content/y9-ncm7.ts`): follows New Century Maths 9 Chapter 7 (Ex 7.01–7.06,
+  Power plus as an extension, a 16-question test in the order of Test Yourself 7), replacing the old Year 9 equations
+  topic. Linear equations, problems and formulas are MA5-EQU-C-01. 7.05 (ax² = c) is an extension skill tagged
+  MA5-EQU-P-01, because NESA puts quadratic equations in the Path outcomes (not confirmed for ax² = c: the NESA site
+  is blocked from the build environment); NCM 9 doesn't mark it PATH. Non-whole solutions are typed as fractions (or
+  exact decimals).
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -94,7 +100,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 38 topics, 180 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 38 topics, 183 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -130,6 +136,8 @@ npx tsx tests/ncm9-ch5.test.ts               # Year 9 Indices: question and answ
 npx tsx tests/gallery-ncm9-5.ts              # screenshots of Chapter 5 (Year 9) questions
 npx tsx tests/ncm9-ch6.test.ts               # Year 9 Geometry and networks: every angle measured back from the drawing; networks re-worked
 npx tsx tests/gallery-ncm9-6.ts              # screenshots of Chapter 6 (Year 9) questions
+npx tsx tests/ncm9-ch7.test.ts               # Year 9 Equations: equation read off the page, answer substituted back; problems re-worked
+npx tsx tests/gallery-ncm9-7.ts              # screenshots of Chapter 7 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 

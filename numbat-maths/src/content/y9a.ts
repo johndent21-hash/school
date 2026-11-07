@@ -1,4 +1,4 @@
-// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Trigonometry (Chapter 4, y9-ncm4.ts), Indices (Chapter 5, y9-ncm5.ts), Geometry and networks (Chapter 6, y9-ncm6.ts), Equations, Financial mathematics
+// Year 9 (Stage 5) — Algebra (NCM 9 Chapter 1, in y9-ncm1.ts), Pythagoras' theorem (NCM 9 Chapter 2, in y9-ncm2.ts), Numeracy and calculation (NCM 9 Chapter 3, in y9-ncm3.ts), Trigonometry (Chapter 4, y9-ncm4.ts), Indices (Chapter 5, y9-ncm5.ts), Geometry and networks (Chapter 6, y9-ncm6.ts), Equations (Chapter 7, y9-ncm7.ts), Financial mathematics
 import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_9_SKILLS, NCM1_9_TEST } from './y9-ncm1'
 import { NCM2_9_SKILLS, NCM2_9_TEST } from './y9-ncm2'
@@ -6,208 +6,13 @@ import { NCM3_9_SKILLS, NCM3_9_TEST } from './y9-ncm3'
 import { NCM4_SKILLS, NCM4_TEST } from './y9-ncm4'
 import { NCM5_SKILLS, NCM5_TEST } from './y9-ncm5'
 import { NCM6_SKILLS, NCM6_TEST } from './y9-ncm6'
+import { NCM7_SKILLS, NCM7_TEST } from './y9-ncm7'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, ex, frac, fracA, fracS, gcd, lcm, int, intExcept, mcA, mcFixedA,
   nonZero, num, numA, pick, q, sample, exprA, v, terms, coef, round, roundSF, name, sqrt, money, signed, approx, pow,
 } from './helpers'
 
 const letter = () => pick(['a', 'b', 'm', 'n', 'p', 'x', 'y', 'k', 'h', 't'])
-
-// ------------------------------------------------------------------ Indices and numbers of any magnitude
-
-// ------------------------------------------------------------------ Equations
-
-const eq_frac = (level: Level): Question => {
-  const x = pick(['x', 'a', 'm', 'n', 'y', 'k'])
-  if (level === 1) {
-    const [p, r] = sample([2, 3, 4, 5, 6], 2)
-    const Ld = lcm(p, r)
-    const s = Ld * nonZero(-4, 6)
-    const rhs = s / p + s / r
-    return q({
-      prompt: `Solve:<div class="big">${frac(v(x), p)} + ${frac(v(x), r)} = ${num(rhs)}</div>`,
-      answer: numA(s),
-      prefix: `${v(x)} =`,
-      hint: `Multiply every term by ${Ld}.`,
-      steps: [`Multiply every term by ${Ld}: ${Ld / p}${v(x)} + ${Ld / r}${v(x)} = ${num(rhs * Ld)}`, `${Ld / p + Ld / r}${v(x)} = ${num(rhs * Ld)}`, `${v(x)} = ${num(s)}`],
-    })
-  }
-  if (level === 2) {
-    const [p, r] = sample([2, 3, 4, 5, 6, 7], 2)
-    const a = nonZero(-6, 6)
-    const b = nonZero(-6, 6)
-    // (x + a)/p = (x + b)/r  → r(x + a) = p(x + b) → (r - p)x = pb - ra
-    if (r === p) return eq_frac(2)
-    const num_ = p * b - r * a
-    if (num_ % (r - p) !== 0) return eq_frac(2)
-    const s = num_ / (r - p)
-    return q({
-      prompt: `Solve:<div class="big">${frac(ex(terms([[1, x], [a, '']])), p)} = ${frac(ex(terms([[1, x], [b, '']])), r)}</div>`,
-      answer: numA(s),
-      prefix: `${v(x)} =`,
-      hint: `Cross-multiply: ${r}(${ex(terms([[1, x], [a, '']]))}) = ${p}(${ex(terms([[1, x], [b, '']]))}).`,
-      steps: [`${r}(${ex(terms([[1, x], [a, '']]))}) = ${p}(${ex(terms([[1, x], [b, '']]))})`, `${ex(terms([[r, x], [r * a, '']]))} = ${ex(terms([[p, x], [p * b, '']]))}`, `${ex(coef(r - p, x))} = ${num(num_)}`, `${v(x)} = ${num(s)}`],
-    })
-  }
-  const [p, r] = sample([2, 3, 4, 5], 2)
-  const Ld = lcm(p, r)
-  const a = int(1, 3)
-  const b = nonZero(-5, 5)
-  const c = nonZero(-5, 5)
-  const s = nonZero(-8, 8)
-  // (a x + b)/p − (x + c)/r = R
-  const R = (a * s + b) / p - (s + c) / r
-  if (!Number.isInteger(R)) return eq_frac(3)
-  const k1 = Ld / p
-  const k2 = Ld / r
-  return q({
-    prompt: `Solve:<div class="big">${frac(ex(terms([[a, x], [b, '']])), p)} ${MINUS} ${frac(ex(terms([[1, x], [c, '']])), r)} = ${num(R)}</div>`,
-    answer: numA(s),
-    prefix: `${v(x)} =`,
-    hint: `Multiply every term by ${Ld}. Put brackets around each numerator.`,
-    steps: [`${k1}(${ex(terms([[a, x], [b, '']]))}) ${MINUS} ${k2}(${ex(terms([[1, x], [c, '']]))}) = ${num(R * Ld)}`, `${ex(terms([[k1 * a, x], [k1 * b, ''], [-k2, x], [-k2 * c, '']]))} = ${num(R * Ld)}`, `${ex(terms([[k1 * a - k2, x], [k1 * b - k2 * c, '']]))} = ${num(R * Ld)}`, `${v(x)} = ${num(s)}`],
-  })
-}
-
-const eq_brackets = (level: Level): Question => {
-  const x = pick(['x', 'a', 'm', 'n', 'y', 'k'])
-  const a = int(2, 6)
-  const b = nonZero(-6, 6)
-  const c = int(2, 6)
-  const d = nonZero(-6, 6)
-  const p = int(1, 4)
-  if (level === 1 || level === 2) {
-    // a(px + b) = c(x + d)  → (ap − c)x = cd − ab
-    const k = a * p - c
-    if (k === 0) return eq_brackets(level)
-    const rhs = c * d - a * b
-    if (level === 1 && rhs % k !== 0) return eq_brackets(1)
-    const s = rhs / k
-    if (level === 2 && (Number.isInteger(s) || !Number.isInteger(s * 12))) return eq_brackets(2)
-    return q({
-      prompt: `Solve${level === 2 ? ', giving your answer as a fraction if needed' : ''}:<div class="big">${a}(${ex(terms([[p, x], [b, '']]))}) = ${c}(${ex(terms([[1, x], [d, '']]))})</div>`,
-      answer: level === 1 ? numA(s) : fracA(rhs, k, { allowDecimal: true }),
-      prefix: `${v(x)} =`,
-      hint: 'Expand both sides, then collect the pronumeral terms on one side.',
-      steps: [`${ex(terms([[a * p, x], [a * b, '']]))} = ${ex(terms([[c, x], [c * d, '']]))}`, `${ex(coef(k, x))} = ${num(rhs)}`, `${v(x)} = ${level === 1 ? num(s) : fracS(rhs, k)}`],
-    })
-  }
-  // e − f(x − g) = h(x + i)
-  const e = int(5, 20)
-  const f = int(2, 5)
-  const g = nonZero(-5, 5)
-  const h = int(2, 5)
-  const i = nonZero(-5, 5)
-  const k = -f - h
-  const rhs = h * i - e - f * g
-  if (rhs % k !== 0) return eq_brackets(3)
-  const s = rhs / k
-  return q({
-    prompt: `Solve:<div class="big">${e} ${MINUS} ${f}(${ex(terms([[1, x], [-g, '']]))}) = ${h}(${ex(terms([[1, x], [i, '']]))})</div>`,
-    answer: numA(s),
-    prefix: `${v(x)} =`,
-    hint: `Expand carefully: ${MINUS}${f} multiplies both terms in its bracket.`,
-    steps: [`${ex(terms([[-f, x], [e + f * g, '']]))} = ${ex(terms([[h, x], [h * i, '']]))}`, `${ex(coef(-f - h, x))} = ${num(h * i - e - f * g)}`, `${v(x)} = ${num(s)}`],
-  })
-}
-
-const eq_quad = (level: Level): Question => {
-  const x = pick(['x', 'a', 'm', 'n', 'y', 'p'])
-  if (level === 1) {
-    const r = int(1, 15)
-    return q({
-      prompt: `Solve:<div class="big">${ex(`${x}^2`)} = ${r * r}</div>`,
-      answer: { kind: 'nums', values: [r, -r] },
-      prefix: `${v(x)} =`,
-      hint: 'There are two solutions: a positive and a negative square root. Type them like ±7 or 7, −7.',
-      steps: [`${v(x)} = ±${sqrt(r * r)}`, `${v(x)} = ±${r}`],
-    })
-  }
-  if (level === 2) {
-    if (chance()) {
-      const a = int(2, 5)
-      const r = int(1, 10)
-      return q({
-        prompt: `Solve:<div class="big">${a}${ex(`${x}^2`)} = ${a * r * r}</div>`,
-        answer: { kind: 'nums', values: [r, -r] },
-        prefix: `${v(x)} =`,
-        hint: `Divide both sides by ${a} first.`,
-        steps: [`${ex(`${x}^2`)} = ${r * r}`, `${v(x)} = ±${r}`],
-      })
-    }
-    const c = nonZero(-20, 30)
-    const r = int(1, 10)
-    return q({
-      prompt: `Solve:<div class="big">${ex(`${x}^2`)} ${c < 0 ? MINUS : '+'} ${Math.abs(c)} = ${r * r + c}</div>`,
-      answer: { kind: 'nums', values: [r, -r] },
-      prefix: `${v(x)} =`,
-      hint: `${c < 0 ? 'Add' : 'Subtract'} ${Math.abs(c)} first.`,
-      steps: [`${ex(`${x}^2`)} = ${r * r}`, `${v(x)} = ±${r}`],
-    })
-  }
-  const k = pick([2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15, 17, 20, 24, 30])
-  const rt = Math.sqrt(k)
-  return q({
-    prompt: `Solve, giving your answers correct to 2 decimal places:<div class="big">${ex(`${x}^2`)} = ${k}</div>`,
-    answer: { kind: 'nums', values: [rt, -rt], dp: 2 },
-    prefix: `${v(x)} =`,
-    calc: true,
-    hint: 'Take the square root of both sides. Remember the negative solution.',
-    steps: [`${v(x)} = ±${sqrt(k)}`, `${v(x)} ≈ ±${num(round(rt, 2), 2)}`],
-  })
-}
-
-const eq_formula = (level: Level): Question => {
-  if (level === 1) {
-    if (chance()) {
-      const M = int(45, 110)
-      const h = int(150, 195) / 100
-      const B = M / (h * h)
-      return q({
-        prompt: `The body mass index of an adult is ${ex('B = frac{M}{h^2}')}, where ${v('M')} is mass in kg and ${v('h')} is height in m. Find ${v('B')} for an adult with mass ${M} kg and height ${num(h)} m, correct to 1 decimal place.`,
-        answer: numA(B, 1),
-        calc: true,
-        hint: 'Square the height first, then divide.',
-        steps: [`${v('h')}<sup>2</sup> = ${num(h)}<sup>2</sup> = ${num(clean(h * h))}`, `${v('B')} = ${M} ${DIVIDE} ${num(clean(h * h))} ≈ ${num(round(B, 1), 1)}`],
-      })
-    }
-    const d = int(3, 40)
-    return q({
-      prompt: `The cost, ${v('C')} dollars, of a taxi ride is ${ex('C = 5 + 2.4d')}, where ${v('d')} is the distance in km. Find the cost of a ${d} km ride.`,
-      answer: numA(clean(5 + 2.4 * d), 2),
-      prefix: '$',
-      hint: 'Substitute d, multiply, then add.',
-      steps: [`${v('C')} = 5 + 2.4 ${TIMES} ${d} = 5 + ${num(clean(2.4 * d))} = ${money(5 + 2.4 * d)}`],
-    })
-  }
-  if (level === 2) {
-    const d = int(3, 40)
-    const C = clean(5 + 2.4 * d)
-    return q({
-      prompt: `A taxi fare is given by ${ex('C = 5 + 2.4d')}. ${name()} paid ${money(C)}. How far did they travel?`,
-      answer: numA(d),
-      suffix: 'km',
-      hint: 'Substitute C and solve the equation for d.',
-      steps: [`${num(C)} = 5 + 2.4${v('d')}`, `${num(clean(C - 5))} = 2.4${v('d')}`, `${v('d')} = ${num(clean(C - 5))} ${DIVIDE} 2.4 = ${d} km`],
-    })
-  }
-  const t = pick([
-    ['y = mx + c', 'x', '(y - c)/m', [`Subtract ${v('c')} from both sides: ${ex('y - c = mx')}`, `Divide both sides by ${v('m')}.`]],
-    ['C = 5 + 2.4d', 'd', '(C - 5)/2.4', [`Subtract 5 from both sides: ${ex('C - 5 = 2.4d')}`, 'Divide both sides by 2.4.']],
-    ['v = u + at', 'a', '(v - u)/t', [`Subtract ${v('u')} from both sides: ${ex('v - u = at')}`, `Divide both sides by ${v('t')}.`]],
-    ['P = 2l + 2w', 'w', '(P - 2l)/2', [`Subtract 2${v('l')} from both sides: ${ex('P - 2l = 2w')}`, 'Divide both sides by 2.']],
-    ['A = frac{1}{2}bh', 'h', '2A/b', [`Multiply both sides by 2: ${ex('2A = bh')}`, `Divide both sides by ${v('b')}.`]],
-    ['S = frac{D}{T}', 'D', 'ST', [`Multiply both sides by ${v('T')}.`]],
-  ] as [string, string, string, string[]][])
-  const shown = t[2].includes('/') ? ex(t[2].replace(/^\(([^)]+)\)\/(.+)$/, 'frac{$1}{$2}').replace(/^(\w+)\/(\w+)$/, 'frac{$1}{$2}')) : ex(t[2])
-  return q({
-    prompt: `Make ${v(t[1])} the subject of the formula ${ex(t[0])}.`,
-    answer: exprA(t[2]),
-    prefix: `${v(t[1])} =`,
-    hint: `Undo the operations around ${v(t[1])} in reverse order, doing the same thing to both sides.`,
-    steps: [...t[3], `${v(t[1])} = ${shown}`],
-  })
-}
 
 // ------------------------------------------------------------------ Financial mathematics
 
@@ -428,60 +233,13 @@ export const Y9A: Topic[] = [
     id: 'y9-equations',
     year: 9,
     title: 'Equations',
+    ref: 'NCM 9 Chapter 7',
     strand: 'Number and algebra',
     outcomes: ['MA5-EQU-C-01'],
-    blurb: 'Equations with fractions and brackets, simple quadratics, and formulas.',
-    colour: 285,
-    skills: [
-      {
-        id: 'y9-eq-frac',
-        title: 'Equations with fractions',
-        outcomes: ['MA5-EQU-C-01'],
-        summary: 'Solve linear equations with algebraic fractions.',
-        learn: {
-          intro: '<p>Clear the fractions by multiplying every term by the lowest common multiple of the denominators.</p>',
-          keyPoints: ['<i>x</i>/3 + <i>x</i>/4 = 7 → × 12: 4<i>x</i> + 3<i>x</i> = 84 → <i>x</i> = 12', '(<i>x</i> + 1)/2 = (<i>x</i> − 3)/5 → cross-multiply: 5(<i>x</i> + 1) = 2(<i>x</i> − 3)'],
-        },
-        gen: eq_frac,
-        levels: { 1: 'Two fractions', 2: 'Cross-multiplying', 3: 'Binomial numerators' },
-      },
-      {
-        id: 'y9-eq-brackets',
-        title: 'Equations with brackets on both sides',
-        outcomes: ['MA5-EQU-C-01'],
-        summary: 'Expand brackets and solve, including fractional answers.',
-        learn: {
-          intro: '<p>Expand, collect the pronumeral terms on one side and the numbers on the other, then divide.</p>',
-          keyPoints: ['3(2<i>x</i> − 1) = 2(<i>x</i> + 5) → 6<i>x</i> − 3 = 2<i>x</i> + 10 → 4<i>x</i> = 13 → <i>x</i> = 13/4'],
-        },
-        gen: eq_brackets,
-        levels: { 1: 'Whole-number answers', 2: 'Fraction answers', 3: 'Negative multipliers' },
-      },
-      {
-        id: 'y9-eq-quad',
-        title: 'Simple quadratic equations',
-        outcomes: ['MA5-EQU-C-01'],
-        summary: 'Solve equations of the form ax² = c.',
-        learn: {
-          intro: '<p>An equation like <i>x</i><sup>2</sup> = 49 has two solutions, because 7<sup>2</sup> = 49 and (−7)<sup>2</sup> = 49.</p>',
-          keyPoints: ['<i>x</i><sup>2</sup> = 49 → <i>x</i> = ±7', 'Get <i>x</i><sup>2</sup> on its own first: 3<i>x</i><sup>2</sup> = 75 → <i>x</i><sup>2</sup> = 25 → <i>x</i> = ±5', 'Type both answers, e.g. ±5 or 5, −5.'],
-        },
-        gen: eq_quad,
-        levels: { 1: 'x² = c', 2: 'ax² = c and x² + b = c', 3: 'Non-perfect squares' },
-      },
-      {
-        id: 'y9-eq-formula',
-        title: 'Formulas',
-        outcomes: ['MA5-EQU-C-01', 'MA5-ALG-C-01'],
-        summary: 'Substitute into formulas, solve for unknowns and change the subject.',
-        learn: {
-          intro: '<p>A formula is an equation connecting several variables. You can substitute, solve, or rearrange it.</p>',
-          keyPoints: ['To change the subject, undo the operations around the new subject in reverse order.', 'v = u + at → a = (v − u)/t'],
-        },
-        gen: eq_formula,
-        levels: { 1: 'Substitute', 2: 'Solve after substituting', 3: 'Change the subject' },
-      },
-    ],
+    blurb: 'Two-step equations, letters on both sides, brackets, word problems and formulas (and, as Path work, ax² = c).',
+    colour: 230,
+    test: NCM7_TEST,
+    skills: NCM7_SKILLS,
   },
   {
     id: 'y9-finance',
