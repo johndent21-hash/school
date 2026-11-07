@@ -83,6 +83,13 @@ Also:
   MA5-EQU-P-01, because NESA puts quadratic equations in the Path outcomes (not confirmed for ax² = c: the NESA site
   is blocked from the build environment); NCM 9 doesn't mark it PATH. Non-whole solutions are typed as fractions (or
   exact decimals).
+- **Textbook alignment, Year 9 Earning money** (`src/content/y9-ncm8.ts`): follows New Century Maths 9 Chapter 8
+  (Ex 8.01–8.05, Power plus as an extension, a 16-question test in the order of Test Yourself 8), replacing the old Year 9
+  earning money topic. MA5-FIN-C-01. Tax uses the **2026–27 resident rates** (nil to $18 200; 15%; $4020 + 30% over
+  $45 000; $31 020 + 37% over $135 000; $51 370 + 45% over $190 000) plus the 2% Medicare levy, worked in whole cents,
+  with the year on every table; the textbook prints the 2023–24 table. The rates were checked against several
+  sources that agree with the legislated change (the ATO site is blocked from the build environment). Each question
+  says whether to use 52 or 52.18 weeks a year, as NCM 9 does.
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -100,7 +107,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 38 topics, 183 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 38 topics, 186 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -138,6 +145,8 @@ npx tsx tests/ncm9-ch6.test.ts               # Year 9 Geometry and networks: eve
 npx tsx tests/gallery-ncm9-6.ts              # screenshots of Chapter 6 (Year 9) questions
 npx tsx tests/ncm9-ch7.test.ts               # Year 9 Equations: equation read off the page, answer substituted back; problems re-worked
 npx tsx tests/gallery-ncm9-7.ts              # screenshots of Chapter 7 (Year 9) questions
+npx tsx tests/ncm9-ch8.test.ts               # Year 9 Earning money: re-worked from the words; tax with a separate bracket-by-bracket calculation
+npx tsx tests/gallery-ncm9-8.ts              # screenshots of Chapter 8 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 
