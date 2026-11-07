@@ -99,6 +99,15 @@ Also:
   and choosing questions. An outlier is a lowest or highest value whose gap to the next value is at least 4 and at least
   twice every other gap; "mean versus median" questions only use data where the mean really is pulled towards the tail
   (with small whole-number data a skewed shape can have the mean on the other side of the median).
+- **Textbook alignment, Year 9 Surface area and volume** (`src/content/y9-ncm10.ts`, diagrams in
+  `src/lib/maths/diagrams10.ts`): follows New Century Maths 9 Chapter 10 (Ex 10.01–10.09, Power plus as an extension, a
+  16-question test in the order of Test Yourself 10), replacing the old Year 9 measurement topic. Outcomes:
+  MA5-MAG-C-01 (units, precision, absolute and percentage error), MA4-LEN-C-01 and MA4-ARE-C-01 (composite shapes,
+  quadrilaterals, circles and sectors), MA5-ARE-C-01 (composite areas, surface area of prisms and cylinders),
+  MA4-VOL-C-01 and MA5-VOL-C-01 (volume and capacity). Percentage error was not found in the K–10 syllabus wording that
+  could be reached; it is kept as core because NCM 9 teaches it as a core section. New diagrams: a measuring scale,
+  sectors drawn at their true angle, a rectangle with a quadrant, and trapezoidal, tent and half-cylinder prisms.
+  Measurements keep the decimal places their precision implies (20.10 m to the nearest 0.01 m).
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -116,7 +125,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 38 topics, 191 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 38 topics, 197 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -158,6 +167,8 @@ npx tsx tests/ncm9-ch8.test.ts               # Year 9 Earning money: re-worked f
 npx tsx tests/gallery-ncm9-8.ts              # screenshots of Chapter 8 (Year 9) questions
 npx tsx tests/ncm9-ch9.test.ts               # Year 9 Analysing data: data read back from the lists, tables, dots, columns and leaves shown
 npx tsx tests/gallery-ncm9-9.ts              # screenshots of Chapter 9 (Year 9) questions
+npx tsx tests/ncm9-ch10.test.ts              # Year 9 Surface area and volume: labels read off the diagrams, shapes and sector angles measured
+npx tsx tests/gallery-ncm9-10.ts             # screenshots of Chapter 10 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 
