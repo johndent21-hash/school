@@ -271,20 +271,22 @@ body::before {
   font-weight: 700;
   font-size: 1.05rem;
 }
-.bar {
+/* progress bars: div.bar only, so the rule never reaches the SVG columns (rect.bar) of column graphs and histograms,
+   whose height CSS would otherwise override */
+div.bar {
   height: 0.5rem;
   border-radius: 999px;
   background: hsl(var(--muted));
   overflow: hidden;
 }
-.bar > span {
+div.bar > span {
   display: block;
   height: 100%;
   border-radius: 999px;
   background: hsl(var(--success));
   transition: width 0.4s ease;
 }
-.bar.tinted > span {
+div.bar.tinted > span {
   background: hsl(var(--tile, var(--primary)));
 }
 
@@ -957,7 +959,7 @@ body::before {
     animation: none;
   }
   .topic-tile,
-  .bar > span {
+  div.bar > span {
     transition: none;
   }
 }

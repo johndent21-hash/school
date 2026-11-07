@@ -108,6 +108,29 @@
   text-align: left;
   letter-spacing: 0.05em;
 }
+/* a row of leaves never wraps: a second line would scramble the reading order */
+.stemleaf td.leaf {
+  white-space: nowrap;
+}
+/* back-to-back plots: the left leaves read outwards from the stem */
+.stemleaf td.leafL {
+  text-align: right;
+}
+.stemleaf.b2b td.stem {
+  border-left: 2px solid currentColor;
+}
+.stemleaf.b2b th,
+.stemleaf.b2b td {
+  padding: 0.35rem 0.55rem;
+}
+.stemleaf.b2b td.leaf {
+  letter-spacing: 0.14em;
+}
+@media (max-width: 480px) {
+  .stemleaf {
+    font-size: 0.875rem;
+  }
+}
 .stemleaf .key,
 .tablewrap .key {
   font-size: 0.85rem;

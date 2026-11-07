@@ -90,6 +90,15 @@ Also:
   with the year on every table; the textbook prints the 2023–24 table. The rates were checked against several
   sources that agree with the legislated change (the ATO site is blocked from the build environment). Each question
   says whether to use 52 or 52.18 weeks a year, as NCM 9 does.
+- **Textbook alignment, Year 9 Analysing data** (`src/content/y9-ncm9.ts`, displays in `src/lib/maths/diagrams9.ts`):
+  follows New Century Maths 9 Chapter 9 (Ex 9.01–9.05, with the census and sampling part of 9.05 and all of 9.06 as Path
+  extension skills, Power plus as an extension, a 12-question test in the order of Test Yourself 9), replacing the old
+  Year 9 data topic (quartiles and box plots leave Year 9, as in NCM 9). MA4-DAT-C-01 and MA4-DAT-C-02 (Stage 4 content
+  that NCM 9 teaches in Year 9); Path work MA5-DAT-P-01. New displays: a frequency histogram with a frequency axis and an
+  optional frequency polygon, and ordered, unordered and back-to-back stem-and-leaf plots. Drawing tasks become reading
+  and choosing questions. An outlier is a lowest or highest value whose gap to the next value is at least 4 and at least
+  twice every other gap; "mean versus median" questions only use data where the mean really is pulled towards the tail
+  (with small whole-number data a skewed shape can have the mean on the other side of the median).
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -107,7 +116,7 @@ The live app is built on Macaly (TanStack Start + Convex). This folder is the so
 
 | Folder | What it is | Where it lives in the Macaly app |
 | --- | --- | --- |
-| `src/content/` | Years 7–9: 38 topics, 186 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
+| `src/content/` | Years 7–9: 38 topics, 191 skills. Years 1–2 (Stage 1): 18 topics, 50 skills (`y1*.ts`, `y2*.ts`). Years 3–4 (Stage 2): 21 topics, 75 skills (`y3*.ts`, `y4*.ts`). Each skill is a question generator with Foundation / Standard / Challenge levels | `src/content/` |
 | `src/lib/maths/` | Formatting, answer checking (fractions, expressions, coordinates, scientific notation…), SVG diagrams | `src/lib/maths/` |
 | `src/maths.css` | Maths typesetting and diagram styles | `src/maths.css` |
 | `app/src/` | Pages, components, session and progress code, theme | `src/` |
@@ -147,6 +156,8 @@ npx tsx tests/ncm9-ch7.test.ts               # Year 9 Equations: equation read o
 npx tsx tests/gallery-ncm9-7.ts              # screenshots of Chapter 7 (Year 9) questions
 npx tsx tests/ncm9-ch8.test.ts               # Year 9 Earning money: re-worked from the words; tax with a separate bracket-by-bracket calculation
 npx tsx tests/gallery-ncm9-8.ts              # screenshots of Chapter 8 (Year 9) questions
+npx tsx tests/ncm9-ch9.test.ts               # Year 9 Analysing data: data read back from the lists, tables, dots, columns and leaves shown
+npx tsx tests/gallery-ncm9-9.ts              # screenshots of Chapter 9 (Year 9) questions
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 
@@ -164,6 +175,7 @@ node qa/parent-ratings-check.mjs                                                
 node qa/resume-check.mjs      # (same server) stop a practice set, come back, carry on; finishing clears the saved place
 node qa/fraction-calc-check.mjs  # (same server) stacked fraction boxes, fraction and mixed keys, F⇄D, "Put … in my answer box"
 node qa/dms-check.mjs            # (same server) degrees and minutes: ° ′ keys on an iPad, "36 52" typed on a laptop
+node qa/bar-height-check.mjs     # (same server) column graphs and histograms: every column drawn as tall as its value
 node qa/fit-sweep.mjs ipad    # (Years 1–4 on) every question fits without scrolling: laptop, chromebook, ipad or ipadair
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)

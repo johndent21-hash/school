@@ -1,153 +1,10 @@
-// Year 9 (Stage 5) — Data analysis, Probability, Similar figures
+// Year 9 (Stage 5) — Data analysis (NCM 9 Chapter 9, in y9-ncm9.ts), Probability, Similar figures
 import type { Level, Question, Topic } from '@/lib/maths/types'
+import { NCM9_SKILLS, NCM9_TEST } from './y9-ncm9'
 import {
   D, L, MINUS, TIMES, DIVIDE, chance, clean, frac, fracA, fracS, gcd, int, mcA, mcFixedA, num, numA, pick, q, sample,
   shuffle, v, round, name, approx, ordinal, NOT_TO_SCALE,
 } from './helpers'
-
-// ------------------------------------------------------------------ Data
-
-const sortN = (a: number[]) => a.slice().sort((x, y) => x - y)
-const med = (s: number[]) => {
-  const n = s.length
-  return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2
-}
-/** NSW method: halves exclude the median when n is odd. */
-function quartiles(data: number[]) {
-  const s = sortN(data)
-  const n = s.length
-  const lower = s.slice(0, Math.floor(n / 2))
-  const upper = s.slice(Math.ceil(n / 2))
-  return { s, Q1: med(lower), Q2: med(s), Q3: med(upper), lower, upper }
-}
-
-const data_quartiles = (level: Level): Question => {
-  if (level === 1) {
-    const n = pick([7, 9, 11])
-    const data = Array.from({ length: n }, () => int(10, 60))
-    const { s, Q1, Q3, lower, upper } = quartiles(data)
-    const askQ1 = chance()
-    return q({
-      prompt: `These scores are in order:<div class="big">${s.join(', ')}</div>Find the ${askQ1 ? 'lower quartile (Q<sub>1</sub>)' : 'upper quartile (Q<sub>3</sub>)'}.`,
-      answer: numA(askQ1 ? Q1 : Q3),
-      hint: 'Find the median first. The lower quartile is the median of the lower half; the upper quartile is the median of the upper half. (With an odd number of scores, leave the median out of both halves.)',
-      steps: [`Median = ${num(med(s))} (the ${ordinal((n + 1) / 2)} score)`, askQ1 ? `Lower half: ${lower.join(', ')}` : `Upper half: ${upper.join(', ')}`, `${askQ1 ? 'Q<sub>1</sub>' : 'Q<sub>3</sub>'} = ${num(askQ1 ? Q1 : Q3)}`],
-    })
-  }
-  if (level === 2) {
-    const n = pick([8, 10, 12])
-    const data = Array.from({ length: n }, () => int(5, 80))
-    const { s, Q1, Q3, lower, upper } = quartiles(data)
-    return q({
-      prompt: `Find the interquartile range of these scores:<div class="big">${data.join(', ')}</div>`,
-      answer: numA(Q3 - Q1),
-      hint: 'Sort the data. Split it into a lower half and an upper half. IQR = Q₃ − Q₁.',
-      steps: [`In order: ${s.join(', ')}`, `Lower half: ${lower.join(', ')} → Q<sub>1</sub> = ${num(Q1)}`, `Upper half: ${upper.join(', ')} → Q<sub>3</sub> = ${num(Q3)}`, `IQR = ${num(Q3)} ${MINUS} ${num(Q1)} = ${num(Q3 - Q1)}`],
-    })
-  }
-  const mn = int(10, 30)
-  const q1 = mn + int(3, 12)
-  const q2 = q1 + int(2, 10)
-  const q3 = q2 + int(2, 10)
-  const mx = q3 + int(3, 15)
-  const lo = Math.floor(mn / 10) * 10
-  const hi = Math.ceil(mx / 10) * 10
-  const t = pick(['iqr', 'range', 'pct'])
-  const diagram = D.boxPlot([mn, q1, q2, q3, mx], lo, hi, hi - lo > 60 ? 10 : 5, 'Time to complete a puzzle (seconds)')
-  if (t === 'pct') {
-    return q({
-      prompt: `The box plot shows the times taken by a class to complete a puzzle. What percentage of the students took between ${q1} and ${mx} seconds?`,
-      diagram,
-      answer: numA(75),
-      suffix: '%',
-      hint: 'Each section of a box plot (whisker or half-box) holds about 25% of the data.',
-      steps: [`${q1} is Q<sub>1</sub> and ${mx} is the maximum.`, 'From Q<sub>1</sub> to the maximum is three quarters of the data: 75%.'],
-    })
-  }
-  return q({
-    prompt: `The box plot shows the times taken by a class to complete a puzzle. Find the ${t === 'iqr' ? 'interquartile range' : 'range'}.`,
-    diagram,
-    answer: numA(t === 'iqr' ? q3 - q1 : mx - mn),
-    suffix: 's',
-    hint: t === 'iqr' ? 'IQR = Q₃ − Q₁: the length of the box.' : 'Range = maximum − minimum: the ends of the whiskers.',
-    steps: [`Five-number summary: min ${mn}, Q<sub>1</sub> ${q1}, median ${q2}, Q<sub>3</sub> ${q3}, max ${mx}`, t === 'iqr' ? `IQR = ${q3} ${MINUS} ${q1} = ${q3 - q1} s` : `Range = ${mx} ${MINUS} ${mn} = ${mx - mn} s`],
-  })
-}
-
-const SHAPES: Record<string, number[]> = {
-  Symmetric: [1, 3, 6, 9, 6, 3, 1],
-  'Positively skewed': [4, 9, 7, 5, 3, 2, 1],
-  'Negatively skewed': [1, 2, 3, 5, 7, 9, 4],
-  Bimodal: [2, 7, 4, 1, 4, 8, 3],
-}
-const SHAPE_WHY: Record<string, string> = {
-  Symmetric: 'The two sides are roughly mirror images of each other.',
-  'Positively skewed': 'Most scores are on the left (low values) and the tail stretches out to the right.',
-  'Negatively skewed': 'Most scores are on the right (high values) and the tail stretches out to the left.',
-  Bimodal: 'There are two separate peaks.',
-}
-
-const data_shape = (level: Level): Question => {
-  const names = Object.keys(SHAPES)
-  if (level <= 2) {
-    const shape = pick(level === 1 ? names.slice(0, 3) : names)
-    const base = SHAPES[shape].map((f) => Math.max(1, f + int(-1, 1)))
-    if (shape === 'Positively skewed') base[0] = Math.max(base[0], 3)
-    return q({
-      prompt: `Describe the shape of this distribution.`,
-      diagram: level === 1 ? D.histogram(base) : D.dotPlot(base.flatMap((f, i) => Array(f).fill(i + 1)), 1, base.length),
-      answer: mcFixedA(level === 1 ? names.slice(0, 3) : names, shape),
-      hint: 'Look at where most of the data sits, and which way the tail points.',
-      steps: [SHAPE_WHY[shape], `The distribution is ${shape.toLowerCase()}.`],
-    })
-  }
-  const shape = pick(['Positively skewed', 'Negatively skewed', 'Symmetric'])
-  const ans = shape === 'Positively skewed' ? 'The mean is greater than the median' : shape === 'Negatively skewed' ? 'The mean is less than the median' : 'The mean and median are about equal'
-  return q({
-    prompt: `A distribution is <b>${shape.toLowerCase()}</b>. Which statement is most likely to be true?`,
-    answer: mcFixedA(['The mean is greater than the median', 'The mean is less than the median', 'The mean and median are about equal'], ans),
-    hint: 'The mean is pulled towards the tail; the median is not.',
-    steps: [shape === 'Symmetric' ? 'With no tail, the mean and median are close together.' : `The tail is on the ${shape === 'Positively skewed' ? 'right (high values), pulling the mean up' : 'left (low values), pulling the mean down'}.`, `${ans}.`],
-  })
-}
-
-const data_grouped = (level: Level): Question => {
-  const starts = [40, 50, 60, 70, 80, 90]
-  const classes = starts.map((s0) => `${s0}–${s0 + 9}`)
-  const freqs = starts.map(() => int(1, 9))
-  const total = freqs.reduce((a, b) => a + b, 0)
-  const tbl = D.table(['Mark', 'Frequency'], classes.map((c, i) => [c, freqs[i]]))
-  if (level === 1) {
-    const mx = Math.max(...freqs)
-    if (freqs.filter((f) => f === mx).length > 1) return data_grouped(1)
-    const cls = classes[freqs.indexOf(mx)]
-    return q({
-      prompt: `The table shows the percentage marks of a Year 9 class in a maths test.${tbl}What is the modal class?`,
-      answer: mcFixedA(classes, cls),
-      hint: 'The modal class is the class with the highest frequency.',
-      steps: [`The highest frequency is ${mx}, for the class ${cls}.`],
-    })
-  }
-  if (level === 2) {
-    const i = int(0, 5)
-    return q({
-      prompt: `The table shows the percentage marks of a Year 9 class in a maths test.${tbl}What is the class centre of the class ${classes[i]}?`,
-      answer: numA((starts[i] + starts[i] + 9) / 2),
-      hint: 'Class centre = (lowest value + highest value) ÷ 2.',
-      steps: [`(${starts[i]} + ${starts[i] + 9}) ${DIVIDE} 2 = ${num((2 * starts[i] + 9) / 2)}`],
-    })
-  }
-  const centres = starts.map((s0) => s0 + 4.5)
-  const sum = centres.reduce((s, c, i) => s + c * freqs[i], 0)
-  const mean = sum / total
-  return q({
-    prompt: `The table shows the percentage marks of a Year 9 class in a maths test.${tbl}Use class centres to estimate the mean mark, correct to 1 decimal place.`,
-    answer: numA(mean, 1),
-    calc: true,
-    hint: 'Multiply each class centre by its frequency, add these, then divide by the total frequency.',
-    steps: [D.table(['Class centre (x)', 'f', 'f × x'], centres.map((c, i) => [num(c), freqs[i], num(c * freqs[i])])), `Σ(f × x) = ${num(sum)}, Σf = ${total}`, `Mean ≈ ${num(sum)} ${DIVIDE} ${total} ${approx(mean, 1)}`],
-  })
-}
 
 // ------------------------------------------------------------------ Probability
 
@@ -501,48 +358,13 @@ export const Y9C: Topic[] = [
     id: 'y9-data',
     year: 9,
     title: 'Analysing data',
+    ref: 'NCM 9 Chapter 9',
     strand: 'Statistics and probability',
-    outcomes: ['MA5-DAT-C-01', 'MA5-DAT-C-02'],
-    blurb: 'Quartiles, box plots, the shape of distributions and grouped data.',
+    outcomes: ['MA4-DAT-C-01', 'MA4-DAT-C-02'],
+    blurb: 'Mean, median, mode and range; histograms and stem-and-leaf plots; the shape of a distribution; comparing data sets; types of data; and (Path) sampling and bias.',
     colour: 12,
-    skills: [
-      {
-        id: 'y9-data-quartiles',
-        title: 'Quartiles, IQR and box plots',
-        outcomes: ['MA5-DAT-C-02'],
-        summary: 'Find quartiles and the interquartile range; read box plots.',
-        learn: {
-          intro: '<p>Quartiles split ordered data into four equal parts. The <b>interquartile range</b> (IQR = Q₃ − Q₁) measures the spread of the middle 50% of the data.</p>',
-          keyPoints: ['Q₁ is the median of the lower half; Q₃ is the median of the upper half.', 'With an odd number of scores, leave the median out of both halves.', 'A box plot shows the five-number summary: minimum, Q₁, median, Q₃, maximum. Each section holds about 25% of the data.'],
-        },
-        gen: data_quartiles,
-        levels: { 1: 'Find a quartile', 2: 'Interquartile range', 3: 'Box plots' },
-      },
-      {
-        id: 'y9-data-shape',
-        title: 'Shape of a distribution',
-        outcomes: ['MA5-DAT-C-01', 'MA5-DAT-C-02'],
-        summary: 'Describe distributions as symmetric, skewed or bimodal.',
-        learn: {
-          intro: '<p>The shape of a graph tells you how the data are spread.</p>',
-          keyPoints: ['Symmetric: both sides look alike.', 'Positively skewed: tail to the right (high values). Negatively skewed: tail to the left.', 'Bimodal: two peaks.', 'The mean is pulled towards the tail.'],
-        },
-        gen: data_shape,
-        levels: { 1: 'Histograms', 2: 'Dot plots, including bimodal', 3: 'Mean versus median' },
-      },
-      {
-        id: 'y9-data-grouped',
-        title: 'Grouped data',
-        outcomes: ['MA5-DAT-C-02'],
-        summary: 'Find the modal class and class centres, and estimate the mean.',
-        learn: {
-          intro: '<p>When data are grouped into classes, we lose the exact values, so we use the <b>class centre</b> to estimate the mean.</p>',
-          keyPoints: ['Class centre = (lowest + highest value in the class) ÷ 2', 'Estimated mean = Σ(f × class centre) ÷ Σf', 'Modal class: the class with the highest frequency.'],
-        },
-        gen: data_grouped,
-        levels: { 1: 'Modal class', 2: 'Class centres', 3: 'Estimate the mean' },
-      },
-    ],
+    test: NCM9_TEST,
+    skills: NCM9_SKILLS,
   },
   {
     id: 'y9-probability',

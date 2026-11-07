@@ -128,7 +128,8 @@ for (const topic of ALL_TOPICS as Topic[]) {
           continue
         }
         if (!qn.steps.length || !qn.prompt) fail(skill.id, lvl, 'empty prompt or steps', qn)
-        if (qn.diagram && qn.diagram.includes('<svg') && /<(i|sup|b|div|p|br)[ >]/.test(qn.diagram)) fail(skill.id, lvl, 'HTML tag inside SVG diagram', qn)
+        // HTML tags break out of inline SVG; HTML around an SVG (e.g. a label above each of two plots) is fine
+        if (qn.diagram && (qn.diagram.match(/<svg[\s\S]*?<\/svg>/g) ?? []).some((sv) => /<(i|sup|b|div|p|br)[ >]/.test(sv))) fail(skill.id, lvl, 'HTML tag inside SVG diagram', qn)
         if (/<svg/.test(qn.prompt)) fail(skill.id, lvl, 'SVG inside prompt', qn)
         const a = qn.answer
         if (a.kind === 'mc') {
