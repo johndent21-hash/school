@@ -1,0 +1,652 @@
+/* ---------- Class games: played by the whole class on the board ----------
+   Everything here is sized to be read from the back of a classroom on a projector or a touch panel,
+   and to fit one screen without scrolling while a question is up. */
+
+/* Team colours: an Okabe–Ito palette, which stays distinct for colour-blind viewers.
+   Each team also has a number, so colour is never the only cue. */
+.team-0 {
+  --team: 202 100% 35%;
+  --team-ink: 0 0% 100%;
+}
+.team-1 {
+  --team: 41 100% 45%;
+  --team-ink: 222 42% 12%;
+}
+.team-2 {
+  --team: 164 100% 28%;
+  --team-ink: 0 0% 100%;
+}
+.team-3 {
+  --team: 26 100% 42%;
+  --team-ink: 0 0% 100%;
+}
+.team-4 {
+  --team: 327 45% 62%;
+  --team-ink: 222 42% 12%;
+}
+.team-5 {
+  --team: 202 77% 63%;
+  --team-ink: 222 42% 12%;
+}
+
+.gb {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-rows: auto 1fr;
+  min-height: calc(100dvh - 1.5rem);
+}
+.gb-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+}
+.gb-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  white-space: nowrap;
+}
+.gb-clock {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1 1 12rem;
+  min-width: 9rem;
+}
+.gb-timer {
+  flex: 1 1 auto;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: hsl(var(--muted));
+  overflow: hidden;
+}
+.gb-timer > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: hsl(var(--primary));
+  transition: width 1s linear;
+}
+.gb-timer.low > span {
+  background: hsl(var(--accent-2));
+}
+.gb-secs {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1;
+  min-width: 2ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.gb-secs.low {
+  color: hsl(var(--accent-2));
+}
+
+.gb-body {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr) clamp(14rem, 24vw, 22rem);
+  align-items: stretch;
+  min-height: 0;
+}
+
+/* The question */
+.gb-stage {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.25rem;
+  padding: clamp(0.9rem, 1.6vw, 1.75rem);
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: clamp(0.6rem, 1.2vw, 1.1rem);
+  min-width: 0;
+  position: relative;
+}
+.gb-q {
+  display: grid;
+  align-content: center;
+  gap: clamp(0.4rem, 1vw, 0.9rem);
+  min-height: 0;
+}
+.gb-prompt {
+  font-size: clamp(1.4rem, 2.7vw, 2.75rem);
+  line-height: 1.25;
+  font-weight: 700;
+  text-wrap: balance;
+}
+.gb-prompt .big {
+  font-size: 1.25em;
+  margin: 0.2em 0 0;
+}
+.gb-diagram .q-diagram figcaption {
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+}
+/* diagrams are drawn for a phone-sized card; on the board they are scaled up to fill the space */
+.gb-diagram .dg {
+  max-width: min(100%, 34rem) !important;
+  max-height: 36dvh;
+  margin-block: 0;
+}
+.gb-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.4rem, 0.9vw, 0.8rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gb-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border: 3px solid hsl(var(--border));
+  background: hsl(var(--card));
+  border-radius: 1rem;
+  padding: clamp(0.45rem, 0.9vw, 0.85rem) clamp(0.7rem, 1.2vw, 1.1rem);
+  font-size: clamp(1.25rem, 2.3vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  min-width: 0;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.gb-opt .letter {
+  flex: none;
+  width: 1.55em;
+  height: 1.55em;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: hsl(var(--primary-soft));
+  color: hsl(var(--primary));
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.gb-opt.right {
+  border-color: hsl(var(--success));
+  background: hsl(var(--success-soft));
+}
+.gb-opt.right .letter {
+  background: hsl(var(--success));
+  color: hsl(var(--card));
+}
+.gb-opt.dim {
+  opacity: 0.4;
+}
+.gb-why {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  border-left: 5px solid hsl(var(--success));
+  background: hsl(var(--success-soft));
+  border-radius: 0.6rem;
+  padding: 0.55rem 0.9rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.6rem);
+  line-height: 1.3;
+}
+.gb-timeup {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  margin: 0;
+  background: hsl(var(--accent-2));
+  color: hsl(var(--card));
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+}
+
+/* The teams */
+.gb-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.gb-rail-tip {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: hsl(var(--success));
+  margin: 0;
+}
+.gb-team {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.1rem 0.6rem;
+  width: 100%;
+  border: 2px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  border-radius: 0.9rem;
+  padding: 0.45rem 0.7rem 0.45rem 0.6rem;
+  text-align: left;
+  font: inherit;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+button.gb-team {
+  cursor: pointer;
+}
+button.gb-team:hover {
+  border-color: hsl(var(--team));
+}
+button.gb-team:focus-visible {
+  outline: 3px solid hsl(var(--ring) / 0.5);
+  outline-offset: 2px;
+}
+.gb-team .tnum,
+.gs-team .tnum {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.65rem;
+  display: grid;
+  place-items: center;
+  background: hsl(var(--team));
+  color: hsl(var(--team-ink));
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  flex: none;
+}
+.gb-team .tname {
+  font-weight: 700;
+  font-size: clamp(1rem, 1.45vw, 1.4rem);
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-team .tscore {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.gb-team .tplace {
+  grid-column: 2 / 4;
+  justify-self: end;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: hsl(var(--muted-foreground));
+  line-height: 1;
+}
+.gb-team .tplace.first {
+  color: hsl(var(--warning));
+}
+.gb-team.is-on {
+  border-color: hsl(var(--success));
+  background: hsl(var(--success-soft));
+}
+.gb-actions {
+  margin-top: auto;
+  display: grid;
+  gap: 0.45rem;
+  padding-top: 0.4rem;
+}
+.gb-main {
+  width: 100%;
+  white-space: normal;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  padding-block: 0.9rem;
+}
+.gb-main.pulse {
+  animation: gb-pulse 1.1s ease-in-out infinite;
+}
+@keyframes gb-pulse {
+  50% {
+    box-shadow:
+      0 3px 0 hsl(var(--primary) / 0.35),
+      0 0 0 8px hsl(var(--primary) / 0.18);
+  }
+}
+.gb-keys {
+  margin: 0;
+  font-size: 0.78rem;
+  color: hsl(var(--muted-foreground));
+}
+.gb-keys kbd {
+  font-family: inherit;
+  font-weight: 700;
+  border: 1px solid hsl(var(--border));
+  border-bottom-width: 2px;
+  border-radius: 0.3rem;
+  padding: 0 0.3rem;
+  background: hsl(var(--card));
+}
+
+/* The dig */
+.gb-dig {
+  grid-row: 1 / -1;
+  display: grid;
+  align-content: center;
+  gap: clamp(0.6rem, 1.4vw, 1.25rem);
+}
+.gb-dig-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  font-weight: 600;
+  margin: 0;
+}
+.gb-log {
+  width: 2.2em;
+  height: auto;
+}
+.gb-log-big {
+  width: min(9rem, 70%);
+  height: auto;
+  margin: 0.4rem 0;
+}
+.log-body {
+  fill: hsl(28 45% 42%);
+}
+.log-end {
+  fill: hsl(34 55% 68%);
+  stroke: hsl(28 45% 30%);
+  stroke-width: 1.5;
+}
+.log-ring {
+  fill: none;
+  stroke: hsl(28 45% 38%);
+  stroke-width: 1.3;
+}
+.log-grain {
+  stroke: hsl(28 45% 30%);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  fill: none;
+}
+.gb-finds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
+  gap: clamp(0.5rem, 1vw, 0.9rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gb-find {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 0.15rem;
+  text-align: center;
+  border: 3px solid hsl(var(--team));
+  background: hsl(var(--card));
+  border-radius: 1.1rem;
+  padding: 0.7rem 0.8rem 0.8rem;
+  animation: pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.gb-find.is-closed {
+  animation: none;
+  border-style: dashed;
+  align-content: center;
+}
+.gb-find .who {
+  background: hsl(var(--team));
+  color: hsl(var(--team-ink));
+  border-radius: 999px;
+  padding: 0.1rem 0.8rem;
+  font-weight: 800;
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-find .icon {
+  display: grid;
+  place-items: center;
+  height: 2.6rem;
+  color: hsl(var(--primary));
+}
+.gb-find .icon svg {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+.gb-find .what {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1.7vw, 1.6rem);
+  line-height: 1.15;
+}
+.gb-find .gain {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  line-height: 1;
+  color: hsl(var(--success));
+  font-variant-numeric: tabular-nums;
+}
+.gb-find .detail {
+  font-size: clamp(0.85rem, 1.1vw, 1.05rem);
+  color: hsl(var(--muted-foreground));
+}
+.gb-x2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+}
+.find-golden {
+  background: hsl(var(--sun-soft));
+}
+.find-golden .icon {
+  color: hsl(var(--warning));
+}
+.find-echidna .gain {
+  color: hsl(var(--muted-foreground));
+}
+.find-raid .icon,
+.find-leapfrog .icon {
+  color: hsl(var(--accent-2));
+}
+.echidna .e-body {
+  fill: hsl(28 35% 40%);
+}
+.echidna .e-spine {
+  stroke: hsl(28 35% 28%);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+}
+.echidna .e-eye {
+  fill: hsl(var(--card));
+}
+
+/* The end of the game */
+.gb-podium {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding-block: 0.5rem 1rem;
+}
+.gb-ranks {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gb-rank {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(5rem, 11rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.2rem 0.8rem;
+  border: 2px solid hsl(var(--border));
+  background: hsl(var(--card));
+  border-radius: 1rem;
+  padding: 0.6rem 0.9rem;
+}
+.gb-rank.first {
+  border-color: hsl(var(--sun));
+  background: hsl(var(--sun-soft));
+}
+.gb-rank .place {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+}
+.gb-rank .name {
+  font-weight: 800;
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gb-rank .barwrap {
+  height: 1.1rem;
+  border-radius: 999px;
+  background: hsl(var(--muted));
+  overflow: hidden;
+}
+.gb-rank .bar {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: hsl(var(--team));
+}
+.gb-rank .score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.gb-rank .score .unit {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: hsl(var(--muted-foreground));
+}
+.gb-rank .rights {
+  grid-column: 2 / -1;
+  font-size: 0.85rem;
+  color: hsl(var(--muted-foreground));
+}
+.gb-review {
+  line-height: 1.6;
+}
+.gb-review .chip {
+  margin-right: 0.5rem;
+}
+
+/* Setting up a game */
+.gs-team {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.gs-preview {
+  display: grid;
+  gap: 0.4rem;
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 0.75rem;
+}
+.gs-preview-diagram .dg {
+  max-width: 15rem !important;
+  margin: 0;
+}
+.gs-preview-diagram .q-diagram {
+  justify-items: start;
+}
+.gs-preview-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.gs-preview-options li {
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.6rem;
+  padding: 0.15rem 0.6rem;
+}
+.gs-preview-options li.right {
+  border-color: hsl(var(--success));
+  background: hsl(var(--success-soft));
+  font-weight: 700;
+}
+
+/* Narrow screens (a teacher trying the game on a phone or a small tablet): the teams go under the question */
+@media (max-width: 860px) {
+  .gb {
+    min-height: 0;
+  }
+  .gb-body {
+    grid-template-columns: 1fr;
+  }
+  .gb-rail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+  .gb-rail-tip,
+  .gb-rail > .flex,
+  .gb-actions {
+    grid-column: 1 / -1;
+  }
+  .gb-keys {
+    display: none;
+  }
+  .gb-rank {
+    grid-template-columns: 2.8rem minmax(0, 1fr) auto;
+  }
+  .gb-rank .barwrap {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .gb-options {
+    grid-template-columns: 1fr;
+  }
+}
+/* Short, wide screens (1366 × 768 laptops with the browser bars showing): tighter spacing so nothing scrolls */
+@media (min-width: 861px) and (max-height: 700px) {
+  .gb-team {
+    padding-block: 0.3rem;
+  }
+  .gb-team .tnum {
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 1rem;
+  }
+  .gb-diagram .dg {
+    max-height: 30dvh;
+  }
+  .gb-main {
+    padding-block: 0.65rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gb-find,
+  .gb-main.pulse {
+    animation: none;
+  }
+  .gb-timer > span {
+    transition: none;
+  }
+}

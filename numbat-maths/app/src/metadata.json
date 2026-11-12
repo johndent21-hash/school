@@ -50,5 +50,14 @@
     "title": "Parents and carers · Numbat Maths",
     "description": "See your child's lesson ratings from class and their practice on Numbat Maths. Log in with your child's class code, name and PIN.",
     "noindex": true
+  },
+  "/games": {
+    "title": "Class games · Numbat Maths",
+    "description": "Finish the lesson with a quick team game on the board, matched to the textbook exercise you just taught."
+  },
+  "/game": {
+    "title": "Class game · Numbat Maths",
+    "description": "A quick team game for the whole class: every team answers, then digs for termites.",
+    "noindex": true
   }
 }

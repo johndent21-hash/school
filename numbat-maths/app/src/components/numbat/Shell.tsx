@@ -42,6 +42,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
             )}
             {show && teacher && (
               <>
+                <Link to="/games" className="btn btn-ghost btn-sm max-sm:hidden">
+                  Class games
+                </Link>
                 <Link to="/teacher" className="btn btn-ghost btn-sm">
                   My classes
                 </Link>
@@ -67,7 +70,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
             )}
             {show && !student && !teacher && !parent && (
               <>
-                <Link to="/parent" className="btn btn-ghost btn-sm">
+                <Link to="/games" className="btn btn-ghost btn-sm">
+                  <span className="max-[430px]:hidden">Class </span>games
+                </Link>
+                <Link to="/parent" className="btn btn-ghost btn-sm max-[430px]:hidden">
                   Parents
                 </Link>
                 <Link to={PREVIEW_ONLY ? '/home' : '/'} className="btn btn-primary btn-sm">

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { ArrowRight, BookOpen, GraduationCap, PencilLine, Trophy } from 'lucide-react'
+import { ArrowRight, BookOpen, GraduationCap, PencilLine, Presentation, Trophy } from 'lucide-react'
+import { GameResume } from '@/components/numbat/GameResume'
 import { Shell } from '@/components/numbat/Shell'
 import { BUILD_CHIP, PRIMARY_STAGES, stageLabel, topicsForYear, YEAR_SPAN, YEARS, yearHue } from '@/content'
 import { cleanCode } from '@/lib/codes'
@@ -32,6 +33,9 @@ function StudentLogin() {
         </p>
         <Link to="/home" className="btn btn-primary btn-lg">
           Start practising <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+        <Link to="/games" className="btn btn-soft">
+          <Presentation size={18} aria-hidden="true" /> Play a class game on the board
         </Link>
         <Link to="/teacher" className="btn btn-ghost">
           See the teacher view with an example class
@@ -164,6 +168,7 @@ function Landing() {
   return (
     <Shell>
       <div className="grid gap-12">
+        <GameResume />
         <section className="grid items-start gap-6 lg:grid-cols-[1.2fr_1fr] lg:gap-x-8">
           <div className="grid gap-5 pt-2">
             <span className="chip w-fit">{BUILD_CHIP}</span>
@@ -188,6 +193,21 @@ function Landing() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="panel grid gap-4 p-6 sm:grid-cols-[auto_1fr_auto] sm:items-center" aria-labelledby="class-games">
+          <Presentation className="text-primary" size={36} aria-hidden="true" />
+          <div className="grid gap-1">
+            <h2 id="class-games" className="font-display text-2xl font-semibold">
+              Class games <span className="chip chip-book align-middle">New</span>
+            </h2>
+            <p className="text-muted-foreground">
+              Finish the lesson with a five-minute team game on the board, matched to the textbook exercise you just taught. No student devices needed.
+            </p>
+          </div>
+          <Link to="/games" className="btn btn-primary btn-lg">
+            Choose a game <ArrowRight size={18} aria-hidden="true" />
+          </Link>
         </section>
 
         <section className="grid gap-4" aria-labelledby="years">

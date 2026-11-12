@@ -1,0 +1,84 @@
+// Builds the questions of a class game. The same seed always gives the same questions, so a game
+// interrupted by a page refresh can carry on where it stopped.
+import { setSeed, shuffle } from '@/lib/maths/rand'
+import type { GameChapter, GameItem, GameMaker, GameQuestion, GameSet } from './types'
+
+export const GAME_LENGTHS = [5, 8, 10, 12, 15] as const
+export const DEFAULT_LENGTH = 10
+
+/** Two questions are the same if they look the same on the board. */
+const key = (q: GameQuestion) => q.prompt + '|' + (q.diagram ?? '') + '|' + q.options[q.correct]
+
+function fresh(maker: GameMaker, seen: Set<string>, tries: number): GameQuestion | null {
+  for (let i = 0; i < tries; i++) {
+    const q = maker.make()
+    const k = key(q)
+    if (!seen.has(k)) {
+      seen.add(k)
+      return q
+    }
+  }
+  return null
+}
+
+/**
+ * The order question types are asked in: every type once before any type repeats. The first time round
+ * the most basic forms come first; after that the order is mixed, never the same type twice in a row.
+ */
+function makerOrder(set: GameSet, count: number): GameMaker[] {
+  const out: GameMaker[] = []
+  while (out.length < count) {
+    const pass = shuffle(set.makers)
+    if (out.length === 0) pass.sort((a, b) => (a.d ?? 1) - (b.d ?? 1))
+    else if (pass.length > 1 && pass[0] === out[out.length - 1]) pass.push(pass.shift() as GameMaker)
+    out.push(...pass)
+  }
+  return out.slice(0, count)
+}
+
+/** A game on one exercise. */
+export function buildGame(set: GameSet, seed: number, count: number): GameItem[] {
+  setSeed(seed)
+  const seen = new Set<string>()
+  const order = makerOrder(set, count)
+  const items: GameItem[] = []
+  order.forEach((m, i) => {
+    let q = fresh(m, seen, 40)
+    if (!q) {
+      // this type has run out of new questions: another type steps in, but not the type just asked or the one coming next
+      const before = items[i - 1]?.q.meta.t
+      const after = order[i + 1]?.t
+      const others = shuffle(set.makers.filter((o) => o !== m))
+      const spare = [...others.filter((o) => o.t !== before && o.t !== after), ...others]
+      q = spare.reduce<GameQuestion | null>((found, o) => found ?? fresh(o, seen, 20), null) ?? m.make()
+    }
+    items.push({ q, set })
+  })
+  return items
+}
+
+/** A whole-chapter revision game: the exercises in textbook order, one question from each, then round again. */
+export function buildChapterGame(chapter: GameChapter, seed: number, count: number): GameItem[] {
+  setSeed(seed)
+  const seen = new Set<string>()
+  const sets = chapter.sets
+  // with fewer questions than exercises, spread them across the chapter rather than stopping partway through
+  const picks: GameSet[] = []
+  if (count >= sets.length) for (let i = 0; i < count; i++) picks.push(sets[i % sets.length])
+  else {
+    const chosen = shuffle(sets.map((_, i) => i)).slice(0, count).sort((a, b) => a - b)
+    for (const i of chosen) picks.push(sets[i])
+  }
+  return picks.map((set) => {
+    const makers = shuffle(set.makers)
+    const q = makers.reduce<GameQuestion | null>((found, m) => found ?? fresh(m, seen, 20), null) ?? makers[0].make()
+    return { q, set }
+  })
+}
+
+/** A short fingerprint of a game's questions, so a saved game is only resumed if it rebuilds the same questions. */
+export function gameCheck(items: GameItem[]): string {
+  let h = 0
+  for (const it of items) for (const ch of key(it.q)) h = (Math.imul(h, 31) + ch.charCodeAt(0)) | 0
+  return `${items.length}:${(h >>> 0).toString(36)}`
+}

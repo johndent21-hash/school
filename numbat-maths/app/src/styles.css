@@ -2,6 +2,7 @@
 @import 'tw-animate-css';
 @import './maths.css';
 @import './app.css';
+@import './game.css';
 
 @plugin '@tailwindcss/typography';
 
