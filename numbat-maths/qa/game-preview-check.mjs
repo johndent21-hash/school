@@ -49,6 +49,7 @@ for (const [w, h, scheme] of [
   await page.getByRole('link', { name: /Start practising/ }).click()
   await page.getByRole('tab', { name: 'Year 7' }).click()
   await page.getByRole('link', { name: /Area and volume/ }).first().click()
+  await page.locator('#topic-games').waitFor()
   log(`   Year 7 Area and volume topic: ${await page.locator('ol > li').count()} skills; link to class games ${await page.locator('#topic-games').count()}`)
   await page.locator('#topic-games').locator('xpath=ancestor::section').getByRole('link', { name: /Choose a game/ }).click()
 

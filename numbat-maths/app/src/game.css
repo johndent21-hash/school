@@ -33,7 +33,8 @@
   display: grid;
   gap: 0.6rem;
   grid-template-rows: auto minmax(0, 1fr);
-  height: calc(100dvh - 1.5rem);
+  /* one screen exactly: the page's own top and bottom padding and, in a phone or tablet app, the system bars */
+  height: calc(100dvh - 1.5rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   min-height: 26rem;
 }
 .gb-top {
