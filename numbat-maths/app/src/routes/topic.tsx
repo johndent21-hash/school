@@ -1,10 +1,11 @@
 // One topic: its skills (learn + practise) and the topic test.
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { ArrowLeft, BookOpen, ClipboardCheck, PencilLine } from 'lucide-react'
+import { ArrowLeft, BookOpen, ClipboardCheck, PencilLine, Presentation } from 'lucide-react'
 import { NotFoundPanel, PageLoading, Shell } from '@/components/numbat/Shell'
 import { MasteryBadge } from '@/components/numbat/Mastery'
 import { SkillTags, TopicRef, exerciseNumber } from '@/components/numbat/TextbookTags'
 import { findTopic } from '@/content'
+import { gamesForTopic } from '@/content/games'
 import { LEVEL_NAMES, type Level } from '@/lib/maths/types'
 import { masteryOf } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
@@ -33,6 +34,7 @@ function TopicView() {
   if (!topic) return <NotFoundPanel what="topic" />
   const stats = topicStats(topic, items)
   const test = items[testItemId(topic.id)]
+  const games = gamesForTopic(topic.id)
 
   return (
     <div className="grid gap-6" style={{ ['--hue' as string]: topic.colour }}>
@@ -105,6 +107,22 @@ function TopicView() {
           })}
         </ol>
       </section>
+
+      {games && (
+        <section className="panel grid gap-3 p-5 sm:grid-cols-[1fr_auto] sm:items-center" aria-labelledby="topic-games">
+          <div className="grid gap-1">
+            <h2 id="topic-games" className="font-display flex items-center gap-2 text-2xl font-semibold">
+              <Presentation aria-hidden="true" /> Class games
+            </h2>
+            <p className="text-muted-foreground">
+              Quick team games for the board, one for each exercise of {games.chapter.ref} ({games.chapter.sets.length} games and a whole-chapter mix).
+            </p>
+          </div>
+          <Link to="/games" className="btn btn-soft btn-lg">
+            Choose a game
+          </Link>
+        </section>
+      )}
 
       <section className="panel grid gap-3 p-5 sm:grid-cols-[1fr_auto] sm:items-center" aria-labelledby="test">
         <div className="grid gap-1">

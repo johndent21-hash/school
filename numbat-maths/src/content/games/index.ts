@@ -37,4 +37,10 @@ export function gameTitle(g: FoundGame): string {
   return g.set ? `${g.set.ref} · ${g.set.title}` : `${g.chapter.ref} · ${g.chapter.title}: whole chapter mix`
 }
 
+/** The games chapter that goes with a lesson topic, if there is one. */
+export function gamesForTopic(topicId: string): FoundGame | undefined {
+  for (const book of GAME_BOOKS) for (const chapter of book.chapters) if (chapter.topics?.includes(topicId)) return { book, chapter }
+  return undefined
+}
+
 export const ALL_GAME_SETS: GameSet[] = GAME_BOOKS.flatMap((b) => b.chapters.flatMap((c) => c.sets))

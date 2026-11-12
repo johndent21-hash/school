@@ -108,6 +108,41 @@ Also:
   could be reached; it is kept as core because NCM 9 teaches it as a core section. New diagrams: a measuring scale,
   sectors drawn at their true angle, a rectangle with a quadrant, and trapezoidal, tent and half-cylinder prisms.
   Measurements keep the decimal places their precision implies (20.10 m to the nearest 0.01 m).
+- **Class games** (`/games` and `/game`; `app/src/routes/games.tsx`, `game.tsx`, `components/numbat/GameBoard.tsx`,
+  `app/src/lib/board.ts`, styles in `app/src/game.css`): a five-minute team game for the whole class, played on the board
+  with no student devices, to finish a lesson on one textbook exercise. Every team answers every question (four choices,
+  A to D, on mini whiteboards); the teacher shows the answer and ticks each team that got it right; each of those teams
+  digs up a log: mostly termites (points), sometimes a surprise (double dig, golden log, an echidna that got there first,
+  a raid on the leading team, or a leapfrog over the team just ahead). Set-up is one page: 2 to 6 teams, 5 to 15
+  questions, 10 to 45 seconds a question or no timer, and a "see the questions first" list for the teacher. Keys: Space or
+  Enter for the next step, 1 to 6 to tick a team, A for all teams, P to pause the timer. The game's place is kept on the
+  device (`numbat.game`), so a refresh or a sleeping laptop loses nothing, and "Undo this dig" fixes a mis-tick. The end
+  screen ranks the teams and lists the questions the fewest teams got right.
+  - **Questions** (`src/content/games/`, types in `src/lib/game/types.ts`): one set for each exercise, organised
+    book → chapter → exercise. These are separate from the lessons' practice questions: every game question is ONE step,
+    done in the head in about 15 seconds with friendly numbers, and its wrong choices are the answers the usual mistakes
+    give. So far: **New Century Maths 7 Chapter 8, Area and volume** (`ncm7-ch8.ts`, Ex 8.01–8.13, 84 kinds of question,
+    plus a whole-chapter mix that takes one question from each exercise in textbook order). The questions are the site's
+    own; none of the textbook's wording or numbers are copied. Outcomes: MA4-LEN-C-01 (8.02 perimeter, 8.03
+    circumference), MA4-ARE-C-01 (8.04–8.08) and MA4-VOL-C-01 (8.09 views and cross-sections of prisms, 8.10–8.13).
+    Syllabus notes: 8.01's length, mass and time conversions are revision of earlier stages (only kL and ML are Stage 4);
+    the textbook's questions on the meaning of prefixes are left out, because the syllabus places prefixes in Stage 5
+    (MA5-MAG-C-01); square kilometres (in the syllabus, but only in the hardest questions of Ex 8.04) are left out of the
+    quick game; estimates of a circumference use π ≈ 3 and exact answers are in terms of π, as in the textbook.
+  - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
+    carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
+    repeats; no question appears twice in a game and no kind twice in a row.
+  - **Luck** (`src/lib/game/luck.ts`): a correct answer never costs the team that gave it anything. Raids take at most
+    30 termites, only from the team in front; a leapfrog swaps totals with the team JUST ahead, and only over a gap of 40
+    to 150, so nobody goes from last to first in one go; at most one raid and one leapfrog a question. Simulated over
+    20 000 games, teams that get 90%, 75%, 60% and 45% of questions right win 58%, 27%, 11% and 4% of games.
+  - **Diagrams** (`src/lib/maths/diagrams11.ts`): triangles from their three sides, regular shapes with equal-side marks,
+    triangles and parallelograms with a dashed perpendicular height and true slanted sides, composite shapes, prisms with
+    a shaded cross-section, and solids built from cubes with a "front" arrow. On the board the diagram is scaled to the
+    space left between the question and the choices, so no question needs scrolling.
+  - **Live games on student devices** are not built: they need the server (a shared game code, students' answers and a
+    live leaderboard), which the stand-alone preview does not have. The question sets already carry the four choices a
+    tap-to-answer game needs.
 - **Practice sets** (`app/src/lib/practice.ts`): 20 questions in Years 3–9 (8 Foundation, 8 Standard, 4 Challenge) and
   10 in Years 1–2 (3/4/3). A set never repeats an identical question: when a level runs out of new ones it borrows from
   the nearest level. Each set is built from a seed, so a student can **stop and carry on later** on the same device
@@ -169,6 +204,9 @@ npx tsx tests/ncm9-ch9.test.ts               # Year 9 Analysing data: data read 
 npx tsx tests/gallery-ncm9-9.ts              # screenshots of Chapter 9 (Year 9) questions
 npx tsx tests/ncm9-ch10.test.ts              # Year 9 Surface area and volume: labels read off the diagrams, shapes and sector angles measured
 npx tsx tests/gallery-ncm9-10.ts             # screenshots of Chapter 10 (Year 9) questions
+npx tsx tests/games.test.ts                  # class games: every answer re-worked from its numbers, drawings measured, game building, luck rules
+K=3 npx tsx tests/games-dump.ts              # class games: sample questions as plain text (ONLY=ncm7-8.05 for one exercise)
+npx tsx tests/gallery-games.ts               # class games: screenshots of every kind of diagram question
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges
 TZ=Australia/Sydney npx tsx tests/insights.test.ts   # teacher overview numbers, recounted against the example class
 
@@ -188,6 +226,9 @@ node qa/fraction-calc-check.mjs  # (same server) stacked fraction boxes, fractio
 node qa/dms-check.mjs            # (same server) degrees and minutes: ° ′ keys on an iPad, "36 52" typed on a laptop
 node qa/bar-height-check.mjs     # (same server) column graphs and histograms: every column drawn as tall as its value
 node qa/fit-sweep.mjs ipad    # (Years 1–4 on) every question fits without scrolling: laptop, chromebook, ipad or ipadair
+node qa/game-check.mjs        # (preview server on :3102) class games: set-up, a whole game, keys, timer, undo, carrying on after a refresh,
+                              # then every game played through at four screen sizes with nothing needing scrolling
+node qa/game-preview-check.mjs out.html   # the built stand-alone page: a class game played by clicking only, and carried on after a reload
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)
 cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh out.html "Numbat Maths 1–9"   # preview with Years 1–4 added

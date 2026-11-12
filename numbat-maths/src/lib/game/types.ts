@@ -47,6 +47,8 @@ export interface GameChapter {
   outcomes: string[]
   sets: GameSet[]
   colour: number // hue, as for topic tiles
+  /** Lesson topics on this site that cover the same chapter (topic ids), so the topic page can point to the games. */
+  topics?: string[]
 }
 
 export interface GameBook {

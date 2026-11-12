@@ -16,21 +16,22 @@ import { cn } from '@/lib/utils'
 import { useMounted } from '@/lib/use-mounted'
 
 export const Route = createFileRoute('/game')({
-  validateSearch: (s: Record<string, unknown>): { id?: string } => ({ id: typeof s.id === 'string' ? s.id : undefined }),
+  // go: carry straight on with the game that was left unfinished (from the "game in progress" banner)
+  validateSearch: (s: Record<string, unknown>): { id?: string; go?: 1 } => ({ id: typeof s.id === 'string' ? s.id : undefined, go: s.go === 1 || s.go === '1' ? 1 : undefined }),
   head: () => pageHead('/game'),
   component: GamePage,
 })
 
 function GamePage() {
   const mounted = useMounted()
-  const { id } = Route.useSearch()
+  const { id, go } = Route.useSearch()
   const found = id ? findGame(id) : undefined
-  return <Shell>{!mounted ? <PageLoading /> : found ? <Game key={id} found={found} id={id!} /> : <NotFoundPanel what="game" />}</Shell>
+  return <Shell>{!mounted ? <PageLoading /> : found ? <Game key={id} found={found} id={id!} carryOn={go === 1} /> : <NotFoundPanel what="game" />}</Shell>
 }
 
 const LETTERS = ['A', 'B', 'C', 'D']
 
-function Game({ found, id }: { found: FoundGame; id: string }) {
+function Game({ found, id, carryOn }: { found: FoundGame; id: string; carryOn: boolean }) {
   const navigate = useNavigate()
   const title = gameTitle(found)
   // a game for this exercise that was left unfinished on this device
@@ -38,7 +39,7 @@ function Game({ found, id }: { found: FoundGame; id: string }) {
     const b = loadBoard()
     return b && b.cfg.game === id ? b : null
   })
-  const [board, setBoard] = useState<BoardState | null>(null)
+  const [board, setBoard] = useState<BoardState | null>(() => (carryOn ? saved : null))
   const [run, setRun] = useState(0)
   const items = useMemo(() => (board ? gameItems(board.cfg) : null), [board])
 

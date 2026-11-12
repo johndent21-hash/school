@@ -1,6 +1,6 @@
 // The class game on the board: a question for every team, the answer, then each team that was right digs.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, ArrowLeftRight, ArrowRight, Bug, Check, Eye, Flag, Pause, Play, RotateCcw, Sparkles, Swords, Trophy, Undo2, X } from 'lucide-react'
+import { ArrowLeft, ArrowLeftRight, ArrowRight, Bug, Check, Eye, Flag, Maximize, Pause, Play, RotateCcw, Sparkles, Swords, Trophy, Undo2, X } from 'lucide-react'
 import type { GameItem } from '@/lib/game/types'
 import { places, type Find } from '@/lib/game/luck'
 import { type BoardState, clearBoard, digRound, markAll, nextQuestion, reveal, saveBoard, scoresDuring, toggleTeam, undoDig } from '@/lib/board'
@@ -95,6 +95,12 @@ export function GameBoard({
   const [paused, setPaused] = useState(false)
   const [shown, setShown] = useState(() => (initial.phase === 'dug' ? (initial.rounds[initial.rounds.length - 1]?.finds.length ?? 0) : 0))
   const [confirmEnd, setConfirmEnd] = useState(false)
+  // full screen is offered only where the browser allows it (not inside every embedded page)
+  const [canFullScreen] = useState(() => typeof document !== 'undefined' && !!document.fullscreenEnabled)
+  const toggleFullScreen = () => {
+    if (document.fullscreenElement) void document.exitFullscreen().catch(() => {})
+    else void document.documentElement.requestFullscreen().catch(() => {})
+  }
   const stageRef = useRef<HTMLDivElement>(null)
   useFocusMode(true)
 
@@ -203,9 +209,16 @@ export function GameBoard({
           Question {b.i + 1} <span className="text-muted-foreground">of {total}</span>
         </span>
         {b.phase === 'ask' && secs > 0 && <Countdown secs={secs} left={left} paused={paused} onToggle={() => setPaused((p) => !p)} timeUp={timeUp} />}
-        <button type="button" className="btn btn-ghost btn-sm ml-auto" onClick={() => setConfirmEnd(true)}>
-          <Flag size={16} aria-hidden="true" /> <span className="max-sm:sr-only">Finish now</span>
-        </button>
+        <span className="ml-auto flex items-center gap-2">
+          {canFullScreen && (
+            <button type="button" className="btn btn-ghost btn-sm" onClick={toggleFullScreen}>
+              <Maximize size={16} aria-hidden="true" /> <span className="max-[1100px]:sr-only">Full screen</span>
+            </button>
+          )}
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirmEnd(true)}>
+            <Flag size={16} aria-hidden="true" /> <span className="max-sm:sr-only">Finish now</span>
+          </button>
+        </span>
       </div>
 
       {confirmEnd && (
@@ -227,14 +240,22 @@ export function GameBoard({
             <>
               <div className="gb-q">
                 {cur.set.id !== b.cfg.game && <span className="chip chip-book w-fit">Ex {cur.set.exercise} · {cur.set.title}</span>}
-                <MathHtml className="gb-prompt" html={cur.q.prompt} />
+                <MathHtml className={cn('gb-prompt', cur.q.prompt.replace(/<[^>]*>/g, '').length > 80 && 'long')} html={cur.q.prompt} />
                 {(cur.q.diagram || cur.q.note) && (
                   <div className="gb-diagram">
                     <Diagram svg={cur.q.diagram} note={cur.q.note} />
                   </div>
                 )}
               </div>
-              <ol className="gb-options" aria-label="Choices">
+              <ol
+                className={cn(
+                  'gb-options',
+                  // short choices under a diagram go in one row, which leaves the diagram more room
+                  !!cur.q.diagram && cur.q.options.every((o) => o.replace(/<[^>]*>/g, '').length <= (b.phase === 'reveal' ? 18 : 10)) && 'row4',
+                  b.phase === 'reveal' && 'revealed',
+                )}
+                aria-label="Choices"
+              >
                 {cur.q.options.map((o, k) => {
                   const right = b.phase === 'reveal' && k === cur.q.correct
                   return (
@@ -303,11 +324,11 @@ export function GameBoard({
                   {b.phase === 'reveal' && on ? <Check size={20} strokeWidth={3.5} /> : t + 1}
                 </span>
                 <span className="tname">{name}</span>
+                <span className={cn('tplace', anyScore && rank[t] === 1 && 'first')}>{anyScore ? ORDINALS[rank[t] - 1] : ''}</span>
                 <span className="tscore">
                   {scores[t]}
                   <span className="sr-only"> termites</span>
                 </span>
-                {anyScore && <span className={cn('tplace', rank[t] === 1 && 'first')}>{ORDINALS[rank[t] - 1]}</span>}
               </>
             )
             return b.phase === 'reveal' ? (
@@ -448,7 +469,7 @@ function Podium({ b, items, title, onAgain, onExit }: { b: BoardState; items: Ga
       )}
 
       <div className="flex flex-wrap justify-center gap-3">
-        <button type="button" className="btn btn-primary btn-lg" onClick={onAgain} autoFocus>
+        <button type="button" className="btn btn-primary btn-lg" onClick={onAgain}>
           <RotateCcw size={18} aria-hidden="true" /> Play again with new questions
         </button>
         <button type="button" className="btn btn-ghost btn-lg" onClick={onExit}>

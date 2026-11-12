@@ -51,11 +51,17 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
   const total = Number((await page.locator('.gb-count').textContent()).match(/of (\d+)/)[1])
   let worstFit = 0
   let worstSpill = 0
+  let smallest = 9999
   for (let k = 0; k < total; k++) {
     await page.locator('.gb-prompt').waitFor()
     if (checkFit) {
-      worstFit = Math.max(worstFit, await overflow(page))
+      const o = await overflow(page)
+      if (o > worstFit) log(`   too tall by ${o}px (${tag}, question ${k + 1}): ${(await page.locator('.gb-prompt').textContent()).slice(0, 90)}`)
+      worstFit = Math.max(worstFit, o)
       worstSpill = Math.max(worstSpill, await spill(page))
+      // how tall the diagram is drawn: it must stay big enough to read from the back of the room
+      const dg = page.locator('.gb-diagram .dg')
+      if (await dg.count()) smallest = Math.min(smallest, Math.round((await dg.boundingBox()).height))
     }
     if (k % shootEvery === 0) await shot(page, `${tag}_q${k + 1}_ask`)
     await page.getByRole('button', { name: 'Show the answer' }).click()
@@ -63,6 +69,12 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
     if (checkFit) {
       worstFit = Math.max(worstFit, await overflow(page))
       worstSpill = Math.max(worstSpill, await spill(page))
+      const dg = page.locator('.gb-diagram .dg')
+      if (await dg.count()) {
+        const hgt = Math.round((await dg.boundingBox()).height)
+        if (hgt < 150) log(`   small diagram, ${hgt}px (${tag}, answer showing): ${(await page.locator('.gb-prompt').textContent()).slice(0, 70)}`)
+        smallest = Math.min(smallest, hgt)
+      }
     }
     const teams = page.locator('button.gb-team')
     for (const t of marks(k, await teams.count())) await teams.nth(t).click()
@@ -73,11 +85,14 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
     if (await showAll.count()) await showAll.click()
     await page.locator('.gb-main', { hasText: /Next question|See the winners/ }).waitFor()
     if (checkFit) worstFit = Math.max(worstFit, await overflow(page))
-    if (k % shootEvery === 0) await shot(page, `${tag}_q${k + 1}_dug`)
+    if (k % shootEvery === 0) {
+      await page.waitForTimeout(600) // let the cards finish popping in
+      await shot(page, `${tag}_q${k + 1}_dug`)
+    }
     await page.locator('.gb-main').click()
   }
   await page.locator('.gb-podium').waitFor()
-  return { total, worstFit, worstSpill }
+  return { total, worstFit, worstSpill, smallest }
 }
 
 // ---------------------------------------------------------------- 1. laptop on a projector: the whole flow
@@ -90,7 +105,7 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
   await page.locator('#class-games').locator('xpath=ancestor::section').getByRole('link', { name: /Choose a game/ }).click()
   await page.waitForURL('**/games')
   await page.waitForTimeout(300)
-  const rows = await page.locator('ol > li .font-display').allTextContents()
+  const rows = await page.locator('section[aria-labelledby="ncm7-ch8"] ol > li .font-display').allTextContents()
   log(`games page: ${rows.length} exercises: ${rows.map((s) => s.trim()).join(' | ')}`)
   await shot(page, 'games', true)
 
@@ -198,6 +213,7 @@ for (const [w, h, name] of [
   await page.goto(`${base}/games`, { waitUntil: 'networkidle' })
   const ids = await page.locator('a[href^="/game?id="]').evaluateAll((as) => [...new Set(as.map((a) => new URL(a.href).searchParams.get('id')))])
   let worst = { fit: 0, spill: 0, at: '' }
+  let smallest = 9999
   for (const id of ids) {
     await page.goto(`${base}/game?id=${id}`, { waitUntil: 'networkidle' })
     const again = page.getByRole('button', { name: /Start again/ })
@@ -207,8 +223,9 @@ for (const [w, h, name] of [
     await page.getByRole('button', { name: /Start the game/ }).click()
     const r = await playGame(page, `${name}_${id}`, { marks: (k, n) => (k % 4 === 3 ? [] : Array.from({ length: n }, (_, t) => t)), shootEvery: name === 'laptop' ? 5 : 99 })
     if (r.worstFit > worst.fit || r.worstSpill > worst.spill) worst = { fit: Math.max(worst.fit, r.worstFit), spill: Math.max(worst.spill, r.worstSpill), at: id }
+    smallest = Math.min(smallest, r.smallest)
   }
-  log(`${name} ${w}x${h}: ${ids.length} games played through (15 questions each); worst overflow ${worst.fit}px, worst spill ${worst.spill}px${worst.at ? ` (${worst.at})` : ''}`)
+  log(`${name} ${w}x${h}: ${ids.length} games played through (15 questions each); worst overflow ${worst.fit}px, worst spill ${worst.spill}px${worst.at ? ` (${worst.at})` : ''}; smallest diagram ${smallest}px tall`)
   await page.context().close()
 }
 

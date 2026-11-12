@@ -19,7 +19,7 @@ export function GameResume() {
           {gameTitle(found)} · question {saved.i + 1} of {saved.cfg.count} · {saved.cfg.teams.join(', ')}
         </p>
       </div>
-      <Link to="/game" search={{ id: saved.cfg.game }} className="btn btn-primary">
+      <Link to="/game" search={{ id: saved.cfg.game, go: 1 }} className="btn btn-primary">
         <Play size={18} aria-hidden="true" /> Carry on
       </Link>
     </section>

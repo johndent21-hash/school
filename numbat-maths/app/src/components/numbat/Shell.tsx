@@ -71,7 +71,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
             {show && !student && !teacher && !parent && (
               <>
                 <Link to="/games" className="btn btn-ghost btn-sm">
-                  <span className="max-[430px]:hidden">Class </span>games
+                  <span>
+                    <span className="max-[430px]:hidden">Class </span>games
+                  </span>
                 </Link>
                 <Link to="/parent" className="btn btn-ghost btn-sm max-[430px]:hidden">
                   Parents

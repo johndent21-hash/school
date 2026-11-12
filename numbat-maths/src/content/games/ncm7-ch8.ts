@@ -2164,5 +2164,6 @@ export const NCM7_CH8: GameChapter = {
   strand: 'Measurement and space',
   outcomes: [LEN, ARE, VOL],
   colour: 95,
+  topics: ['y7-area-volume'],
   sets: [SET_801, SET_802, SET_803, SET_804, SET_805, SET_806, SET_807, SET_808, SET_809, SET_810, SET_811, SET_812, SET_813],
 }
