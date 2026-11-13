@@ -30,6 +30,7 @@ import { rework as reworkCh12 } from './game-checks/ncm7-ch12'
 import { rework as rework8Ch1 } from './game-checks/ncm8-ch1'
 import { rework as rework8Ch2 } from './game-checks/ncm8-ch2'
 import { rework as rework8Ch3 } from './game-checks/ncm8-ch3'
+import { rework as rework8Ch4 } from './game-checks/ncm8-ch4'
 
 const N = Number(process.env.N ?? 400)
 let failures = 0
@@ -526,7 +527,7 @@ function circleShows(q: GameQuestion, part: 'radius' | 'diameter', where: string
 // ---------------------------------------------------------------- every kind of question, many times
 
 /** the other chapters' re-working, by the start of their exercise ids */
-const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7, 'ncm7-9': reworkCh9, 'ncm7-10': reworkCh10, 'ncm7-11': reworkCh11, 'ncm7-12': reworkCh12, 'ncm8-1': rework8Ch1, 'ncm8-2': rework8Ch2, 'ncm8-3': rework8Ch3 }
+const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7, 'ncm7-9': reworkCh9, 'ncm7-10': reworkCh10, 'ncm7-11': reworkCh11, 'ncm7-12': reworkCh12, 'ncm8-1': rework8Ch1, 'ncm8-2': rework8Ch2, 'ncm8-3': rework8Ch3, 'ncm8-4': rework8Ch4 }
 
 const kinds: string[] = []
 for (const set of ALL_GAME_SETS) {
@@ -567,8 +568,8 @@ for (const set of ALL_GAME_SETS) {
       }
       // ---- the answer, re-worked
       const ctx = { fail: (msg: string) => fail(where, msg, q), plain, page: plain(q.prompt) + ' | ' + (q.diagram ? labels(q.diagram).join(' | ') : '') }
-      // a kind reused from another book (meta.from = "ncm7-ch2|2.07|find") is checked by that chapter's checks, as that exercise
-      const from = typeof q.meta.from === 'string' ? (q.meta.from as string).split('|') : null
+      // a kind reused from another book (meta.reused = "ncm7-ch2|2.07|find") is checked by that chapter's checks, as that exercise
+      const from = typeof q.meta.reused === 'string' ? (q.meta.reused as string).split('|') : null
       const [chk, chkSet, chkQ] = from ? [`${from[0].replace('-ch', '-')}`, { ...set, id: `${from[0].split('-')[0]}-${from[1]}`, exercise: from[1] }, { ...q, meta: { ...q.meta, t: from[2] } }] : [set.id.replace(/\.\d+$/, ''), set, q]
       const other = OTHER_CHAPTERS[chk]
       const want = chkSet.id.startsWith('ncm7-8.') ? rework(chkSet, chkQ, where) : other ? other(chkSet, chkQ, ctx) : (fail(where, 'no independent checks for this chapter', q), null)

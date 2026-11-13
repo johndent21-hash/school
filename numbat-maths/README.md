@@ -215,6 +215,14 @@ Also:
       products, Stage 5 path MA5-ALG-P-01) are starred as extension in the textbook and marked so. The test reuses the
       Chapter 5 expression parser (now exported); for "factorise fully" an option equal in value is right only if
       nothing more can be taken out of its brackets.
+    - **Chapter 4, Geometry** (`ncm8-ch4.ts`, Ex 4.01–4.08, 23 kinds), MA4-ANG-C-01 (4.01–4.02) and MA4-GEO-C-01
+      (4.03–4.06). 4.01–4.06 revise Year 7 and reuse NCM 7 Chapter 2 and 6 kinds through `reuse()` (`reuse.ts`), which
+      records the source in `meta.reused` so the test sends each question to the checker for the exercise it came from.
+      New, both starred as extension in the textbook and marked so: 4.07 angle sum of a polygon (Stage 5 content) and
+      4.08 networks (not in the K–10 syllabus). The test works polygon answers out from the name or angle sum in the
+      question, and reads each network from the drawing alone (edge ends must sit on drawn vertices, each vertex takes
+      its nearest letter, no edges cross or pass through a vertex, the network is connected), counts degrees, and decides
+      tracing by Euler's rule (0 odd vertices: start anywhere; 2: start at an odd vertex; more: impossible).
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
