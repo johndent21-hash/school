@@ -988,6 +988,13 @@ div.bar.tinted > span {
   width: 100%;
   overflow-x: auto;
 }
+/* Wide, detailed diagrams (a protractor's scales) use the card's full width on a phone */
+@media (max-width: 639px) {
+  .q-card .q-diagram > div:has(> svg.dg-wide) {
+    width: calc(100% + 2.5rem);
+    margin-inline: -1.25rem;
+  }
+}
 .q-diagram figcaption {
   font-size: 0.85rem;
   font-style: italic;

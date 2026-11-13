@@ -38,6 +38,13 @@ Also:
   test in the order of Test Yourself 1. The questions are the site's own (no textbook wording or numbers), matching each
   exercise's question types from easy to hard. Questions with many right answers use the `open` answer kind, which checks
   the student's own numbers or calculation against the rule.
+- **Textbook alignment, Year 7 Angles** (`src/content/y7-ncm2.ts`, diagrams in `src/lib/maths/diagrams12.ts`): follows
+  New Century Maths 7 Chapter 2 (Ex 2.01–2.11, Power plus as an extension, an 18-question test in the order of Test
+  Yourself 2), replacing the old three-skill Angles topic (its mixed angle-relationships set is kept as "Extra practice").
+  Every angle is drawn at its true size: a protractor with both scales (it uses the card's full width on a phone), angles
+  named by letters, and two lines crossed by a transversal at any tilt, parallel or (for Ex 2.11) a few degrees off.
+  Drawing and compass construction tasks can't be marked on screen, so they become reading, choosing and reasoning
+  questions about the same ideas.
 - **Textbook alignment, Year 9 Coordinate geometry and graphs** (`src/content/y9-ncm11.ts`, diagrams in
   `src/lib/maths/diagrams5.ts`): follows New Century Maths 9 (3rd edition) Chapter 11 the same way, one skill per exercise
   (Ex 11.01–11.11) and a 16-question topic test in the order of Test Yourself 11. Ex 11.09 Direct variation is Path content
@@ -182,6 +189,9 @@ npx tsx tests/calc.test.ts                   # calculator arithmetic, errors and
 npx tsx tests/open.test.ts                   # marking of questions with many right answers
 npx tsx tests/ncm7-ch1.test.ts               # Year 7 Integers: every answer re-worked from its data, diagrams read back, wording
 npx tsx tests/gallery-ncm1.ts                # screenshots of each kind of Integers question, for a visual check
+npx tsx tests/ncm7-ch2.test.ts               # Year 7 Angles: answers re-worked and every drawing measured (angles, parallels, labels clear of lines)
+npx tsx tests/gallery-ncm7-2.ts              # screenshots of each kind of Angles question (ONLY=2.07 for one exercise)
+npx tsx tests/gallery-diagrams12.ts          # the Angles diagrams in light and dark
 npx tsx tests/ncm9-ch11.test.ts              # Year 9 Chapter 11: answers re-worked from the printed equations and the diagrams
 npx tsx tests/gallery-ncm11.ts               # screenshots of each kind of Chapter 11 diagram question
 npx tsx tests/ncm9-ch1.test.ts               # Year 9 Algebra: answers checked against the printed expression at random values
@@ -220,6 +230,7 @@ node qa/keypad-check.mjs    # (with Years 1–4 on) answers questions with the o
 node qa/rewards-check.mjs                                                          # guest rewards: celebration after a set, home dashboard
 VITE_PREVIEW_ONLY=1 npx vite dev --port 3102; node qa/teacher-demo-check.mjs       # example class on the teacher pages
 node qa/ncm1-check.mjs        # (dev server) Integers topic page, worked example, 12-question test, open answers on the keypad
+node qa/ncm7-2-check.mjs      # (dev server :3102) Angles topic and lessons, 18-question test, every skill practised on a phone
 node qa/parent-ratings-check.mjs                                                   # (same server) ratings sheet and example parent view
 node qa/resume-check.mjs      # (same server) stop a practice set, come back, carry on; finishing clears the saved place
 node qa/fraction-calc-check.mjs  # (same server) stacked fraction boxes, fraction and mixed keys, F⇄D, "Put … in my answer box"

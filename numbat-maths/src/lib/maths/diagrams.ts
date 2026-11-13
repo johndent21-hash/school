@@ -221,7 +221,9 @@ export function crossingLines(theta: number, labels: string[]): string {
   const tilt = 15
   const d1 = tilt - theta / 2
   const d2 = tilt + theta / 2
-  let body = line(polar(c, 130, d1), polar(c, 130, d1 + 180)) + line(polar(c, 130, d2), polar(c, 130, d2 + 180))
+  // steep lines are drawn shorter, so they stay inside the picture
+  const half = (d: number) => Math.min(130, 98 / Math.max(0.01, Math.abs(Math.sin(rad(d)))))
+  let body = line(polar(c, half(d1), d1), polar(c, half(d1), d1 + 180)) + line(polar(c, half(d2), d2), polar(c, half(d2), d2 + 180))
   const regions: [number, number][] = [
     [d1, d2],
     [d2, d1 + 180],

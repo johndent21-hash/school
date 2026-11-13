@@ -1,6 +1,7 @@
 // Year 7 (Stage 4) — Integers, Angles, Whole numbers & indices, Fractions & percentages
 import type { Level, Question, Topic } from '@/lib/maths/types'
 import { NCM1_SKILLS, NCM1_TEST } from './y7-ncm1'
+import { NCM2_SKILLS, NCM2_TEST } from './y7-ncm2'
 import { checkAnswer, isPrime, primeFactors } from '@/lib/maths/check'
 import {
   D, L, MINUS, TIMES, DIVIDE, bnum, chance, deg, ex, frac, fracA, fracS, gcd, int, intExcept, lcm, mcA, mcFixedA, mixed,
@@ -200,44 +201,6 @@ const int_muldiv = (level: Level): Question => {
 
 // ------------------------------------------------------------------ Angles
 
-const ANGLE_TYPES = ['Acute', 'Right', 'Obtuse', 'Straight', 'Reflex', 'Revolution']
-const angleType = (a: number) =>
-  a < 90 ? 'Acute' : a === 90 ? 'Right' : a < 180 ? 'Obtuse' : a === 180 ? 'Straight' : a < 360 ? 'Reflex' : 'Revolution'
-const ANGLE_RULES = 'Acute: less than 90°. Right: exactly 90°. Obtuse: between 90° and 180°. Straight: exactly 180°. Reflex: between 180° and 360°. Revolution: 360°.'
-
-const ang_classify = (level: Level): Question => {
-  if (level === 1) {
-    const a = pick([pick([25, 35, 50, 65]), 90, pick([115, 130, 150]), 180, pick([220, 250, 300])])
-    const t = angleType(a)
-    return q({
-      prompt: 'What type of angle is shown?',
-      diagram: D.singleAngle(a),
-      answer: mcFixedA(ANGLE_TYPES.slice(0, 5), t),
-      hint: ANGLE_RULES,
-      steps: [`This angle is ${t === 'Right' ? 'exactly a quarter turn (90°)' : t === 'Straight' ? 'a straight line (180°)' : t === 'Acute' ? 'smaller than a right angle' : t === 'Obtuse' ? 'bigger than a right angle but smaller than a straight angle' : 'bigger than a straight angle'}.`, `It is ${t === 'Acute' || t === 'Obtuse' ? 'an' : 'a'} ${t.toLowerCase()} angle.`],
-    })
-  }
-  if (level === 2) {
-    const a = pick([1, 45, 89, 90, 91, 135, 179, 180, 181, 270, 359, 360, 72, 108, 205, 320])
-    const t = angleType(a)
-    return q({
-      prompt: `What type of angle measures <b>${deg(a)}</b>?`,
-      answer: mcFixedA(ANGLE_TYPES, t),
-      hint: ANGLE_RULES,
-      steps: [ANGLE_RULES, `${deg(a)} is ${t === 'Acute' || t === 'Obtuse' ? 'an' : 'a'} ${t.toLowerCase()} angle.`],
-    })
-  }
-  const h = pick([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-  const a = Math.min(30 * h, 360 - 30 * h)
-  const t = angleType(a)
-  return q({
-    prompt: `At exactly ${h} o’clock, what type of angle is the <b>smaller</b> angle between the hour hand and the minute hand of a clock?`,
-    answer: mcFixedA(ANGLE_TYPES.slice(0, 4), t),
-    hint: 'A full turn is 360° and there are 12 numbers on a clock, so each gap between numbers is 30°.',
-    steps: ['Each hour mark is 360° ÷ 12 = 30° apart.', `At ${h} o’clock the hands are ${Math.min(h, 12 - h)} gap${Math.min(h, 12 - h) > 1 ? 's' : ''} apart: ${Math.min(h, 12 - h)} ${TIMES} 30° = ${a}°.`, `${a}° is ${t === 'Acute' || t === 'Obtuse' ? 'an' : 'a'} ${t.toLowerCase()} angle.`],
-  })
-}
-
 const ang_relationships = (level: Level): Question => {
   if (level === 1) {
     const t = pick(['line', 'right', 'vopp'])
@@ -382,106 +345,6 @@ const ang_relationships = (level: Level): Question => {
     prefix: `${v('x')} =`,
     hint: 'Vertically opposite angles are equal. Write an equation.',
     steps: ['Vertically opposite angles are equal:', ex(`${m}x + ${c} = ${a}`), ex(`${m}x = ${a - c}`), `${v('x')} = ${x}`],
-  })
-}
-
-type PPos = 0 | 1 | 2 | 3
-const ang_parallel = (level: Level): Question => {
-  const theta = int(40, 75)
-  const angleAt = (pos: PPos) => (pos % 2 === 0 ? theta : 180 - theta)
-  // relationship pairs: [upperPos, lowerPos, name]
-  const pairs: [PPos, PPos, string][] = [
-    [0, 0, 'Corresponding'],
-    [1, 1, 'Corresponding'],
-    [2, 2, 'Corresponding'],
-    [3, 3, 'Corresponding'],
-    [2, 0, 'Alternate'],
-    [3, 1, 'Alternate'],
-    [2, 1, 'Co-interior'],
-    [3, 0, 'Co-interior'],
-  ]
-  const reasons: Record<string, string> = {
-    Corresponding: 'Corresponding angles on parallel lines are equal.',
-    Alternate: 'Alternate angles on parallel lines are equal.',
-    'Co-interior': 'Co-interior angles on parallel lines add to 180° (they are supplementary).',
-  }
-  const [up, lo, rel] = pick(pairs)
-  const swap = chance()
-  if (level === 1 && chance(0.5)) {
-    return q({
-      prompt: `The two lines marked with arrows are parallel. What is the relationship between angles ${v('a')} and ${v('b')}?`,
-      diagram: D.parallelLines(theta, [
-        { at: 0, pos: up, label: it(swap ? 'b' : 'a') },
-        { at: 1, pos: lo, label: it(swap ? 'a' : 'b') },
-      ]),
-      answer: mcFixedA(['Corresponding', 'Alternate', 'Co-interior'], rel),
-      hint: 'Corresponding angles are in matching positions (F shape). Alternate angles are on opposite sides of the transversal, between the parallel lines (Z shape). Co-interior angles are on the same side, between the parallel lines (C shape).',
-      steps: [rel === 'Corresponding' ? 'The angles are in the same position at each intersection (an F shape).' : rel === 'Alternate' ? 'The angles are between the parallel lines on opposite sides of the transversal (a Z shape).' : 'The angles are between the parallel lines on the same side of the transversal (a C shape).', `They are ${rel.toLowerCase()} angles. ${reasons[rel]}`],
-    })
-  }
-  if (level <= 2) {
-    const knownUpper = chance()
-    const known = angleAt(knownUpper ? up : lo)
-    const x = rel === 'Co-interior' ? 180 - known : known
-    if (level === 1 && rel === 'Co-interior') return ang_parallel(1)
-    return q({
-      prompt: `The lines marked with arrows are parallel. Find the value of ${v('x')}, and think about the reason.`,
-      diagram: D.parallelLines(theta, [
-        { at: 0, pos: up, label: knownUpper ? known + '°' : it('x') + '°' },
-        { at: 1, pos: lo, label: knownUpper ? it('x') + '°' : known + '°' },
-      ]),
-      answer: numA(x),
-      prefix: `${v('x')} =`,
-      hint: 'Decide whether the angles are corresponding, alternate or co-interior.',
-      steps: [`The angles are ${rel.toLowerCase()}.`, reasons[rel], rel === 'Co-interior' ? `${v('x')} = 180 ${MINUS} ${known} = ${x}` : `${v('x')} = ${x}`],
-    })
-  }
-  if (chance(0.5)) {
-    // two-step: vertically opposite or straight line, then a parallel relationship
-    const lowPos = pick([0, 1, 2, 3] as PPos[])
-    const upPos = ((lowPos + 2) % 4) as PPos // vertically opposite position at upper intersection
-    const known = angleAt(lowPos)
-    // x at upper intersection, at the position corresponding to lowPos's vertically opposite → equals known
-    void upPos
-    const target = pick([0, 1, 2, 3] as PPos[])
-    const x = angleAt(target)
-    return q({
-      prompt: `The lines marked with arrows are parallel. Find the value of ${v('x')}.`,
-      diagram: D.parallelLines(theta, [
-        { at: 1, pos: lowPos, label: known + '°' },
-        { at: 0, pos: target, label: it('x') + '°' },
-      ]),
-      answer: numA(x),
-      prefix: `${v('x')} =`,
-      hint: 'You may need two steps: use the angles at one intersection first (vertically opposite, or on a straight line), then a parallel-line relationship.',
-      steps: [
-        `The ${known}° angle and the angle in the same position at the top intersection are corresponding, so that angle is also ${known}°.`,
-        target === lowPos
-          ? `${v('x')} is in that position, so ${v('x')} = ${x}.`
-          : (target + 2) % 4 === lowPos
-            ? `${v('x')} is vertically opposite that angle, so ${v('x')} = ${x}.`
-            : `${v('x')} and that angle lie on a straight line, so ${v('x')} = 180 ${MINUS} ${known} = ${x}.`,
-      ],
-    })
-  }
-  // algebraic
-  const [u2, l2, r2] = pick(pairs.filter((p) => p[2] !== 'Co-interior'))
-  const val = angleAt(u2)
-  const m = pick([2, 3])
-  let c = val - m * int(10, Math.floor(val / m) - 2)
-  if (c <= 0) c = val % m === 0 ? 0 : val % m
-  const x = (val - c) / m
-  if (!Number.isInteger(x) || x <= 0) return ang_parallel(3)
-  return q({
-    prompt: `The lines marked with arrows are parallel. Find the value of ${v('x')}.`,
-    diagram: D.parallelLines(theta, [
-      { at: 0, pos: u2, label: c ? `(${m}${it('x')} + ${c})°` : `${m}${it('x')}°` },
-      { at: 1, pos: l2, label: val + '°' },
-    ]),
-    answer: numA(x),
-    prefix: `${v('x')} =`,
-    hint: `The angles are ${r2.toLowerCase()}, so they are equal. Write an equation.`,
-    steps: [reasons[r2], ex(`${m}x ${c ? '+ ' + c + ' ' : ''}= ${val}`), c ? ex(`${m}x = ${val - c}`) : '', `${v('x')} = ${x}`].filter(Boolean),
   })
 }
 
@@ -1105,46 +968,26 @@ export const Y7A: Topic[] = [
     id: 'y7-angles',
     year: 7,
     title: 'Angles',
+    ref: 'NCM 7 Chapter 2',
     strand: 'Measurement and space',
     outcomes: ['MA4-ANG-C-01'],
-    blurb: 'Classify angles and use angle relationships, including angles on parallel lines.',
+    blurb: 'Name, measure and classify angles, then use angle relationships: at a point, on a straight line and where a transversal crosses parallel lines.',
     colour: 18,
+    test: NCM2_TEST,
     skills: [
-      {
-        id: 'y7-ang-classify',
-        title: 'Types of angles',
-        outcomes: ['MA4-ANG-C-01'],
-        summary: 'Classify angles as acute, right, obtuse, straight, reflex or a revolution.',
-        learn: {
-          intro: '<p>An angle measures the amount of turn between two arms that meet at a point called the vertex. Angles are measured in degrees (°).</p>',
-          keyPoints: ['<b>Acute</b>: less than 90°', '<b>Right</b>: exactly 90° (shown with a small square)', '<b>Obtuse</b>: more than 90° but less than 180°', '<b>Straight</b>: exactly 180°', '<b>Reflex</b>: more than 180° but less than 360°', '<b>Revolution</b>: exactly 360°'],
-        },
-        gen: ang_classify,
-        levels: { 1: 'Classify from a diagram', 2: 'Classify from a size, including borderline cases', 3: 'Clock-face angles' },
-      },
+      ...NCM2_SKILLS,
       {
         id: 'y7-ang-relationships',
-        title: 'Angle relationships',
+        title: 'Mixed practice: angle relationships',
+        tag: 'extra',
         outcomes: ['MA4-ANG-C-01'],
-        summary: 'Use angles on a straight line, at a point, vertically opposite, complementary and supplementary angles.',
+        summary: 'Angles on a line, in a right angle, at a point and vertically opposite, mixed together, with equations at Challenge level.',
         learn: {
-          intro: '<p>Many unknown angles can be found from a few facts. Always state the reason you used.</p>',
+          intro: '<p>Many unknown angles can be found from a few facts. Always state the reason you used.</p><p>At Challenge level the angles are written with algebra, such as (2<i>x</i> + 35)°. Use the angle fact to write an equation, then solve it. This uses equation skills from later in the year.</p>',
           keyPoints: ['Angles on a straight line add to 180° (they are <b>supplementary</b>).', 'Angles in a right angle add to 90° (they are <b>complementary</b>).', 'Angles at a point add to 360°.', '<b>Vertically opposite</b> angles are equal.'],
         },
         gen: ang_relationships,
-        levels: { 1: 'One step', 2: 'Several angles, complements and supplements', 3: 'Write and solve an equation' },
-      },
-      {
-        id: 'y7-ang-parallel',
-        title: 'Angles on parallel lines',
-        outcomes: ['MA4-ANG-C-01'],
-        summary: 'Identify corresponding, alternate and co-interior angles and use them to find unknowns.',
-        learn: {
-          intro: '<p>A <b>transversal</b> is a line that crosses two or more other lines. When it crosses parallel lines (marked with arrows), special pairs of angles are formed.</p>',
-          keyPoints: ['<b>Corresponding</b> angles are equal (F shape).', '<b>Alternate</b> angles are equal (Z shape).', '<b>Co-interior</b> angles add to 180° (C shape).', 'If one of these relationships holds, the lines must be parallel.'],
-        },
-        gen: ang_parallel,
-        levels: { 1: 'Name the relationship; equal angles', 2: 'Including co-interior angles', 3: 'Two steps or equations' },
+        levels: { 1: 'One step', 2: 'Several angles, complements and supplements', 3: 'Write and solve an equation (beyond the textbook exercises)' },
       },
     ],
   },

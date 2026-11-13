@@ -462,3 +462,21 @@
 .dg .water {
   fill: hsl(200 80% 60% / 0.22);
 }
+
+/* Year 7 angles: the inside scale of a protractor, and roads on a street map */
+.dg text.pout {
+  font-size: 13.5px;
+}
+.dg text.pin {
+  font-size: 11px;
+  font-weight: 600;
+}
+/* the • × ○ that mark an angle */
+.dg text.sym {
+  font-size: 21px;
+}
+.dg .road {
+  stroke: hsl(var(--grid-line));
+  stroke-width: 12;
+  stroke-linecap: round;
+}
