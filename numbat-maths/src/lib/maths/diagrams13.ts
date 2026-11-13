@@ -104,3 +104,23 @@ export function freqTable(xs: (number | string)[], fs: number[], head: [string, 
   })
   return svg(W, H, body, 'Frequency table', 240)
 }
+
+/** A table drawn as a picture: rows of cells (the first row and first column are headings), each cell tagged rN cM. */
+export function gridTable(rows: string[][], colW = 92, firstW = 110): string {
+  const rowH = 28
+  const nC = rows[0].length
+  const W = firstW + colW * (nC - 1) + 4
+  const H = rowH * rows.length + 4
+  const x0 = (c: number) => (c === 0 ? 2 : 2 + firstW + (c - 1) * colW)
+  const cx = (c: number) => (c === 0 ? 2 + firstW / 2 : x0(c) + colW / 2)
+  let body = `<rect class="frame" x="2" y="2" width="${W - 4}" height="${H - 4}"/>`
+  for (let c = 1; c < nC; c++) body += `<line class="ln thin" x1="${x0(c)}" y1="2" x2="${x0(c)}" y2="${H - 2}"/>`
+  for (let r = 1; r < rows.length; r++) body += `<line class="ln thin" x1="2" y1="${2 + r * rowH}" x2="${W - 2}" y2="${2 + r * rowH}"/>`
+  rows.forEach((row, r) =>
+    row.forEach((s, c) => {
+      const head = r === 0 || c === 0
+      body += `<text class="dl small${head ? ' thead' : ''} cell r${r} c${c}" x="${f(cx(c))}" y="${f(2 + r * rowH + rowH / 2)}" text-anchor="middle" dominant-baseline="central">${s}</text>`
+    }),
+  )
+  return svg(W, H, body, 'Table', Math.min(380, W + 20))
+}

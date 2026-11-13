@@ -252,6 +252,14 @@ Also:
       against the key, line-graph points and histogram columns read against the axis numbers, tables cell by cell; the
       shape is decided from the frequencies (mirror image, all equal, or the side the tail is on). Types of data,
       census, fair samples and the best graph come from a key in the test.
+    - **Chapter 8, Probability** (`ncm8-ch8.ts`, Ex 8.01–8.06, 25 kinds, 13 new), MA4-PRO-C-01. Sample spaces,
+      probability, complements and expected frequencies revise Year 7 and reuse NCM 7 Chapter 11. New: "or" events,
+      complements from counts and from percentages, numbered balls 1–100, raffles, independent coin tosses, relative
+      frequency and prediction. 8.03 (Venn diagrams) and 8.04 (two-way tables, drawn as pictures with `gridTable`)
+      are starred in the textbook and are Stage 5 Path content (MA5-PRO-P-01), so they are marked as extension. The
+      test works every probability as an exact fraction (the right option must be in simplest form and the only one
+      equal in value), places each Venn number in its region by its position relative to the circles, checks that
+      every row and column of a two-way table adds to its total, and counts the numbered balls itself.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
