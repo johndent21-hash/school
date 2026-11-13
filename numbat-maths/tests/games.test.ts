@@ -23,6 +23,10 @@ import { rework as reworkCh4 } from './game-checks/ncm7-ch4'
 import { rework as reworkCh5 } from './game-checks/ncm7-ch5'
 import { rework as reworkCh6 } from './game-checks/ncm7-ch6'
 import { rework as reworkCh7 } from './game-checks/ncm7-ch7'
+import { rework as reworkCh9 } from './game-checks/ncm7-ch9'
+import { rework as reworkCh10 } from './game-checks/ncm7-ch10'
+import { rework as reworkCh11 } from './game-checks/ncm7-ch11'
+import { rework as reworkCh12 } from './game-checks/ncm7-ch12'
 
 const N = Number(process.env.N ?? 400)
 let failures = 0
@@ -519,7 +523,7 @@ function circleShows(q: GameQuestion, part: 'radius' | 'diameter', where: string
 // ---------------------------------------------------------------- every kind of question, many times
 
 /** the other chapters' re-working, by the start of their exercise ids */
-const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7 }
+const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7, 'ncm7-9': reworkCh9, 'ncm7-10': reworkCh10, 'ncm7-11': reworkCh11, 'ncm7-12': reworkCh12 }
 
 const kinds: string[] = []
 for (const set of ALL_GAME_SETS) {

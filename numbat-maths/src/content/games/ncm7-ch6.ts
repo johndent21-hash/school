@@ -43,7 +43,7 @@ const PIECES: { pts: P[]; inside: P }[] = [
   { pts: [[0, 0], [1, 0], [1, 1], [2, 1], [2, 2], [1, 2], [1, 4], [0, 4]], inside: [0.5, 0.5] }, // Y
 ]
 const COLS = 14
-const ROWS = 8
+const ROWS = 10
 const GU = 26
 const shift = (pts: P[], dx: number, dy: number): P[] => pts.map(([x, y]) => [x + dx, y + dy])
 const box = (pts: P[]) => {
@@ -100,19 +100,25 @@ function m601which(): GameQuestion {
   const kind = int(0, 2)
   let pair: ReturnType<typeof placePair>
   if (kind === 0) {
-    const dx = int(4, 7)
-    const dy = int(-2, 2)
+    const dx = int(3, 6)
+    const dy = int(-3, 3)
     pair = placePair((pts) => shift(pts, dx, dy))
   } else if (kind === 1) {
-    // a true reflection: in a vertical mirror line, with no sliding along it
-    const gap = int(1, 3)
+    // a true reflection: in a vertical or horizontal mirror line, with no sliding along it
+    const gap = int(1, 2)
+    const across = chance()
     pair = placePair((pts) => {
-      const c = box(pts.slice(0, -1)).x1 + gap / 2
-      return pts.map(([x, y]) => [2 * c - x, y])
+      const bx = box(pts.slice(0, -1))
+      if (across) {
+        const c = bx.x1 + gap / 2
+        return pts.map(([x, y]) => [2 * c - x, y])
+      }
+      const c = bx.y1 + gap / 2
+      return pts.map(([x, y]) => [x, 2 * c - y])
     })
   } else {
     const q = int(1, 3)
-    const dx = int(5, 7)
+    const dx = int(4, 6)
     pair = placePair((pts) => {
       const t = turn(pts, q)
       const bt = box(t.slice(0, -1))

@@ -38,6 +38,8 @@ interface GqBase {
  * inOrder: all four options in the order to show them (e.g. units from smallest to largest), the right one included.
  */
 export function gq(o: GqBase & ({ wrong: string[]; inOrder?: undefined } | { inOrder: string[]; wrong?: undefined })): GameQuestion {
+  // meta.t is the kind of question; a detail also called t would silently replace it
+  if (o.meta && 't' in o.meta) throw new Error(`gq(${o.t}): meta must not have a key called t`)
   const right = norm(o.correct)
   let options: string[]
   if (o.inOrder) {

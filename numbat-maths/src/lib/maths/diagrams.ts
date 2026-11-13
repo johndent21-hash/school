@@ -737,7 +737,10 @@ export function numberPlane(o: PlaneOpts): string {
   for (let y = o.ymin; y <= o.ymax; y++) if (y !== 0 && y % lab === 0) body += text([X(0) - 9, Y(y)], num(y), 'dl tiny', 'end')
   // label the origin only when the axes meet at the bottom-left corner (otherwise "0" sits beside "−1" and reads as "−10")
   if (o.xmin === 0 && o.ymin === 0) body += text([X(0) - 8, Y(0) + 10], '0', 'dl tiny', 'end')
-  const clipId = 'c' + Math.floor(Math.random() * 1e9)
+  // the clip id comes from the drawing itself (not Math.random), so the same plane always gives the same SVG
+  let h = 0
+  for (const ch of body + JSON.stringify(o.lines ?? []) + (o.curves ?? []).length + JSON.stringify(o.segments ?? [])) h = (Math.imul(h, 31) + ch.charCodeAt(0)) | 0
+  const clipId = 'c' + (h >>> 0).toString(36)
   body += `<clipPath id="${clipId}"><rect x="${X(o.xmin)}" y="${Y(o.ymax)}" width="${X(o.xmax) - X(o.xmin)}" height="${Y(o.ymin) - Y(o.ymax)}"/></clipPath>`
   let plotted = ''
   for (const l of o.lines ?? []) {

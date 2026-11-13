@@ -134,8 +134,9 @@ Also:
   - **Questions** (`src/content/games/`, types in `src/lib/game/types.ts`): one set for each exercise, organised
     book → chapter → exercise. These are separate from the lessons' practice questions: every game question is ONE step,
     done in the head in about 15 seconds with friendly numbers, and its wrong choices are the answers the usual mistakes
-    give. The questions are the site's own; none of the textbook's wording or numbers are copied. So far, New Century
-    Maths 7 (each chapter also has a whole-chapter mix that takes one question from each exercise in textbook order):
+    give. The questions are the site's own; none of the textbook's wording or numbers are copied. New Century Maths 7,
+    all twelve chapters (each chapter also has a whole-chapter mix that takes one question from each exercise in
+    textbook order). A question's details (`meta`) may not use the key `t`, which holds its kind; `gq()` refuses it:
     - **Chapter 1, Integers** (`ncm7-ch1.ts`, Ex 1.01–1.10, 34 kinds), MA4-INT-C-01. Ex 1.09 (integers and the
       calculator) is played without calculators, so its game practises estimating and checking signs.
     - **Chapter 2, Angles** (`ncm7-ch2.ts`, Ex 2.01–2.11, 29 kinds), MA4-ANG-C-01. Drawings are measured by the test:
@@ -176,6 +177,25 @@ Also:
     the textbook's questions on the meaning of prefixes are left out, because the syllabus places prefixes in Stage 5
     (MA5-MAG-C-01); square kilometres (in the syllabus, but only in the hardest questions of Ex 8.04) are left out of the
     quick game; estimates of a circumference use π ≈ 3 and exact answers are in terms of π, as in the textbook.
+    - **Chapter 9, Number plane** (`ncm7-ch9.ts`, Ex 9.01–9.06, 13 kinds), MA4-LIN-C-01; 9.01 (grid references on a
+      town map) is earlier-stage content and marked as revision. The test reads every drawing back: the plane's axis
+      numbers give its scale, then each dot and the drawn line become coordinates and a rule; places on the map are
+      matched to the column letter and row number they line up with; tables of values are read cell by cell.
+    - **Chapter 10, Analysing data** (`ncm7-ch10.ts`, Ex 10.01–10.08, 18 kinds), MA4-DAT-C-01 (10.01–10.04) and
+      MA4-DAT-C-02 (10.05–10.08). Stem-and-leaf plots and tables are drawn as pictures so they scale on the board. The
+      test reads the data back off each drawing (column tops against the axis numbers, dots above each axis number,
+      leaves joined to their stems, the key checked) and works out every statistic itself; each "misleading graph" is
+      examined for every flaw and must have exactly one.
+    - **Chapter 11, Probability** (`ncm7-ch11.ts`, Ex 11.01–11.05, 12 kinds), MA4-PRO-C-01 (single-step
+      experiments only; two-step experiments are Stage 5). Spinners have equal sectors, coloured by letter; the test
+      checks every sector's angle, counts the letters, reads die events and complements with its own rules over the
+      outcomes 1 to 6, and writes each probability in simplest form itself.
+    - **Chapter 12, Rates, ratio and time** (`ncm7-ch12.ts`, Ex 12.01–12.12, 22 kinds), MA4-RAT-C-01 (12.01–12.07,
+      including distance–time graphs). Time (12.08–12.11: converting units of time, 24-hour time, time differences,
+      timetables) has no Stage 4 content point and is marked as revision; 12.12 (world time zones) is starred as
+      extension in the textbook and marked so. Time-zone questions state each place's UTC offset, so no outside facts
+      are needed. The test reads travel graphs off their axes and timetables cell by cell, and converts every clock time
+      to minutes after midnight itself.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
