@@ -262,6 +262,25 @@
 .dg .sector.c4 {
   fill: hsl(var(--shape-3));
 }
+/* sector graphs (diagrams13 sectorGraph) */
+.dg .pie0 {
+  fill: hsl(var(--primary) / 0.45);
+}
+.dg .pie1 {
+  fill: hsl(var(--accent-2) / 0.45);
+}
+.dg .pie2 {
+  fill: hsl(var(--sun) / 0.6);
+}
+.dg .pie3 {
+  fill: hsl(var(--shape-3));
+}
+.dg .pie4 {
+  fill: hsl(var(--primary) / 0.2);
+}
+.dg .pie5 {
+  fill: hsl(var(--accent-2) / 0.2);
+}
 .dg .needle {
   stroke: currentColor;
   stroke-width: 3;

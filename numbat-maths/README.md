@@ -242,6 +242,16 @@ Also:
       interest, I = Prn) is Stage 5 content (MA5-FIN-C-01) and marked as extension. The test reads the amounts and
       percentages from the question, works in exact fractions (so 33⅓% stays exact), requires exactly one option with
       the right value, money written as whole dollars or with 2 decimal places, and the explanation to reach the answer.
+    - **Chapter 7, Investigating data** (`ncm8-ch7.ts`, Ex 7.01–7.12, 32 kinds, 16 new), MA4-DAT-C-01 (7.01–7.03,
+      7.09, 7.10) and MA4-DAT-C-02 (7.04–7.08, 7.11, 7.12). Measures of centre and spread, dot plots, stem-and-leaf
+      plots and comparing data revise Year 7 and reuse NCM 7 Chapter 10. New: sector graphs (`sectorGraph` in
+      `diagrams13.ts`, sectors at their true angle), pictograms, line graphs, types of data (nominal, ordinal, discrete,
+      continuous), census and sample, fair (random) samples, frequency tables drawn as pictures (`freqTable`),
+      histograms and frequency polygons, choosing a graph, and the shape of a distribution. The test reads every
+      graph back: sector angles measured and matched to their labels (adding to 360°), pictogram symbols counted
+      against the key, line-graph points and histogram columns read against the axis numbers, tables cell by cell; the
+      shape is decided from the frequencies (mirror image, all equal, or the side the tail is on). Types of data,
+      census, fair samples and the best graph come from a key in the test.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.

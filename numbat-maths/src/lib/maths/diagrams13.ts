@@ -62,3 +62,45 @@ export function circleFeature(part: CirclePart, turn = 0): string {
   body += over + dot(c, 3)
   return svg(300, 250, body, 'Circle', 260)
 }
+
+/**
+ * A sector graph: each item's sector is drawn at its true angle, starting at 12 o'clock and going clockwise, with
+ * the item's name (and, if `showDeg`, its angle) written inside or just outside it.
+ */
+export function sectorGraph(items: { label: string; deg: number }[], showDeg = true): string {
+  const c: P = [170, 125]
+  const r = 95
+  let body = ''
+  let start = 90
+  items.forEach((it, i) => {
+    const end = start - it.deg
+    const p = polar(c, r, start)
+    const q = polar(c, r, end)
+    body += `<path class="sh pie pie${i % 6}" d="M${f(c[0])},${f(c[1])} L${f(p[0])},${f(p[1])} A${r},${r} 0 ${it.deg > 180 ? 1 : 0} 1 ${f(q[0])},${f(q[1])} Z"/>`
+    const midA = start - it.deg / 2
+    const inside = it.deg >= 50
+    const lp = polar(c, inside ? r * 0.58 : r + 26, midA)
+    body += `<text class="dl small slice" x="${f(lp[0])}" y="${f(lp[1] - (showDeg ? 8 : 0))}" text-anchor="middle" dominant-baseline="central">${it.label}</text>`
+    if (showDeg) body += `<text class="dl small sdeg" x="${f(lp[0])}" y="${f(lp[1] + 9)}" text-anchor="middle" dominant-baseline="central">${it.deg}°</text>`
+    start = end
+  })
+  return svg(340, 250, body, 'Sector graph', 300)
+}
+
+/** A frequency table drawn as a picture (so it scales on the board): a heading row, then one row per value. */
+export function freqTable(xs: (number | string)[], fs: number[], head: [string, string] = ['Score', 'Frequency']): string {
+  const rowH = 26
+  const W = 240
+  const colX = [70, 175]
+  const H = rowH * (xs.length + 1) + 4
+  let body = `<rect class="frame" x="2" y="2" width="${W - 4}" height="${H - 4}"/>`
+  body += `<line class="ln thin" x1="120" y1="2" x2="120" y2="${H - 2}"/>`
+  for (let i = 1; i <= xs.length; i++) body += `<line class="ln thin" x1="2" y1="${2 + i * rowH}" x2="${W - 2}" y2="${2 + i * rowH}"/>`
+  const cell = (row: number, col: number, s: string, cls = 'dl small') =>
+    `<text class="${cls} cell r${row} c${col}" x="${colX[col]}" y="${f(2 + row * rowH + rowH / 2)}" text-anchor="middle" dominant-baseline="central">${s}</text>`
+  body += cell(0, 0, head[0], 'dl small thead') + cell(0, 1, head[1], 'dl small thead')
+  xs.forEach((x, i) => {
+    body += cell(i + 1, 0, String(x)) + cell(i + 1, 1, String(fs[i]))
+  })
+  return svg(W, H, body, 'Frequency table', 240)
+}
