@@ -149,6 +149,13 @@ Also:
       questions offer a partly simplified fraction as a wrong choice; every other wrong choice differs in value from the
       answer. Ex 4.09 (fractions and the calculator) is played without calculators, so its game practises estimating
       (every exact answer is within 0.4 of a whole number, so the nearest whole number is never in doubt).
+    - **Chapter 5, Algebra and equations** (`ncm7-ch5.ts`, Ex 5.01–5.13, 40 kinds), MA4-ALG-C-01 (5.01–5.09) and
+      MA4-EQU-C-01 (5.10–5.13). 5.01–5.02 use the commutative, associative and distributive laws with numbers, as the
+      textbook does; the syllabus point is their generalisation to algebra, which 5.03–5.09 practise. Algebra is shown
+      with ex() (italic pronumerals, number first, letters in alphabetical order). The test reads every expression back
+      off the page with its own parser and compares options by evaluating them at four sets of values, so a wrong
+      option that is secretly equal to the answer is caught; it found a real slip while the set was being written
+      (x ÷ a = b marked b instead of ab).
     - **Chapter 8, Area and volume** (`ncm7-ch8.ts`, Ex 8.01–8.13, 84 kinds). Outcomes: MA4-LEN-C-01 (8.02 perimeter, 8.03
     circumference), MA4-ARE-C-01 (8.04–8.08) and MA4-VOL-C-01 (8.09 views and cross-sections of prisms, 8.10–8.13).
     Syllabus notes: 8.01's length, mass and time conversions are revision of earlier stages (only kL and ML are Stage 4);
