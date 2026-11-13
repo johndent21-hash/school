@@ -19,27 +19,18 @@ NCM 7 is done (all 12 chapters). Now **NCM 8**, then NCM 9, then NCM 10, one cha
 
 ## State right now
 
-| NCM 8 chapter | State |
-|---|---|
-| 1 Pythagoras' theorem | done, published |
-| 2 Working with numbers | done, committed, not yet board-checked or published |
-| 3 Algebra | done, committed, not yet board-checked or published |
-| **4 Geometry** | **in progress**, see below |
-| 5–12 | to do: Area and volume; Fractions and percentages; Investigating data; Probability; Equations; Ratios and rates; Graphing linear equations; Similar figures and surface area |
+NCM 7 and NCM 8 are complete: every chapter has class games, an independent checker, a README entry, and passes
+`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Next: NCM 9**, chapter by chapter (textbook PDFs in
+the Year 9 repo), then NCM 10.
 
-### Chapter 4: what's done and what's left
-
-Done (committed as WIP): `src/content/games/ncm8-ch4.ts` (4.01–4.06 reuse NCM 7 Ch 2 and Ch 6 kinds through
-`reuse()`; new 4.07 polygon angle sums and 4.08 networks, both extension), `src/content/games/reuse.ts`, registered
-in `src/content/games/index.ts`, and the `meta.from` dispatch in `tests/games.test.ts`. It type-checks.
-
-Left:
-1. Write `tests/game-checks/ncm8-ch4.ts` for the new kinds only (reused kinds already go to the NCM 7 checkers):
-   `4.07 sum | regular | sides` (read the polygon name or angle from the prompt text and work it out) and
-   `4.08 degree | trace` (read the network from the SVG, not from meta: `circle.node` cx/cy, `line.edge` endpoints, the
-   letter labels; count degrees and odd vertices; Euler: 0 odd → "Yes, starting anywhere", 2 odd → "Yes, but only from an odd vertex", more → "No: more than 2 odd vertices").
-2. Register it as `'ncm8-4'` in `OTHER_CHAPTERS` in `tests/games.test.ts`.
-3. `N=400 npx tsx tests/games.test.ts`, then planted errors (change a right answer and confirm the checker fails it), a quick gallery look, README entry, commit, push.
+NCM 8 notes worth knowing:
+- Reused kinds now record `meta.reused` (not `meta.from`, which the unit-conversion kinds already use for the unit).
+- New drawings live in `src/lib/maths/diagrams13.ts`: `circleFeature`, `sectorGraph`, `freqTable`, `gridTable`.
+- Later-stage chapters marked extension: 6.11 simple interest, 8.03–8.04 Venn/two-way, 9.03, 9.04, 9.08, 11.09,
+  11.10, all of Chapter 12 (similar figures, surface area are Stage 5).
+- Board check: run per chapter (`ONLY=ncm8-7` etc., plus `ONLY=ncm8-ch7` for chapter games), logging to a file in
+  the background; a single `ONLY=ncm8` run takes over 25 minutes. Never pipe it through `tail` (output is lost if it
+  is killed).
 
 ## How a chapter is built
 
@@ -78,6 +69,9 @@ git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit ...; git 
 - Distractors that coincide with the answer (2 × 2 = 2 + 2, 4² = 2⁴, √225 = 15) leave fewer than 3 wrong options: add spare candidates.
 - With `inOrder`, the right answer must not always fall in the same slot.
 - The Bash safety check rejects heredocs containing `$${`. Write a Python edit script to the scratchpad and run it.
+- A checker that normalises "text :" to "text:" breaks ratios such as "2 : 3"; leave colons alone.
+- Each set needs at least 15 different questions (games of 15 must not repeat): a set with one fixed-wording kind fails.
+- Options must be at most 42 characters; long sample/census descriptions had to be shortened.
 - On the board, long words in options break the 4-across layout (see `GameBoard.tsx` row4 rule). Keep diagrams small.
 
 ## Keeping usage down
