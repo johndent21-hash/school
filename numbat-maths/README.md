@@ -252,7 +252,7 @@ Also:
       against the key, line-graph points and histogram columns read against the axis numbers, tables cell by cell; the
       shape is decided from the frequencies (mirror image, all equal, or the side the tail is on). Types of data,
       census, fair samples and the best graph come from a key in the test.
-    - **Chapter 8, Probability** (`ncm8-ch8.ts`, Ex 8.01–8.06, 25 kinds, 13 new), MA4-PRO-C-01. Sample spaces,
+    - **Chapter 8, Probability** (`ncm8-ch8.ts`, Ex 8.01–8.06, 22 kinds, 12 new), MA4-PRO-C-01. Sample spaces,
       probability, complements and expected frequencies revise Year 7 and reuse NCM 7 Chapter 11. New: "or" events,
       complements from counts and from percentages, numbered balls 1–100, raffles, independent coin tosses, relative
       frequency and prediction. 8.03 (Venn diagrams) and 8.04 (two-way tables, drawn as pictures with `gridTable`)
@@ -260,6 +260,14 @@ Also:
       test works every probability as an exact fraction (the right option must be in simplest form and the only one
       equal in value), places each Venn number in its region by its position relative to the circles, checks that
       every row and column of a two-way table adds to its total, and counts the numbered balls itself.
+    - **Chapter 9, Equations** (`ncm8-ch9.ts`, Ex 9.01–9.08, 21 kinds, 10 new), MA4-EQU-C-01 (9.01, 9.02, 9.05–9.07).
+      One- and two-step equations and equation problems revise Year 7 and reuse NCM 7 Chapter 5. New: x² = c and
+      ax² = c (both answers, exact √ when c is not a square, as Stage 4 asks), rectangle problems and substituting into
+      formulas. Pronumerals on both sides (9.03) and brackets (9.04, starred) are Stage 5 MA5-EQU-C-01, and changing
+      the subject (9.08) is Stage 5 Path MA5-EQU-P-02: all marked extension. The test parses the algebra with the
+      Chapter 5 parser, solves each linear equation itself (it must be linear with one whole-number root), reads a
+      formula and its given values from the italic letters in the prompt, and checks a rearranged formula by
+      substituting it back into the original at several sets of values.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
