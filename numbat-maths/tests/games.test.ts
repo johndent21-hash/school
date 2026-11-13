@@ -567,8 +567,11 @@ for (const set of ALL_GAME_SETS) {
       }
       // ---- the answer, re-worked
       const ctx = { fail: (msg: string) => fail(where, msg, q), plain, page: plain(q.prompt) + ' | ' + (q.diagram ? labels(q.diagram).join(' | ') : '') }
-      const other = OTHER_CHAPTERS[set.id.replace(/\.\d+$/, '')]
-      const want = set.id.startsWith('ncm7-8.') ? rework(set, q, where) : other ? other(set, q, ctx) : (fail(where, 'no independent checks for this chapter', q), null)
+      // a kind reused from another book (meta.from = "ncm7-ch2|2.07|find") is checked by that chapter's checks, as that exercise
+      const from = typeof q.meta.from === 'string' ? (q.meta.from as string).split('|') : null
+      const [chk, chkSet, chkQ] = from ? [`${from[0].replace('-ch', '-')}`, { ...set, id: `${from[0].split('-')[0]}-${from[1]}`, exercise: from[1] }, { ...q, meta: { ...q.meta, t: from[2] } }] : [set.id.replace(/\.\d+$/, ''), set, q]
+      const other = OTHER_CHAPTERS[chk]
+      const want = chkSet.id.startsWith('ncm7-8.') ? rework(chkSet, chkQ, where) : other ? other(chkSet, chkQ, ctx) : (fail(where, 'no independent checks for this chapter', q), null)
       if (want) {
         reworked++
         const got = q.options[q.correct]
