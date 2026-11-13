@@ -251,7 +251,13 @@ export function GameBoard({
                 className={cn(
                   'gb-options',
                   // short choices under a diagram go in one row, which leaves the diagram more room
-                  !!cur.q.diagram && cur.q.options.every((o) => o.replace(/<[^>]*>/g, '').length <= (b.phase === 'reveal' ? 18 : 10)) && 'row4',
+                  // (but not when one word is too long to fit a quarter of the width, e.g. "Parallelogram")
+                  !!cur.q.diagram &&
+                    cur.q.options.every((o) => {
+                      const text = o.replace(/<[^>]*>/g, '')
+                      return text.length <= (b.phase === 'reveal' ? 18 : 10) && Math.max(...text.split(/\s+/).map((w) => w.length)) <= 11
+                    }) &&
+                    'row4',
                   b.phase === 'reveal' && 'revealed',
                 )}
                 aria-label="Choices"

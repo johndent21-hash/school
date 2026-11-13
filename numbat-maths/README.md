@@ -156,6 +156,20 @@ Also:
       off the page with its own parser and compares options by evaluating them at four sets of values, so a wrong
       option that is secretly equal to the answer is caught; it found a real slip while the set was being written
       (x ÷ a = b marked b instead of ab).
+    - **Chapter 6, Geometrical figures** (`ncm7-ch6.ts`, Ex 6.01–6.10, 23 kinds), MA4-GEO-C-01 (6.05–6.10).
+      6.01–6.04 (transformations, line and rotational symmetry) have no Stage 4 content point: they are Stage 3
+      content (two-dimensional spatial structure), and Stage 5 returns to them on the number plane (path
+      MA5-LIN-P-01), so those games are marked as revision. (The Stage 3 placement was confirmed from a web search of
+      the NSW Curriculum site; the site itself could not be opened from the build machine.) Every drawing is measured
+      by the test: grid shapes sit on grid points and have no symmetry of their own, so translation, reflection and
+      rotation can never be confused, and a "reflection" must be a true mirror image; axes and order of symmetry are
+      found by reflecting and rotating the drawn vertices; each angle label is matched to its corner and must agree
+      with the drawn angle to within 1°; quadrilaterals are named from their measured sides, parallel sides and right
+      angles, and their tick, arrow and right-angle marks checked.
+    - **Chapter 7, Decimals** (`ncm7-ch7.ts`, Ex 7.01–7.11, 28 kinds), MA4-FRC-C-01; 7.03 (adding and subtracting
+      decimals) is Stage 3 content and marked as revision. Decimals are built from whole numbers, so every answer is
+      exact; the test reads each number back as an exact fraction, rounds half up on the digits, and turns recurring
+      decimals (dot notation, `.rec`) back into fractions to find the one option equal to the question's fraction.
     - **Chapter 8, Area and volume** (`ncm7-ch8.ts`, Ex 8.01–8.13, 84 kinds). Outcomes: MA4-LEN-C-01 (8.02 perimeter, 8.03
     circumference), MA4-ARE-C-01 (8.04–8.08) and MA4-VOL-C-01 (8.09 views and cross-sections of prisms, 8.10–8.13).
     Syllabus notes: 8.01's length, mass and time conversions are revision of earlier stages (only kL and ML are Stage 4);

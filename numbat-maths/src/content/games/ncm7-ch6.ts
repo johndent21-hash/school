@@ -57,14 +57,19 @@ function turn(pts: P[], quarters: number): P[] {
   for (let i = 0; i < quarters; i++) out = out.map(([x, y]) => [-y, x])
   return out
 }
+/** the two shapes on just enough grid to hold them (one square to spare all round), so the picture can be drawn large */
 function gridPic(a: P[], aIn: P, b: P[], bIn: P): string {
+  const all = box([...a, ...b])
+  const [x0, y0] = [all.x0 - 1, all.y0 - 1]
+  const cols = all.x1 - all.x0 + 2
+  const rows = all.y1 - all.y0 + 2
   let body = ''
-  for (let i = 0; i <= COLS; i++) body += `<line class="grid" x1="${10 + i * GU}" y1="10" x2="${10 + i * GU}" y2="${10 + ROWS * GU}"/>`
-  for (let j = 0; j <= ROWS; j++) body += `<line class="grid" x1="10" y1="${10 + j * GU}" x2="${10 + COLS * GU}" y2="${10 + j * GU}"/>`
-  const px = (pts: P[]) => pts.map(([x, y]) => [10 + x * GU, 10 + y * GU] as P)
-  body += polygon(px(a), 'sh shapeA') + polygon(px(b), 'sh2 shapeB')
+  for (let i = 0; i <= cols; i++) body += `<line class="grid" x1="${10 + i * GU}" y1="10" x2="${10 + i * GU}" y2="${10 + rows * GU}"/>`
+  for (let j = 0; j <= rows; j++) body += `<line class="grid" x1="10" y1="${10 + j * GU}" x2="${10 + cols * GU}" y2="${10 + j * GU}"/>`
+  const px = (pts: P[]) => pts.map(([x, y]) => [10 + (x - x0) * GU, 10 + (y - y0) * GU] as P)
+  body += polygon(px(a), 'sh shapeA') + polygon(px(b), 'sh sh2 shapeB')
   body += D.text(px([aIn])[0], 'A', 'dl vx') + D.text(px([bIn])[0], 'B', 'dl vx')
-  return D.svg(20 + COLS * GU, 20 + ROWS * GU, body, 'Shape A and shape B on a grid', 440)
+  return D.svg(20 + cols * GU, 20 + rows * GU, body, 'Shape A and shape B on a grid', Math.round((20 + cols * GU) * 1.4))
 }
 /** shape A somewhere on the left of the grid, and its image B made by `move`, both on the grid and apart */
 function placePair(move: (pts: P[]) => P[]): { a: P[]; aIn: P; b: P[]; bIn: P } {
@@ -95,19 +100,19 @@ function m601which(): GameQuestion {
   const kind = int(0, 2)
   let pair: ReturnType<typeof placePair>
   if (kind === 0) {
-    const dx = int(4, 9)
-    const dy = int(-3, 3)
+    const dx = int(4, 7)
+    const dy = int(-2, 2)
     pair = placePair((pts) => shift(pts, dx, dy))
   } else if (kind === 1) {
     // a true reflection: in a vertical mirror line, with no sliding along it
-    const gap = int(1, 4)
+    const gap = int(1, 3)
     pair = placePair((pts) => {
       const c = box(pts.slice(0, -1)).x1 + gap / 2
       return pts.map(([x, y]) => [2 * c - x, y])
     })
   } else {
     const q = int(1, 3)
-    const dx = int(5, 9)
+    const dx = int(5, 7)
     pair = placePair((pts) => {
       const t = turn(pts, q)
       const bt = box(t.slice(0, -1))
@@ -136,7 +141,7 @@ const slide = (dx: number, dy: number) =>
     .join(', ')
 
 function m601slide(): GameQuestion {
-  const dx = int(4, 9)
+  const dx = int(4, 7)
   const dy = pick([-3, -2, -1, 1, 2, 3])
   const pair = placePair((pts) => shift(pts, dx, dy))
   return gq({
@@ -239,7 +244,7 @@ function m603axes(): GameQuestion {
     diagram: figure(f.pts),
     correct: String(f.axes),
     wrong: numWrongFrom(f.axes, [0, 1, 2, 3, 4, f.axes + 1, f.axes * 2].filter((x, i, a) => a.indexOf(x) === i)).map(String),
-    why: `This ${f.name} can be folded onto itself along ${f.axes === 0 ? 'no line' : f.axes === 1 ? '1 line' : `${f.axes} different lines`}.`,
+    why: f.axes === 0 ? `This ${f.name} cannot be folded onto itself along any line: 0 axes.` : `This ${f.name} can be folded onto itself along ${f.axes === 1 ? '1 line' : `${f.axes} different lines`}.`,
     meta: { name: f.name },
   })
 }
@@ -254,7 +259,7 @@ function m603which(): GameQuestion {
     prompt: `Which shape has exactly ${right.axes} ${right.axes === 1 ? 'axis' : 'axes'} of symmetry?`,
     correct: cap(right.name),
     wrong: four.filter((f) => f !== right).map((f) => cap(f.name)),
-    why: `A ${right.name} has ${right.axes} ${right.axes === 1 ? 'axis' : 'axes'} of symmetry.`,
+    why: `${/^[aeiou]/.test(right.name) ? 'An' : 'A'} ${right.name} has ${right.axes} ${right.axes === 1 ? 'axis' : 'axes'} of symmetry.`,
     meta: { axes: right.axes },
   })
 }
@@ -294,7 +299,7 @@ function m604turn(): GameQuestion {
   const a = 360 / f.order
   return gq({
     t: 'turn',
-    prompt: `What is the smallest turn about its centre that fits a ${f.name} exactly onto itself?`,
+    prompt: `What is the smallest turn about its centre that fits ${/^[aeiou]/.test(f.name) ? 'an' : 'a'} ${f.name} exactly onto itself?`,
     correct: deg(a),
     wrong: shuffle([45, 60, 72, 90, 120, 180, 360].filter((x) => x !== a)).slice(0, 3).map(deg),
     why: `It fits onto itself ${f.order} times in a full turn: 360° ÷ ${f.order} = ${deg(a)}.`,

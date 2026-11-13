@@ -22,6 +22,7 @@ import { rework as reworkCh3 } from './game-checks/ncm7-ch3'
 import { rework as reworkCh4 } from './game-checks/ncm7-ch4'
 import { rework as reworkCh5 } from './game-checks/ncm7-ch5'
 import { rework as reworkCh6 } from './game-checks/ncm7-ch6'
+import { rework as reworkCh7 } from './game-checks/ncm7-ch7'
 
 const N = Number(process.env.N ?? 400)
 let failures = 0
@@ -42,6 +43,7 @@ const plain = (h: string) =>
   h
     .replace(/<span class="frac"[^>]*><span class="fn">(.*?)<\/span><span class="fd">(.*?)<\/span><\/span>/g, '($1/$2)')
     .replace(/<sup>(.*?)<\/sup>/g, '^$1')
+    .replace(/<span class="rec">(.)<\/span>/g, '$1\u0307')
     .replace(/<[^>]*>/g, ' ')
     .replace(/&#9633;/g, '□')
     .replace(/ /g, ' ')
@@ -517,7 +519,7 @@ function circleShows(q: GameQuestion, part: 'radius' | 'diameter', where: string
 // ---------------------------------------------------------------- every kind of question, many times
 
 /** the other chapters' re-working, by the start of their exercise ids */
-const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6 }
+const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7 }
 
 const kinds: string[] = []
 for (const set of ALL_GAME_SETS) {
