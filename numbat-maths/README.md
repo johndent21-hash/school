@@ -297,6 +297,12 @@ Also:
       squares, non-monic trinomials, mixed factorisations, simplifying by factorising). Reuses NCM 8 Chapter 3 kinds.
       The test compares options by value at non-whole test points (so a fraction's denominator is never 0), and a
       factorising answer must also be fully factorised (a number times linear brackets with no common factor inside).
+    - **Chapter 2, Pythagoras' theorem and surds** (`ncm9-ch2.ts`, Ex 2.01–2.09, 18 kinds, 6 new). The Pythagoras
+      exercises revise Stage 4 (MA4-PYT-C-01) and reuse NCM 8 Chapter 1. The surd exercises (2.02–2.05) are Stage 5
+      Path (Indices C, MA5-IND-P-01) and labelled extension: recognising surds, simplest form, adding like surds
+      (simplifying first), multiplying and dividing. The test gives every surd an exact k√n value, works out the
+      question's expression, and requires the one option equal in value and in simplest form (a partly simplified
+      surd may be a wrong option only when the question asks for simplest form).
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
