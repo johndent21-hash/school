@@ -268,6 +268,12 @@ Also:
       Chapter 5 parser, solves each linear equation itself (it must be linear with one whole-number root), reads a
       formula and its given values from the italic letters in the prompt, and checks a rearranged formula by
       substituting it back into the original at several sets of values.
+    - **Chapter 10, Ratios and rates** (`ncm8-ch10.ts`, Ex 10.01–10.10, 25 kinds, 10 new), MA4-RAT-C-01. Ratios,
+      sharing, rates, best buys, rate problems and travel graphs revise Year 7 and reuse NCM 7 Chapter 12. New: one
+      part of a ratio as a fraction of the whole, scale maps (scale as a ratio, map to real and real to map), sharing in
+      a three-part ratio, units of rates, speed, distance and time (minutes turned into hours, answers as h and min),
+      and converting rates (km/h and m/s, L/min to L/h, $/kg to c/g). The test works each answer from the question
+      with its own unit table and requires exactly one option of that value, converting options in other units first.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
