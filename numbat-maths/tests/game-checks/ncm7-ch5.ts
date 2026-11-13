@@ -8,11 +8,11 @@
 import type { GameQuestion, GameSet } from '../../src/lib/game/types'
 import type { Ctx, Expect } from './ncm7-ch1'
 
-type Env = Record<string, number>
-type F = (e: Env) => number
+export type Env = Record<string, number>
+export type F = (e: Env) => number
 
 /** the page's HTML as compact text: fractions become ((top)/(bottom)), powers ^(n), no spaces */
-function txt(html: string): string {
+export function txt(html: string): string {
   return html
     .replace(/<span class="frac"[^>]*><span class="fn">(.*?)<\/span><span class="fd">(.*?)<\/span><\/span>/g, '(($1)/($2))')
     .replace(/<sup>(.*?)<\/sup>/g, '^($1)')
@@ -22,7 +22,7 @@ function txt(html: string): string {
 }
 
 /** a parser for the algebra the games show */
-function parse(src: string): F {
+export function parse(src: string): F {
   const s = src.replace(/−/g, '-').replace(/×/g, '*').replace(/÷/g, '/')
   let i = 0
   const expr = (): F => {
@@ -100,7 +100,7 @@ function parse(src: string): F {
   if (i !== s.length) throw new Error(`cannot read "${s}" past ${i}`)
   return f
 }
-const lettersIn = (s: string) => [...new Set(s.replace(/\^\(\d+\)/g, '').match(/[A-Za-z□]/g) ?? [])]
+export const lettersIn = (s: string) => [...new Set(s.replace(/\^\(\d+\)/g, '').match(/[A-Za-z□]/g) ?? [])]
 /** test points: every letter gets a different value, none of them 0 or 1 */
 const POINTS = [
   [3, 7, 2, 5, 11, 13],
@@ -113,7 +113,7 @@ function envs(letters: string[]): Env[] {
 }
 const close = (x: number, y: number) => Math.abs(x - y) <= 1e-9 * Math.max(1, Math.abs(x), Math.abs(y))
 /** two expressions (or a function) agree at every test point */
-function same(a: F, b: F, letters: string[]): boolean {
+export function same(a: F, b: F, letters: string[]): boolean {
   return envs(letters).every((e) => close(a(e), b(e)))
 }
 

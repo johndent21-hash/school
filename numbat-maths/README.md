@@ -209,6 +209,12 @@ Also:
       decimals, powers of negative numbers, (√a)² and √a × √b (2.09, starred as extension; surds are Stage 5 path),
       and the index laws, where wrong choices equal in value to the answer (e.g. 4² for 2⁴) are filtered out and the
       test compares every choice with the expression in exact BigInt arithmetic.
+    - **Chapter 3, Algebra** (`ncm8-ch3.ts`, Ex 3.01–3.13, 28 kinds), MA4-ALG-C-01. 3.01–3.05 revise Year 7 and reuse
+      the NCM 7 Chapter 5 kinds. New: expanding, factors and HCFs of terms, factorising and factorising fully. 3.06
+      (index laws with pronumerals, Stage 5 MA5-IND-C-01) and 3.10–3.13 (negative common factors and binomial
+      products, Stage 5 path MA5-ALG-P-01) are starred as extension in the textbook and marked so. The test reuses the
+      Chapter 5 expression parser (now exported); for "factorise fully" an option equal in value is right only if
+      nothing more can be taken out of its brackets.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
