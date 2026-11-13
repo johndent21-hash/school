@@ -289,6 +289,14 @@ Also:
       drawings, and cylinder answers are exact (in terms of π). The test reads the labels: a box's three edges (the
       formula is symmetrical), a triangular prism's four labels (the three that satisfy a² + b² = c² are the triangle,
       the fourth is the length; two readings would fail), and a cylinder's radius or diameter by its drawn length.
+    New Century Maths 9 Advanced (a third book tab), chapter by chapter:
+    - **Chapter 1, Algebra** (`ncm9-ch1.ts`, Ex 1.01–1.15, 27 kinds, 13 new). Stage 5 core MA5-ALG-C-01: algebraic
+      fractions with numerical denominators (1.03), expanding (1.05), binomial products (1.07); 1.01–1.02 revise
+      Stage 4. Path content is labelled extension in the teacher notes: MA5-ALG-P-01 (multiplying and dividing
+      algebraic fractions, the HCF, monic trinomials) and MA5-ALG-P-02 (special products, grouping, difference of two
+      squares, non-monic trinomials, mixed factorisations, simplifying by factorising). Reuses NCM 8 Chapter 3 kinds.
+      The test compares options by value at non-whole test points (so a fraction's denominator is never 0), and a
+      factorising answer must also be fully factorised (a number times linear brackets with no common factor inside).
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
