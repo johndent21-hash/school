@@ -202,6 +202,13 @@ Also:
       rules are left to the Stage 5 path (MA5-IND-P-01). Triangles are drawn to scale (diagrams6 `fig`, `rtPts`); the
       test finds the right angle from its mark, takes the side opposite as the hypotenuse, matches each label to its
       side, checks the drawing is in proportion and works out the unknown itself.
+    - **Chapter 2, Working with numbers** (`ncm8-ch2.ts`, Ex 2.01–2.12, 37 kinds), MA4-INT-C-01 (2.02–2.04),
+      MA4-FRC-C-01 (2.05–2.07), MA4-IND-C-01 (2.08, 2.10–2.12). This chapter revises Year 7, so those sets reuse the
+      matching NCM 7 question kinds (`from(chapter, exercise, ...kinds)`); the NCM 8 checker sends each reused kind to
+      the NCM 7 checker for the exercise it came from. New kinds: mental strategies (2.01, revision), terminating
+      decimals, powers of negative numbers, (√a)² and √a × √b (2.09, starred as extension; surds are Stage 5 path),
+      and the index laws, where wrong choices equal in value to the answer (e.g. 4² for 2⁴) are filtered out and the
+      test compares every choice with the expression in exact BigInt arithmetic.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
