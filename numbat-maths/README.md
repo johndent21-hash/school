@@ -234,6 +234,14 @@ Also:
       fails), drawings must be in proportion to their labels (cylinders say "not to scale" and are only checked for
       radius or diameter), sector angles are measured, and circle parts are recognised from the geometry (where a
       line's ends lie, whether it meets the circle once, whether a shaded region closes through the centre).
+    - **Chapter 6, Fractions and percentages** (`ncm8-ch6.ts`, Ex 6.01–6.12, 52 kinds, 19 new), MA4-FRC-C-01.
+      6.01–6.06 revise Year 7 and reuse NCM 7 Chapter 4 kinds. New: percentages such as 12½% and 33⅓% as fractions
+      and back, percentage increase and decrease, mark-ups and multipliers (× 1.15), mental percentages, the unitary
+      method (including working back from a discounted price), profit and loss (also as a percentage of the cost
+      price), adding GST and finding the GST in a GST-inclusive price (÷ 11), and percentage problems. 6.11 (simple
+      interest, I = Prn) is Stage 5 content (MA5-FIN-C-01) and marked as extension. The test reads the amounts and
+      percentages from the question, works in exact fractions (so 33⅓% stays exact), requires exactly one option with
+      the right value, money written as whole dollars or with 2 decimal places, and the explanation to reach the answer.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
