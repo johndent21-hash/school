@@ -268,12 +268,20 @@ Also:
       Chapter 5 parser, solves each linear equation itself (it must be linear with one whole-number root), reads a
       formula and its given values from the italic letters in the prompt, and checks a rearranged formula by
       substituting it back into the original at several sets of values.
-    - **Chapter 10, Ratios and rates** (`ncm8-ch10.ts`, Ex 10.01–10.10, 25 kinds, 10 new), MA4-RAT-C-01. Ratios,
+    - **Chapter 10, Ratios and rates** (`ncm8-ch10.ts`, Ex 10.01–10.10, 24 kinds, 10 new), MA4-RAT-C-01. Ratios,
       sharing, rates, best buys, rate problems and travel graphs revise Year 7 and reuse NCM 7 Chapter 12. New: one
       part of a ratio as a fraction of the whole, scale maps (scale as a ratio, map to real and real to map), sharing in
       a three-part ratio, units of rates, speed, distance and time (minutes turned into hours, answers as h and min),
       and converting rates (km/h and m/s, L/min to L/h, $/kg to c/g). The test works each answer from the question
       with its own unit table and requires exactly one option of that value, converting options in other units first.
+    - **Chapter 11, Graphing linear equations** (`ncm8-ch11.ts`, Ex 11.01–11.13, 26 kinds, 17 new), MA4-LIN-C-01.
+      The number plane, tables of values and graphing lines revise Year 7 and reuse NCM 7 Chapter 9. New: rules with
+      negative numbers, rules for decreasing tables and number patterns, linear or not, increasing or decreasing,
+      the equation of a line from its graph, comparing lines (steepest, parallel, y-intercept), linear models (taxi
+      fares, a draining tank), solving an equation from a graph, and where two lines meet. The gradient (11.09,
+      starred) and y = mx + c (11.10) are Stage 5 (MA5-LIN-C-01) and marked as extension. The test reads tables cell
+      by cell and the drawn line from its ends against the axis numbers (it must be a whole-number line, and the line a
+      question names must be the one drawn), and solves rules, patterns and intersections itself.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
