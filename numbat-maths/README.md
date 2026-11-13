@@ -45,6 +45,12 @@ Also:
   named by letters, and two lines crossed by a transversal at any tilt, parallel or (for Ex 2.11) a few degrees off.
   Drawing and compass construction tasks can't be marked on screen, so they become reading, choosing and reasoning
   questions about the same ideas.
+- **Textbook alignment, Year 7 Area and volume** (`src/content/y7-ncm8.ts`): follows New Century Maths 7 Chapter 8
+  (Ex 8.01–8.13, Power plus as an extension, an 18-question test in the order of Test Yourself 8), replacing the old
+  five-skill topic (same topic id, `y7-area-volume`, so the Chapter 8 class games still link to it; each game set now
+  points at its own exercise's lesson). Flat shapes are drawn to scale, with dashed heights labelled on the line itself;
+  drawings of solids say "Diagram not drawn to scale." Ruler, dot-paper and centicube tasks become reading, choosing and
+  reasoning questions about the same ideas.
 - **Textbook alignment, Year 9 Coordinate geometry and graphs** (`src/content/y9-ncm11.ts`, diagrams in
   `src/lib/maths/diagrams5.ts`): follows New Century Maths 9 (3rd edition) Chapter 11 the same way, one skill per exercise
   (Ex 11.01–11.11) and a 16-question topic test in the order of Test Yourself 11. Ex 11.09 Direct variation is Path content
@@ -192,6 +198,8 @@ npx tsx tests/gallery-ncm1.ts                # screenshots of each kind of Integ
 npx tsx tests/ncm7-ch2.test.ts               # Year 7 Angles: answers re-worked and every drawing measured (angles, parallels, labels clear of lines)
 npx tsx tests/gallery-ncm7-2.ts              # screenshots of each kind of Angles question (ONLY=2.07 for one exercise)
 npx tsx tests/gallery-diagrams12.ts          # the Angles diagrams in light and dark
+npx tsx tests/ncm7-ch8.test.ts               # Year 7 Area and volume: answers re-worked with its own unit tables; every length label checked against its side
+npx tsx tests/gallery-ncm7-8.ts              # screenshots of each kind of Area and volume question (ONLY=8.05 for one exercise)
 npx tsx tests/ncm9-ch11.test.ts              # Year 9 Chapter 11: answers re-worked from the printed equations and the diagrams
 npx tsx tests/gallery-ncm11.ts               # screenshots of each kind of Chapter 11 diagram question
 npx tsx tests/ncm9-ch1.test.ts               # Year 9 Algebra: answers checked against the printed expression at random values
@@ -231,6 +239,7 @@ node qa/rewards-check.mjs                                                       
 VITE_PREVIEW_ONLY=1 npx vite dev --port 3102; node qa/teacher-demo-check.mjs       # example class on the teacher pages
 node qa/ncm1-check.mjs        # (dev server) Integers topic page, worked example, 12-question test, open answers on the keypad
 node qa/ncm7-2-check.mjs      # (dev server :3102) Angles topic and lessons, 18-question test, every skill practised on a phone
+node qa/ncm7-8-check.mjs      # (dev server :3102) Area and volume topic and lessons, 18-question test, every skill on a phone
 node qa/parent-ratings-check.mjs                                                   # (same server) ratings sheet and example parent view
 node qa/resume-check.mjs      # (same server) stop a practice set, come back, carry on; finishing clears the saved place
 node qa/fraction-calc-check.mjs  # (same server) stacked fraction boxes, fraction and mixed keys, F⇄D, "Put … in my answer box"

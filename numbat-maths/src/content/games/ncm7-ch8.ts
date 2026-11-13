@@ -265,6 +265,7 @@ const SET_801: GameSet = {
   ref: 'NCM 7 Ex 8.01',
   title: 'The metric system',
   focus: 'Convert between metric units of length, mass, capacity and time: multiply for large to small units, divide for small to large.',
+  lessons: ['y7-ms-metric'],
   outcomes: [VOL],
   teacherNote:
     'Converting units of length, mass and time is revision of earlier stages (it has no Stage 4 content point of its own); kilolitres and megalitres are Stage 4 Volume. The textbook’s questions on the meaning of prefixes are left out because the syllabus places prefixes in Stage 5.',
@@ -442,6 +443,7 @@ const SET_802: GameSet = {
   ref: 'NCM 7 Ex 8.02',
   title: 'Perimeter',
   focus: 'Find the perimeter of squares, rectangles, triangles and shapes with equal sides by adding the side lengths.',
+  lessons: ['y7-ms-perimeter'],
   outcomes: [LEN],
   makers: [
     mk('square', m802square),
@@ -633,6 +635,7 @@ const SET_803: GameSet = {
   ref: 'NCM 7 Ex 8.03',
   title: 'Circumference of a circle',
   focus: 'Name the radius, diameter and circumference, and find a circumference with C = πd or C = 2πr: as an estimate (π ≈ 3) or in terms of π.',
+  lessons: ['y7-ms-circumference'],
   outcomes: [LEN],
   teacherNote: 'As in the textbook, estimates use π ≈ 3 and exact answers are left in terms of π. Decimal answers need the calculator’s π key, so they are left for the exercise.',
   makers: [
@@ -796,7 +799,7 @@ const SET_804: GameSet = {
   title: 'Metric units for area',
   focus: 'Choose sensible units for area and convert between mm², cm², m² and hectares (1 cm² = 100 mm², 1 m² = 10 000 cm², 1 ha = 10 000 m²).',
   outcomes: [ARE],
-  lessons: ['y7-area-units'],
+  lessons: ['y7-ms-areaunits'],
   teacherNote: 'Square kilometres (1 km² = 100 ha) are in the syllabus but only come up in the hardest questions of the exercise, so they are not in this game.',
   makers: [mk('fact', m804fact), mk('down', m804down), mk('unit', m804unit), mk('up', m804up), mk('operation', m804operation), mk('size', m804size)],
 }
@@ -960,7 +963,7 @@ const SET_805: GameSet = {
   title: 'Area of a rectangle',
   focus: 'Find the area of rectangles and squares with A = lw and A = s², and work back from an area to a side.',
   outcomes: [ARE],
-  lessons: ['y7-area-rect'],
+  lessons: ['y7-ms-rect'],
   makers: [
     mk('rect', m805rect),
     mk('square', m805square),
@@ -1121,7 +1124,7 @@ const SET_806: GameSet = {
   title: 'Area of a triangle',
   focus: 'Find the area of a triangle with A = ½bh, choosing the base and the perpendicular height (not a slanted side).',
   outcomes: [ARE],
-  lessons: ['y7-area-tri-para'],
+  lessons: ['y7-ms-triangle'],
   makers: [
     mk('basic', m806basic),
     mk('story', m806story),
@@ -1257,7 +1260,7 @@ const SET_807: GameSet = {
   title: 'Area of a parallelogram',
   focus: 'Find the area of a parallelogram with A = bh, using the perpendicular height and not the slanted side.',
   outcomes: [ARE],
-  lessons: ['y7-area-tri-para'],
+  lessons: ['y7-ms-parallelogram'],
   makers: [
     mk('basic', m807basic),
     mk('story', m807story),
@@ -1433,7 +1436,7 @@ const SET_808: GameSet = {
   title: 'Areas of composite shapes',
   focus: 'Split a composite shape into rectangles and triangles, then add the areas of the parts or subtract the part that is missing.',
   outcomes: [ARE],
-  lessons: ['y7-area-composite'],
+  lessons: ['y7-ms-composite'],
   teacherNote: 'To keep every question to one step, the areas of the parts are given, or only the method is asked for. The full calculations are left for the exercise.',
   makers: [
     mk('add', m808add),
@@ -1602,6 +1605,7 @@ const SET_809: GameSet = {
   ref: 'NCM 7 Ex 8.09',
   title: 'Drawing prisms',
   focus: 'Recognise prisms and their cross-sections, name a prism from its base, and picture the top and front views of a solid.',
+  lessons: ['y7-ms-prisms'],
   outcomes: [VOL],
   teacherNote: 'The exercise is mostly drawing on dot paper. In the game, drawing becomes recognising: naming prisms and cross-sections, and reading views.',
   makers: [
@@ -1757,6 +1761,7 @@ const SET_810: GameSet = {
   ref: 'NCM 7 Ex 8.10',
   title: 'Metric units for volume',
   focus: 'Choose sensible units for volume and convert between mm³, cm³ and m³ (1 cm³ = 1000 mm³, 1 m³ = 1 000 000 cm³).',
+  lessons: ['y7-ms-volunits'],
   outcomes: [VOL],
   makers: [mk('fact', m810fact), mk('count', m810count), mk('unit', m810unit), mk('down', m810down), mk('meaning', m810meaning), mk('up', m810up)],
 }
@@ -1877,7 +1882,7 @@ const SET_811: GameSet = {
   title: 'Volume of a rectangular prism',
   focus: 'Find the volume of rectangular prisms and cubes with V = lwh.',
   outcomes: [VOL],
-  lessons: ['y7-vol-prism'],
+  lessons: ['y7-ms-rectprism'],
   makers: [mk('prism', m811prism), mk('cube', m811cube), mk('layers', m811layers), mk('meaning', m811meaning), mk('story', m811story, 2)],
 }
 
@@ -1974,6 +1979,7 @@ const SET_812: GameSet = {
   ref: 'NCM 7 Ex 8.12',
   title: 'Volume of a prism',
   focus: 'Find the volume of any prism with V = Ah: the area of the cross-section times the length.',
+  lessons: ['y7-ms-prismvol'],
   outcomes: [VOL],
   teacherNote: 'The area of the cross-section is given, so each question is one step. Finding that area first (two steps) is left for the exercise.',
   makers: [mk('Ah', m812Ah), mk('story', m812story), mk('meaning', m812meaning), mk('back', m812back, 2)],
@@ -2150,7 +2156,7 @@ const SET_813: GameSet = {
   title: 'Volume and capacity',
   focus: 'Convert between mL, L, kL and ML, and link volume to capacity: 1 cm³ holds 1 mL and 1 m³ holds 1 kL (1000 L).',
   outcomes: [VOL],
-  lessons: ['y7-vol-prism'],
+  lessons: ['y7-ms-capacity'],
   makers: [mk('fact', m813fact), mk('down', m813down), mk('unit', m813unit), mk('holds', m813holds), mk('up', m813up), mk('size', m813size)],
 }
 
