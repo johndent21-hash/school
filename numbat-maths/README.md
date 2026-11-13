@@ -223,6 +223,17 @@ Also:
       question, and reads each network from the drawing alone (edge ends must sit on drawn vertices, each vertex takes
       its nearest letter, no edges cross or pass through a vertex, the network is connected), counts degrees, and decides
       tracing by Euler's rule (0 odd vertices: start anywhere; 2: start at an odd vertex; more: impossible).
+    - **Chapter 5, Area and volume** (`ncm8-ch5.ts`, Ex 5.01–5.14, 65 kinds, 28 of them new), MA4-LEN-C-01 (5.01–5.03, and arcs and
+      sector perimeters in 5.08), MA4-ARE-C-01 (5.04–5.10), MA4-VOL-C-01 (5.11–5.14); all Stage 4 core, sectors
+      included. 5.03–5.06, 5.11, 5.12 and 5.14 revise Year 7 and mostly reuse NCM 7 Chapter 8 kinds. New: perimeters of
+      quadrilaterals and composite shapes, parts of a circle (`circleFeature` in `diagrams13.ts`), radius from a
+      circumference, km² and hectares, area of a circle, semicircle and quadrant, sectors (fraction of a circle, arc,
+      area, perimeter), trapeziums, kites and rhombuses, cylinders. Played without calculators, so answers are exact (in
+      terms of π) or estimates with π ≈ 3; the textbook's 1- and 2-decimal-place answers are left for the exercise. The
+      test reads every drawing: labels are matched to the side they sit beside the middle of (a label beside two sides
+      fails), drawings must be in proportion to their labels (cylinders say "not to scale" and are only checked for
+      radius or diameter), sector angles are measured, and circle parts are recognised from the geometry (where a
+      line's ends lie, whether it meets the circle once, whether a shaded region closes through the centre).
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
