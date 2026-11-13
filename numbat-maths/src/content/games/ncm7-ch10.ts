@@ -168,10 +168,10 @@ function m1002flaw(): GameQuestion {
     correct: FLAWS[flaw],
     inOrder: FLAWS,
     why: [
-      'The vertical axis starts above 0, so small differences look much bigger than they are.',
-      'Equal spaces on the axis stand for different amounts (0, 10, 20, then 50, 100), which distorts the heights.',
-      'Wider columns look bigger, even when the amounts are similar.',
-      'Without a title, a reader cannot tell what the graph is about.',
+      'Starting the axis above 0 makes small differences look big.',
+      'Equal gaps stand for different amounts (10, then 30, then 50).',
+      'Wider columns look bigger, whatever the amounts.',
+      'Without a title, you cannot tell what the graph shows.',
     ][flaw],
     meta: { flaw },
   })

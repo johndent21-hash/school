@@ -12,6 +12,7 @@ import { NCM7_CH9 } from './ncm7-ch9'
 import { NCM7_CH10 } from './ncm7-ch10'
 import { NCM7_CH11 } from './ncm7-ch11'
 import { NCM7_CH12 } from './ncm7-ch12'
+import { NCM8_CH1 } from './ncm8-ch1'
 
 export const GAME_BOOKS: GameBook[] = [
   {
@@ -21,6 +22,14 @@ export const GAME_BOOKS: GameBook[] = [
     year: 7,
     stage: 'Stage 4',
     chapters: [NCM7_CH1, NCM7_CH2, NCM7_CH3, NCM7_CH4, NCM7_CH5, NCM7_CH6, NCM7_CH7, NCM7_CH8, NCM7_CH9, NCM7_CH10, NCM7_CH11, NCM7_CH12],
+  },
+  {
+    id: 'ncm8',
+    short: 'NCM 8',
+    title: 'New Century Maths 8',
+    year: 8,
+    stage: 'Stage 4',
+    chapters: [NCM8_CH1],
   },
 ]
 

@@ -196,6 +196,12 @@ Also:
       extension in the textbook and marked so. Time-zone questions state each place's UTC offset, so no outside facts
       are needed. The test reads travel graphs off their axes and timetables cell by cell, and converts every clock time
       to minutes after midnight itself.
+    New Century Maths 8 (a second book tab on the games page), chapter by chapter:
+    - **Chapter 1, Pythagoras' theorem** (`ncm8-ch1.ts`, Ex 1.01–1.08, 13 kinds), MA4-PYT-C-01, and MA4-FRC-C-01 for
+      the square roots of 1.01. Exact answers (e.g. √41) are used, as the Stage 4 content asks; the word "surd" and its
+      rules are left to the Stage 5 path (MA5-IND-P-01). Triangles are drawn to scale (diagrams6 `fig`, `rtPts`); the
+      test finds the right angle from its mark, takes the side opposite as the hypotenuse, matches each label to its
+      side, checks the drawing is in proportion and works out the unknown itself.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.

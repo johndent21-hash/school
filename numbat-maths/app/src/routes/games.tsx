@@ -108,7 +108,7 @@ function Games() {
         {book.chapters.map((c) => (
           <Chapter key={c.id} book={book} chapter={c} open={open.includes(c.id)} onToggle={(show) => toggle(c.id, show)} />
         ))}
-        <p className="text-sm text-muted-foreground">More chapters and Years 8 to 10 are on the way.</p>
+        <p className="text-sm text-muted-foreground">More chapters, and Years 9 and 10, are on the way.</p>
       </section>
     </div>
   )

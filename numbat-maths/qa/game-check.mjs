@@ -216,7 +216,15 @@ for (const [w, h, name] of [
   const page = await newPage({ width: w, height: h })
   await page.goto(`${base}/games`, { waitUntil: 'networkidle' })
   // ONLY=ncm7-2 plays just the games whose ids start with that (e.g. a newly added chapter)
-  const ids = (await page.locator('a[href^="/game?id="]').evaluateAll((as) => [...new Set(as.map((a) => new URL(a.href).searchParams.get('id')))])).filter((id) => !process.env.ONLY || id.startsWith(process.env.ONLY))
+  // every game in every book (one tab per textbook)
+  const found = new Set()
+  const tabs = page.getByRole('tab')
+  const nTabs = await tabs.count()
+  for (let i = 0; i < Math.max(1, nTabs); i++) {
+    if (nTabs) await tabs.nth(i).click()
+    for (const id of await page.locator('a[href^="/game?id="]').evaluateAll((as) => as.map((a) => new URL(a.href).searchParams.get('id')))) found.add(id)
+  }
+  const ids = [...found].filter((id) => !process.env.ONLY || id.startsWith(process.env.ONLY))
   let worst = { fit: 0, spill: 0, at: '' }
   let smallest = 9999
   for (const id of ids) {
