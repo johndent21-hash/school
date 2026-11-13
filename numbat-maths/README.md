@@ -282,6 +282,13 @@ Also:
       starred) and y = mx + c (11.10) are Stage 5 (MA5-LIN-C-01) and marked as extension. The test reads tables cell
       by cell and the drawn line from its ends against the axis numbers (it must be a whole-number line, and the line a
       question names must be the one drawn), and solves rules, patterns and intersections itself.
+    - **Chapter 12, Similar figures and surface area** (`ncm8-ch12.ts`, Ex 12.01–12.05, 12 kinds, all new). Every
+      set is Stage 5 content, so all are marked as extension: similar figures and scale factors (MA5-GEO-C-01; 12.01
+      starred) and the surface area of right prisms and cylinders (MA5-ARE-C-01). Similar-figure questions are worded
+      (matching sides and angles named in the question); surface areas use the cube, box, triangular-prism and cylinder
+      drawings, and cylinder answers are exact (in terms of π). The test reads the labels: a box's three edges (the
+      formula is symmetrical), a triangular prism's four labels (the three that satisfy a² + b² = c² are the triangle,
+      the fourth is the length; two readings would fail), and a cylinder's radius or diameter by its drawn length.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.

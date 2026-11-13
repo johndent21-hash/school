@@ -38,6 +38,7 @@ import { rework as rework8Ch8 } from './game-checks/ncm8-ch8'
 import { rework as rework8Ch9 } from './game-checks/ncm8-ch9'
 import { rework as rework8Ch10 } from './game-checks/ncm8-ch10'
 import { rework as rework8Ch11 } from './game-checks/ncm8-ch11'
+import { rework as rework8Ch12 } from './game-checks/ncm8-ch12'
 
 const N = Number(process.env.N ?? 400)
 let failures = 0
@@ -534,7 +535,7 @@ function circleShows(q: GameQuestion, part: 'radius' | 'diameter', where: string
 // ---------------------------------------------------------------- every kind of question, many times
 
 /** the other chapters' re-working, by the start of their exercise ids */
-const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7, 'ncm7-9': reworkCh9, 'ncm7-10': reworkCh10, 'ncm7-11': reworkCh11, 'ncm7-12': reworkCh12, 'ncm8-1': rework8Ch1, 'ncm8-2': rework8Ch2, 'ncm8-3': rework8Ch3, 'ncm8-4': rework8Ch4, 'ncm8-5': rework8Ch5, 'ncm8-6': rework8Ch6, 'ncm8-7': rework8Ch7, 'ncm8-8': rework8Ch8, 'ncm8-9': rework8Ch9, 'ncm8-10': rework8Ch10, 'ncm8-11': rework8Ch11 }
+const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7, 'ncm7-9': reworkCh9, 'ncm7-10': reworkCh10, 'ncm7-11': reworkCh11, 'ncm7-12': reworkCh12, 'ncm8-1': rework8Ch1, 'ncm8-2': rework8Ch2, 'ncm8-3': rework8Ch3, 'ncm8-4': rework8Ch4, 'ncm8-5': rework8Ch5, 'ncm8-6': rework8Ch6, 'ncm8-7': rework8Ch7, 'ncm8-8': rework8Ch8, 'ncm8-9': rework8Ch9, 'ncm8-10': rework8Ch10, 'ncm8-11': rework8Ch11, 'ncm8-12': rework8Ch12 }
 
 const kinds: string[] = []
 for (const set of ALL_GAME_SETS) {
