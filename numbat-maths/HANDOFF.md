@@ -13,15 +13,15 @@ NCM 7 is done (all 12 chapters). Now **NCM 8**, then NCM 9, then NCM 10, one cha
   `pdftotext` into the scratchpad and read only the exercise headings and a few sample questions. Never copy textbook wording or numbers.
 - Syllabus: NSW Mathematics K–10 (2022). Put outcome codes on each set. Mark earlier-stage work as revision, and
   starred or later-stage work as extension (`teacherNote`, empty `outcomes`).
-- Preview: artifact https://claude.ai/artifact/NHrcC9eBrYkDQ8f8CXFiYU (Version 20 has NCM 7 Ch 1–12 and NCM 8 Ch 1).
+- Preview: artifact https://claude.ai/artifact/NHrcC9eBrYkDQ8f8CXFiYU (Version 21 has NCM 7 and NCM 8 complete; NCM 9 Ch 1–2 are committed but not yet board-checked or published — build with the NCM 9 book left out of `index.ts` until it is checked).
   A new session must `read` it before republishing. Same file name each time, no icon.
 - Commit messages end with the attribution lines the session's system reminder gives.
 
 ## State right now
 
-NCM 7 and NCM 8 are complete: every chapter has class games, an independent checker, a README entry, and passes
-`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Next: NCM 9**, chapter by chapter (textbook PDFs in
-the Year 9 repo), then NCM 10.
+NCM 7 and NCM 8 are complete (published, Version 21): every chapter has class games, an independent checker, a README entry, and passes
+`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Now: NCM 9 Advanced** (repo `johndent21-hash/Year-9-Advanced`, public: clone read-only, 13 chapters). Ch 1–2 done
+(`ncm9-ch1.ts`, `ncm9-ch2.ts`); next Ch 3 Financial maths / percentages. Then NCM 10.
 
 NCM 8 notes worth knowing:
 - Reused kinds now record `meta.reused` (not `meta.from`, which the unit-conversion kinds already use for the unit).
