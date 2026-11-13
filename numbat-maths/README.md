@@ -134,9 +134,22 @@ Also:
   - **Questions** (`src/content/games/`, types in `src/lib/game/types.ts`): one set for each exercise, organised
     book → chapter → exercise. These are separate from the lessons' practice questions: every game question is ONE step,
     done in the head in about 15 seconds with friendly numbers, and its wrong choices are the answers the usual mistakes
-    give. So far: **New Century Maths 7 Chapter 8, Area and volume** (`ncm7-ch8.ts`, Ex 8.01–8.13, 84 kinds of question,
-    plus a whole-chapter mix that takes one question from each exercise in textbook order). The questions are the site's
-    own; none of the textbook's wording or numbers are copied. Outcomes: MA4-LEN-C-01 (8.02 perimeter, 8.03
+    give. The questions are the site's own; none of the textbook's wording or numbers are copied. So far, New Century
+    Maths 7 (each chapter also has a whole-chapter mix that takes one question from each exercise in textbook order):
+    - **Chapter 1, Integers** (`ncm7-ch1.ts`, Ex 1.01–1.10, 34 kinds), MA4-INT-C-01. Ex 1.09 (integers and the
+      calculator) is played without calculators, so its game practises estimating and checking signs.
+    - **Chapter 2, Angles** (`ncm7-ch2.ts`, Ex 2.01–2.11, 29 kinds), MA4-ANG-C-01. Drawings are measured by the test:
+      each size written on a drawing is checked against the angle as drawn.
+    - **Chapter 3, Whole numbers** (`ncm7-ch3.ts`, Ex 3.01–3.12, 32 kinds), MA4-IND-C-01 (3.04, 3.07–3.10) and
+      MA4-FRC-C-01 (3.11 highest common factor). 3.01–3.03 (rounding, multiplying, dividing) are revision of Stage 3 and
+      are marked so; 3.05 (long division), 3.06 (Roman numerals, not in the K–10 syllabus) and 3.12 (lowest common
+      multiple: the Stage 4 content names the HCF but not the LCM) are starred as extension in the textbook, and the
+      games say so.
+    - **Chapter 4, Fractions and percentages** (`ncm7-ch4.ts`, Ex 4.01–4.12, 41 kinds), MA4-FRC-C-01. "Simplest form"
+      questions offer a partly simplified fraction as a wrong choice; every other wrong choice differs in value from the
+      answer. Ex 4.09 (fractions and the calculator) is played without calculators, so its game practises estimating
+      (every exact answer is within 0.4 of a whole number, so the nearest whole number is never in doubt).
+    - **Chapter 8, Area and volume** (`ncm7-ch8.ts`, Ex 8.01–8.13, 84 kinds). Outcomes: MA4-LEN-C-01 (8.02 perimeter, 8.03
     circumference), MA4-ARE-C-01 (8.04–8.08) and MA4-VOL-C-01 (8.09 views and cross-sections of prisms, 8.10–8.13).
     Syllabus notes: 8.01's length, mass and time conversions are revision of earlier stages (only kL and ML are Stage 4);
     the textbook's questions on the meaning of prefixes are left out, because the syllabus places prefixes in Stage 5
@@ -223,6 +236,7 @@ npx tsx tests/gallery-ncm9-9.ts              # screenshots of Chapter 9 (Year 9)
 npx tsx tests/ncm9-ch10.test.ts              # Year 9 Surface area and volume: labels read off the diagrams, shapes and sector angles measured
 npx tsx tests/gallery-ncm9-10.ts             # screenshots of Chapter 10 (Year 9) questions
 npx tsx tests/games.test.ts                  # class games: every answer re-worked from its numbers, drawings measured, game building, luck rules
+                                             # (each chapter's own re-working is in tests/game-checks/, e.g. ncm7-ch4.ts: exact fraction arithmetic)
 K=3 npx tsx tests/games-dump.ts              # class games: sample questions as plain text (ONLY=ncm7-8.05 for one exercise)
 npx tsx tests/gallery-games.ts               # class games: screenshots of every kind of diagram question
 TZ=Australia/Sydney npx tsx tests/rewards.test.ts    # levels, Monday weeks (incl. daylight saving), streaks, badges

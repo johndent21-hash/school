@@ -3,7 +3,7 @@
 // Checks: no page errors, nothing needs scrolling while a question is up on a landscape screen, keys work,
 // a game carries on after a refresh, and every game in the list starts.
 // Dev harness in preview mode: VITE_PREVIEW_ONLY=1 npx vite dev --port 3102   (from harness/)
-// Usage: node qa/game-check.mjs            SHOTS=/some/folder to keep screenshots
+// Usage: node qa/game-check.mjs            SHOTS=/some/folder to keep screenshots; ONLY=ncm7-2 to play only some games
 import { chromium } from 'playwright'
 import { mkdirSync } from 'node:fs'
 
@@ -107,6 +107,10 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
   await page.waitForTimeout(300)
   const rows = await page.locator('section[aria-labelledby="ncm7-ch8"] ol > li .font-display').allTextContents()
   log(`games page: ${rows.length} exercises: ${rows.map((s) => s.trim()).join(' | ')}`)
+  // chapters start folded; open Chapter 8
+  const shownBefore = await page.getByRole('link', { name: /^Play NCM 7 Exercise/ }).count()
+  await page.locator('#ncm7-ch8-toggle').click()
+  log(`   folded chapters: ${shownBefore} exercises showing, then ${await page.getByRole('link', { name: /^Play NCM 7 Exercise/ }).count()} once Chapter 8 is opened (expanded ${await page.locator('#ncm7-ch8-toggle').getAttribute('aria-expanded')})`)
   await shot(page, 'games', true)
 
   await page.getByRole('link', { name: /^Play NCM 7 Exercise 8\.01/ }).click()
@@ -211,7 +215,8 @@ for (const [w, h, name] of [
 ]) {
   const page = await newPage({ width: w, height: h })
   await page.goto(`${base}/games`, { waitUntil: 'networkidle' })
-  const ids = await page.locator('a[href^="/game?id="]').evaluateAll((as) => [...new Set(as.map((a) => new URL(a.href).searchParams.get('id')))])
+  // ONLY=ncm7-2 plays just the games whose ids start with that (e.g. a newly added chapter)
+  const ids = (await page.locator('a[href^="/game?id="]').evaluateAll((as) => [...new Set(as.map((a) => new URL(a.href).searchParams.get('id')))])).filter((id) => !process.env.ONLY || id.startsWith(process.env.ONLY))
   let worst = { fit: 0, spill: 0, at: '' }
   let smallest = 9999
   for (const id of ids) {

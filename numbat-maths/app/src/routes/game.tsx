@@ -60,7 +60,7 @@ function Game({ found, id, carryOn }: { found: FoundGame; id: string; carryOn: b
         items={items}
         initial={board}
         title={title}
-        onExit={() => void navigate({ to: '/games' })}
+        onExit={() => void navigate({ to: '/games', search: { chapter: found.chapter.id } })}
         onAgain={() => start({ teams: board.cfg.teams, count: board.cfg.count, secs: board.cfg.secs, seed: newSeed() })}
       />
     )
@@ -117,7 +117,7 @@ function Setup({
 
   return (
     <div className="grid gap-6" style={{ ['--hue' as string]: chapter.colour }}>
-      <Link to="/games" className="btn btn-ghost btn-sm w-fit">
+      <Link to="/games" search={{ chapter: chapter.id }} className="btn btn-ghost btn-sm w-fit">
         <ArrowLeft size={16} aria-hidden="true" /> All class games
       </Link>
 

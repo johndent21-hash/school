@@ -118,7 +118,7 @@ function TopicView() {
               Quick team games for the board, one for each exercise of {games.chapter.ref} ({games.chapter.sets.length} games and a whole-chapter mix).
             </p>
           </div>
-          <Link to="/games" className="btn btn-soft btn-lg">
+          <Link to="/games" search={{ chapter: games.chapter.id }} className="btn btn-soft btn-lg">
             Choose a game
           </Link>
         </section>

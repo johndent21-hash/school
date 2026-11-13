@@ -1,4 +1,5 @@
-// Independent checks for the class games (New Century Maths 7, Chapter 8).
+// Independent checks for the class games. Chapter 8 of New Century Maths 7 is re-worked in this file; other
+// chapters have their own re-working in tests/game-checks/ (the shape, builder and luck checks here cover all of them).
 // Every kind of question is re-worked here from scratch, the way a second teacher would:
 //  - the answer is recalculated from the numbers the question was made from, with this file's own
 //    formulas and its own table of unit sizes (not the content file's);
@@ -15,6 +16,10 @@ import { ALL_GAME_SETS, GAME_BOOKS, findGame } from '../src/content/games/index'
 import { buildChapterGame, buildGame, gameCheck, GAME_LENGTHS } from '../src/lib/game/build'
 import { dig, ECHIDNA, LEAP_MAX, LEAP_MIN, places, RAID } from '../src/lib/game/luck'
 import type { GameQuestion, GameSet } from '../src/lib/game/types'
+import { rework as reworkCh1 } from './game-checks/ncm7-ch1'
+import { rework as reworkCh2 } from './game-checks/ncm7-ch2'
+import { rework as reworkCh3 } from './game-checks/ncm7-ch3'
+import { rework as reworkCh4 } from './game-checks/ncm7-ch4'
 
 const N = Number(process.env.N ?? 400)
 let failures = 0
@@ -43,9 +48,9 @@ const plain = (h: string) =>
 
 /** "13 000 cm²" → { v: 13000, unit: "cm²" }; "8π cm" → { v: 8, unit: "cm", pi: true }; "radius" → null */
 function quantity(option: string): { v: number; unit: string; pi: boolean } | null {
-  const m = plain(option).match(/^(\d[\d ]*(?:\.\d+)?)(π)?(?: (.+))?$/)
+  const m = plain(option).match(/^([−-]?\d[\d ]*(?:\.\d+)?)(π)?(?: (.+))?$/)
   if (!m) return null
-  return { v: Number(m[1].replace(/ /g, '')), pi: !!m[2], unit: m[3] ?? '' }
+  return { v: Number(m[1].replace(/ /g, '').replace('−', '-')), pi: !!m[2], unit: m[3] ?? '' }
 }
 
 const near = (x: number, y: number) => Math.abs(x - y) <= 1e-9 * Math.max(1, Math.abs(x), Math.abs(y))
@@ -80,7 +85,8 @@ const UNIT_WORDS: Record<string, string> = {
   'mm²': 'square millimetres', 'cm²': 'square centimetres', 'm²': 'square metres', ha: 'hectares',
   'mm³': 'cubic millimetres', 'cm³': 'cubic centimetres', 'm³': 'cubic metres',
 }
-const grouped = (x: number) => {
+const grouped = (x: number): string => {
+  if (x < 0) return '−' + grouped(-x)
   const [i, d] = String(x).split('.')
   return (i.length >= 5 ? i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : i) + (d ? '.' + d : '')
 }
@@ -508,6 +514,9 @@ function circleShows(q: GameQuestion, part: 'radius' | 'diameter', where: string
 
 // ---------------------------------------------------------------- every kind of question, many times
 
+/** the other chapters' re-working, by the start of their exercise ids */
+const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4 }
+
 const kinds: string[] = []
 for (const set of ALL_GAME_SETS) {
   for (const maker of set.makers) {
@@ -529,6 +538,7 @@ for (const set of ALL_GAME_SETS) {
       const blob = q.prompt + (q.diagram ?? '') + q.options.join(' ') + q.why
       if (/NaN|undefined|Infinity|\[object|null/.test(blob)) fail(where, 'bad text: ' + (blob.match(/.{0,30}(NaN|undefined|Infinity|\[object|null).{0,30}/)?.[0] ?? ''), q)
       if (q.meta.t !== maker.t) fail(where, `question says it is "${q.meta.t}"`, q)
+      if (/(^|[^\d.,−-])1 (degrees|places|floors|steps|integers|cubes|squares|layers|glasses|cups|tiles|eggs|cartons|boxes|tickets|factors|numbers)\b/.test(plain(q.prompt + ' ' + q.why))) fail(where, 'plural slip: ' + plain(q.prompt + ' ' + q.why).match(/1 \w+/)?.[0], q)
       if (q.options.length !== 4) fail(where, `${q.options.length} options`, q)
       const shown = q.options.map(plain)
       if (new Set(shown.map(squish)).size !== 4) fail(where, 'two options read the same', q)
@@ -545,7 +555,9 @@ for (const set of ALL_GAME_SETS) {
         for (let a = 0; a < 4; a++) for (let b = a + 1; b < 4; b++) if (SIZE[qs[a]!.unit][0] === SIZE[qs[b]!.unit][0] && near(base[a], base[b])) fail(where, 'two options are the same amount', q)
       }
       // ---- the answer, re-worked
-      const want = rework(set, q, where)
+      const ctx = { fail: (msg: string) => fail(where, msg, q), plain, page: plain(q.prompt) + ' | ' + (q.diagram ? labels(q.diagram).join(' | ') : '') }
+      const other = OTHER_CHAPTERS[set.id.replace(/\.\d+$/, '')]
+      const want = set.id.startsWith('ncm7-8.') ? rework(set, q, where) : other ? other(set, q, ctx) : (fail(where, 'no independent checks for this chapter', q), null)
       if (want) {
         reworked++
         const got = q.options[q.correct]

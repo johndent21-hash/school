@@ -1,7 +1,7 @@
 // Class games: pick the exercise you taught today and finish the lesson with a quick team game on the board.
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { ArrowLeft, BookOpen, Layers, Play, Presentation } from 'lucide-react'
+import { ArrowLeft, BookOpen, ChevronDown, Layers, Play, Presentation } from 'lucide-react'
 import { GameResume } from '@/components/numbat/GameResume'
 import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { findSkill } from '@/content'
@@ -12,6 +12,8 @@ import { load, save } from '@/lib/storage'
 import { useMounted } from '@/lib/use-mounted'
 
 export const Route = createFileRoute('/games')({
+  // ?chapter=ncm7-ch4 opens that chapter and scrolls to it (links from a topic page, and back from a game)
+  validateSearch: (s: Record<string, unknown>): { chapter?: string } => ({ chapter: typeof s.chapter === 'string' ? s.chapter : undefined }),
   head: () => pageHead('/games'),
   component: GamesPage,
 })
@@ -28,10 +30,27 @@ const STEPS = [
 ]
 
 function Games() {
+  const { chapter: asked } = Route.useSearch()
+  const askedBook = asked ? GAME_BOOKS.find((b) => b.chapters.some((c) => c.id === asked)) : undefined
   const [bookId, setBookId] = useState(() => {
+    if (askedBook) return askedBook.id
     const last = load('numbat.gameBook')
     return GAME_BOOKS.some((b) => b.id === last) ? (last as string) : GAME_BOOKS[0].id
   })
+  // which chapters show their exercises: the one asked for, else the ones left open on this device
+  const [open, setOpen] = useState<string[]>(() => {
+    const kept = load('numbat.gameChapters')
+    const list = Array.isArray(kept) ? kept.filter((x): x is string => typeof x === 'string') : []
+    return asked && !list.includes(asked) ? [...list, asked] : list
+  })
+  const toggle = (id: string, show: boolean) => {
+    const next = show ? [...open.filter((x) => x !== id), id] : open.filter((x) => x !== id)
+    setOpen(next)
+    save('numbat.gameChapters', next)
+  }
+  useEffect(() => {
+    if (asked) document.getElementById(`${asked}-head`)?.scrollIntoView({ block: 'start' })
+  }, [asked])
   const book = GAME_BOOKS.find((b) => b.id === bookId) ?? GAME_BOOKS[0]
   const pick = (id: string) => {
     setBookId(id)
@@ -87,7 +106,7 @@ function Games() {
           Year {book.year} · {book.stage}. The questions are Numbat Maths’ own, written to match each exercise; none are copied from the textbook.
         </p>
         {book.chapters.map((c) => (
-          <Chapter key={c.id} book={book} chapter={c} />
+          <Chapter key={c.id} book={book} chapter={c} open={open.includes(c.id)} onToggle={(show) => toggle(c.id, show)} />
         ))}
         <p className="text-sm text-muted-foreground">More chapters and Years 8 to 10 are on the way.</p>
       </section>
@@ -95,9 +114,10 @@ function Games() {
   )
 }
 
-function Chapter({ book, chapter }: { book: GameBook; chapter: GameChapter }) {
+function Chapter({ book, chapter, open, onToggle }: { book: GameBook; chapter: GameChapter; open: boolean; onToggle: (show: boolean) => void }) {
+  const listId = `${chapter.id}-sets`
   return (
-    <section className="grid gap-3" style={{ ['--hue' as string]: chapter.colour }} aria-labelledby={chapter.id}>
+    <section className="grid scroll-mt-4 gap-3" style={{ ['--hue' as string]: chapter.colour }} aria-labelledby={chapter.id} id={`${chapter.id}-head`}>
       <header className="topic-tile cursor-default hover:transform-none">
         <div className="flex flex-wrap items-center gap-2">
           <span className="chip chip-book">{chapter.ref}</span>
@@ -112,13 +132,26 @@ function Chapter({ book, chapter }: { book: GameBook; chapter: GameChapter }) {
           <h3 id={chapter.id} className="font-display text-2xl font-semibold">
             Chapter {chapter.number}: {chapter.title}
           </h3>
-          <Link to="/game" search={{ id: chapter.id }} className="btn btn-soft">
-            <Layers size={18} aria-hidden="true" /> Whole chapter mix
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              id={`${chapter.id}-toggle`}
+              className="btn btn-ghost"
+              aria-expanded={open}
+              aria-controls={listId}
+              onClick={() => onToggle(!open)}
+            >
+              <ChevronDown size={18} aria-hidden="true" className={open ? 'rotate-180 transition-transform' : 'transition-transform'} />
+              {open ? 'Hide the exercises' : `Show the ${chapter.sets.length} exercises`}
+            </button>
+            <Link to="/game" search={{ id: chapter.id }} className="btn btn-soft">
+              <Layers size={18} aria-hidden="true" /> Whole chapter mix
+            </Link>
+          </div>
         </div>
       </header>
 
-      <ol className="grid gap-2">
+      <ol className="grid gap-2" id={listId} hidden={!open}>
         {chapter.sets.map((s) => {
           const lessons = (s.lessons ?? []).map((id) => findSkill(id)).filter((x) => x !== undefined)
           return (

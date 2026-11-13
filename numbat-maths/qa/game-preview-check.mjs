@@ -55,7 +55,7 @@ for (const [w, h, scheme] of [
 
   // the games page, then one whole game by clicking
   await page.getByRole('heading', { name: 'Class games' }).waitFor()
-  log(`   games page: ${await page.getByRole('link', { name: /^Play NCM 7 Exercise/ }).count()} exercises and ${await page.getByRole('link', { name: /Whole chapter mix/ }).count()} chapter mix`)
+  log(`   games page: ${await page.locator('ol a[href^="/game?id="]').count()} exercises (${await page.getByRole('link', { name: /^Play NCM 7 Exercise/ }).count()} showing: the topic's chapter opens by itself) and ${await page.getByRole('link', { name: /Whole chapter mix/ }).count()} chapter mix`)
   await shot('games')
   await page.getByRole('link', { name: /^Play NCM 7 Exercise 8\.06/ }).click()
   await page.getByRole('radio', { name: '5', exact: true }).click()
@@ -88,7 +88,7 @@ for (const [w, h, scheme] of [
 
   // a second game, interrupted by a reload after two questions
   await page.getByRole('button', { name: /Choose another game/ }).click()
-  await page.getByRole('link', { name: /Whole chapter mix/ }).click()
+  await page.getByRole('link', { name: /Whole chapter mix/ }).last().click() // the last chapter on the page (Chapter 8)
   await page.getByRole('button', { name: /Start the game/ }).click()
   for (let k = 0; k < 2; k++) {
     await page.getByRole('button', { name: 'Show the answer' }).click()
