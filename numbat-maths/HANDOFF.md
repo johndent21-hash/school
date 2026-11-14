@@ -1,15 +1,14 @@
-# Handoff: audit the Year 7 and 8 class games, finish Year 9 Standard, then ask about improvements
+# Handoff: build the improvements the user chose (Step 4)
 
-For the next session. The user wants, in this order:
+**Current work: Step 4 at the end of this file.** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
+board-checked and published (Version 24, 14 Nov 2026), and the user has chosen the improvements. Build the Step 4
+batches in order. After each batch: full tests, one board check of what changed, one build and one publish, update
+this file (mark the batch done, note anything left), commit and push. Then go on to the next batch, unless context is
+running long: then stop with a short report so a new session can carry on from this file.
 
-1. **Year 9 Standard** class games finished and published (nearly done, see Step 0).
-2. **Years 7 and 8** (NCM 7 and NCM 8) checked for completeness, exercise by exercise against their textbooks, to the
-   standard Year 9 Standard now meets. Fix gaps.
-3. **Then ask the user** about improvements: issues to fix, better or different game ideas, new features. Give an
-   honest size estimate for each and let the user choose. Do not build any of them until the user says so.
+The sections below Step 0–3 (rules, how to audit, commands, pitfalls) still apply.
 
-**High quality, low usage.** One board check of the changed chapters, one build and one publish per book batch, short
-reports. Don't work on NCM 9 Advanced (paused after Ch 5; its Ch 1–5 stay in the repo, left out of builds) or Year 10.
+**High quality, low usage.** One board check of what changed, one build and one publish per batch, short reports. Don't work on NCM 9 Advanced (paused after Ch 5; its Ch 1–5 stay in the repo, left out of builds) or Year 10.
 
 ## Rules
 
