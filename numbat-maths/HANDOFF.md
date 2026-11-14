@@ -113,9 +113,12 @@ VITE_PREVIEW_ONLY=1 VITE_CONVEX_URL=https://preview-only.convex.cloud VITE_STAGE
 # changed chapters only, in the background, all logged to one file (ONLY is a prefix: ncm8-1 also matches 10–12; use ncm8-1.):
 for o in ncm8-1. ncm8-ch1 ...; do echo "=== $o"; ONLY=$o SHOTS=$S/board/$o node qa/game-check.mjs; done > $S/board/all.log 2>&1
 grep -E "^===|games played|errors" $S/board/all.log
-# build WITHOUT NCM 9 Advanced: delete the { id: 'ncm9', … } entry from src/content/games/index.ts, build, then restore it
-cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh $S/numbat-maths-1-9.html "Numbat Maths 1–9"
-git checkout src/content/games/index.ts
+# build WITHOUT NCM 9 Advanced: copy index.ts aside, delete the { id: 'ncm9', … } entry, build, copy it back
+# (never `git checkout` it: that also throws away uncommitted edits). Don't run tests while the entry is removed.
+cp src/content/games/index.ts $S/index.ts.bak   # then remove the ncm9 entry
+cd harness && ./sync.sh && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh $S/numbat-maths-1-9.html "Numbat Maths 1–9"
+cd .. && cp $S/index.ts.bak src/content/games/index.ts && (cd harness && ./sync.sh)
+# publish with the Artifact tool to the same URL; capabilities {downloads: true} are stored, so omit capabilities
 node qa/game-preview-check.mjs $S/numbat-maths-1-9.html
 grep -c "New Century Maths 9 Advanced" $S/numbat-maths-1-9.html   # must be 0
 ```
