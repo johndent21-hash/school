@@ -1,0 +1,396 @@
+// Class games for New Century Maths 9 Advanced (Cengage) Chapter 4, Trigonometry: one set of quick questions for
+// each exercise, 4.01 to 4.10.
+//
+// The game is played without calculators, so the kinds practise what a class can do on the board: naming sides,
+// writing ratios from exact (Pythagorean-triad) sides, using similar triangles, degrees and minutes, choosing the
+// equation that finds a side or an angle, angles of elevation and depression, and bearings. Working out the
+// equations with a calculator is left for the exercise. Answers are checked by tests/game-checks/ncm9-ch4.ts.
+//
+// Syllabus: NSW Mathematics K–10 (2022), Stage 5 core. Trigonometry A, MA5-TRG-C-01 (4.01–4.07) and Trigonometry B,
+// MA5-TRG-C-02 (angles of elevation and depression and bearings, 4.08–4.10).
+import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
+import { fig, rtPts } from '@/lib/maths/diagrams6'
+import { chance, frac, gq, int, mk, num, pick, shuffle } from './helpers'
+
+const TRG = 'MA5-TRG-C-01'
+const TRG2 = 'MA5-TRG-C-02'
+const CALC = 'Played without calculators: the questions choose the ratio or set up the equation; the calculator work is left for the exercise.'
+const b = (s: string) => `<b>${s}</b>`
+const it = (s: string) => `<i>${s}</i>`
+const gcd = (a: number, c: number): number => (c === 0 ? a : gcd(c, a % c))
+const F = (n: number, d: number) => frac(n / gcd(n, d), d / gcd(n, d))
+const rad = (d: number) => (d * Math.PI) / 180
+const deg = (r: number) => (r * 180) / Math.PI
+
+const set = (exn: string, title: string, focus: string, outcomes: string[], makers: GameSet['makers'], note?: string): GameSet => ({
+  id: `ncm9-${exn}`,
+  exercise: exn,
+  ref: `NCM 9 Ex ${exn}`,
+  title,
+  focus,
+  outcomes,
+  makers,
+  ...(note ? { teacherNote: note } : {}),
+})
+
+// ================================================================== the triangle
+
+const NAMESETS: [string, string, string][] = [
+  ['A', 'B', 'C'], ['P', 'Q', 'R'], ['K', 'L', 'M'], ['D', 'E', 'F'], ['X', 'Y', 'Z'], ['G', 'H', 'J'], ['M', 'N', 'P'], ['R', 'S', 'T'],
+]
+/** [right-angle corner, marked-angle corner, third corner] */
+const names3 = () => shuffle(pick(NAMESETS)) as [string, string, string]
+const sideName = (a: string, c: string) => [a, c].sort().join('')
+const ROTS = [0, 0, 90, 180, 270, 20, 35, 110, 155, 200, 245, 290, 325]
+/** Pythagorean triads [adjacent, opposite, hypotenuse]; all angles between 16° and 74° */
+const BASE: [number, number, number][] = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41]]
+function triad(): [number, number, number] {
+  const t = pick(BASE)
+  const k = pick([1, 1, 2, 3])
+  const s = t.map((x) => x * k) as [number, number, number]
+  return chance() ? s : [s[1], s[0], s[2]]
+}
+
+interface Tri {
+  th: number // the marked angle's true size, in degrees
+  mark: string // its label
+  opp?: string
+  adj?: string
+  hyp?: string
+  names?: [string, string, string]
+}
+/** a right-angled triangle drawn at its true angles, turned and flipped at random */
+function tri(t: Tri): string {
+  const [r, a, o] = rtPts(Math.cos(rad(t.th)), Math.sin(rad(t.th)), pick(ROTS), chance())
+  const [kR, kA, kO] = t.names ?? ['R0', 'A0', 'O0']
+  const sides: { a: string; b: string; text: string }[] = []
+  if (t.opp) sides.push({ a: kR, b: kO, text: t.opp })
+  if (t.adj) sides.push({ a: kR, b: kA, text: t.adj })
+  if (t.hyp) sides.push({ a: kA, b: kO, text: t.hyp })
+  return fig({
+    pts: { [kR]: r, [kA]: a, [kO]: o },
+    polys: [{ v: [kR, kA, kO] }],
+    rights: [[kA, kR, kO]],
+    sides,
+    angles: [{ at: kA, a: kR, b: kO, text: t.mark }],
+    names: t.names ? [kR, kA, kO] : [],
+    label: 'Right-angled triangle',
+  })
+}
+
+// ================================================================== 4.01 The sides of a right-angled triangle
+
+function m401side(): GameQuestion {
+  const [adj, opp, hyp] = triad()
+  const th = deg(Math.atan2(opp, adj))
+  const role = pick(['opposite', 'adjacent', 'hypotenuse'] as const)
+  const len = { opposite: opp, adjacent: adj, hypotenuse: hyp }
+  // the three sides, and a length that is not a side (opposite + adjacent − hypotenuse), smallest to largest
+  const all = [adj, opp, hyp, adj + opp - hyp].sort((x, y) => x - y)
+  return gq({
+    t: 'side',
+    prompt: role === 'hypotenuse' ? `How long is the ${b('hypotenuse')}?` : `How long is the side ${b(role)} to the angle θ?`,
+    diagram: tri({ th, mark: 'θ', opp: num(opp), adj: num(adj), hyp: num(hyp) }),
+    correct: num(len[role]),
+    inOrder: all.map((x) => num(x)),
+    why: { opposite: 'The opposite side faces the angle θ', adjacent: 'The adjacent side runs from θ to the right angle', hypotenuse: 'The hypotenuse is opposite the right angle' }[role] + `: ${num(len[role])}.`,
+    meta: {},
+  })
+}
+
+const SET_401 = set('4.01', 'The sides of a right-angled triangle', 'Name the hypotenuse, and the sides opposite and adjacent to a marked angle.', [TRG], [mk('side', m401side)])
+
+// ================================================================== 4.02 The trigonometric ratios
+
+function m402ratio(): GameQuestion {
+  const [adj, opp, hyp] = triad()
+  const th = deg(Math.atan2(opp, adj))
+  const which = pick(['sin', 'cos', 'tan'] as const)
+  const right = which === 'sin' ? F(opp, hyp) : which === 'cos' ? F(adj, hyp) : F(opp, adj)
+  return gq({
+    t: 'ratio',
+    prompt: `Find ${b(`${which} θ`)} for this triangle.`,
+    diagram: tri({ th, mark: 'θ', opp: num(opp), adj: num(adj), hyp: num(hyp) }),
+    correct: right,
+    // the other ratios, and the ratio upside down
+    wrong: [F(opp, hyp), F(adj, hyp), F(opp, adj), which === 'sin' ? F(hyp, opp) : which === 'cos' ? F(hyp, adj) : F(adj, opp)].filter((x) => x !== right),
+    why: `${which} θ = ${which === 'sin' ? 'opposite ÷ hypotenuse' : which === 'cos' ? 'adjacent ÷ hypotenuse' : 'opposite ÷ adjacent'} = ${which === 'sin' ? `${opp}/${hyp}` : which === 'cos' ? `${adj}/${hyp}` : `${opp}/${adj}`}${gcd(which === 'cos' ? adj : opp, which === 'tan' ? adj : hyp) > 1 ? ' (simplified)' : ''}.`,
+    meta: {},
+  })
+}
+
+const SET_402 = set('4.02', 'The trigonometric ratios', 'sin θ = opposite ÷ hypotenuse, cos θ = adjacent ÷ hypotenuse, tan θ = opposite ÷ adjacent.', [TRG], [mk('ratio', m402ratio)])
+
+// ================================================================== 4.03 Similar right-angled triangles
+
+function m403similar(): GameQuestion {
+  const [adj, opp, hyp] = pick(BASE)
+  const k = int(2, 6)
+  const [given, ask] = pick([
+    ['hypotenuse', 'opposite'],
+    ['hypotenuse', 'adjacent'],
+    ['adjacent', 'opposite'],
+    ['opposite', 'hypotenuse'],
+  ] as [string, string][])
+  const len: Record<string, number> = { opposite: opp, adjacent: adj, hypotenuse: hyp }
+  const ans = len[ask] * k
+  return gq({
+    t: 'similar',
+    prompt: `For angle θ, a right-angled triangle has opposite ${opp}, adjacent ${adj}, hypotenuse ${hyp}. In a similar triangle the ${given} is ${b(num(len[given] * k))}. Find its ${ask}.`,
+    correct: num(ans),
+    // added the difference, used the wrong ratio, the scale factor alone
+    wrong: [len[ask] + (len[given] * k - len[given]), len[given] * k, k * (ask === 'opposite' ? adj : opp), ans + k, k].filter((x, i, a) => x !== ans && x > 0 && a.indexOf(x) === i).map((x) => num(x)),
+    why: `The ratios stay the same in similar triangles: the scale factor is ${num(len[given] * k)} ÷ ${len[given]} = ${k}, so the ${ask} is ${len[ask]} × ${k} = ${num(ans)}.`,
+    meta: {},
+  })
+}
+
+const SET_403 = set('4.03', 'Similar right-angled triangles', 'Similar right-angled triangles with the same angle have the same trigonometric ratios.', [TRG], [mk('similar', m403similar)])
+
+// ================================================================== 4.04 Trigonometry on a calculator: degrees and minutes
+
+function m404dm(): GameQuestion {
+  const d = int(10, 80)
+  const m = pick([6, 12, 15, 18, 24, 30, 36, 42, 45, 48, 54])
+  const dec = m / 60
+  const toDM = chance()
+  const dm = `${d}°${m}′`
+  const dd = `${num(d + dec)}°`
+  return gq({
+    t: 'dm',
+    prompt: toDM ? `Write ${b(dd)} in degrees and minutes.` : `Write ${b(dm)} in degrees, as a decimal.`,
+    correct: toDM ? dm : dd,
+    // the decimal digits read as minutes, divided by 100 instead of 60, one degree out
+    wrong: toDM
+      ? [`${d}°${Math.round(dec * 100)}′`, `${d}°${Math.round(dec * 10)}′`, `${d}°${Math.round(dec * 100 * 0.6 + 1)}′`, `${d + 1}°${m}′`]
+      : [`${num(d + m / 100)}°`, `${num(d + m / 10)}°`, `${num(d + 1 + dec)}°`, `${num(d + dec / 2)}°`],
+    why: `There are 60 minutes in a degree: ${m}′ = ${m} ÷ 60 = ${num(dec)}°, so ${dm} = ${dd}.`,
+    meta: {},
+  })
+}
+
+function m404round(): GameQuestion {
+  const d = int(10, 80)
+  const m = intNot30()
+  const up = m > 30
+  return gq({
+    t: 'round',
+    prompt: `Round ${b(`${d}°${m}′`)} to the nearest degree.`,
+    correct: `${up ? d + 1 : d}°`,
+    // rounded the other way, kept the minutes as a decimal, rounded at 50′
+    wrong: [`${up ? d : d + 1}°`, `${d}.${String(m).padStart(2, '0')}°`, `${up ? d + 2 : d - 1}°`, `${d + m}°`],
+    why: `${m}′ is ${up ? 'more' : 'less'} than 30′ (half a degree), so round ${up ? 'up' : 'down'}: ${up ? d + 1 : d}°.`,
+    meta: {},
+  })
+}
+function intNot30(): number {
+  const m = int(1, 59)
+  return m === 30 ? 31 : m
+}
+
+const SET_404 = set('4.04', 'Trigonometry on a calculator', 'Work with angles in degrees and minutes: 1° = 60′; round to the nearest degree.', [TRG], [mk('dm', m404dm), mk('round', m404round)], CALC)
+
+// ================================================================== 4.05–4.07 Finding sides and angles: choose the equation
+
+type Role = 'opp' | 'adj' | 'hyp'
+const RATIO: Record<string, [Role, Role]> = { sin: ['opp', 'hyp'], cos: ['adj', 'hyp'], tan: ['opp', 'adj'] }
+/** the equation for x, given the side x and a known side k at angle a */
+function sideEq(x: Role, known: Role, k: number, a: number): string {
+  for (const [f, [top, bottom]] of Object.entries(RATIO)) {
+    if (top === x && bottom === known) return `x = ${k} ${f} ${a}°`
+    if (bottom === x && top === known) return `x = ${k} ÷ ${f} ${a}°`
+  }
+  throw new Error('no ratio')
+}
+const showEq = (s: string) => s.replace(/^x/, it('x'))
+
+function sideQuestion(t: string, denominator: boolean): GameQuestion {
+  const a = int(20, 70)
+  const k = int(5, 40)
+  // numerator: x is the top of the ratio and the known side the bottom; denominator: the other way round
+  const pairs: [Role, Role][] = denominator
+    ? [['hyp', 'opp'], ['hyp', 'adj'], ['adj', 'opp']]
+    : [['opp', 'hyp'], ['adj', 'hyp'], ['opp', 'adj']]
+  const [x, known] = pick(pairs)
+  const right = sideEq(x, known, k, a)
+  const labels: Partial<Record<Role, string>> = { [x]: 'x', [known]: num(k) }
+  const wrongs: string[] = []
+  for (const f of ['sin', 'cos', 'tan']) for (const form of [`x = ${k} ${f} ${a}°`, `x = ${k} ÷ ${f} ${a}°`]) if (form !== right) wrongs.push(form)
+  // the most likely slips first: the same ratio the other way up, then the other ratios
+  const fRight = right.match(/(sin|cos|tan)/)![1]
+  wrongs.sort((p, q) => Number(!p.includes(fRight)) - Number(!q.includes(fRight)))
+  return gq({
+    t,
+    prompt: `Which equation gives the value of ${it('x')}?`,
+    diagram: tri({ th: a, mark: `${a}°`, opp: labels.opp, adj: labels.adj, hyp: labels.hyp }),
+    correct: showEq(right),
+    wrong: wrongs.slice(0, 5).map(showEq),
+    why: `${x === 'hyp' ? 'x is the hypotenuse' : x === 'opp' ? 'x is opposite the angle' : 'x is adjacent to the angle'} and ${num(k)} is the ${known === 'hyp' ? 'hypotenuse' : known === 'opp' ? 'opposite side' : 'adjacent side'}, so use ${fRight}: ${showEq(right)}.`,
+    meta: {},
+  })
+}
+
+const SET_405 = set('4.05', 'Finding an unknown side', 'Choose sin, cos or tan from the sides you know and want, then x = known × ratio.', [TRG], [mk('numer', () => sideQuestion('numer', false))], CALC)
+const SET_406 = set('4.06', 'Finding more unknown sides', 'When x is on the bottom of the ratio, x = known ÷ ratio.', [TRG], [mk('denom', () => sideQuestion('denom', true)), mk('numer', () => sideQuestion('numer', false))], CALC)
+
+function m407angle(): GameQuestion {
+  const [adj, opp, hyp] = triad()
+  const th = deg(Math.atan2(opp, adj))
+  const f = pick(['sin', 'cos', 'tan'] as const)
+  const [top, bottom] = f === 'sin' ? [opp, hyp] : f === 'cos' ? [adj, hyp] : [opp, adj]
+  const labels = { opp: f === 'cos' ? undefined : num(opp), adj: f === 'sin' ? undefined : num(adj), hyp: f === 'tan' ? undefined : num(hyp) }
+  const inv = (g: string, p: number, q: number) => `θ = ${g}⁻¹(${p}/${q})`
+  const right = inv(f, top, bottom)
+  const others = (['sin', 'cos', 'tan'] as const).filter((g) => g !== f)
+  return gq({
+    t: 'angle',
+    prompt: 'Which equation gives the size of angle θ?',
+    diagram: tri({ th, mark: 'θ', ...labels }),
+    correct: right,
+    // the ratio upside down, the wrong function
+    wrong: [inv(f, bottom, top), inv(others[0], top, bottom), inv(others[1], top, bottom), `θ = ${f} (${top}/${bottom})`],
+    why: `The sides given are the ${f === 'sin' ? 'opposite and hypotenuse' : f === 'cos' ? 'adjacent and hypotenuse' : 'opposite and adjacent'}, so ${f} θ = ${top}/${bottom} and ${right}.`,
+    meta: {},
+  })
+}
+
+const SET_407 = set('4.07', 'Finding an unknown angle', 'Use the inverse ratio: θ = sin⁻¹(opposite ÷ hypotenuse), and so on.', [TRG], [mk('angle', m407angle, 2)], CALC)
+
+// ================================================================== 4.08 Angles of elevation and depression
+
+function m408depression(): GameQuestion {
+  const a = int(12, 70)
+  const [from, to] = pick([
+    ['the top of a cliff', 'a boat'],
+    ['a lighthouse', 'a yacht'],
+    ['a balcony', 'a car'],
+  ])
+  const askDep = chance()
+  return gq({
+    t: 'depression',
+    prompt: askDep
+      ? `The angle of elevation of ${from} from ${to} is ${b(`${a}°`)}. What is the angle of depression of ${to} from ${from}?`
+      : `The angle of depression of ${to} from ${from} is ${b(`${a}°`)}. What is the angle of elevation of ${from} from ${to}?`,
+    correct: `${a}°`,
+    // the complement, the supplement, double
+    wrong: [`${90 - a}°`, `${180 - a}°`, `${2 * a}°`, `${a + 10}°`].filter((x) => x !== `${a}°`),
+    why: 'The horizontal lines at the top and bottom are parallel, so the angles of elevation and depression are alternate angles: equal.',
+    meta: {},
+  })
+}
+
+function m408height(): GameQuestion {
+  const a = int(15, 70)
+  const d = 10 * int(2, 50)
+  const askDist = chance(0.35)
+  const right = askDist ? `d = h ÷ tan ${a}°` : `h = ${d} tan ${a}°`
+  const h = 10 * int(2, 30)
+  return gq({
+    t: 'height',
+    prompt: askDist
+      ? `A tower is ${b(`${h} m`)} tall. From a point on level ground, the angle of elevation of the top is ${b(`${a}°`)}. Which equation gives the distance ${it('d')} to the base?`
+      : `Emily stands ${b(`${d} m`)} from the base of a building. The angle of elevation of the top is ${b(`${a}°`)}. Which equation gives the height ${it('h')}?`,
+    correct: askDist ? `d = ${h} ÷ tan ${a}°` : right,
+    wrong: askDist
+      ? [`d = ${h} tan ${a}°`, `d = ${h} ÷ sin ${a}°`, `d = ${h} cos ${a}°`, `d = ${h} sin ${a}°`]
+      : [`h = ${d} ÷ tan ${a}°`, `h = ${d} sin ${a}°`, `h = ${d} cos ${a}°`, `h = ${d} ÷ sin ${a}°`],
+    why: askDist
+      ? `tan ${a}° = height ÷ distance = ${h} ÷ d, so d = ${h} ÷ tan ${a}°.`
+      : `tan ${a}° = height ÷ distance = h ÷ ${d}, so h = ${d} tan ${a}°.`,
+    meta: {},
+  })
+}
+
+const SET_408 = set('4.08', 'Angles of elevation and depression', 'Angles of elevation and depression are alternate angles; use tan with the height and the distance.', [TRG2], [mk('depression', m408depression), mk('height', m408height, 2)], CALC)
+
+// ================================================================== 4.09 Bearings
+
+const pad3 = (x: number) => String(x).padStart(3, '0')
+/** a compass bearing (N40°E) and its true bearing */
+function compassBearing(): { c: string; t: number } {
+  const a = int(5, 85)
+  const [ns, ew] = [pick(['N', 'S']), pick(['E', 'W'])]
+  const t = ns === 'N' ? (ew === 'E' ? a : 360 - a) : ew === 'E' ? 180 - a : 180 + a
+  return { c: `${ns}${a}°${ew}`, t }
+}
+
+function m409toTrue(): GameQuestion {
+  const { c, t } = compassBearing()
+  const a = Number(c.match(/\d+/)![0])
+  return gq({
+    t: 'toTrue',
+    prompt: `Write the compass bearing ${b(c)} as a true bearing.`,
+    correct: `${pad3(t)}°T`,
+    // the angle alone, measured from the wrong end, mirrored east and west
+    wrong: [a, (t + 180) % 360, (360 - t) % 360, 180 - a, 90 + a, 270 - a, 180 + a, (t + 90) % 360].map((x) => `${pad3(x)}°T`),
+    why: `True bearings are measured clockwise from north: ${c} is ${pad3(t)}°T.`,
+    meta: {},
+  })
+}
+
+function m409back(): GameQuestion {
+  const t = int(5, 355)
+  const back = (t + 180) % 360
+  return gq({
+    t: 'back',
+    prompt: `The bearing of B from A is ${b(`${pad3(t)}°T`)}. What is the bearing of A from B?`,
+    correct: `${pad3(back)}°T`,
+    // the same bearing, 360° − the bearing, 90° added
+    wrong: [t, (360 - t) % 360, (t + 90) % 360, (t + 270) % 360].map((x) => `${pad3(x)}°T`),
+    why: `Going back is the opposite direction: add or subtract 180°: ${pad3(t)}° ${t < 180 ? '+' : '−'} 180° = ${pad3(back)}°T.`,
+    meta: {},
+  })
+}
+
+const SET_409 = set('4.09', 'Bearings', 'True bearings (clockwise from north, 3 digits) and compass bearings (N40°E); the reverse bearing differs by 180°.', [TRG2], [mk('toTrue', m409toTrue), mk('back', m409back)])
+
+// ================================================================== 4.10 Problems involving bearings
+
+function m410component(): GameQuestion {
+  const t = int(15, 75)
+  const d = 10 * int(3, 30)
+  const askEast = chance()
+  return gq({
+    t: 'component',
+    prompt: `A yacht sails ${b(`${d} km`)} on a bearing of ${b(`${pad3(t)}°T`)}. Which expression gives how far ${askEast ? 'east' : 'north'} it is of its start?`,
+    correct: `${d} ${askEast ? 'sin' : 'cos'} ${t}°`,
+    wrong: [`${d} ${askEast ? 'cos' : 'sin'} ${t}°`, `${d} tan ${t}°`, `${d} ÷ ${askEast ? 'sin' : 'cos'} ${t}°`, `${d} ÷ tan ${t}°`],
+    why: `The bearing is measured from north. The ${askEast ? 'east distance is opposite' : 'north distance is adjacent to'} the ${t}° angle, with ${d} km as the hypotenuse: ${d} ${askEast ? 'sin' : 'cos'} ${t}°.`,
+    meta: {},
+  })
+}
+
+function m410distance(): GameQuestion {
+  const [p, q, r] = pick(BASE.slice(0, 4))
+  const k = pick([1, 2])
+  const [a, c, h] = chance() ? [p * k, q * k, r * k] : [q * k, p * k, r * k]
+  const [d1, d2] = pick([
+    ['south', 'west'],
+    ['north', 'east'],
+    ['east', 'south'],
+    ['west', 'north'],
+  ])
+  return gq({
+    t: 'distance',
+    prompt: `Jana cycles ${b(`${a} km`)} due ${d1}, then ${b(`${c} km`)} due ${d2}. How far is she from her starting point?`,
+    correct: `${h} km`,
+    // added the distances, the difference, the longer distance
+    wrong: [a + c, Math.abs(c - a) || a + 1, Math.max(a, c), h + 1].filter((x, i, arr) => x !== h && arr.indexOf(x) === i).map((x) => `${x} km`),
+    why: `The two legs are at right angles: √(${a}² + ${c}²) = √${a * a + c * c} = ${h} km.`,
+    meta: {},
+  })
+}
+
+const SET_410 = set('4.10', 'Problems involving bearings', 'Draw the bearings, find the right-angled triangle, then use Pythagoras or trigonometry.', [TRG2], [mk('distance', m410distance), mk('component', m410component, 2)], CALC)
+
+export const NCM9_CH4: GameChapter = {
+  id: 'ncm9-ch4',
+  number: 4,
+  title: 'Trigonometry',
+  ref: 'NCM 9 Chapter 4',
+  strand: 'Measurement and space',
+  outcomes: [TRG, TRG2],
+  sets: [SET_401, SET_402, SET_403, SET_404, SET_405, SET_406, SET_407, SET_408, SET_409, SET_410],
+  colour: 205,
+  topics: [],
+}

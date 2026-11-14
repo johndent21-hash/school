@@ -303,12 +303,19 @@ Also:
       (simplifying first), multiplying and dividing. The test gives every surd an exact k√n value, works out the
       question's expression, and requires the one option equal in value and in simplest form (a partly simplified
       surd may be a wrong option only when the question asks for simplest form).
-    - **Chapter 3, Numeracy and calculation** (`ncm9-ch3.ts`, Ex 3.01–3.06, 26 kinds, 6 new). Mostly revision of
+    - **Chapter 3, Numeracy and calculation** (`ncm9-ch3.ts`, Ex 3.01–3.06, 27 kinds, 6 new). Mostly revision of
       Stage 4 (MA4-FRC-C-01, MA4-RAT-C-01), reusing NCM 8 Chapters 2, 6 and 10 and NCM 7 Chapter 12. 3.04 simple
       interest is Stage 5 core MA5-FIN-C-01. New: recurring decimals to fractions (Stage 5 Path MA5-IND-P-01,
       extension), percentages over 100%, profit on total cost, simple interest for months and for an unknown time, and
       reaction distance (km/h to m/s). The test reads the dot notation itself and turns the decimal into an exact
       fraction; money, percentages, years and metres are worked from the question, with exactly one option allowed.
+    - **Chapter 4, Trigonometry** (`ncm9-ch4.ts`, Ex 4.01–4.10, 16 kinds, all new), Stage 5 core MA5-TRG-C-01
+      (4.01–4.07) and MA5-TRG-C-02 (elevation, depression, bearings: 4.08–4.10). Played without calculators, so the
+      kinds name sides, write ratios from Pythagorean-triad sides, use similar triangles, convert degrees and minutes,
+      choose the equation for a side (x = 12 sin 35° or x = 12 ÷ sin 35°) or an angle (θ = tan⁻¹(5/12)), and work with
+      elevation, depression and true and compass bearings. The test reads each triangle from the drawing (right-angle
+      mark, marked angle, side labels matched to sides), checks the drawn angle against its label or the side lengths,
+      works out the roles (hypotenuse, opposite, adjacent) and writes the expected ratio or equation itself.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.
