@@ -1,16 +1,23 @@
 // Class games for New Century Maths 9 (Standard, Cengage): one set of quick questions for each exercise, Chapters 1–13.
 //
 // Most exercises match kinds already built for NCM 7, NCM 8 and NCM 9 Advanced, so those sets reuse them (each is checked
-// by the chapter that first made it, see reuse.ts). New kinds (checked by tests/game-checks/ncm9s.ts): Euler's formula,
-// earning money (wages, salaries, overtime, commission, piecework, leave loading, tax, net pay), absolute and
-// percentage error, the length and midpoint of an interval, direct variation, parabolas, and tree diagrams.
+// by the chapter that first made it, see reuse.ts). Each exercise was audited question type by question type against the
+// textbook. New kinds (checked by tests/game-checks/ncm9s.ts): binomial products with negatives, writing negative
+// indices, reasons for angle steps, Euler's formula, earning money (wages, salaries, overtime, commission, piecework,
+// leave loading, taxable income, tax brackets, PAYG tables, refunds, net pay), two-step metric conversions, absolute and
+// percentage error, the length and midpoint of an interval, x-intercepts, horizontal and vertical lines, direct
+// variation, parabolas and their shape, tree diagrams, draws without replacement, and finding a scale.
 //
 // Syllabus: NSW Mathematics K–10 (2022). Each set lists its outcome. Stage 4 work that the book revises is labelled
 // revision; Path content (networks, Venn diagrams and two-way tables, direct variation, surds, algebraic fractions with
 // pronumerals) has no outcome on the set and a teacher note saying it is extension beyond the core.
 import type { GameChapter, GameMaker, GameQuestion, GameSet } from '@/lib/game/types'
-import { DIVIDE, TIMES, chance, ex, frac, gq, int, intExcept, mk, num, pick } from './helpers'
+import { DIVIDE, TIMES, chance, coef, ex, frac, gq, int, intExcept, lin, mk, num, pick, pow, sample, terms } from './helpers'
+import { NCM7_CH1 } from './ncm7-ch1'
 import { NCM7_CH4 } from './ncm7-ch4'
+import { NCM7_CH8 } from './ncm7-ch8'
+import { NCM7_CH10 } from './ncm7-ch10'
+import { NCM7_CH12 } from './ncm7-ch12'
 import { NCM8_CH1 } from './ncm8-ch1'
 import { NCM8_CH2 } from './ncm8-ch2'
 import { NCM8_CH3 } from './ncm8-ch3'
@@ -31,6 +38,7 @@ import { NCM9_CH5 } from './ncm9-ch5'
 import { reuse } from './reuse'
 
 const b = (s: string) => `<b>${s}</b>`
+const big = (s: string) => `<div class="big">${s}</div>`
 const gcd = (a: number, c: number): number => (c === 0 ? Math.abs(a) : gcd(c, a % c))
 const F = (n: number, d: number) => (n === 0 ? '0' : n === d ? '1' : frac(n / gcd(n, d), d / gcd(n, d)))
 const $ = (x: number) => {
@@ -79,6 +87,33 @@ const chapter = (n: number, title: string, strand: GameChapter['strand'], colour
 
 // ================================================================== Chapter 1 Algebra
 
+function m109general(): GameQuestion {
+  // (ax + b)(cx + d) with a negative term or a coefficient other than 1; sometimes written (d − x) as in (x + 8)(3 − x)
+  for (;;) {
+    const x = pick(['x', 'h', 'k', 'm', 'p'])
+    const a = pick([1, 1, 2, 3])
+    let c = pick([1, 2, 3])
+    const b = intExcept(-9, 9, [0])
+    let d = intExcept(-9, 9, [0])
+    const back = chance(0.25)
+    if (back) [c, d] = [-pick([1, 2]), int(2, 9)]
+    if (a === 1 && c === 1 && b > 0 && d > 0) continue
+    const [A, B, C] = [a * c, a * d + b * c, b * d]
+    if (B === 0) continue
+    const f = (p: number, q: number, r: number) => ex(terms([[p, `${x}^2`], [q, x], [r, '']]))
+    const second = back ? `${d} - ${coef(-c, x)}` : lin(c, d, x)
+    return gq({
+      t: 'general',
+      prompt: `Expand and simplify:${big(ex(`(${lin(a, b, x)})(${second})`))}`,
+      correct: f(A, B, C),
+      // the inner and outer terms missed, a sign slip on the last term or on one inner product, one inner product only
+      wrong: [f(A, 0, C), f(A, B, -C), f(A, a * d - b * c, C), f(A, a * d, C), f(A, -B, C), f(A, B + 1, C)],
+      why: `${ex(`${coef(a, x)} × ${coef(c, x)}`)} = ${ex(coef(A, `${x}^2`))}; the middle terms ${ex(`${coef(a * d, x)}`)} and ${ex(`${coef(b * c, x)}`)} give ${ex(coef(B, x))}; ${b} × ${d} = ${num(C)}. So ${f(A, B, C)}.`,
+      meta: {},
+    })
+  }
+}
+
 const CH1 = chapter(1, 'Algebra', 'Number and algebra', 265, [
   S(1, '1.01', 'From words to algebraic expressions', 'Turn words into algebra, in the order the words give.', ['MA4-ALG-C-01'], [[NCM8_CH3, '3.02', 'words'], [NCM8_CH3, '3.02', 'story'], [NCM8_CH3, '3.02', 'twoStep']], REV('MA4-ALG-C-01')),
   S(1, '1.02', 'Substitution', 'Replace each pronumeral with its value, taking care with negatives and powers.', ['MA4-ALG-C-01'], [[NCM8_CH3, '3.03', 'sub'], [NCM8_CH3, '3.03', 'many'], [NCM8_CH3, '3.03', 'formula'], [NCM8_CH3, '3.03', 'square']], REV('MA4-ALG-C-01')),
@@ -87,15 +122,15 @@ const CH1 = chapter(1, 'Algebra', 'Number and algebra', 265, [
   S(1, '1.05', 'Adding and subtracting algebraic fractions', 'Use a common denominator, then add or subtract the numerators.', ['MA5-ALG-C-01'], [[NCM9_CH1, '1.03', 'same'], [NCM9_CH1, '1.03', 'unlike']]),
   S(1, '1.06', 'Multiplying and dividing algebraic fractions', 'Multiply tops and bottoms and cancel; to divide, multiply by the reciprocal.', [], [[NCM9_CH1, '1.04', 'times']], PATH('Multiplying and dividing algebraic fractions with pronumerals', 'MA5-ALG-P-01')),
   S(1, '1.07', 'Expanding expressions', 'Multiply every term in the brackets, then collect like terms.', ['MA5-ALG-C-01'], [[NCM9_CH1, '1.05', 'expand'], [NCM9_CH1, '1.05', 'neg'], [NCM9_CH1, '1.05', 'simplify']]),
-  S(1, '1.08', 'Factorising expressions', 'Take out the highest common factor.', ['MA4-ALG-C-01'], [[NCM8_CH3, '3.09', 'factorise'], [NCM8_CH3, '3.09', 'fully']], REV('MA4-ALG-C-01')),
-  S(1, '1.09', 'Expanding binomial products', 'Multiply each term in the first bracket by each term in the second.', ['MA5-ALG-C-01'], [[NCM8_CH3, '3.11', 'binomial']]),
+  S(1, '1.08', 'Factorising expressions', 'Take out the highest common factor.', ['MA4-ALG-C-01'], [[NCM8_CH3, '3.08', 'hcf'], [NCM8_CH3, '3.09', 'factorise'], [NCM8_CH3, '3.09', 'fully']], REV('MA4-ALG-C-01') + ' Taking out a negative common factor is Stage 5 Path (MA5-ALG-P-01), so it is left out.'),
+  S(1, '1.09', 'Expanding binomial products', 'Multiply each term in the first bracket by each term in the second.', ['MA5-ALG-C-01'], [[NCM8_CH3, '3.11', 'binomial'], mk('general', m109general, 2), [NCM8_CH3, '3.12', 'square']]),
 ])
 
 // ================================================================== Chapter 2 Pythagoras' theorem
 
 const PYT = 'MA4-PYT-C-01'
 const CH2 = chapter(2, "Pythagoras' theorem", 'Measurement and space', 205, [
-  S(2, '2.01', 'Surds', 'Recognise surds and estimate square roots.', [], [[NCM9_CH2, '2.02', 'isSurd'], [NCM8_CH1, '1.01', 'between']], PATH('Surds', 'MA5-IND-P-02')),
+  S(2, '2.01', 'Surds', 'Square roots, estimating square roots, and recognising surds.', ['MA4-IND-C-01', 'MA4-FRC-C-01'], [[NCM8_CH1, '1.01', 'sqrt'], [NCM8_CH1, '1.01', 'between'], [NCM9_CH2, '2.02', 'isSurd']], 'Revision of Stage 4: square roots (MA4-IND-C-01) and irrational numbers (MA4-FRC-C-01). The word surd and work with surds are Stage 5 Path content (MA5-IND-P-02).'),
   S(2, '2.02', "Pythagoras' theorem", 'Name the hypotenuse and write the theorem.', [PYT], [[NCM8_CH1, '1.02', 'hyp'], [NCM8_CH1, '1.02', 'rule']], REV(PYT)),
   S(2, '2.03', 'Finding the hypotenuse', 'c² = a² + b²: add the squares.', [PYT], [[NCM8_CH1, '1.03', 'hyp'], [NCM8_CH1, '1.03', 'exact']], REV(PYT)),
   S(2, '2.04', 'Finding a shorter side', 'Subtract the squares to find a shorter side.', [PYT], [[NCM8_CH1, '1.04', 'short']], REV(PYT)),
@@ -108,14 +143,14 @@ const CH2 = chapter(2, "Pythagoras' theorem", 'Measurement and space', 205, [
 // ================================================================== Chapter 3 Numeracy and calculation
 
 const CH3 = chapter(3, 'Numeracy and calculation', 'Number and algebra', 330, [
-  S(3, '3.01', 'Integers', 'Add, subtract, multiply and divide integers.', ['MA4-INT-C-01'], [[NCM8_CH2, '2.02', 'negPlusPos'], [NCM8_CH2, '2.02', 'minusNeg'], [NCM8_CH2, '2.03', 'negTimesNeg'], [NCM8_CH2, '2.03', 'negDivNeg']], REV('MA4-INT-C-01')),
-  S(3, '3.02', 'Decimals', 'Order, round, multiply and divide decimals.', ['MA4-FRC-C-01'], [[NCM8_CH2, '2.05', 'order'], [NCM8_CH2, '2.05', 'round'], [NCM8_CH2, '2.06', 'times'], [NCM8_CH2, '2.06', 'divide']], REV('MA4-FRC-C-01')),
-  S(3, '3.03', 'Fractions', 'Simplify, add, subtract, multiply and divide fractions.', ['MA4-FRC-C-01'], [[NCM7_CH4, '4.01', 'simplify'], [NCM7_CH4, '4.03', 'unrelated'], [NCM7_CH4, '4.06', 'cancel'], [NCM7_CH4, '4.07', 'divide']], REV('MA4-FRC-C-01')),
-  S(3, '3.04', 'Percentages', 'Convert between percentages, fractions and decimals.', ['MA4-FRC-C-01'], [[NCM8_CH6, '6.04', 'toPct'], [NCM8_CH6, '6.04', 'toFrac'], [NCM8_CH6, '6.04', 'toDec'], [NCM8_CH6, '6.04', 'special']], REV('MA4-FRC-C-01')),
-  S(3, '3.05', 'Applying percentages', 'Percentages of amounts, increases and decreases.', ['MA4-FRC-C-01'], [[NCM9_CH3, '3.02', 'increase'], [NCM9_CH3, '3.02', 'decrease'], [NCM9_CH3, '3.02', 'whole'], [NCM9_CH3, '3.02', 'over100']], REV('MA4-FRC-C-01')),
-  S(3, '3.06', 'Profit, discounts and GST', 'Profit and loss, discounts and GST.', ['MA4-FRC-C-01'], [[NCM9_CH3, '3.03', 'profit'], [NCM9_CH3, '3.03', 'pct'], [NCM9_CH3, '3.03', 'gstAdd'], [NCM9_CH3, '3.03', 'costs']], REV('MA4-FRC-C-01')),
-  S(3, '3.07', 'Simple interest', 'Use I = Prn, with n in years.', ['MA5-FIN-C-01'], [[NCM9_CH3, '3.04', 'formula'], [NCM9_CH3, '3.04', 'interest'], [NCM9_CH3, '3.04', 'total'], [NCM9_CH3, '3.04', 'months']]),
-  S(3, '3.08', 'Ratios and rates', 'Simplify ratios, share in a ratio and solve ratio problems.', ['MA4-RAT-C-01'], [[NCM9_CH3, '3.05', 'simplify'], [NCM9_CH3, '3.05', 'part'], [NCM9_CH3, '3.05', 'three']], REV('MA4-RAT-C-01')),
+  S(3, '3.01', 'Integers', 'Compare, order, add, subtract, multiply and divide integers.', ['MA4-INT-C-01'], [[NCM7_CH1, '1.03', 'statement'], [NCM7_CH1, '1.03', 'order'], [NCM8_CH2, '2.02', 'negPlusPos'], [NCM8_CH2, '2.02', 'minusNeg'], [NCM8_CH2, '2.03', 'negTimesNeg'], [NCM8_CH2, '2.03', 'negDivNeg']], REV('MA4-INT-C-01')),
+  S(3, '3.02', 'Decimals', 'Fractions to decimals, recurring decimals; order, round, multiply and divide.', ['MA4-FRC-C-01'], [[NCM8_CH2, '2.07', 'term'], [NCM8_CH2, '2.07', 'convert'], [NCM8_CH2, '2.05', 'order'], [NCM8_CH2, '2.05', 'round'], [NCM8_CH2, '2.06', 'times'], [NCM8_CH2, '2.06', 'divide']], REV('MA4-FRC-C-01')),
+  S(3, '3.03', 'Fractions', 'Mixed numerals, comparing, simplifying and the four operations.', ['MA4-FRC-C-01'], [[NCM7_CH4, '4.01', 'improper'], [NCM7_CH4, '4.02', 'compare'], [NCM7_CH4, '4.01', 'simplify'], [NCM7_CH4, '4.03', 'unrelated'], [NCM7_CH4, '4.06', 'cancel'], [NCM7_CH4, '4.07', 'divide']], REV('MA4-FRC-C-01')),
+  S(3, '3.04', 'Percentages', 'Convert between percentages, fractions and decimals.', ['MA4-FRC-C-01'], [[NCM8_CH6, '6.04', 'toPct'], [NCM8_CH6, '6.04', 'toFrac'], [NCM8_CH6, '6.04', 'toDec'], [NCM8_CH6, '6.04', 'special'], [NCM7_CH4, '4.10', 'order']], REV('MA4-FRC-C-01')),
+  S(3, '3.05', 'Applying percentages', 'Increases and decreases, one amount as a percentage of another, finding the whole.', ['MA4-FRC-C-01'], [[NCM7_CH4, '4.12', 'asPct'], [NCM9_CH3, '3.02', 'increase'], [NCM9_CH3, '3.02', 'decrease'], [NCM9_CH3, '3.02', 'whole'], [NCM9_CH3, '3.02', 'over100']], REV('MA4-FRC-C-01')),
+  S(3, '3.06', 'Profit, discounts and GST', 'Profit and loss, discounts and GST.', ['MA4-FRC-C-01'], [[NCM9_CH3, '3.03', 'profit'], [NCM9_CH3, '3.03', 'pct'], [NCM9_CH3, '3.03', 'gstAdd'], [NCM8_CH6, '6.10', 'gstIn'], [NCM9_CH3, '3.03', 'costs']], REV('MA4-FRC-C-01')),
+  S(3, '3.07', 'Simple interest', 'Use I = Prn, with n in years; find the interest, total, rate or time.', ['MA5-FIN-C-01'], [[NCM9_CH3, '3.04', 'formula'], [NCM9_CH3, '3.04', 'interest'], [NCM9_CH3, '3.04', 'total'], [NCM9_CH3, '3.04', 'months'], [NCM8_CH6, '6.11', 'rate'], [NCM9_CH3, '3.04', 'time']]),
+  S(3, '3.08', 'Ratios and rates', 'Simplify ratios, share in a ratio; write rates and use them.', ['MA4-RAT-C-01'], [[NCM9_CH3, '3.05', 'simplify'], [NCM9_CH3, '3.05', 'part'], [NCM9_CH3, '3.05', 'three'], [NCM7_CH12, '12.04', 'rate'], [NCM7_CH12, '12.06', 'apply']], REV('MA4-RAT-C-01')),
   S(3, '3.09', 'Converting rates', 'Convert rates between units.', ['MA4-RAT-C-01'], [[NCM9_CH3, '3.06', 'convert'], [NCM9_CH3, '3.06', 'speed'], [NCM9_CH3, '3.06', 'reaction']], REV('MA4-RAT-C-01')),
 ])
 
@@ -135,6 +170,25 @@ const CH4 = chapter(4, 'Trigonometry', 'Measurement and space', 205, [
 
 // ================================================================== Chapter 5 Indices
 
+function m505negWrite(): GameQuestion {
+  const base = int(2, 9)
+  const e = base >= 6 ? 2 : int(2, 4)
+  const negForm = pow(base, `−${e}`)
+  const posForm = frac(1, pow(base, e))
+  const toNeg = chance()
+  return gq({
+    t: 'negWrite',
+    prompt: toNeg ? `Write ${posForm} using a negative index.` : `Write ${negForm} using a positive index.`,
+    correct: toNeg ? negForm : posForm,
+    // the sign moved to the front, the index flipped without the reciprocal, a negative base (odd index only: (−2)⁻² = 2⁻²), base and index swapped
+    wrong: toNeg
+      ? [`−${pow(base, e)}`, pow(base, e), e % 2 ? pow(-base, `−${e}`) : `−${negForm}`, pow(e, `−${base}`)]
+      : [`−${pow(base, e)}`, pow(base, e), `−${posForm}`, frac(1, pow(e, base))],
+    why: `${negForm} = ${posForm}: a negative index means the reciprocal.`,
+    meta: {},
+  })
+}
+
 const IND = 'MA5-IND-C-01'
 const MAG = 'MA5-MAG-C-01'
 const CH5 = chapter(5, 'Indices', 'Number and algebra', 18, [
@@ -142,7 +196,7 @@ const CH5 = chapter(5, 'Indices', 'Number and algebra', 18, [
   S(5, '5.02', 'Power of a power', 'Multiply the indices.', [IND], [[NCM9_CH5, '5.02', 'power'], [NCM9_CH5, '5.02', 'alg']]),
   S(5, '5.03', 'Powers of products and quotients', 'Raise every factor to the power.', [IND], [[NCM9_CH5, '5.03', 'product'], [NCM9_CH5, '5.03', 'quotient']]),
   S(5, '5.04', 'The zero index', 'a⁰ = 1 for any a ≠ 0.', [IND], [[NCM9_CH5, '5.04', 'zero'], [NCM9_CH5, '5.04', 'algZero'], [NCM9_CH5, '5.04', 'mix']]),
-  S(5, '5.05', 'Negative indices', 'A negative index means the reciprocal.', [IND], [[NCM9_CH5, '5.05', 'evalNeg']], 'Negative indices with numerical bases (MA5-IND-C-01).'),
+  S(5, '5.05', 'Negative indices', 'A negative index means the reciprocal.', [IND], [[NCM9_CH5, '5.05', 'evalNeg'], mk('negWrite', m505negWrite)], 'Negative indices with numerical bases (MA5-IND-C-01).'),
   S(5, '5.06', 'Summary of the index laws', 'Use all the index laws together.', [IND], [[NCM9_CH5, '5.08', 'laws'], [NCM9_CH5, '5.08', 'product'], [NCM9_CH5, '5.08', 'mix'], [NCM9_CH5, '5.08', 'evalNeg']]),
   S(5, '5.07', 'Significant figures', 'Count significant figures and round to them.', [MAG], [[NCM9_CH5, '5.09', 'count'], [NCM9_CH5, '5.09', 'round']]),
   S(5, '5.08', 'Scientific notation', 'a × 10ⁿ with 1 ≤ a < 10.', [MAG], [[NCM9_CH5, '5.10', 'toSci'], [NCM9_CH5, '5.10', 'fromSci'], [NCM9_CH5, '5.10', 'order']]),
@@ -172,9 +226,52 @@ function m604euler(): GameQuestion {
   }
 }
 
+// the reason for one step of working (the book asks for reasons with every answer)
+const R = {
+  sumT: 'Angle sum of a triangle is 180°',
+  ext: 'Exterior ∠ = sum of interior opposite ∠s',
+  iso: 'Base angles of an isosceles △ are equal',
+  equi: 'Angles of an equilateral △ are 60°',
+  line: 'Angles on a straight line add to 180°',
+  vert: 'Vertically opposite angles are equal',
+  sumQ: 'Angle sum of a quadrilateral is 360°',
+  parOpp: 'Opposite ∠s of a parallelogram are equal',
+  coInt: 'Co-interior angles, AD ∥ BC',
+  kite: 'Kite: one pair of opposite ∠s are equal',
+  rhom: 'Diagonals of a rhombus are perpendicular',
+  point: 'Angles at a point add to 360°',
+}
+function m601reason(shape: 'tri' | 'quad'): GameQuestion {
+  const p = int(35, 80)
+  const q = int(30, 75)
+  const which = shape === 'tri' ? pick(['sumT', 'ext', 'iso', 'line', 'equi'] as const) : pick(['sumQ', 'parOpp', 'coInt', 'kite', 'rhom'] as const)
+  const r = int(70, 110)
+  const step: Record<typeof which, string> = {
+    sumT: `In △ABC, ∠A = ${p}° and ∠B = ${q}°, so ∠C = ${180 - p - q}°.`,
+    ext: `In △ABC, side BC is extended to D. ∠A = ${p}° and ∠B = ${q}°, so ∠ACD = ${p + q}°.`,
+    iso: `In △ABC, AB = AC and ∠B = ${p}°, so ∠C = ${p}°.`,
+    line: `In △ABC, side BC is extended to D and ∠ACD = ${p + q}°, so ∠ACB = ${180 - p - q}°.`,
+    equi: `In △ABC, AB = BC = CA, so ∠A = 60°.`,
+    sumQ: `In quadrilateral ABCD, ∠A = ${p}°, ∠B = ${q + 60}° and ∠C = ${r}°, so ∠D = ${360 - p - q - 60 - r}°.`,
+    parOpp: `ABCD is a parallelogram and ∠A = ${p + 20}°, so ∠C = ${p + 20}°.`,
+    coInt: `ABCD is a parallelogram and ∠A = ${p + 20}°, so ∠B = ${160 - p}°.`,
+    kite: `ABCD is a kite with AB = AD and CB = CD. ∠B = ${r}°, so ∠D = ${r}°.`,
+    rhom: `ABCD is a rhombus and its diagonals meet at E, so ∠AEB = 90°.`,
+  }
+  const family = shape === 'tri' ? (['sumT', 'ext', 'iso', 'line', 'equi', 'vert'] as const) : (['sumQ', 'parOpp', 'coInt', 'kite', 'rhom', 'point'] as const)
+  return gq({
+    t: 'reason',
+    prompt: `Which reason goes with this step?${big(step[which])}`,
+    correct: R[which],
+    wrong: sample(family.filter((k) => k !== which), 3).map((k) => R[k]),
+    why: `${R[which]}.`,
+    meta: {},
+  })
+}
+
 const CH6 = chapter(6, 'Geometry and networks', 'Measurement and space', 40, [
-  S(6, '6.01', 'Triangle geometry', 'Angle sums, exterior angles and isosceles triangles.', ['MA4-GEO-C-01'], [[NCM8_CH4, '4.06', 'triangle'], [NCM8_CH4, '4.06', 'exterior'], [NCM8_CH4, '4.06', 'isosceles'], [NCM8_CH4, '4.03', 'angles']], REV('MA4-GEO-C-01')),
-  S(6, '6.02', 'Quadrilateral geometry', 'Angle sums and properties of the special quadrilaterals.', ['MA4-GEO-C-01'], [[NCM8_CH4, '4.06', 'quadrilateral'], [NCM8_CH4, '4.06', 'special'], [NCM8_CH4, '4.05', 'always']], REV('MA4-GEO-C-01')),
+  S(6, '6.01', 'Triangle geometry', 'Angle sums, exterior angles and isosceles triangles.', ['MA4-GEO-C-01'], [[NCM8_CH4, '4.06', 'triangle'], [NCM8_CH4, '4.06', 'exterior'], [NCM8_CH4, '4.06', 'isosceles'], [NCM8_CH4, '4.03', 'angles'], mk('reason', () => m601reason('tri'), 2)], REV('MA4-GEO-C-01')),
+  S(6, '6.02', 'Quadrilateral geometry', 'Angle sums and properties of the special quadrilaterals.', ['MA4-GEO-C-01'], [[NCM8_CH4, '4.06', 'quadrilateral'], [NCM8_CH4, '4.06', 'special'], [NCM8_CH4, '4.05', 'always'], mk('reason', () => m601reason('quad'), 2)], REV('MA4-GEO-C-01')),
   S(6, '6.03', 'Networks', 'Degrees of vertices, and whether a network can be traced.', [], [[NCM8_CH4, '4.08', 'degree'], [NCM8_CH4, '4.08', 'trace']], PATH('Networks', 'MA5-NET-P-01')),
   S(6, '6.04', "Planar graphs and Euler's formula", 'For a connected planar graph, V − E + F = 2.', [], [mk('euler', m604euler)], PATH("Euler's formula", 'MA5-NET-P-01')),
 ])
@@ -308,6 +405,84 @@ function m804tax(): GameQuestion {
   })
 }
 
+function m804taxable(): GameQuestion {
+  const per = pick(['year', 'fortnight', 'week'] as const)
+  const pay = per === 'year' ? 1000 * int(40, 140) + pick([0, 250, 480, 730]) : per === 'fortnight' ? 50 * int(36, 80) : 50 * int(18, 40)
+  const k = per === 'year' ? 1 : per === 'fortnight' ? 26 : 52
+  const annual = pay * k
+  const [i1, i2] = sample(['tools', 'work uniforms', 'union fees', 'donations to charity', 'work-related travel', 'a professional journal'], 2)
+  const d1 = pick([120, 245, 380, 512, 690, 875, 1040])
+  const d2 = pick([60, 95, 150, 210, 330, 455])
+  const who = pick(NAMES)
+  const taxable = annual - d1 - d2
+  return gq({
+    t: 'taxable',
+    prompt: `${who} earns ${b(`${$(pay)} a ${per}`)}${k > 1 ? ` (${k} ${per}s a year)` : ''} and can deduct ${$(d1)} for ${i1} and ${$(d2)} for ${i2}. What is ${who}'s taxable income?`,
+    correct: $(taxable),
+    // no deductions, one deduction, deductions added, not turned into a year
+    wrong: wrongs(taxable, [annual, annual - d1, annual + d1 + d2, k > 1 ? pay - d1 - d2 : annual - d2, annual - d1 + d2], $),
+    why: `Taxable income = gross income − deductions = ${k > 1 ? `${$(pay)} × ${k} = ${$(annual)}; ` : ''}${$(annual)} − ${$(d1)} − ${$(d2)} = ${$(taxable)}.`,
+    meta: {},
+  })
+}
+
+function m804bracket(): GameQuestion {
+  // one line of a stated resident tax scale (the 2024–25 rates; the question gives the line, so it does not date)
+  const [lo, hi, base, c] = pick([[45_000, 135_000, 4288, 30], [135_000, 190_000, 31_288, 37], [190_000, 0, 51_638, 45]] as const)
+  const income = lo + 100 * int(20, hi ? (hi - lo) / 100 - 20 : 900)
+  const over = income - lo
+  const tax = base + (over * c) / 100
+  return gq({
+    t: 'bracket',
+    prompt: `For taxable income ${hi ? `from ${$(lo + 1)} to ${$(hi)}` : `over ${$(lo)}`}, tax is ${b(`${$(base)} plus ${c}c for each $1 over ${$(lo)}`)}. Find the tax on ${b($(income))}.`,
+    correct: $(tax),
+    // the base left out, the rate applied to the whole income, c read as dollars
+    wrong: wrongs(tax, [(over * c) / 100, base + (income * c) / 100, (income * c) / 100, base + over * c], $),
+    why: `${$(income)} − ${$(lo)} = ${$(over)}. Tax = ${$(base)} + ${c}c × ${num(over)} = ${$(base)} + ${$((over * c) / 100)} = ${$(tax)}.`,
+    meta: {},
+  })
+}
+
+function m805payg(): GameQuestion {
+  // two lines of a PAYG table, stated in the question
+  const lo = 50 * int(18, 30)
+  const w1 = Math.round(lo * 0.2 - pick([20, 30, 40]))
+  const second = chance()
+  const earn = second ? lo + int(4, 7) : lo + int(0, 3)
+  const n = pick([4, 6, 8, 10, 12, 16, 20])
+  const who = pick(NAMES)
+  const w = second ? w1 + 1 : w1
+  return gq({
+    t: 'payg',
+    prompt: `PAYG table: weekly pay ${$(lo)}–${$(lo + 3)}, ${$(w1)} withheld; ${$(lo + 4)}–${$(lo + 7)}, ${$(w1 + 1)} withheld. ${who} earns ${b(`${$(earn)} a week for ${n} weeks`)}. Total PAYG tax?`,
+    correct: $(w * n),
+    // the other line of the table, one week only, one week short
+    wrong: wrongs(w * n, [(second ? w1 : w1 + 1) * n, w, w * (n - 1), earn * n], $),
+    why: `${$(earn)} is in the ${$(second ? lo + 4 : lo)}–${$(second ? lo + 7 : lo + 3)} line: ${$(w)} a week. ${$(w)} × ${n} = ${$(w * n)}.`,
+    meta: {},
+  })
+}
+
+function m805refund(): GameQuestion {
+  const tax = 10 * int(400, 3200)
+  const diff = pick([120, 250, 384, 560, 745, 980, 1230])
+  const refund = chance()
+  const paid = refund ? tax + diff : tax - diff
+  const who = pick(NAMES)
+  const R1 = (x: number) => `refund of ${$(x)}`
+  const D1 = (x: number) => `tax debt of ${$(x)}`
+  const [right, other] = refund ? [R1, D1] : [D1, R1]
+  return gq({
+    t: 'refund',
+    prompt: `${who}'s income tax for the year is ${b($(tax))}. PAYG tax withheld was ${b($(paid))}. Is there a refund or a tax debt, and how much?`,
+    correct: right(diff),
+    // refund and debt mixed up, the whole PAYG amount, the difference doubled
+    wrong: [other(diff), right(paid), other(paid), right(2 * diff)],
+    why: `${refund ? `More tax was withheld than is owed: ${$(paid)} − ${$(tax)}` : `Less tax was withheld than is owed: ${$(tax)} − ${$(paid)}`} = ${$(diff)}, a ${refund ? 'refund' : 'tax debt'}.`,
+    meta: {},
+  })
+}
+
 function m805net(): GameQuestion {
   const gross = pick([1200, 1350, 1500, 1640, 1800, 2000, 2250, 2500])
   const tax = pick([180, 220, 260, 300, 350, 400, 450])
@@ -328,16 +503,16 @@ function m805net(): GameQuestion {
 const CH8 = chapter(8, 'Earning money', 'Number and algebra', 145, [
   S(8, '8.01', 'Wages and salaries', 'Hourly wages, and salaries per week, fortnight and year (52 weeks).', [FIN], [mk('wage', m801wage), mk('salary', m801salary)]),
   S(8, '8.02', 'Overtime pay', 'Time-and-a-half and double time.', [FIN], [mk('overtime', m802overtime), mk('wage', m801wage)]),
-  S(8, '8.03', 'Commission, piecework and royalties', 'Pay as a percentage of sales, or per item.', [FIN], [mk('commission', m803commission), mk('piece', m803piece)]),
-  S(8, '8.04', 'Income tax', 'Leave loading, and tax from a stated tax scale.', [FIN], [mk('leave', m804leave), mk('tax', m804tax)]),
-  S(8, '8.05', 'PAYG tax and net pay', 'Net pay = gross pay − tax − other deductions.', [FIN], [mk('net', m805net), mk('tax', m804tax)]),
+  S(8, '8.03', 'Commission, piecework and leave loading', 'Pay as a percentage of sales or per item, and 17.5% leave loading.', [FIN], [mk('commission', m803commission), mk('piece', m803piece), mk('leave', m804leave)]),
+  S(8, '8.04', 'Income tax', 'Taxable income = gross income − deductions; tax from a tax scale.', [FIN], [mk('taxable', m804taxable), mk('tax', m804tax), mk('bracket', m804bracket, 2)], 'Each question states its tax scale (the bracket questions use the 2024–25 resident rates), so the questions do not date. The book uses an older scale; the method is the same.'),
+  S(8, '8.05', 'PAYG tax and net pay', 'PAYG tax from a table, refunds and tax debts, and net pay.', [FIN], [mk('payg', m805payg), mk('net', m805net), mk('refund', m805refund, 2)]),
 ])
 
 // ================================================================== Chapter 9 Analysing data
 
 const DAT = 'MA5-DAT-C-01'
 const CH9 = chapter(9, 'Analysing data', 'Statistics and probability', 145, [
-  S(9, '9.01', 'The mean, median, mode and range', 'Find each measure, including from a frequency table.', [DAT], [[NCM8_CH7, '7.05', 'mean'], [NCM8_CH7, '7.06', 'median'], [NCM8_CH7, '7.06', 'range'], [NCM8_CH7, '7.07', 'mean', 'tableMean']]),
+  S(9, '9.01', 'The mean, median, mode and range', 'Find each measure, including from a frequency table.', [DAT], [[NCM8_CH7, '7.05', 'mean'], [NCM8_CH7, '7.06', 'median'], [NCM8_CH7, '7.06', 'range'], [NCM8_CH7, '7.07', 'mean', 'tableMean'], [NCM7_CH10, '10.05', 'missing']]),
   S(9, '9.02', 'Histograms and stem-and-leaf plots', 'Read histograms and stem-and-leaf plots.', [DAT], [[NCM8_CH7, '7.09', 'read'], [NCM8_CH7, '7.09', 'total'], [NCM8_CH7, '7.08', 'extreme'], [NCM8_CH7, '7.08', 'median']]),
   S(9, '9.03', 'The shape of a distribution', 'Symmetrical, positively or negatively skewed, uniform.', [DAT], [[NCM8_CH7, '7.11', 'shape'], [NCM8_CH7, '7.08', 'outlier']]),
   S(9, '9.04', 'Comparing data sets', 'Compare centres and spreads, and the effect of outliers.', [DAT], [[NCM8_CH7, '7.12', 'compare'], [NCM8_CH7, '7.12', 'effect']]),
@@ -348,6 +523,28 @@ const CH9 = chapter(9, 'Analysing data', 'Statistics and probability', 145, [
 // ================================================================== Chapter 10 Surface area and volume
 
 const ARE5 = 'MA5-ARE-C-01'
+
+// two-step metric conversions (kL to mL, km to cm, t to g, ...) and back
+const CHAIN: [string, string, number, string, string][] = [
+  ['kL', 'mL', 1e6, 'kilolitres', 'millilitres'], ['ML', 'L', 1e6, 'megalitres', 'litres'], ['km', 'cm', 1e5, 'kilometres', 'centimetres'],
+  ['km', 'mm', 1e6, 'kilometres', 'millimetres'], ['t', 'g', 1e6, 'tonnes', 'grams'], ['kg', 'mg', 1e6, 'kilograms', 'milligrams'],
+]
+function m1001chain(): GameQuestion {
+  const [big, small, f, bigW, smallW] = pick(CHAIN)
+  const v = pick([0.2, 0.35, 0.6, 1.5, 2.4, 3, 4.25, 7.5, 12])
+  const down = chance(0.6)
+  const [given, gu, ans, au, aw] = down ? [v, big, v * f, small, smallW] : [v * f, small, v, big, bigW]
+  const fmt = (x: number) => `${num(x)} ${au}`
+  return gq({
+    t: 'chain',
+    prompt: `Convert ${b(`${num(given)} ${gu}`)} to ${aw}.`,
+    correct: fmt(ans),
+    // only one of the two steps, the wrong way, a power of ten out
+    wrong: [ans / 1000, ans * 1000, ans / 10, ans * 10, ans / 100].map(fmt),
+    why: `1 ${big} = ${num(f)} ${small}, so ${num(given)} ${gu} = ${num(given)} ${down ? TIMES : DIVIDE} ${num(f)} = ${num(ans)} ${au}.`,
+    meta: {},
+  })
+}
 
 function m1002abs(): GameQuestion {
   const [unit, step, dp] = pick([
@@ -403,7 +600,7 @@ function m1003pct(): GameQuestion {
 }
 
 const CH10 = chapter(10, 'Surface area and volume', 'Measurement and space', 95, [
-  S(10, '10.01', 'Metric units', 'Convert units of length, area and volume.', ['MA4-ARE-C-01'], [[NCM8_CH5, '5.04', 'down'], [NCM8_CH5, '5.04', 'km'], [NCM8_CH5, '5.11', 'down', 'volDown']], REV('MA4-ARE-C-01, MA4-VOL-C-01')),
+  S(10, '10.01', 'Metric units', 'Choose a sensible unit; convert units of length, mass, capacity and time.', [MAG], [[NCM7_CH8, '8.01', 'unit'], [NCM7_CH8, '8.01', 'down'], [NCM7_CH8, '8.01', 'up'], [NCM7_CH8, '8.13', 'down', 'capacity'], mk('chain', m1001chain, 2), [NCM7_CH8, '8.01', 'size']], 'Metric prefixes (MA5-MAG-C-01). Converting capacity units revises Stage 4 (MA4-VOL-C-01); length, mass and time conversions revise Stage 3.'),
   S(10, '10.02', 'Precision and absolute error', 'The absolute error is half the unit of measurement.', [MAG], [mk('abs', m1002abs)]),
   S(10, '10.03', 'Percentage error', 'Percentage error = absolute error ÷ measurement × 100%.', [MAG], [mk('pct', m1003pct), mk('abs', m1002abs)]),
   S(10, '10.04', 'Perimeters and areas of composite shapes', 'Split shapes into parts, or take a part away.', [ARE5], [[NCM8_CH5, '5.01', 'composite'], [NCM8_CH5, '5.06', 'hole'], [NCM8_CH5, '5.06', 'add']]),
@@ -411,7 +608,7 @@ const CH10 = chapter(10, 'Surface area and volume', 'Measurement and space', 95,
   S(10, '10.06', 'Circumferences and areas of circles', 'C = πd, A = πr², sectors.', ['MA4-ARE-C-01'], [[NCM8_CH5, '5.03', 'exactD'], [NCM8_CH5, '5.07', 'exactR'], [NCM8_CH5, '5.08', 'area', 'sector']], REV('MA4-LEN-C-01, MA4-ARE-C-01')),
   S(10, '10.07', 'Surface area of a prism', 'Add the areas of all the faces.', [ARE5], [[NCM8_CH12, '12.04', 'cube'], [NCM8_CH12, '12.04', 'box'], [NCM8_CH12, '12.04', 'tri']]),
   S(10, '10.08', 'Surface area of a cylinder', '2πr² + 2πrh.', [ARE5], [[NCM8_CH12, '12.05', 'curved'], [NCM8_CH12, '12.05', 'closed'], [NCM8_CH12, '12.05', 'open']]),
-  S(10, '10.09', 'Volumes of prisms and cylinders', 'V = Ah and V = πr²h.', ['MA5-VOL-C-01'], [[NCM8_CH5, '5.12', 'Ah'], [NCM8_CH5, '5.13', 'exact'], [NCM8_CH5, '5.13', 'estimate']]),
+  S(10, '10.09', 'Volumes of prisms and cylinders', 'V = lwh, V = Ah and V = πr²h; volume units and capacity.', ['MA4-VOL-C-01', 'MA5-VOL-C-01'], [[NCM7_CH8, '8.11', 'prism'], [NCM8_CH5, '5.12', 'Ah'], [NCM8_CH5, '5.13', 'exact'], [NCM8_CH5, '5.13', 'estimate'], [NCM7_CH8, '8.10', 'up', 'volUnits'], [NCM7_CH8, '8.13', 'holds']], 'Volumes of prisms and cylinders and converting volume units revise Stage 4 (MA4-VOL-C-01); composite solids are Stage 5 (MA5-VOL-C-01).'),
 ])
 
 // ================================================================== Chapter 11 Coordinate geometry
@@ -517,17 +714,67 @@ function m1111apply(): GameQuestion {
   })
 }
 
+function m1104xInt(): GameQuestion {
+  const m = intExcept(-4, 4, [0])
+  const x0 = intExcept(-6, 6, [0])
+  const c = -m * x0
+  // sometimes written constant first, as in y = 6 − 3x
+  const eq = chance(0.4) ? ex(`y = ${c} ${m < 0 ? '-' : '+'} ${coef(Math.abs(m), 'x')}`) : ex(`y = ${lin(m, c)}`)
+  return gq({
+    t: 'xInt',
+    prompt: `Where does the line ${eq} cross the ${ex('x')}-axis?`,
+    correct: pt(x0, 0),
+    // the y-intercept, the constant as the x-intercept, a sign slip
+    wrong: [pt(0, c), pt(c, 0), pt(-x0, 0), pt(0, x0), pt(x0 + 1, 0)],
+    why: `On the ${ex('x')}-axis ${ex('y = 0')}: ${ex(`0 = ${lin(m, c)}`)}, so ${ex(`x = ${neg(x0)}`)}. The ${ex('x')}-intercept is ${pt(x0, 0)}.`,
+    meta: {},
+  })
+}
+
+function m1104hv(): GameQuestion {
+  const x = intExcept(-6, 6, [0])
+  const y = intExcept(-6, 6, [0, x, -x])
+  const horiz = chance()
+  const eq = (v: string, k: number) => ex(`${v} = ${neg(k)}`)
+  return gq({
+    t: 'hv',
+    prompt: `What is the equation of the ${b(horiz ? 'horizontal' : 'vertical')} line through ${pt(x, y)}?`,
+    correct: horiz ? eq('y', y) : eq('x', x),
+    // the other coordinate, the other letter
+    wrong: horiz ? [eq('x', x), eq('y', x), eq('x', y)] : [eq('y', y), eq('x', y), eq('y', x)],
+    why: horiz ? `Every point on a horizontal line has the same ${ex('y')} value: ${eq('y', y)}.` : `Every point on a vertical line has the same ${ex('x')} value: ${eq('x', x)}.`,
+    meta: {},
+  })
+}
+
+function m1110shape(): GameQuestion {
+  const a = pick([1, -1, 2, -2, 3, -3, 4])
+  const c = int(-5, 5)
+  const eq = ex(`y = ${a === 1 ? '' : a === -1 ? '-' : a}x^2${c === 0 ? '' : c > 0 ? ` + ${c}` : ` - ${-c}`}`)
+  const [up, down] = a > 0 ? ['up', 'down'] : ['down', 'up']
+  const o = (way: string, x: number, y: number) => `concave ${way}, vertex ${pt(x, y)}`
+  return gq({
+    t: 'shape',
+    prompt: `Which describes the parabola ${eq}?`,
+    correct: o(up, 0, c),
+    // the sign of a ignored, the vertex on the x-axis, the vertex from a
+    wrong: [o(down, 0, c), o(up, c, 0), o(up, 0, a), o(down, 0, -c), o(up, 0, -c), o(up, 0, c + 1), o(down, 0, c + 1)],
+    why: `${a > 0 ? 'a > 0' : 'a < 0'}, so it is concave ${up}; at ${ex('x = 0')}, ${ex(`y = ${neg(c)}`)}, so the vertex is ${pt(0, c)}.`,
+    meta: {},
+  })
+}
+
 const CH11 = chapter(11, 'Coordinate geometry', 'Number and algebra', 190, [
   S(11, '11.01', 'The length of an interval', 'Use Pythagoras: √(run² + rise²).', [LIN5], [mk('length', m1101length)]),
   S(11, '11.02', 'The midpoint of an interval', 'Average the x and the y coordinates.', [LIN5], [mk('midpoint', m1102midpoint)]),
   S(11, '11.03', 'The gradient of a line', 'Gradient = rise ÷ run.', [LIN5], [[NCM8_CH11, '11.09', 'gradient']]),
-  S(11, '11.04', 'Graphing linear equations', 'Increasing and decreasing lines, and points on a line.', [LIN5], [[NCM8_CH11, '11.06', 'onLine'], [NCM8_CH11, '11.06', 'incdec'], [NCM8_CH11, '11.08', 'intercept']]),
-  S(11, '11.05', 'The gradient-intercept formula', 'In y = mx + c, m is the gradient and c the y-intercept.', [LIN5], [[NCM8_CH11, '11.10', 'read'], [NCM8_CH11, '11.10', 'write'], [NCM8_CH11, '11.08', 'parallel']]),
+  S(11, '11.04', 'Graphing linear equations', 'Points on a line, intercepts, horizontal and vertical lines.', [LIN5], [[NCM8_CH11, '11.06', 'onLine'], [NCM8_CH11, '11.06', 'incdec'], [NCM8_CH11, '11.08', 'intercept'], mk('xInt', m1104xInt, 2), mk('hv', m1104hv)]),
+  S(11, '11.05', 'The gradient-intercept formula', 'In y = mx + c, m is the gradient and c the y-intercept.', [LIN5], [[NCM8_CH11, '11.10', 'read'], [NCM8_CH11, '11.10', 'write'], [NCM8_CH11, '11.08', 'parallel'], [NCM8_CH11, '11.08', 'steepest']]),
   S(11, '11.06', 'Finding the equation of a line', 'Read the gradient and y-intercept from the graph.', [LIN5], [[NCM8_CH11, '11.07', 'fromGraph']]),
   S(11, '11.07', 'Solving linear equations graphically', 'Read across from the y value, then down to x; find where lines meet.', [LIN5], [[NCM8_CH11, '11.12', 'graph'], [NCM8_CH11, '11.13', 'intersect']]),
   S(11, '11.08', 'Applying linear equations', 'Use a linear rule from a real situation.', [LIN5], [[NCM8_CH11, '11.11', 'apply']]),
   S(11, '11.09', 'Direct variation', 'If y varies directly with x, then y = kx.', [], [mk('direct', m1109direct)], PATH('Direct variation', 'MA5-RAT-P-01')),
-  S(11, '11.10', 'Graphing quadratic equations', 'Parabolas: values and turning points.', ['MA5-NLI-C-01'], [mk('parabola', m1110parabola)]),
+  S(11, '11.10', 'Graphing quadratic equations', 'Parabolas y = ax² + c: values, vertex, concave up or down.', ['MA5-NLI-C-01'], [mk('parabola', m1110parabola), mk('shape', m1110shape)]),
   S(11, '11.11', 'Applying quadratic equations', 'Use a quadratic rule from a real situation.', ['MA5-NLI-C-01'], [mk('apply', m1111apply)]),
 ])
 
@@ -590,21 +837,84 @@ function m1205tree(): GameQuestion {
   })
 }
 
+function m1205noRep(): GameQuestion {
+  if (chance(0.6)) {
+    // two draws without replacement: the second draw has one fewer of each
+    const r = int(2, 6)
+    const bl = int(2, 6)
+    const n = r + bl
+    const right = F(r * (r - 1), n * (n - 1))
+    return gq({
+      t: 'noRep',
+      prompt: `A bag has ${r} red and ${bl} blue marbles. Two are drawn ${b('without replacement')}. What is the probability that both are red?`,
+      correct: right,
+      // with replacement, one draw only, the second draw only, added
+      wrong: [F(r * r, n * n), F(r, n), F(r - 1, n - 1), F(r * (r - 1), n * n), F(2 * r - 1, 2 * n - 1), F(r * r, n * (n - 1))].filter((x, i, a) => x !== right && x !== '1' && x !== '0' && a.indexOf(x) === i),
+      why: `Multiply along the branches: ${r}/${n} × ${r - 1}/${n - 1} = ${r * (r - 1)}/${n * (n - 1)}${gcd(r * (r - 1), n * (n - 1)) > 1 ? ` = ${(r * (r - 1)) / gcd(r * (r - 1), n * (n - 1))}/${(n * (n - 1)) / gcd(r * (r - 1), n * (n - 1))}` : ''}.`,
+      meta: {},
+    })
+  }
+  const k = int(3, 6)
+  const digits = sample([1, 2, 3, 4, 5, 6, 7, 8, 9], k).sort((x, y) => x - y)
+  return gq({
+    t: 'noRep',
+    prompt: `The digits ${digits.join(', ')} are on ${k} cards. Two cards are drawn ${b('without replacement')} to make a 2-digit number. How many different numbers are possible?`,
+    correct: num(k * (k - 1)),
+    // with replacement, pairs counted once, added
+    wrong: wrongs(k * (k - 1), [k * k, (k * (k - 1)) / 2, 2 * k, k * (k + 1)], (x) => num(x)),
+    why: `${k} choices for the first digit, then ${k - 1} for the second: ${k} × ${k - 1} = ${k * (k - 1)}.`,
+    meta: {},
+  })
+}
+
 const CH12 = chapter(12, 'Probability', 'Statistics and probability', 350, [
-  S(12, '12.01', 'Probability', 'Sample spaces and probabilities of equally likely outcomes.', ['MA4-PRO-C-01'], [[NCM8_CH8, '8.01', 'bag'], [NCM8_CH8, '8.01', 'die'], [NCM8_CH8, '8.01', 'or'], [NCM8_CH8, '8.02', 'not']], REV('MA4-PRO-C-01')),
+  S(12, '12.01', 'Probability', 'Sample spaces and probabilities of equally likely outcomes.', ['MA4-PRO-C-01'], [[NCM8_CH8, '8.01', 'bag'], [NCM8_CH8, '8.01', 'die'], [NCM8_CH8, '8.01', 'or'], [NCM8_CH8, '8.02', 'not'], [NCM8_CH8, '8.02', 'pct']], REV('MA4-PRO-C-01')),
   S(12, '12.02', 'Observed probability', 'Relative frequency, and using it to predict.', [PRO5], [[NCM8_CH8, '8.06', 'relFreq'], [NCM8_CH8, '8.06', 'predict'], [NCM8_CH8, '8.06', 'expected']]),
   S(12, '12.03', 'Venn diagrams', 'Read Venn diagrams and find probabilities from them.', [], [[NCM8_CH8, '8.03', 'count'], [NCM8_CH8, '8.03', 'prob']], PATH('Venn diagrams', 'MA5-PRO-P-01')),
   S(12, '12.04', 'Two-way tables', 'Complete two-way tables and find probabilities.', [], [[NCM8_CH8, '8.04', 'missing'], [NCM8_CH8, '8.04', 'prob']], PATH('Two-way tables', 'MA5-PRO-P-01')),
-  S(12, '12.05', 'Tree diagrams', 'Multistage experiments: count the outcomes, multiply along the branches.', [PRO5], [mk('outcomes', m1205outcomes), mk('tree', m1205tree)]),
+  S(12, '12.05', 'Tree diagrams', 'Multistage experiments with and without replacement: count outcomes, multiply along branches.', [PRO5], [mk('outcomes', m1205outcomes), mk('tree', m1205tree), mk('noRep', m1205noRep, 2)]),
 ])
 
 // ================================================================== Chapter 13 Similar figures
 
 const GEO5 = 'MA5-GEO-C-01'
+
+function m1303findScale(): GameQuestion {
+  if (chance(0.7)) {
+    // a reduction: drawn length in cm, real length in m
+    const n = pick([20, 25, 40, 50, 100, 200, 250, 400, 500])
+    const d = pick([2, 3, 4, 5, 6, 8, 12])
+    const real = (d * n) / 100
+    const thing = pick(['car', 'boat', 'bus', 'house', 'bridge', 'room'])
+    return gq({
+      t: 'findScale',
+      prompt: `On a scale drawing, a ${thing} is ${b(`${d} cm`)} long. The real ${thing} is ${b(`${num(real)} m`)} long. What is the scale of the drawing?`,
+      correct: `1 : ${num(n)}`,
+      // metres not changed to centimetres, the ratio reversed, a power of ten out
+      wrong: [`1 : ${num(real / d)}`, `${num(n)} : 1`, `1 : ${num(n * 10)}`, `1 : ${num(real)}`, `1 : ${num(n / 10)}`].filter((x) => x !== `1 : ${num(n)}`),
+      why: `${num(real)} m = ${num(d * n)} cm. ${d} : ${num(d * n)} = 1 : ${num(n)}.`,
+      meta: {},
+    })
+  }
+  // an enlargement: a photo of something small
+  const k = pick([2, 4, 5, 8, 10, 12, 15, 20])
+  const r = pick([2, 3, 4, 5, 6])
+  const D = (k * r) / 10
+  const thing = pick(['an ant', 'a flea', 'a seed', 'a beetle', 'a mosquito'])
+  return gq({
+    t: 'findScale',
+    prompt: `A photo shows ${thing} ${b(`${num(D)} cm`)} long. The real one is ${b(`${r} mm`)} long. What is the scale of the photo?`,
+    correct: `${k} : 1`,
+    // the ratio reversed, centimetres not changed to millimetres
+    wrong: [`1 : ${k}`, `${num(D / r)} : 1`, `${k * 10} : 1`, `1 : ${num(D / r)}`, `${k / 2} : 1`].filter((x) => x !== `${k} : 1`),
+    why: `${num(D)} cm = ${num(D * 10)} mm. ${num(D * 10)} : ${r} = ${k} : 1.`,
+    meta: {},
+  })
+}
 const CH13 = chapter(13, 'Similar figures', 'Measurement and space', 50, [
   S(13, '13.01', 'Similar figures', 'Same shape: all sides enlarged by the same scale factor, angles equal.', [GEO5], [[NCM8_CH12, '12.01', 'which'], [NCM8_CH12, '12.01', 'factor'], [NCM8_CH12, '12.02', 'angle']]),
   S(13, '13.02', 'Finding unknown sides in similar figures', 'Find the scale factor, then the unknown side.', [GEO5], [[NCM8_CH12, '12.03', 'side'], [NCM8_CH12, '12.02', 'ratio']]),
-  S(13, '13.03', 'Scale drawings', 'Use a scale 1 : n to find real and drawn lengths.', [GEO5], [[NCM8_CH10, '10.03', 'scale'], [NCM8_CH10, '10.03', 'map'], [NCM8_CH10, '10.03', 'toMap']]),
+  S(13, '13.03', 'Scale drawings', 'Find a scale from a drawn and a real length; use a scale to find lengths.', [GEO5], [[NCM8_CH10, '10.03', 'scale'], mk('findScale', m1303findScale), [NCM8_CH10, '10.03', 'map'], [NCM8_CH10, '10.03', 'toMap']]),
 ])
 
 export const NCM9S_CHAPTERS: GameChapter[] = [CH1, CH2, CH3, CH4, CH5, CH6, CH7, CH8, CH9, CH10, CH11, CH12, CH13]
