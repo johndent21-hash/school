@@ -17,7 +17,7 @@ const REVISION = 'Revision of earlier stages: time calculations, 24-hour time an
 const EXTENSION = 'Marked as extension in the textbook; world time zones are not in the Stage 4 syllabus.'
 const big = (s: string) => `<div class="big">${s}</div>`
 const r = (a: number, b: number) => `${num(a)} : ${num(b)}`
-const NAMES = ['Ava', 'Liam', 'Mia', 'Noah', 'Zara', 'Jack', 'Priya', 'Kai', 'Lily', 'Sam', 'Ella', 'Omar']
+const NAMES = ['Ava', 'Ravi', 'Mia', 'Noah', 'Zara', 'Jack', 'Priya', 'Kai', 'Lily', 'Sam', 'Ella', 'Omar']
 /** three different wrong whole numbers, likely first */
 function intWrong(right: number, likely: number[]): string[] {
   const out: number[] = []

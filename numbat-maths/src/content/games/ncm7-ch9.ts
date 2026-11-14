@@ -7,6 +7,9 @@
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Linear relationships MA4-LIN-C-01. 9.01 (grid references on a map)
 // is earlier-stage content and marked as revision.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added increasing or decreasing lines (9.06; NCM 8
+// 11.06 reuses it).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { D, MINUS, chance, gq, int, mk, num, pick, sample, shuffle, v } from './helpers'
 
@@ -343,6 +346,22 @@ const SET_905: GameSet = {
 
 // ================================================================== 9.06 Graphing linear equations
 
+const INCDEC = ['increasing: it rises left to right', 'decreasing: it falls left to right']
+
+function m906incdec(): GameQuestion {
+  const m = pick([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
+  const c = int(-6, 6)
+  return gq({
+    t: 'incdec',
+    prompt: `Is the graph of ${ex2(ruleText(m, c))} increasing or decreasing?`,
+    correct: INCDEC[m > 0 ? 0 : 1],
+    // the sign of the constant read instead of the coefficient of x
+    inOrder: [...INCDEC, c >= 0 ? 'increasing: the constant is positive' : 'decreasing: the constant is negative', 'neither: it is horizontal'],
+    why: `${INCDEC[m > 0 ? 0 : 1]}. The coefficient of ${v('x')} is ${num(m)}: ${m > 0 ? 'positive, so y increases as x increases' : 'negative, so y decreases as x increases'}.`,
+    meta: { m, c },
+  })
+}
+
 function m906onLine(): GameQuestion {
   const [m, c] = pick(RULES)
   const x = int(-2, 4)
@@ -384,7 +403,7 @@ const SET_906: GameSet = {
   focus: 'Every point on a line fits its rule: test points, and match a line to its rule.',
   lessons: ['y7-np-rule'],
   outcomes: [LIN],
-  makers: [mk('onLine', m906onLine), mk('graph', m906graph, 2)],
+  makers: [mk('onLine', m906onLine), mk('graph', m906graph, 2), mk('incdec', m906incdec)],
 }
 
 export const NCM7_CH9: GameChapter = {

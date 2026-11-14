@@ -17,7 +17,7 @@ const FRC = 'MA4-FRC-C-01'
 const big = (s: string) => `<div class="big">${s}</div>`
 const b = (s: string) => `<b>${s}</b>`
 type Q = [number, number]
-const NAMES = ['Ava', 'Liam', 'Mia', 'Noah', 'Zara', 'Jack', 'Priya', 'Kai', 'Lily', 'Sam', 'Ella', 'Omar']
+const NAMES = ['Ava', 'Ravi', 'Mia', 'Noah', 'Zara', 'Jack', 'Priya', 'Kai', 'Lily', 'Sam', 'Ella', 'Omar']
 
 /** simplest form: a whole number, a proper fraction or a mixed numeral */
 const F = (n: number, d: number) => mixed(n, d)

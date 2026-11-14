@@ -8,6 +8,9 @@
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Fractions, decimals and percentages MA4-FRC-C-01. Adding and
 // subtracting decimals (7.03) is Stage 3 content, marked as revision.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added "bigger or smaller?" for multiplying and
+// dividing by a decimal less than or greater than 1 (7.05, 7.08).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { DIVIDE, MINUS, TIMES, chance, frac, gcd, gq, int, mk, money, num, pick, sample, shuffle } from './helpers'
 
@@ -373,6 +376,31 @@ function m705estimate(): GameQuestion {
   })
 }
 
+/** Without working it out: does multiplying (or dividing) by this decimal make the number bigger or smaller? */
+const sizeKind = (op: 'times' | 'divide') =>
+  mk(
+    'size',
+    (): GameQuestion => {
+      const less = chance()
+      const d = less ? pick([0.2, 0.5, 0.6, 0.75, 0.8, 0.9, 0.95, 0.4]) : pick([1.2, 1.5, 2.5, 1.05, 1.1, 3.2])
+      const n = pick([12, 18, 20, 24, 30, 36, 40, 60, 75])
+      const bigger = (op === 'times') !== less
+      const opts = [`Bigger than ${n}`, `Smaller than ${n}`, `Equal to ${n}`, 'Cannot tell without working']
+      return gq({
+        t: 'size',
+        prompt: `Without working it out: is the answer bigger or smaller than ${n}?${big(`${n} ${op === 'times' ? TIMES : DIVIDE} ${num(d)}`)}`,
+        correct: opts[bigger ? 0 : 1],
+        inOrder: opts,
+        why:
+          op === 'times'
+            ? `${opts[bigger ? 0 : 1]}: multiplying by ${num(d)}, which is ${less ? 'less' : 'more'} than 1, gives ${less ? 'only part of' : 'more than'} ${n}.`
+            : `${opts[bigger ? 0 : 1]}: dividing by ${num(d)}, which is ${less ? 'less' : 'more'} than 1, ${less ? `asks how many ${num(d)}s fit into ${n}, which is more than ${n}` : `shares ${n} into parts bigger than 1`}.`,
+        meta: { n, d, op },
+      })
+    },
+    2,
+  )
+
 const SET_705: GameSet = {
   id: 'ncm7-7.05',
   exercise: '7.05',
@@ -381,7 +409,7 @@ const SET_705: GameSet = {
   focus: 'Use a whole-number product and an estimate to place the decimal point.',
   lessons: ['y7-dec-muldiv'],
   outcomes: [FRC],
-  makers: [mk('estimate', m705estimate), mk('related', m705related)],
+  makers: [mk('estimate', m705estimate), mk('related', m705related), sizeKind('times')],
 }
 
 // ================================================================== 7.06 Multiplying decimals
@@ -535,7 +563,7 @@ const SET_708: GameSet = {
   focus: 'Divide by a decimal by first multiplying both numbers by 10 or 100.',
   lessons: ['y7-dec-muldiv'],
   outcomes: [FRC],
-  makers: [mk('rewrite', m708rewrite), mk('divide', m708divide)],
+  makers: [mk('rewrite', m708rewrite), mk('divide', m708divide), sizeKind('divide')],
 }
 
 // ================================================================== 7.09 Terminating and recurring decimals

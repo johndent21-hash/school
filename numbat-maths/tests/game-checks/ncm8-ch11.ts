@@ -106,10 +106,6 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       const d = ys.slice(1).map((y, i) => y - ys[i])
       return { text: d.every((x) => x === d[0]) ? 'Yes: the same change in y each time' : 'No: the change in y is not the same' }
     }
-    case '11.06 incdec': {
-      const [m] = mc(rule(T.match(/graphof(y=[^ ]+?)increasing/)![1]).f, ctx)
-      return { text: m > 0 ? 'increasing: it rises left to right' : 'decreasing: it falls left to right' }
-    }
     case '11.07 fromGraph': {
       const [m, c] = readLine(svg, ctx)
       return one(isLine(m, c), 'match the line')

@@ -176,6 +176,13 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
         'fit every pair',
       )
     }
+    case '9.06 incdec': {
+      // the gradient from two points of the rule
+      const f = rule(words.match(/graph of (y = .+?) increasing/)![1])
+      const m = f(1) - f(0)
+      if (m === 0) ctx.fail('the line is horizontal')
+      return { text: m > 0 ? 'increasing: it rises left to right' : 'decreasing: it falls left to right' }
+    }
     case '9.06 onLine': {
       const f = rule(words.match(/on the line (y = .+?)\?/)![1])
       return one(

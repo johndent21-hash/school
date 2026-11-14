@@ -149,6 +149,14 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       if (Number(m[1]) * Number(m[2]) !== Number(m[3].replace(/ /g, ''))) ctx.fail('the whole-number product is wrong')
       return { text: show(op(dec(m[4]), '×', dec(m[5]))) }
     }
+    case '7.05 size':
+    case '7.08 size': {
+      const w = ctx.plain(q.prompt).replace(/\s/g, '').match(/\?(\d+)([×÷])([\d.]+)$/)!
+      const [n, d] = [Number(w[1]), Number(w[3])]
+      if ((w[2] === '÷') !== kind.startsWith('7.08')) ctx.fail('the operation does not match the exercise')
+      const v = w[2] === '×' ? n * d : n / d
+      return { text: v > n ? `Bigger than ${n}` : v < n ? `Smaller than ${n}` : `Equal to ${n}` }
+    }
     case '7.05 estimate': {
       const m = words.match(/estimate of ([\d.]+) × ([\d.]+)\?/)!
       const exact = val(dec(m[1])) * val(dec(m[2]))

@@ -170,20 +170,7 @@ const SET_1105 = set('11.05', 'Graphing number patterns', 'Plot a pattern from i
 
 // ================================================================== 11.06 Graphing linear equations
 
-function m1106incdec(): GameQuestion {
-  const m = intExcept(-5, 5, [0])
-  const c = int(-6, 6)
-  return gq({
-    t: 'incdec',
-    prompt: `Is the graph of ${eqHtml(m, c)} increasing or decreasing?`,
-    correct: m > 0 ? 'increasing: it rises left to right' : 'decreasing: it falls left to right',
-    inOrder: ['increasing: it rises left to right', 'decreasing: it falls left to right', c >= 0 ? 'increasing: the constant is positive' : 'decreasing: the constant is negative', 'neither: it is horizontal'],
-    why: `The coefficient of ${ex('x')} is ${neg(m)}, which is ${m > 0 ? 'positive, so y increases as x increases' : 'negative, so y decreases as x increases'}.`,
-    meta: {},
-  })
-}
-
-const SET_1106 = set('11.06', 'Graphing linear equations', 'Graph lines from their equations, and tell increasing from decreasing.', [LIN], [R7('9.06', 'onLine'), R7('9.06', 'graph'), mk('incdec', m1106incdec)])
+const SET_1106 = set('11.06', 'Graphing linear equations', 'Graph lines from their equations, and tell increasing from decreasing.', [LIN], [R7('9.06', 'onLine'), R7('9.06', 'graph'), R7('9.06', 'incdec')])
 
 // ================================================================== 11.07 Finding the equation of a line
 
