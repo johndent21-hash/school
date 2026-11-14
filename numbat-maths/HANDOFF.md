@@ -198,3 +198,28 @@ Candidate ideas, from the previous session (check each is still true before offe
   offer them.
 
 Ask; don't build. When the user picks, record the choices in this file for the session that builds them.
+
+## Step 4: the user's choices (14 Nov 2026) — build these next, in this order
+
+Sizes are estimates against the 9 Std audit session (= 1 unit); the NCM 7 + 8 audit was about 1.5–2 units. Total for
+everything chosen: about 5 units. The order groups work that shares machinery; it is a recommendation, not the user's.
+
+1. **Fixes (about 0.6):** open-top cylinder drawing (NCM 8 12.05 `open`, `D.cylinder` has no open option yet); preview
+   download buttons (CSV exports; artifact `downloads` capability or hide in the preview); remove "Alla" from the 9 Adv
+   `costs` kind (the user approved editing that 9 Adv file for this); the small leftover gaps listed in Step 3.
+2. **PDF worksheets and topic tests (about 0.6–0.9)** with the **year revision mix game (about 0.3)**, which also picks
+   across chapters. The user's answers:
+   - Scope: both a one-click sheet per exercise and a builder (tick exercises or question kinds from the bank, set how
+     many of each; worksheet or topic test).
+   - Answer style: **chosen per question** (written with working space and an answer line, or the game's four options).
+   - Answer key: a **separate key printout** (not at the back of the student sheet). Default to answer plus the
+     short working from `why`; the user did not say, so confirm when showing the first version.
+   - PDF method: **print-ready page + the browser's Print → Save as PDF** (no PDF library).
+   - Topic tests follow the user's standing rules: outcome codes listed, sections labelled by difficulty (kinds have
+     `d` 1 or 2), marks adding to the stated total, a realistic time allowance; offer Version A / Version B (seeds).
+3. **Speed round / buzzer game (about 0.3–0.5)** and **trigonometry calculator mode (about 0.3–0.5)**.
+4. **Exit ticket (about 0.4–0.6)** and **teacher view of most-missed questions (about 0.5–1.5)**: both store results
+   (backend), so build the storage once.
+5. **Spot the mistake (about 0.5–1.5):** worked steps per kind; start with a few chapters.
+
+Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
