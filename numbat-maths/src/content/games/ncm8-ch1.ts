@@ -55,6 +55,8 @@ function rightTri(p: number, q: number, lab: [string, string, string], names?: [
       ...(lab[2] ? [{ a, b, text: lab[2] }] : []),
     ],
     names: names ? [r, a, b] : undefined,
+    // a wider margin than the default 40: a label such as "12 mm" beside a vertical side at the edge needs about 50
+    pad: 52,
     label: 'A right-angled triangle',
   })
 }
@@ -130,6 +132,7 @@ const SET_101: GameSet = {
   focus: 'Find square roots of perfect squares, estimate other square roots between whole numbers, and recognise surds.',
   lessons: ['y8-pyt-hyp'],
   outcomes: [IND, FRC],
+  teacherNote: 'The textbook uses the word surd here for a square root that is not exact (an irrational number, MA4-FRC-C-01); operating with surds is Stage 5 path content (MA5-IND-P-02).',
   makers: [mk('sqrt', m101sqrt), mk('between', m101between), mk('surd', m101surd)],
 }
 

@@ -339,9 +339,10 @@ function m1105value(): GameQuestion {
     return gq({
       t: 'value',
       prompt: `The probability that a team wins its next game is ${num(p / 10)}. What is the probability that it does not win?`,
-      correct: num(1 - p / 10),
-      wrong: [num(p / 10), num(Math.abs(1 - p / 10 - 0.1)), num(10 - p), num(1 - p / 100)].filter((x, i, a) => a.indexOf(x) === i && x !== num(1 - p / 10) && x !== '0'),
-      why: `The two probabilities add to 1: 1 − ${num(p / 10)} = ${num(1 - p / 10)}.`,
+      // in tenths, so no floating-point residue (1 − 0.9 − 0.1 is not 0 in floating point)
+      correct: num((10 - p) / 10),
+      wrong: [num(p / 10), num(Math.abs(9 - p) / 10), num(10 - p), num((100 - p) / 100)].filter((x, i, a) => a.indexOf(x) === i && x !== num((10 - p) / 10) && x !== '0'),
+      why: `The two probabilities add to 1: 1 − ${num(p / 10)} = ${num((10 - p) / 10)}.`,
       meta: { form, p },
     })
   }

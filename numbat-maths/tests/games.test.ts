@@ -572,6 +572,8 @@ for (const set of ALL_GAME_SETS) {
       if (!plain(q.prompt) || !plain(q.why)) fail(where, 'empty prompt or explanation', q)
       if (plain(q.prompt).length > 175) fail(where, `prompt is ${plain(q.prompt).length} characters: too long to read quickly`, q)
       if (shown.some((o) => o.length > 42)) fail(where, 'an option is too long for the board', q)
+      // floating-point residue such as 0.30000000000000004 or 0.00000000000000002776 (but not 0.000000345)
+      if ([plain(q.prompt), ...shown].some((t) => /[1-9]\d*?(0{6,}|9{6,})[1-9]|[.,]\d{15,}/.test(t.replace(/\s/g, '')))) fail(where, 'a number shows floating-point residue', q)
       if (q.diagram && (q.diagram.match(/<svg[\s\S]*?<\/svg>/g) ?? []).some((sv) => /<(i|sup|b|div|p|br|span)[ >]/.test(sv))) fail(where, 'HTML tag inside the diagram', q)
       if (/<svg/.test(q.prompt + q.options.join('') + q.why)) fail(where, 'a drawing outside the diagram', q)
       // ---- no two options equal in value (e.g. 0.5 m and 50 cm)

@@ -196,10 +196,24 @@ Also:
       extension in the textbook and marked so. Time-zone questions state each place's UTC offset, so no outside facts
       are needed. The test reads travel graphs off their axes and timetables cell by cell, and converts every clock time
       to minutes after midnight itself.
+    **Textbook audit of NCM 7 and NCM 8 (Nov 2026).** Every exercise of both books was compared with its set question
+    type by question type (all 123 + 121 exercises already had a set). Added, each with an independent check and a
+    planted error caught: NCM 7 sign of a sum/difference/product/quotient (1.04–1.07), common factors and multiples
+    (3.11, 3.12), bigger or smaller when multiplying or dividing by a fraction or decimal (4.06, 4.07, 7.05, 7.08),
+    expanded form (5.03), which triangles can be drawn (6.05), convex quadrilaterals (6.08), increasing or decreasing
+    lines (9.06); NCM 8 recognising surds (1.01), a shorter side as a surd (1.04, 1.05), more Pythagoras contexts
+    (1.08), estimating square and cube roots (2.08), HCF and LCM from prime factors (2.10), simplify-then-evaluate index
+    laws (2.11), two-bracket expand and simplify (3.07), capacity from inside measurements (5.14), modes and the best
+    measure of centre (7.11, 7.12), 2-step equations with pronumerals on both sides (9.03, now Stage 4 MA4-EQU-C-01)
+    and how many solutions x² = c has (9.05), plus NCM 7 kinds reused where the NCM 8 book revises them. Fixed: "12 cm
+    cm" (1.06), "a octagon" (4.07), the extension notes for polygons (MA5-GEO-P-01) and networks (MA5-NET-P-01), a
+    parallelogram or rhombus with a right angle (NCM 7 6.09), textbook names (Majid, Liam), a 40 km/h walker, and the
+    sideways spill of the Pythagoras triangles on small screens (wider drawing margin).
     New Century Maths 8 (a second book tab on the games page), chapter by chapter:
-    - **Chapter 1, Pythagoras' theorem** (`ncm8-ch1.ts`, Ex 1.01–1.08, 13 kinds), MA4-PYT-C-01, and MA4-FRC-C-01 for
-      the square roots of 1.01. Exact answers (e.g. √41) are used, as the Stage 4 content asks; the word "surd" and its
-      rules are left to the Stage 5 path (MA5-IND-P-02). Triangles are drawn to scale (diagrams6 `fig`, `rtPts`); the
+    - **Chapter 1, Pythagoras' theorem** (`ncm8-ch1.ts`, Ex 1.01–1.08, 16 kinds), MA4-PYT-C-01, and MA4-IND-C-01 and
+      MA4-FRC-C-01 for the square roots of 1.01. Exact answers (e.g. √41) are used, as the Stage 4 content asks. 1.01
+      asks which square roots are surds, as the textbook does (a teacher note says the word means a square root that is
+      not exact, and that operating with surds is Stage 5 path, MA5-IND-P-02). Triangles are drawn to scale (diagrams6 `fig`, `rtPts`); the
       test finds the right angle from its mark, takes the side opposite as the hypotenuse, matches each label to its
       side, checks the drawing is in proportion and works out the unknown itself.
     - **Chapter 2, Working with numbers** (`ncm8-ch2.ts`, Ex 2.01–2.12, 37 kinds), MA4-INT-C-01 (2.02–2.04),

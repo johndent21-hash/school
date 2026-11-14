@@ -39,28 +39,31 @@ Left as found in 9 Std, to raise with the user in Step 3: 6.03/6.04 networks hav
 (Path, extension); 7.05 has no "no solution" question; the NCM 9 Advanced kind `costs` (reused in 9 Std 3.06) uses the
 textbook's name "Alla" (it is in `ncm9-ch3.ts`, a 9 Advanced file, so it was not changed).
 
-## Step 1: NCM 8 audit (do this first, the textbook is to hand)
+## Step 1: NCM 8 audit — done (14 Nov 2026)
 
-- Textbook: public repo `johndent21-hash/Year-8-Advanced` (`Chapter 1 Pythagoras_ Theorem.pdf` … `Chapter 12 Similar
-  Figures and Surface Area.pdf`). Add it with `add_repo` if it is not in the session, then
-  `GIT_LFS_SKIP_SMUDGE=1 git clone -q --depth 1 https://github.com/johndent21-hash/Year-8-Advanced /home/user/Year-8-Advanced`
-  (if the PDFs come out as LFS pointer files, run `git lfs pull` in that folder).
-- Already checked: **all 121 exercises in the book have a set** (121 of 121, same numbers). So this is a question-type
-  audit, not a missing-sets job.
-- NCM 8 kinds were mostly written for NCM 8 itself (less title-matching than 9 Std), so expect fewer gaps. The 9 Std
-  audit still found NCM 8 kinds that sit below the book's level (e.g. `binomial` only does (x + p)(x + q) with p, q > 0;
-  `square` (x² = c) has no "no solution" case). Check each exercise's question types the same way.
-- Files: `src/content/games/ncm8-chN.ts`; checks in `tests/game-checks/ncm8-chN.ts` (`rework8ChN` in
-  `OTHER_CHAPTERS` of `tests/games.test.ts`).
+Textbook: `johndent21-hash/Year-8-Advanced` (public). All 121 exercises checked question type by question type. Added
+(each with an independent check and a planted error caught): recognising surds (1.01, outcomes now IND + FRC, teacher
+note on the word "surd"), a shorter side as a surd (1.04, mixed into 1.05), screen/cone/isosceles problems (1.08),
+integer word problems and decimal + and − (2.02, 2.05, reused from NCM 7), estimating square and cube roots (2.08),
+simplifying surds (2.09, ext, from 9 Adv), HCF/LCM from prime factors (2.10, outcomes IND + FRC), simplify-then-evaluate
+(2.11), two-bracket expand and simplify (3.07), capacity from inside measurements (5.14), uniform/unimodal/bimodal/
+multimodal (7.11), best measure of centre (7.12), chance words, impossible probabilities, letters (8.01, 8.05, from
+NCM 7), a 2-step both-sides kind (9.03, which is now Stage 4 MA4-EQU-C-01 with a note that 3-step ones are Stage 5),
+how many solutions x² = c has (9.05). Fixed: "12 cm cm" (1.06), "a octagon" (4.07), extension notes for polygons
+(MA5-GEO-P-01) and networks (MA5-NET-P-01, they had said "not in the syllabus"), the book's name "Majid" and a 40 km/h
+walker (10.08). The **2.03 sideways spill is fixed** (`pad: 52` in `rightTri`, ncm8-ch1). Ch 6, 11, 12 needed nothing.
+Not added, by syllabus: index laws with pronumerals (2.11, 2.12; Stage 5).
 
-## Step 2: NCM 7 audit
+## Step 2: NCM 7 audit — done (14 Nov 2026)
 
-- Textbook: not yet located. Probably the public repo **`johndent21-hash/Year-7-Standard`** (unchecked). Add it with
-  `add_repo` and list its files before cloning. If NCM 7 isn't there, ask the user.
-- NCM 7 has 12 chapters and 123 sets. First compare the book's exercise numbers with the sets (the command below),
-  then audit question types.
-- Files: `src/content/games/ncm7-chN.ts`. Checks: `tests/game-checks/ncm7-chN.ts`, **except Chapter 8, which is checked
-  by `rework` inside `tests/games.test.ts`**.
+Textbook: public repo `johndent21-hash/Year-7-Standard` (12 chapter PDFs; clone with GIT_LFS_SKIP_SMUDGE=1). All 123
+exercises have a set (same numbers). Added: sign of sums/differences/products/quotients (1.04–1.07), common factors
+(3.11), multiples (3.12), bigger or smaller with a fraction (4.06, 4.07) or a decimal (7.05, 7.08), expanded form
+(5.03), which triangles can be drawn (6.05), convex quadrilaterals (6.08), increasing/decreasing lines (9.06). The
+expanded-form, triangle, convex and incdec kinds were first written for NCM 8 and **moved to NCM 7** (NCM 8 3.01, 4.03,
+4.04 and 11.06 now reuse them; checks moved too) because NCM 8 files import NCM 7, not the reverse. Fixed: 6.09 gave a
+parallelogram or rhombus a 90° angle (a rectangle or square); the check now rejects it. "Liam" (an NCM 8 textbook name)
+replaced by "Ravi" in the NCM 7 name lists. Ch 2, 8, 10, 11, 12 needed nothing.
 
 ## How to audit (this worked well for 9 Std)
 
