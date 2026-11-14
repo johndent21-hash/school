@@ -309,7 +309,7 @@ Also:
       extension), percentages over 100%, profit on total cost, simple interest for months and for an unknown time, and
       reaction distance (km/h to m/s). The test reads the dot notation itself and turns the decimal into an exact
       fraction; money, percentages, years and metres are worked from the question, with exactly one option allowed.
-    - **Chapter 4, Trigonometry** (`ncm9-ch4.ts`, Ex 4.01–4.10, 16 kinds, all new), Stage 5 core MA5-TRG-C-01
+    - **Chapter 4, Trigonometry** (`ncm9-ch4.ts`, Ex 4.01–4.10, 15 kinds, all new), Stage 5 core MA5-TRG-C-01
       (4.01–4.07) and MA5-TRG-C-02 (elevation, depression, bearings: 4.08–4.10). Played without calculators, so the
       kinds name sides, write ratios from Pythagorean-triad sides, use similar triangles, convert degrees and minutes,
       choose the equation for a side (x = 12 sin 35° or x = 12 ÷ sin 35°) or an angle (θ = tan⁻¹(5/12)), and work with

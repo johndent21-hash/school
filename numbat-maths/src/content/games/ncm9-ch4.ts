@@ -85,8 +85,9 @@ function m401side(): GameQuestion {
   const th = deg(Math.atan2(opp, adj))
   const role = pick(['opposite', 'adjacent', 'hypotenuse'] as const)
   const len = { opposite: opp, adjacent: adj, hypotenuse: hyp }
-  // the three sides, and a length that is not a side (opposite + adjacent − hypotenuse), smallest to largest
-  const all = [adj, opp, hyp, adj + opp - hyp].sort((x, y) => x - y)
+  // the three sides, and a length that is not a side (opposite + adjacent − hypotenuse, or opposite + adjacent),
+  // smallest to largest, so the right answer can be in any position
+  const all = [adj, opp, hyp, pick([adj + opp - hyp, adj + opp])].sort((x, y) => x - y)
   return gq({
     t: 'side',
     prompt: role === 'hypotenuse' ? `How long is the ${b('hypotenuse')}?` : `How long is the side ${b(role)} to the angle θ?`,
