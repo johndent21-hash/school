@@ -20,7 +20,7 @@ const INT = 'MA4-INT-C-01'
 const FRC = 'MA4-FRC-C-01'
 const IND = 'MA4-IND-C-01'
 const REVISION = 'Revision: mental strategies for the four operations come from earlier stages.'
-const EXTENSION = 'Marked as extension in the textbook; surds are part of the Stage 5 path (MA5-IND-P-01).'
+const EXTENSION = 'Marked as extension in the textbook; surds are part of the Stage 5 path (MA5-IND-P-02).'
 const big = (s: string) => `<div class="big">${s}</div>`
 const pw = (b: number | string, e: number) => `${typeof b === 'number' && b < 0 ? `(${num(b)})` : b}<sup>${e}</sup>`
 /** NCM 7 question kinds reused here, by exercise and kind */

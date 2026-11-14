@@ -10,7 +10,7 @@
 // - Revision of Stage 4: MA4-FRC-C-01 (recurring decimals, percentages, profit, discounts, GST: 3.01–3.03) and
 //   MA4-RAT-C-01 (ratios and rates: 3.05–3.06).
 // - Stage 5 core: simple interest, Financial mathematics A, MA5-FIN-C-01 (3.04).
-// - Converting a recurring decimal to a fraction is Stage 5 Path (Indices C, MA5-IND-P-01): extension.
+// - Converting a recurring decimal to a fraction is Stage 5 Path (Indices C, MA5-IND-P-02): extension.
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { DIVIDE, TIMES, frac, gq, int, mk, num, pick } from './helpers'
 import { NCM7_CH12 } from './ncm7-ch12'
@@ -125,7 +125,7 @@ const SET_301 = set(
   'Write fractions as terminating or recurring decimals (dot notation), and convert recurring decimals back to fractions.',
   [FRC],
   [reuse(NCM8_CH2, '2.07', 'term'), reuse(NCM8_CH2, '2.07', 'which'), reuse(NCM8_CH2, '2.07', 'convert'), mk('toFrac', m301toFrac, 2)],
-  'Revision of Stage 4 (MA4-FRC-C-01). Converting a recurring decimal to a fraction is Stage 5 Path content (MA5-IND-P-01): extension.',
+  'Revision of Stage 4 (MA4-FRC-C-01). Converting a recurring decimal to a fraction is Stage 5 Path content (MA5-IND-P-02): extension.',
 )
 
 // ================================================================== 3.02 Applying percentages

@@ -199,7 +199,7 @@ Also:
     New Century Maths 8 (a second book tab on the games page), chapter by chapter:
     - **Chapter 1, Pythagoras' theorem** (`ncm8-ch1.ts`, Ex 1.01–1.08, 13 kinds), MA4-PYT-C-01, and MA4-FRC-C-01 for
       the square roots of 1.01. Exact answers (e.g. √41) are used, as the Stage 4 content asks; the word "surd" and its
-      rules are left to the Stage 5 path (MA5-IND-P-01). Triangles are drawn to scale (diagrams6 `fig`, `rtPts`); the
+      rules are left to the Stage 5 path (MA5-IND-P-02). Triangles are drawn to scale (diagrams6 `fig`, `rtPts`); the
       test finds the right angle from its mark, takes the side opposite as the hypotenuse, matches each label to its
       side, checks the drawing is in proportion and works out the unknown itself.
     - **Chapter 2, Working with numbers** (`ncm8-ch2.ts`, Ex 2.01–2.12, 37 kinds), MA4-INT-C-01 (2.02–2.04),
@@ -299,13 +299,13 @@ Also:
       factorising answer must also be fully factorised (a number times linear brackets with no common factor inside).
     - **Chapter 2, Pythagoras' theorem and surds** (`ncm9-ch2.ts`, Ex 2.01–2.09, 18 kinds, 6 new). The Pythagoras
       exercises revise Stage 4 (MA4-PYT-C-01) and reuse NCM 8 Chapter 1. The surd exercises (2.02–2.05) are Stage 5
-      Path (Indices C, MA5-IND-P-01) and labelled extension: recognising surds, simplest form, adding like surds
+      Path (Indices C, MA5-IND-P-02) and labelled extension: recognising surds, simplest form, adding like surds
       (simplifying first), multiplying and dividing. The test gives every surd an exact k√n value, works out the
       question's expression, and requires the one option equal in value and in simplest form (a partly simplified
       surd may be a wrong option only when the question asks for simplest form).
     - **Chapter 3, Numeracy and calculation** (`ncm9-ch3.ts`, Ex 3.01–3.06, 27 kinds, 6 new). Mostly revision of
       Stage 4 (MA4-FRC-C-01, MA4-RAT-C-01), reusing NCM 8 Chapters 2, 6 and 10 and NCM 7 Chapter 12. 3.04 simple
-      interest is Stage 5 core MA5-FIN-C-01. New: recurring decimals to fractions (Stage 5 Path MA5-IND-P-01,
+      interest is Stage 5 core MA5-FIN-C-01. New: recurring decimals to fractions (Stage 5 Path MA5-IND-P-02,
       extension), percentages over 100%, profit on total cost, simple interest for months and for an unknown time, and
       reaction distance (km/h to m/s). The test reads the dot notation itself and turns the decimal into an exact
       fraction; money, percentages, years and metres are worked from the question, with exactly one option allowed.

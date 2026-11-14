@@ -6,7 +6,7 @@
 // multiplying and dividing (tests/game-checks/ncm9-ch2.ts).
 //
 // Syllabus: NSW Mathematics K–10 (2022). Pythagoras' theorem is Stage 4 (MA4-PYT-C-01), so those sets are revision.
-// Surds (2.02–2.05; 2.03 starred) are Stage 5 Path content, Indices C, MA5-IND-P-01, so those sets are labelled
+// Surds (2.02–2.05; 2.03 starred) are Stage 5 Path content, Indices C, MA5-IND-P-02, so those sets are labelled
 // extension beyond the core.
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { chance, ex, gq, int, mk, pick, sample } from './helpers'
@@ -15,7 +15,7 @@ import { reuse } from './reuse'
 
 const PYT = 'MA4-PYT-C-01'
 const REV = 'Revision of Stage 4 (MA4-PYT-C-01).'
-const SURD = 'Stage 5 Path content (Indices C, MA5-IND-P-01): extension beyond the core.'
+const SURD = 'Stage 5 Path content (Indices C, MA5-IND-P-02): extension beyond the core.'
 const big = (s: string) => `<div class="big">${s}</div>`
 const SQUAREFREE = [2, 3, 5, 6, 7, 10, 11, 13, 14, 15]
 /** k√n as ex() source: "3sqrt{5}", "sqrt{5}", "3" (n = 1) */
