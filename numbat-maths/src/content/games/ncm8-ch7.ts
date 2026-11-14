@@ -8,6 +8,9 @@
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4: Data classification and visualisation MA4-DAT-C-01 (7.01–7.03,
 // 7.09, 7.10) and Data analysis MA4-DAT-C-02 (7.04–7.08, 7.11, 7.12; census and sample are in MA4-DAT-C-02).
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added uniform, unimodal, bimodal and multimodal data
+// (7.11) and choosing the best measure of centre (7.12).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { freqHist } from '@/lib/maths/diagrams9'
 import { lineGraph } from '@/lib/maths/diagrams5'
@@ -530,7 +533,65 @@ function m711shape(): GameQuestion {
   })
 }
 
-const SET_711 = set('7.11', 'The shape of data', 'Describe a distribution as symmetrical, positively or negatively skewed, or uniform.', [DAT2], [mk('shape', m711shape)])
+const MODES = ['no mode (uniform)', 'unimodal', 'bimodal', 'multimodal']
+
+function m711modes(): GameQuestion {
+  const k = int(0, 3)
+  const vals = sample([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], k === 0 ? int(4, 6) : int(5, 6))
+  let data: number[]
+  if (k === 0) {
+    const c = pick([1, 2])
+    data = vals.flatMap((x) => Array(c).fill(x))
+  } else {
+    // the modes appear 3 times, every other score once or twice
+    data = vals.flatMap((x, i) => Array(i < k ? 3 : int(1, 2)).fill(x))
+  }
+  const modes = k === 0 ? [] : vals.slice(0, k).sort((a, b) => a - b)
+  return gq({
+    t: 'modes',
+    prompt: `Which word describes these scores? ${shuffle(data).join(', ')}`,
+    correct: MODES[k],
+    inOrder: MODES,
+    why:
+      k === 0
+        ? 'Every score appears the same number of times, so there is no mode: no mode (uniform).'
+        : `${modes.join(' and ').replace(/ and (?=.* and )/g, ', ')} ${k === 1 ? 'appears' : 'appear'} most often (3 times): ${['', 'one mode, so unimodal', 'two modes, so bimodal', 'three modes, so multimodal'][k]}.`,
+    meta: { k },
+  })
+}
+
+const SET_711 = set('7.11', 'The shape of data', 'Describe a distribution as symmetrical, skewed or uniform, and by its number of modes.', [DAT2], [mk('shape', m711shape), mk('modes', m711modes)])
+
+const CENTRE = ['the mean', 'the median', 'the mode', 'the range']
+const CATEGORIES = ['favourite fruit of each student in a class', 'colour of each car in a car park', 'type of pet each student owns', 'sport each student plays']
+
+function m712centre(): GameQuestion {
+  const cat = chance()
+  if (cat)
+    return gq({
+      t: 'centre',
+      prompt: `A survey records the ${pick(CATEGORIES)}. Which measure of centre can be used for this data?`,
+      correct: 'the mode',
+      inOrder: CENTRE,
+      why: 'The data are categories, not numbers, so there is no mean or median: use the mode (the most common category).',
+      meta: { cat },
+    })
+  const wages = Array.from({ length: 5 }, () => int(60, 90) * 10)
+  const top = int(30, 50) * 100
+  const all = shuffle([...wages, top])
+  const sorted = [...all].sort((a, b) => a - b)
+  const median = (sorted[2] + sorted[3]) / 2
+  const mean = all.reduce((a, b) => a + b) / 6
+  const dollars = (x: number) => '$' + num(x)
+  return gq({
+    t: 'centre',
+    prompt: `The weekly wages of 6 workers are ${all.slice(0, 5).map(dollars).join(', ')} and ${dollars(all[5])}. Which measure of centre best describes a typical wage?`,
+    correct: 'the median',
+    inOrder: CENTRE,
+    why: `The outlier ${dollars(top)} pulls the mean up to about ${dollars(Math.round(mean))}, more than 5 of the 6 wages. The median (${dollars(median)}) is not affected by it: use the median.`,
+    meta: { cat },
+  })
+}
 
 // ================================================================== 7.12 revision: comparing data
 
@@ -538,6 +599,7 @@ const SET_712 = set('7.12', 'Comparing data', 'Compare data sets using the mean,
   R7('10.08', 'compare'),
   R7('10.08', 'effect'),
   R7('10.07', 'outlier'),
+  mk('centre', m712centre, 2),
 ])
 
 export const NCM8_CH7: GameChapter = {

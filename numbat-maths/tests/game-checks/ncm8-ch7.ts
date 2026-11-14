@@ -137,6 +137,21 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
     return hits.length ? { text: hits[0] } : null
   }
   switch (kind) {
+    case '7.11 modes': {
+      const data = words.split('?')[1].split(',').map(Number)
+      const f = new Map<number, number>()
+      for (const x of data) f.set(x, (f.get(x) ?? 0) + 1)
+      const top = Math.max(...f.values())
+      const n = [...f.values()].filter((c) => c === top).length
+      return { text: n === f.size ? 'no mode (uniform)' : n === 1 ? 'unimodal' : n === 2 ? 'bimodal' : 'multimodal' }
+    }
+    case '7.12 centre': {
+      // categories (no numbers) → the mode; numbers with one far above the rest → the median
+      const nums = [...words.matchAll(/\$\s*([\d ]+\d)/g)].map((m) => Number(m[1].replace(/ /g, ''))).sort((a, b) => a - b)
+      if (!nums.length) return { text: 'the mode' }
+      if (nums.length !== 6 || nums[5] < 2 * nums[4]) ctx.fail('no outlier')
+      return { text: 'the median' }
+    }
     case '7.01 sector': {
       const secs = readSectors(svg, ctx)
       const name = words.match(/chose ([A-Z][a-z]+)\?/)![1]

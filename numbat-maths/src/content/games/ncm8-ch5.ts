@@ -10,6 +10,9 @@
 // in 5.08), Area MA4-ARE-C-01 (5.04–5.10) and Volume MA4-VOL-C-01 (5.11–5.14). All of it is Stage 4 core content.
 // The game is played without calculators, so answers are exact (in terms of π) or estimates with π ≈ 3; the
 // textbook's answers correct to 1 or 2 decimal places need the π key and are left for the exercise.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added the capacity of a box from its inside
+// measurements in centimetres (5.14).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { circleFeature, type CirclePart } from '@/lib/maths/diagrams13'
 import { sector } from '@/lib/maths/diagrams10'
@@ -648,12 +651,35 @@ const SET_513 = set('5.13', 'Volume of a cylinder', 'Use V = πr²h, in terms of
 
 // ================================================================== 5.14 revision: volume and capacity
 
-const SET_514 = set('5.14', 'Volume and capacity', 'Convert between mL, L, kL and ML, and use 1 cm³ = 1 mL and 1 m³ = 1 kL.', [VOL], [
+function m514litres(): GameQuestion {
+  let l: number, w: number, h: number
+  // inside measurements whose volume is a whole number of litres (1000 cm³ = 1 L)
+  do {
+    l = pick([20, 25, 30, 40, 50, 60])
+    w = pick([10, 20, 25, 30, 40])
+    h = pick([10, 20, 30, 40])
+  } while ((l * w * h) % 1000 !== 0 || l * w * h > 96000)
+  const cm3 = l * w * h
+  const L = cm3 / 1000
+  const thing = pick(['fish tank', 'storage box', 'cooler box', 'planter box'])
+  return gq({
+    t: 'litres',
+    prompt: `A ${thing} is ${l} cm long, ${w} cm wide and ${h} cm deep inside. How many litres does it hold?`,
+    correct: `${num(L)} L`,
+    // not converted, divided by 100 or 10 instead of 1000; a spare
+    wrong: [cm3, cm3 / 100, cm3 / 10, 2 * L].map((x) => `${num(x)} L`),
+    why: `V = ${l} × ${w} × ${h} = ${num(cm3)} cm³, and 1000 cm³ = 1 L, so it holds ${num(L)} L.`,
+    meta: { l, w, h },
+  })
+}
+
+const SET_514 = set('5.14', 'Volume and capacity', 'Convert between mL, L, kL and ML, and use 1 cm³ = 1 mL, 1000 cm³ = 1 L and 1 m³ = 1 kL.', [VOL], [
   R7('8.13', 'fact'),
   R7('8.13', 'holds'),
   R7('8.13', 'down'),
   R7('8.13', 'up'),
   R7('8.13', 'unit'),
+  mk('litres', m514litres, 2),
 ])
 
 export const NCM8_CH5: GameChapter = {

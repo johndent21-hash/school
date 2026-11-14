@@ -8,8 +8,12 @@
 //
 // Syllabus: NSW Mathematics K–10 (2022). Stage 4 Equations MA4-EQU-C-01: equations of up to 2 steps (9.01, 9.02,
 // 9.06), quadratic equations of the form ax² = c with exact answers (9.05), and equations from substituting into
-// formulas (9.07). Pronumerals on both sides (9.03) and grouping symbols (9.04, starred in the textbook) are Stage 5
-// MA5-EQU-C-01, and changing the subject of a formula (9.08) is Stage 5 Path MA5-EQU-P-02, so these are extension.
+// formulas (9.07). Pronumerals on both sides (9.03) are Stage 4 when the equation takes up to 2 steps (5x = 3x + 8)
+// and Stage 5 MA5-EQU-C-01 when it takes 3 (3x − 4 = x + 5); grouping symbols (9.04, starred in the textbook) are
+// Stage 5 MA5-EQU-C-01, and changing the subject of a formula (9.08) is Stage 5 Path MA5-EQU-P-02 (extension).
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): 9.03 now counts as Stage 4 (with a note on the
+// 3-step equations) and has a 2-step kind; added how many solutions x² = c has, including none (9.05).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { chance, ex, gq, int, intExcept, mk, num, pick } from './helpers'
 import { NCM7_CH5 } from './ncm7-ch5'
@@ -17,6 +21,7 @@ import { reuse } from './reuse'
 
 const EQU = 'MA4-EQU-C-01'
 const EXT_5 = 'Stage 5 content (MA5-EQU-C-01): extension for Year 8.'
+const BOTH_NOTE = 'Up to 2 steps with pronumerals on both sides (as in 5x = 3x + 8) is Stage 4 (MA4-EQU-C-01); 3-step equations (as in 3x − 4 = x + 5, the "Solve" questions here) are Stage 5 (MA5-EQU-C-01): extension for Year 8.'
 const EXT_SUBJ = 'Changing the subject of a formula is Stage 5 Path content (MA5-EQU-P-02): extension for Year 8.'
 const big = (s: string) => `<div class="big">${s}</div>`
 const b = (s: string) => `<b>${s}</b>`
@@ -98,7 +103,25 @@ function m903first(): GameQuestion {
   })
 }
 
-const SET_903 = set('9.03', 'Equations with variables on both sides', 'Collect the unknown on one side by subtracting from both sides, then solve.', [], [mk('first', m903first), mk('both', m903both)], { teacherNote: EXT_5 })
+function m903simple(): GameQuestion {
+  const L = pick(LET)
+  const c = int(1, 6)
+  const a = c + int(2, 6)
+  const x = chance(0.25) ? -int(1, 6) : int(1, 12)
+  const d = (a - c) * x
+  const cL = `${c === 1 ? '' : c}${L}`
+  return gq({
+    t: 'simple',
+    prompt: `Solve:${big(ex(`${a}${L} = ${cL} ${signed(d)}`))}`,
+    correct: sol(L, x),
+    // added the x terms, divided by a, forgot to divide
+    wrong: solWrong(L, x, [d / (a + c), d / a, d]),
+    why: `Subtract ${cL} from both sides: ${a - c}${L} = ${d}. Divide by ${a - c}: ${L} = ${x}.`,
+    meta: {},
+  })
+}
+
+const SET_903 = set('9.03', 'Equations with variables on both sides', 'Collect the unknown on one side by subtracting from both sides, then solve.', [EQU], [mk('first', m903first), mk('simple', m903simple), mk('both', m903both, 2)], { teacherNote: BOTH_NOTE })
 
 // ================================================================== 9.04 Equations with brackets (extension)
 
@@ -185,7 +208,28 @@ function m905ax2(): GameQuestion {
   })
 }
 
-const SET_905 = set('9.05', 'Simple quadratic equations', 'Solve x² = c and ax² = c: two answers, ±, exact (√) when c is not a square.', [EQU], [mk('square', m905square), mk('ax2', m905ax2), mk('surd', m905surd, 2)])
+const HOW_MANY = ['None', 'One', 'Two', 'Four']
+
+function m905count(): GameQuestion {
+  const L = pick(['x', 'y', 'k', 'm', 't'])
+  const k = pick([0, 0, 1, 2, 2])
+  const n = int(2, 12)
+  const c = k === 0 ? -n * pick([1, n]) : k === 1 ? 0 : n * pick([1, n])
+  return gq({
+    t: 'count',
+    prompt: `How many solutions does this equation have?${big(ex(`${L}^2 = ${c < 0 ? `-${-c}` : c}`))}`,
+    correct: HOW_MANY[k],
+    inOrder: HOW_MANY,
+    why: [
+      `None: a square is never negative, so no number squared gives ${num(c)}.`,
+      `One: only 0² = 0, so ${L} = 0.`,
+      `Two: a positive number and its negative have the same square, so ${L} = ±${Number.isInteger(Math.sqrt(c)) ? Math.sqrt(c) : `√${c}`}.`,
+    ][k],
+    meta: {},
+  })
+}
+
+const SET_905 = set('9.05', 'Simple quadratic equations', 'Solve x² = c and ax² = c: two answers, ±, exact (√) when c is not a square; none when c is negative.', [EQU], [mk('square', m905square), mk('ax2', m905ax2), mk('surd', m905surd, 2), mk('count', m905count)])
 
 // ================================================================== 9.06 Equation problems
 

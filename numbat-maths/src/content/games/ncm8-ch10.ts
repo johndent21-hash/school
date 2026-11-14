@@ -219,7 +219,8 @@ function m1008distance(): GameQuestion {
     if (!Number.isInteger(d)) continue
     return gq({
       t: 'distance',
-      prompt: `Majid walks at ${b(`${v} km/h`)} for ${b(hm(t))}. How far does he go?`,
+      // a mover that suits the speed (the book's own example names are not used)
+      prompt: `${v <= 6 ? 'A hiker walks' : v <= 20 ? 'A cyclist rides' : 'A car travels'} at ${b(`${v} km/h`)} for ${b(hm(t))}. How far does ${v <= 20 ? 'the ' + (v <= 6 ? 'hiker' : 'cyclist') : 'the car'} go?`,
       correct: `${d} km`,
       // speed × minutes, speed ÷ time, the speed itself
       wrong: wrongs(d, [v * t, v / (t / 60), v, v + t / 60], (x) => `${num(x)} km`),

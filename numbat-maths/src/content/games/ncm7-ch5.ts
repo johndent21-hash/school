@@ -17,7 +17,7 @@ const big = (s: string) => `<div class="big">${s}</div>`
 const E = ex
 /** pronumerals, leaving out letters easily misread (i, l, o) and e */
 const LET = ['a', 'b', 'c', 'd', 'g', 'h', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'w', 'x', 'y', 'z']
-const NAMES = ['Ava', 'Liam', 'Mia', 'Noah', 'Zara', 'Jack', 'Priya', 'Kai', 'Lily', 'Sam', 'Ella', 'Omar']
+const NAMES = ['Ava', 'Ravi', 'Mia', 'Noah', 'Zara', 'Jack', 'Priya', 'Kai', 'Lily', 'Sam', 'Ella', 'Omar']
 const two = () => sample(LET, 2).sort() as [string, string]
 
 /** a term: coefficient and letters, e.g. (3, 'ab') → "3ab", (1, 'x') → "x", (−1, 'x') → "-x" */

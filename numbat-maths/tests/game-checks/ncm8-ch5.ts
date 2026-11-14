@@ -168,6 +168,12 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
   const lens = [...words.matchAll(/([\d.]+(?: \d{3})*) (mm|cm|m|km)\b(?!²|³)/g)].map((m) => ({ v: val(m[1]), u: m[2] }))
   const key = (list: [RegExp, string][]) => list.find(([re]) => re.test(words))?.[1]
   switch (kind) {
+    case '5.14 litres': {
+      const m = words.match(/is (\d+) cm long, (\d+) cm wide and (\d+) cm deep inside\. How many litres/)!
+      const L = (Number(m[1]) * Number(m[2]) * Number(m[3])) / 1000
+      if (!Number.isInteger(L)) ctx.fail('not a whole number of litres')
+      return { text: `${L} L` }
+    }
     case '5.01 quad': {
       const shape = words.match(/A (parallelogram|kite|rhombus|rectangle) has/)![1]
       if (shape === 'rhombus') return { v: 4 * lens[0].v, unit: lens[0].u }

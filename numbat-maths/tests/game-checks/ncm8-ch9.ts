@@ -77,6 +77,7 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
 
   switch (kind) {
     case '9.03 both':
+    case '9.03 simple':
     case '9.04 brackets':
       return rootOption(big)
     case '9.03 first': {
@@ -94,6 +95,11 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
         const [ol, or] = o.split('=')
         return [-3, 0, 2, 5, 11].every((t) => close(parse(ol)({ [L]: t }), parse(l)({ [L]: t }))) && close(parse(or)({}), parse(r)({}))
       }, 'are the expanded equation')
+    }
+    case '9.05 count': {
+      const m = big.replace(/−/g, '-').match(/^[a-z]\^\(2\)=(-?\d+)$/)!
+      const c = Number(m[1])
+      return { text: c < 0 ? 'None' : c === 0 ? 'One' : 'Two' }
     }
     case '9.05 square':
     case '9.05 ax2':

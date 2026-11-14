@@ -103,7 +103,7 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       return one(Number(m[1]) / (minutes(m[2]) / 60), withUnit('km/h'), 'a speed')
     }
     case '10.08 distance': {
-      const m = words.match(/walks at (\d+) km\/h for (.+?)\. How far/)!
+      const m = words.match(/(?:walks|rides|travels) at (\d+) km\/h for (.+?)\. How far/)!
       return one(Number(m[1]) * (minutes(m[2]) / 60), withUnit('km'), 'a distance')
     }
     case '10.08 time': {

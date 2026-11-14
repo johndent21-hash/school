@@ -9,6 +9,9 @@
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4 Probability MA4-PRO-C-01 (8.01, 8.02, 8.05, 8.06). 8.03 (Venn
 // diagrams) and 8.04 (two-way tables) are starred as extension in the textbook and are Stage 5 Path content
 // (MA5-PRO-P-01), so they are marked as extension.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added chance words and values that cannot be
+// probabilities (8.01) and letters of a word (8.05), reused from NCM 7.
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { gridTable } from '@/lib/maths/diagrams13'
 import { D, chance, frac, gq, int, mk, num, pick, sample } from './helpers'
@@ -81,6 +84,8 @@ const SET_801 = set('8.01', 'Probability', 'List sample spaces and find probabil
   R7('11.02', 'bag'),
   R7('11.02', 'spin'),
   mk('or', m801or),
+  R7('11.03', 'words'),
+  R7('11.03', 'cannot'),
 ])
 
 // ================================================================== 8.02 Complementary events
@@ -308,6 +313,7 @@ const SET_805 = set('8.05', 'Probability problems', 'Solve probability problems:
   mk('coin', m805coin),
   mk('or', m801or),
   mk('not', m802not),
+  R7('11.03', 'letter'),
 ])
 
 // ================================================================== 8.06 Observed and expected
