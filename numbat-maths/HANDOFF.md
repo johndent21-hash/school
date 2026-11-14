@@ -20,8 +20,9 @@ NCM 7 is done (all 12 chapters). Now **NCM 8**, then NCM 9, then NCM 10, one cha
 ## State right now
 
 NCM 7 and NCM 8 are complete (published, Version 21): every chapter has class games, an independent checker, a README entry, and passes
-`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Now: NCM 9 Advanced** (repo `johndent21-hash/Year-9-Advanced`, public: clone read-only, 13 chapters). Ch 1–2 done
-(`ncm9-ch1.ts`, `ncm9-ch2.ts`); next Ch 3 Financial maths / percentages. Then NCM 10.
+`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Now: Year 9 Standard** (repo `johndent21-hash/Year-9-Standard`). NCM 9 Advanced is PAUSED after Ch 5 (user's request,
+to save usage); its Ch 1–5 are committed but not board-checked or published. After Year 9 Standard is published,
+STOP updating the site: the user does not want 9 Advanced, 10 Standard or 10 Advanced done for now.
 
 NCM 8 notes worth knowing:
 - Reused kinds now record `meta.reused` (not `meta.from`, which the unit-conversion kinds already use for the unit).

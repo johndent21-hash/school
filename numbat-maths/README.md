@@ -316,6 +316,11 @@ Also:
       elevation, depression and true and compass bearings. The test reads each triangle from the drawing (right-angle
       mark, marked angle, side labels matched to sides), checks the drawn angle against its label or the side lengths,
       works out the roles (hypotenuse, opposite, adjacent) and writes the expected ratio or equation itself.
+    - **Chapter 5, Indices** (`ncm9-ch5.ts`, Ex 5.01–5.11). Index laws, zero and numerical negative indices
+      (MA5-IND-C-01), significant figures and scientific notation (MA5-MAG-C-01); negative indices with pronumerals
+      (MA5-IND-P-01) and fractional indices (MA5-IND-P-02) labelled extension. The test caught a real slip here:
+      0.007005 to 3 significant figures was given as 0.007 (floating point); rounding is now done in whole numbers.
+    - NCM 9 Advanced is **paused** after Chapter 5 at the user's request (Ch 6–13 not done; not board-checked or published).
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.

@@ -28,6 +28,7 @@ import { NCM9_CH1 } from './ncm9-ch1'
 import { NCM9_CH2 } from './ncm9-ch2'
 import { NCM9_CH3 } from './ncm9-ch3'
 import { NCM9_CH4 } from './ncm9-ch4'
+import { NCM9_CH5 } from './ncm9-ch5'
 
 export const GAME_BOOKS: GameBook[] = [
   {
@@ -52,7 +53,7 @@ export const GAME_BOOKS: GameBook[] = [
     title: 'New Century Maths 9 Advanced',
     year: 9,
     stage: 'Stage 5',
-    chapters: [NCM9_CH1, NCM9_CH2, NCM9_CH3, NCM9_CH4],
+    chapters: [NCM9_CH1, NCM9_CH2, NCM9_CH3, NCM9_CH4, NCM9_CH5],
   },
 ]
 
