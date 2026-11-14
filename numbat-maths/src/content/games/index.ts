@@ -71,6 +71,8 @@ export interface FoundGame {
   chapter: GameChapter
   /** the exercise; undefined for a whole-chapter mix */
   set?: GameSet
+  /** a year revision mix: chapters 1 to upTo of the book (chapter is then the last of them) */
+  upTo?: number
 }
 
 const index = new Map<string, FoundGame>()
@@ -80,13 +82,25 @@ for (const book of GAME_BOOKS)
     for (const set of chapter.sets) index.set(set.id, { book, chapter, set })
   }
 
-/** A game by its id: an exercise ("ncm7-8.05") or a whole chapter ("ncm7-ch8"). */
+/** A game by its id: an exercise ("ncm7-8.05"), a whole chapter ("ncm7-ch8") or a year revision mix of
+ *  chapters 1 to n ("ncm7-rev8"). */
 export function findGame(id: string): FoundGame | undefined {
+  const rev = id.match(/^(.+)-rev(\d+)$/)
+  if (rev) {
+    const book = GAME_BOOKS.find((b) => b.id === rev[1])
+    const n = Number(rev[2])
+    if (!book || n < 2 || n > book.chapters.length) return undefined
+    return { book, chapter: book.chapters[n - 1], upTo: n }
+  }
   return index.get(id)
 }
 
+/** the chapters a game draws on */
+export const gameChapters = (g: FoundGame): GameChapter[] => (g.upTo ? g.book.chapters.slice(0, g.upTo) : [g.chapter])
+
 /** "NCM 7 Ex 8.05 · Area of a rectangle" or "NCM 7 Chapter 8 · Area and volume: whole chapter mix" */
 export function gameTitle(g: FoundGame): string {
+  if (g.upTo) return `${g.book.short} · Year revision mix: Chapters 1–${g.upTo}`
   return g.set ? `${g.set.ref} · ${g.set.title}` : `${g.chapter.ref} · ${g.chapter.title}: whole chapter mix`
 }
 

@@ -451,7 +451,7 @@ const ind_roots = (level: Level): Question => {
     }
     const r = pick([1, 2, 3, 4, 5, 10])
     return q({
-      prompt: `Evaluate:<div class="big"><span class="sqrt"><sup class="root-idx">3</sup>√<span class="rad">${num(r ** 3)}</span></span></div>`,
+      prompt: `Evaluate:<div class="big"><span class="sqrt"><sup class="root-idx">3</sup><span class="rs">√</span><span class="rad">${num(r ** 3)}</span></span></div>`,
       answer: numA(r),
       hint: `Which number multiplied by itself three times gives ${r ** 3}?`,
       steps: [`${r} ${TIMES} ${r} ${TIMES} ${r} = ${r ** 3}`, `So the cube root of ${num(r ** 3)} is ${r}.`],

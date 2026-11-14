@@ -1,11 +1,11 @@
 // One class game: choose the teams and the length, then play it on the board.
 import { useMemo, useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { ArrowLeft, Minus, Play, Plus, RotateCcw, Shuffle } from 'lucide-react'
+import { ArrowLeft, Minus, Play, Plus, Printer, RotateCcw, Shuffle } from 'lucide-react'
 import { GameBoard } from '@/components/numbat/GameBoard'
 import { Diagram, MathHtml } from '@/components/numbat/MathHtml'
 import { NotFoundPanel, PageLoading, Shell } from '@/components/numbat/Shell'
-import { findGame, gameTitle, type FoundGame } from '@/content/games'
+import { findGame, gameChapters, gameTitle, type FoundGame } from '@/content/games'
 import {
   type BoardState, clearBoard, gameItems, loadBoard, loadSettings, MAX_TEAMS, MIN_TEAMS, newBoard, saveSettings, TEAM_NAMES, TIMER_CHOICES,
 } from '@/lib/board'
@@ -107,7 +107,8 @@ function Setup({
   const [secs, setSecs] = useState(settings.secs)
   const [seed, setSeed] = useState(newSeed)
   const preview = useMemo(() => gameItems({ game: id, seed, count }) ?? [], [id, seed, count])
-  const { chapter, set } = found
+  const { chapter, set, upTo } = found
+  const outcomes = set ? set.outcomes : [...new Set(gameChapters(found).flatMap((c) => c.outcomes))]
 
   const setTeamCount = (n: number) => {
     const k = Math.min(MAX_TEAMS, Math.max(MIN_TEAMS, n))
@@ -123,16 +124,27 @@ function Setup({
 
       <header className="topic-tile cursor-default hover:transform-none">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="chip chip-book">{set ? set.ref : chapter.ref}</span>
+          <span className="chip chip-book">{set ? set.ref : upTo ? `${found.book.short} Chapters 1–${upTo}` : chapter.ref}</span>
           <span className="chip">Year {found.book.year}</span>
-          {(set ? set.outcomes : chapter.outcomes).map((o) => (
+          {outcomes.map((o) => (
             <span key={o} className="chip chip-code" title="NSW syllabus outcome">
               {o}
             </span>
           ))}
         </div>
-        <h1 className="font-display text-3xl font-semibold sm:text-4xl">{set ? set.title : `${chapter.title}: whole chapter mix`}</h1>
-        <p className="max-w-3xl text-muted-foreground">{set ? set.focus : `One quick question from each exercise of ${chapter.ref}, in textbook order.`}</p>
+        <h1 className="font-display text-3xl font-semibold sm:text-4xl">{set ? set.title : upTo ? 'Year revision mix' : `${chapter.title}: whole chapter mix`}</h1>
+        <p className="max-w-3xl text-muted-foreground">
+          {set
+            ? set.focus
+            : upTo
+              ? `Questions from every chapter studied so far (Chapters 1 to ${upTo} of ${found.book.short}), with older chapters coming up more often, for yearly exam revision.`
+              : `One quick question from each exercise of ${chapter.ref}, in textbook order.`}
+        </p>
+        {!upTo && (
+          <Link to="/worksheet" search={{ id }} className="btn btn-ghost btn-sm w-fit">
+            <Printer size={16} aria-hidden="true" /> Print as a worksheet or test
+          </Link>
+        )}
         {set?.teacherNote && <p className="max-w-3xl text-sm text-muted-foreground">{set.teacherNote}</p>}
       </header>
 

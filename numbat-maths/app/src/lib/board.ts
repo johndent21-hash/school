@@ -1,8 +1,8 @@
 // A class game played on the board: its settings, its saved place and the steps of each round.
 // The questions aren't stored: the game's seed rebuilds exactly the same questions, so a game that is
 // interrupted (the page is refreshed, the laptop goes to sleep) can carry on where it stopped.
-import { findGame } from '@/content/games'
-import { buildChapterGame, buildGame, DEFAULT_LENGTH, GAME_LENGTHS, gameCheck } from '@/lib/game/build'
+import { findGame, gameChapters } from '@/content/games'
+import { buildChapterGame, buildGame, buildRevisionGame, DEFAULT_LENGTH, GAME_LENGTHS, gameCheck } from '@/lib/game/build'
 import { dig, type Find } from '@/lib/game/luck'
 import type { GameItem } from '@/lib/game/types'
 import { loadJson, save, saveJson } from './storage'
@@ -80,6 +80,7 @@ export function saveSettings(s: BoardSettings) {
 export function gameItems(cfg: Pick<BoardConfig, 'game' | 'seed' | 'count'>): GameItem[] | null {
   const g = findGame(cfg.game)
   if (!g) return null
+  if (g.upTo) return buildRevisionGame(gameChapters(g), cfg.seed, cfg.count)
   return g.set ? buildGame(g.set, cfg.seed, cfg.count) : buildChapterGame(g.chapter, cfg.seed, cfg.count)
 }
 

@@ -59,5 +59,9 @@
     "title": "Class game · Numbat Maths",
     "description": "A quick team game for the whole class: every team answers, then digs for termites.",
     "noindex": true
+  },
+  "/worksheet": {
+    "title": "Worksheets and topic tests · Numbat Maths",
+    "description": "Print a worksheet or topic test matched to the textbook exercises, with a separate answer key."
   }
 }

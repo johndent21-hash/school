@@ -131,6 +131,21 @@ Also:
   Enter for the next step, 1 to 6 to tick a team, A for all teams, P to pause the timer. The game's place is kept on the
   device (`numbat.game`), so a refresh or a sleeping laptop loses nothing, and "Undo this dig" fixes a mis-tick. The end
   screen ranks the teams and lists the questions the fewest teams got right.
+  - **Year revision mix** (`/game?id=ncm8-rev7` = NCM 8 Chapters 1–7; `buildRevisionGame` in `src/lib/game/build.ts`):
+    questions from every chapter studied so far, chosen at random with the oldest chapter about twice as likely as the
+    newest, never the same chapter twice in a row. Picked from a panel at the top of each book on `/games`.
+  - **Worksheets and topic tests** (`/worksheet`, `app/src/routes/worksheet.tsx`; `src/lib/game/sheet.ts`): printable
+    sheets from the same question bank. One click from any game's set-up page ("Print as a worksheet or test"), or build
+    one: tick exercises across chapters and books, how many from each, and optionally which kinds. Every question starts
+    as written (working space and an answer line at the bottom); any can be switched to its four choices, and questions
+    that point at their choices ("Which of these…") always keep them. A topic test is grouped into Section A Foundation
+    (d1), B Developing (d2) and C Extension (exercises with no outcome codes), with marks (choices 1; written 1, or 2 for
+    d2), the total, and a time allowance (a minute a mark plus 5 minutes' reading, rounded up to 5). Outcome codes are
+    listed at the top; Version A and B use different seeds; an optional school name prints above the title. The answer
+    key prints separately (answer plus the short working from `why`, which a tick box can turn off). The printout is one
+    stand-alone HTML document (its own styles, `sheetHtml`), previewed in a frame and printed with Print → Save as PDF;
+    in the claude.ai preview, where printing may be blocked, it can be saved as an .html file instead (`saveText`,
+    artifact `downloads` capability).
   - **Questions** (`src/content/games/`, types in `src/lib/game/types.ts`): one set for each exercise, organised
     book → chapter → exercise. These are separate from the lessons' practice questions: every game question is ONE step,
     done in the head in about 15 seconds with friendly numbers, and its wrong choices are the answers the usual mistakes

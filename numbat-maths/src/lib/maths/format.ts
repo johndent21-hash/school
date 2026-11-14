@@ -152,12 +152,12 @@ export function v(name: string): string {
 
 export function sqrt(inner: string | number): string {
   const s = typeof inner === 'number' ? num(inner) : inner
-  return `<span class="sqrt">√<span class="rad">${s}</span></span>`
+  return `<span class="sqrt"><span class="rs">√</span><span class="rad">${s}</span></span>`
 }
 
 export function cbrt(inner: string | number): string {
   const s = typeof inner === 'number' ? num(inner) : inner
-  return `<span class="sqrt"><sup class="root-idx">3</sup>√<span class="rad">${s}</span></span>`
+  return `<span class="sqrt"><sup class="root-idx">3</sup><span class="rs">√</span><span class="rad">${s}</span></span>`
 }
 
 /**

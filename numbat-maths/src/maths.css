@@ -42,11 +42,30 @@
 }
 .sqrt {
   white-space: nowrap;
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: bottom;
+}
+/* The radical sign is drawn (the √ character stays in the text for copying and screen readers), so its top always
+   meets the bar over the number, whatever the font. */
+.sqrt .rs {
+  position: relative;
+  width: 0.62em;
+  flex-shrink: 0;
+  overflow: hidden;
+  -webkit-text-fill-color: transparent;
+}
+.sqrt .rs::after {
+  content: '';
+  position: absolute;
+  inset: 0 -0.02em 0 0;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 120' preserveAspectRatio='none'%3E%3Cpath d='M2 70 L14 62 L30 114 L62 4' fill='none' stroke='black' stroke-width='8' stroke-linejoin='round' stroke-linecap='square'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 120' preserveAspectRatio='none'%3E%3Cpath d='M2 70 L14 62 L30 114 L62 4' fill='none' stroke='black' stroke-width='8' stroke-linejoin='round' stroke-linecap='square'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
 }
 .sqrt .rad {
   border-top: 0.08em solid currentColor;
-  padding: 0 0.12em;
-  margin-left: 0.02em;
+  padding: 0.04em 0.12em 0;
 }
 .sqrt .root-idx {
   font-size: 0.6em;

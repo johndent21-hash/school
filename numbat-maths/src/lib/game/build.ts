@@ -1,6 +1,6 @@
 // Builds the questions of a class game. The same seed always gives the same questions, so a game
 // interrupted by a page refresh can carry on where it stopped.
-import { setSeed, shuffle } from '@/lib/maths/rand'
+import { random, setSeed, shuffle } from '@/lib/maths/rand'
 import type { GameChapter, GameItem, GameMaker, GameQuestion, GameSet } from './types'
 
 export const GAME_LENGTHS = [5, 8, 10, 12, 15] as const
@@ -74,6 +74,39 @@ export function buildChapterGame(chapter: GameChapter, seed: number, count: numb
     const q = makers.reduce<GameQuestion | null>((found, m) => found ?? fresh(m, seen, 20), null) ?? makers[0].make()
     return { q, set }
   })
+}
+
+/**
+ * A year revision mix: chapters drawn at random, weighted towards the older ones (the oldest chapter about twice as
+ * often as the newest, which students have just been tested on), never the same chapter twice in a row; then a
+ * random exercise of that chapter.
+ */
+export function buildRevisionGame(chapters: GameChapter[], seed: number, count: number): GameItem[] {
+  setSeed(seed)
+  const seen = new Set<string>()
+  const n = chapters.length
+  const weight = chapters.map((_, i) => (n === 1 ? 1 : 1 + (n - 1 - i) / (n - 1)))
+  const sum = weight.reduce((t, w) => t + w, 0)
+  const items: GameItem[] = []
+  let last = -1
+  while (items.length < count) {
+    let r = random() * sum
+    let c = 0
+    while (c < n - 1 && r >= weight[c]) r -= weight[c++]
+    if (c === last && n > 1) continue
+    last = c
+    const sets = shuffle(chapters[c].sets)
+    let q: GameQuestion | null = null
+    for (const set of sets) {
+      q = shuffle(set.makers).reduce<GameQuestion | null>((found, m) => found ?? fresh(m, seen, 20), null)
+      if (q) {
+        items.push({ q, set })
+        break
+      }
+    }
+    if (!q) items.push({ q: sets[0].makers[0].make(), set: sets[0] })
+  }
+  return items
 }
 
 /** A short fingerprint of a game's questions, so a saved game is only resumed if it rebuilds the same questions. */

@@ -1584,3 +1584,62 @@ div.bar.tinted > span {
     min-height: 1.95rem;
   }
 }
+
+/* ---------- Worksheets and topic tests (routes/worksheet.tsx) ---------- */
+.tabs-sm {
+  padding: 0.15rem;
+}
+.tabs-sm button {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+}
+.ws-chapter {
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 0.5rem;
+}
+.ws-chapter > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.ws-set {
+  padding: 0.35rem 0 0.35rem 0.75rem;
+  border-left: 3px solid hsl(var(--border));
+}
+.ws-set summary {
+  cursor: pointer;
+  width: fit-content;
+}
+.ws-style-row {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.ws-snippet {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+.ws-snippet svg {
+  display: none;
+}
+.ws-frame {
+  width: 100%;
+  height: min(75vh, 900px);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.6rem;
+  background: #fff;
+}
+@media (max-width: 639px) {
+  .ws-style-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .ws-style-row > :first-child {
+    grid-column: 1 / -1;
+  }
+}

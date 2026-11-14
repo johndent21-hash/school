@@ -12,8 +12,9 @@
 // It also checks how games are built (no repeats, same seed = same game) and that the luck rules are fair.
 // Usage: npx tsx tests/games.test.ts        (N questions of each kind, default 400)
 import { setSeed } from '../src/lib/maths/rand'
-import { ALL_GAME_SETS, GAME_BOOKS, findGame } from '../src/content/games/index'
-import { buildChapterGame, buildGame, gameCheck, GAME_LENGTHS } from '../src/lib/game/build'
+import { ALL_GAME_SETS, GAME_BOOKS, findGame, gameChapters } from '../src/content/games/index'
+import { buildChapterGame, buildGame, buildRevisionGame, gameCheck, GAME_LENGTHS } from '../src/lib/game/build'
+import { buildSheet, defaultStyle, marksFor, minutesFor, sections, sheetHtml, totalMarks, type SheetSpec } from '../src/lib/game/sheet'
 import { dig, ECHIDNA, LEAP_MAX, LEAP_MIN, places, RAID } from '../src/lib/game/luck'
 import type { GameQuestion, GameSet } from '../src/lib/game/types'
 import { rework as reworkCh1 } from './game-checks/ncm7-ch1'
@@ -649,6 +650,67 @@ for (const book of GAME_BOOKS)
       if (firstRound.some((x, i) => i > 0 && x <= firstRound[i - 1])) fail(ch.id, 'the chapter game is not in textbook order')
       if (count >= ch.sets.length && new Set(order).size !== ch.sets.length) fail(ch.id, 'an exercise is missing from the chapter game')
       if (new Set(game.map((g) => key(g.q))).size !== count) fail(ch.id, 'the chapter game repeats a question')
+    }
+  }
+
+// year revision mixes: only chapters 1 to n, no repeats, same seed = same game, older chapters more often
+for (const book of GAME_BOOKS) {
+  if (findGame(`${book.id}-rev1`) || findGame(`${book.id}-rev${book.chapters.length + 1}`)) fail(book.id, 'a revision mix outside 2 to the number of chapters was found')
+  for (let n = 2; n <= book.chapters.length; n++) {
+    const g = findGame(`${book.id}-rev${n}`)
+    if (!g || g.upTo !== n || gameChapters(g).length !== n) {
+      fail(book.id, `revision mix ${n} not found`)
+      continue
+    }
+    const allowed = new Set(gameChapters(g).flatMap((c) => c.sets))
+    for (const count of GAME_LENGTHS) {
+      const game = buildRevisionGame(gameChapters(g), 99 + n + count, count)
+      if (game.length !== count) fail(book.id, `a ${count}-question revision mix has ${game.length}`)
+      if (game.some((it) => !allowed.has(it.set))) fail(book.id, `revision mix 1–${n} uses a later chapter`)
+      if (new Set(game.map((it) => key(it.q))).size !== count) fail(book.id, 'the revision mix repeats a question')
+      if (gameCheck(game) !== gameCheck(buildRevisionGame(gameChapters(g), 99 + n + count, count))) fail(book.id, 'the same seed gave a different revision mix')
+      const chOf = (it: (typeof game)[number]) => gameChapters(g).findIndex((c) => c.sets.includes(it.set))
+      if (game.some((it, i) => i > 0 && chOf(it) === chOf(game[i - 1]))) fail(book.id, 'the revision mix asks the same chapter twice in a row')
+    }
+  }
+  // weighting: over many games, the first chapter comes up more often than the last
+  const chs = book.chapters
+  const tally = chs.map(() => 0)
+  for (let k = 0; k < 60; k++) for (const it of buildRevisionGame(chs, 500 + k, 15)) tally[chs.findIndex((c) => c.sets.includes(it.set))]++
+  if (!(tally[0] > tally[chs.length - 1])) fail(book.id, `revision mix weighting: first chapter ${tally[0]}, last ${tally[chs.length - 1]}`)
+}
+
+// worksheets and topic tests: every chapter of every book, two from each exercise
+for (const book of GAME_BOOKS)
+  for (const ch of book.chapters) {
+    const picks = ch.sets.map((set) => ({ set, kinds: [] as string[], count: 2 }))
+    const items = buildSheet(picks, 31)
+    if (items.length !== 2 * ch.sets.length) fail(ch.id, `the sheet has ${items.length} questions, not ${2 * ch.sets.length}`)
+    if (new Set(items.map((it) => key(it.q))).size !== items.length) fail(ch.id, 'the sheet repeats a question')
+    if (buildSheet(picks, 31).map((it) => key(it.q)).join() !== items.map((it) => key(it.q)).join()) fail(ch.id, 'the same seed gave a different sheet')
+    if (buildSheet(picks, 32).map((it) => key(it.q)).join() === items.map((it) => key(it.q)).join()) fail(ch.id, 'Version B is the same as Version A')
+    for (const kind of ['worksheet', 'test'] as const) {
+      const spec: SheetSpec = { kind, title: ch.title, subtitle: book.short, version: 'A', items, styles: items.map((it) => defaultStyle(it.q)) }
+      const secs = sections(spec)
+      const placed = secs.flatMap((x) => x.idx).sort((a, b) => a - b)
+      if (placed.join() !== items.map((_, i) => i).join()) fail(ch.id, `${kind}: the sections do not hold every question once`)
+      const marks = totalMarks(spec)
+      if (marks !== items.reduce((t, it, i) => t + marksFor(it, spec.styles[i]), 0)) fail(ch.id, 'marks do not add up')
+      const html = sheetHtml(spec, '')
+      if (kind === 'test') {
+        // every section heading states its marks, and they add to the total in the header
+        const secMarks = [...html.matchAll(/\((\d+) marks?\)<\/h2>/g)].reduce((t, m) => t + Number(m[1]), 0)
+        if (secMarks !== marks) fail(ch.id, `section marks ${secMarks} ≠ total ${marks}`)
+        if (!html.includes(`${marks} marks · Time allowed: ${minutesFor(marks)} minutes`)) fail(ch.id, 'the test header does not state its marks and time')
+        if (minutesFor(marks) < marks) fail(ch.id, 'less than a minute a mark')
+      }
+      for (const code of new Set(items.flatMap((it) => it.set.outcomes))) if (!html.includes(code)) fail(ch.id, `outcome ${code} not listed on the sheet`)
+      const keyHtml = sheetHtml(spec, '', { key: true })
+      items.forEach((it, i) => {
+        if (!keyHtml.includes(it.q.options[it.q.correct])) fail(ch.id, 'an answer is missing from the key')
+        if (spec.styles[i] === 'choices' && !it.q.options.every((o) => html.includes(o))) fail(ch.id, 'a choice is missing from the sheet')
+      })
+      if (!sheetHtml(spec, '', { key: true, working: false }).includes('class="key"') || sheetHtml(spec, '', { key: true, working: false }).includes('class="why')) fail(ch.id, 'the answers-only key still shows working')
     }
   }
 

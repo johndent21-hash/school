@@ -1,7 +1,7 @@
 // Class games: pick the exercise you taught today and finish the lesson with a quick team game on the board.
 import { useEffect, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { ArrowLeft, BookOpen, ChevronDown, Layers, Play, Presentation } from 'lucide-react'
+import { ArrowLeft, BookOpen, ChevronDown, History, Layers, Play, Presentation, Printer } from 'lucide-react'
 import { GameResume } from '@/components/numbat/GameResume'
 import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { findSkill } from '@/content'
@@ -105,12 +105,47 @@ function Games() {
         <p className="text-sm text-muted-foreground">
           Year {book.year} · {book.stage}. The questions are Numbat Maths’ own, written to match each exercise; none are copied from the textbook.
         </p>
+        <RevisionMix key={book.id} book={book} />
         {book.chapters.map((c) => (
           <Chapter key={c.id} book={book} chapter={c} open={open.includes(c.id)} onToggle={(show) => toggle(c.id, show)} />
         ))}
         <p className="text-sm text-muted-foreground">More chapters, and Years 9 and 10, are on the way.</p>
       </section>
     </div>
+  )
+}
+
+function RevisionMix({ book }: { book: GameBook }) {
+  const [upTo, setUpTo] = useState(book.chapters.length)
+  return (
+    <section className="panel grid gap-3 p-4 sm:grid-cols-[1fr_auto] sm:items-center" aria-labelledby={`${book.id}-rev`}>
+      <div className="grid gap-1">
+        <h3 id={`${book.id}-rev`} className="font-display flex items-center gap-2 text-xl font-semibold">
+          <History size={20} aria-hidden="true" /> Year revision mix
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          Questions from every chapter studied so far, with older chapters coming up more often. Good before the yearly exam.
+        </p>
+        <label className="flex flex-wrap items-center gap-2 text-sm">
+          Chapters 1 to
+          <select className="field w-auto py-1" value={upTo} onChange={(e) => setUpTo(Number(e.target.value))}>
+            {book.chapters.slice(1).map((c) => (
+              <option key={c.number} value={c.number}>
+                {c.number}: {c.title}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Link to="/worksheet" className="btn btn-ghost">
+          <Printer size={18} aria-hidden="true" /> Worksheets and tests
+        </Link>
+        <Link to="/game" search={{ id: `${book.id}-rev${upTo}` }} className="btn btn-primary" aria-label={`Play the ${book.short} year revision mix, chapters 1 to ${upTo}`}>
+          <Play size={18} aria-hidden="true" /> Play
+        </Link>
+      </div>
+    </section>
   )
 }
 

@@ -36,8 +36,8 @@ function independentValue(qn: Question): number | null {
   if (!m) return null
   let s = m[1]
   if (/sqrt|root-idx/.test(s)) {
-    s = s.replace(/<span class="sqrt"><sup class="root-idx">3<\/sup>√<span class="rad">(.*?)<\/span><\/span>/g, 'Math.cbrt($1)')
-    s = s.replace(/<span class="sqrt">√<span class="rad">(.*?)<\/span><\/span>/g, 'Math.sqrt($1)')
+    s = s.replace(/<span class="sqrt"><sup class="root-idx">3<\/sup><span class="rs">√<\/span><span class="rad">(.*?)<\/span><\/span>/g, 'Math.cbrt($1)')
+    s = s.replace(/<span class="sqrt"><span class="rs">√<\/span><span class="rad">(.*?)<\/span><\/span>/g, 'Math.sqrt($1)')
   }
   s = strip(s)
     .replace(/−/g, '-')

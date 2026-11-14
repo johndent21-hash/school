@@ -23,7 +23,7 @@ const fail = (id: string, msg: string, qn?: Question) => {
 const strip = (h: string) =>
   h
     .replace(/<span class="frac"[^>]*><span class="fn">(.*?)<\/span><span class="fd">(.*?)<\/span><\/span>/g, '(($1)/($2))')
-    .replace(/<span class="sqrt">√<span class="rad">(.*?)<\/span><\/span>/g, 'sqrt($1)')
+    .replace(/<span class="sqrt"><span class="rs">√<\/span><span class="rad">(.*?)<\/span><\/span>/g, 'sqrt($1)')
     .replace(/<sup>(.*?)<\/sup>/g, '^($1)')
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')

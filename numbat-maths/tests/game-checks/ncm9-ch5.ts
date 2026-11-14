@@ -13,7 +13,7 @@ import { lettersIn, parse, txt } from './ncm7-ch5'
 const close = (a: number, b: number) => Number.isFinite(a) && (a === b || Math.abs(a - b) <= 1e-9 * Math.max(Math.abs(a), Math.abs(b)))
 const prep = (s: string) => s.replace(/∛([a-z]|\d+)/g, '($1)^((1)/(3))').replace(/\s/g, '')
 /** compact text with every √ span turned into a power ½ of its whole radicand */
-const vtxt = (html: string) => txt(html.replace(/<span class="sqrt">√<span class="rad">(.*?)<\/span><\/span>/g, '(($1))^(0.5)'))
+const vtxt = (html: string) => txt(html.replace(/<span class="sqrt"><span class="rs">√<\/span><span class="rad">(.*?)<\/span><\/span>/g, '(($1))^(0.5)'))
 const P = (s: string) => parse(prep(s))
 const POINTS = [1.37, 2.91, 0.43, 3.17]
 function sameValue(a: string, b: string): boolean {

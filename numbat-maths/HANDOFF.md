@@ -1,6 +1,6 @@
 # Handoff: build the improvements the user chose (Step 4)
 
-**Current work: Step 4, Batch 2 (see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
+**Current work: Step 4, Batch 3 (see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
 board-checked and published (Version 24, 14 Nov 2026), and the user has chosen the improvements. Build the Step 4
 batches in order. After each batch: full tests, one board check of what changed, one build and one publish, update
 this file (mark the batch done, note anything left), commit and push. Then go on to the next batch, unless context is
@@ -246,6 +246,26 @@ Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
 - Pitfall: **don't run the tests while the build has 9 Advanced removed** from `index.ts` (the test then silently skips
   it: check the "386 exercises" line).
 
-### Batch 2 (worksheets/tests + year revision mix) — in progress
+### Batch 2 (worksheets/tests + year revision mix) — done, published as Version 26 (14 Nov 2026)
 
-Work in progress is in `git stash` on this branch only if a session stopped mid-way (see the commit log for what landed).
+- **Worksheets and topic tests:** `/worksheet` (`app/src/routes/worksheet.tsx`, logic and printout in
+  `src/lib/game/sheet.ts`; README "Worksheets and topic tests"). One click from a game's set-up page, or the builder.
+  The user saw the first version and chose: **key = answer + short working** (default; a tick box turns it off);
+  **every question starts as written** (questions that point at their choices keep them, `needsChoices`);
+  **answer line at the bottom** of the question space (diagram beside the question); **school name line** (typed once,
+  kept in `numbat.school`). Printing: a hidden frame + `print()`; in the claude.ai preview there is also "Save the
+  worksheet / answer key" (.html through the `downloads` capability), since printing may be blocked there.
+- **Year revision mix:** `/game?id=<book>-rev<n>` (chapters 1–n), `buildRevisionGame` (oldest chapter about twice as
+  likely as the newest, never the same chapter twice running); panel at the top of each book on `/games`.
+- **Radical sign (site-wide):** the user saw the √ bar not joining the tick. `sqrt()`/`cbrt()` now emit
+  `<span class="sqrt"><span class="rs">√</span><span class="rad">…` and `.rs` draws the sign with a CSS mask (the √
+  character stays in the text). Four test regexes were updated to the new markup.
+- Tests: `tests/games.test.ts` now also checks revision mixes (chapters, repeats, seeds, weighting) and sheets (every
+  question placed once, section marks = total, time, outcome codes listed, every answer in the key, answers-only key).
+  N=400 all passed (386 exercises); content, engine, open, practice, keypad, calc, ncm9-ch5, ncm9-ch11 passed.
+- Board check: the three revision mixes and NCM 8 1.01, 1.04, 9 Std 2.0x (√) at all four sizes, clean; the worksheet
+  page has no sideways spill at 390 px or 1024 px and no page errors.
+- Pitfall: **the build step's `git checkout src/content/games/index.ts` discards uncommitted edits to that file.**
+  Copy it to the scratchpad before removing NCM 9 Advanced, and copy it back after the build.
+
+### Batch 3 (speed round / buzzer, trigonometry calculator mode) — next
