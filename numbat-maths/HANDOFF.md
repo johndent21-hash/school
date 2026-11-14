@@ -23,7 +23,7 @@ reports. Don't work on NCM 9 Advanced (paused after Ch 5; its Ch 1–5 stay in t
 - Preview artifact: https://claude.ai/artifact/NHrcC9eBrYkDQ8f8CXFiYU (NCM 7, NCM 8, NCM 9 Standard). `read` it once
   before republishing; publish the same scratchpad file name (`numbat-maths-1-9.html`), no icon.
 
-## Step 0: Year 9 Standard (check first, it may already be done)
+## Step 0: Year 9 Standard — done
 
 Done in the previous session (commit `1123f5a`): the exercise-by-exercise audit of all 13 chapters. It now has 91 sets
 and 253 kinds, 13 new kinds with independent checks, and every planted error was caught. N=400 tests passed. Details
@@ -32,8 +32,8 @@ are in the README's Year 9 Standard entry and the header of `src/content/games/n
 Board check (changed chapters 1, 2, 3, 5, 6, 8–13 and all 13 chapter games): everything fitted with no page errors,
 except **2.03 spills 11–13 px sideways on the iPad (1180 × 720) and small (1024 × 640) screens**. That set reuses the
 NCM 8 Pythagoras kinds (`ncm8-ch1` 1.03 `hyp`/`exact`), so the fix belongs in `ncm8-ch1.ts`; do it in the NCM 8 audit
-below. (The rest of the board-check log was still running at handoff time; if `git log` shows no "published" commit
-after `1123f5a`, build and publish as in "Build and publish" below before starting Step 1.)
+below. Built without NCM 9 Advanced, preview check clean, **published as Version 23** of the artifact (14 Nov 2026).
+Nothing left to do here; start at Step 1.
 
 Left as found in 9 Std, to raise with the user in Step 3: 6.03/6.04 networks have no "is it connected" question
 (Path, extension); 7.05 has no "no solution" question; the NCM 9 Advanced kind `costs` (reused in 9 Std 3.06) uses the
@@ -160,6 +160,9 @@ Candidate ideas, from the previous session (check each is still true before offe
 - 2.03 sideways spill on iPad and small screens (S, if not already fixed in Step 1).
 - The open-top cylinder question (NCM 8 12.05 `open`) shows a closed cylinder (S).
 - Remove the textbook's name "Alla" from the 9 Advanced `costs` kind (XS, but it touches a 9 Advanced file: ask).
+- The artifact viewer blocks the page's plain download links (the publish warns about it), so any "download" button does
+  nothing in the preview. Fix: use the artifact `downloads` capability in the preview build, or hide those buttons there
+  (S; find which buttons first).
 - Trigonometry (9 Std Ch 4) is played without calculators, so it only asks for the ratio or the set-up. An optional
   "calculator allowed" mode with rounded answers (M).
 
