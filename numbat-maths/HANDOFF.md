@@ -54,6 +54,11 @@ how many solutions x² = c has (9.05). Fixed: "12 cm cm" (1.06), "a octagon" (4.
 walker (10.08). The **2.03 sideways spill is fixed** (`pad: 52` in `rightTri`, ncm8-ch1). Ch 6, 11, 12 needed nothing.
 Not added, by syllabus: index laws with pronumerals (2.11, 2.12; Stage 5).
 
+**Steps 1 and 2 are board-checked and published as Version 24 (14 Nov 2026).** Board check: every changed set, all
+NCM 7 and NCM 8 chapter games and 9 Std Ch 2, at all four sizes: no overflow, no spill, no page errors, except NCM 8
+8.02 (a 22 px spill on iPad from a floating-point option, 0.00000000000000002776, made by NCM 7 11.05 `value`); fixed
+by working in tenths, and `tests/games.test.ts` now fails any prompt or option showing floating-point residue.
+
 ## Step 2: NCM 7 audit — done (14 Nov 2026)
 
 Textbook: public repo `johndent21-hash/Year-7-Standard` (12 chapter PDFs; clone with GIT_LFS_SKIP_SMUDGE=1). All 123
@@ -139,6 +144,9 @@ grep -c "New Century Maths 9 Advanced" $S/numbat-maths-1-9.html   # must be 0
   - Venn diagrams and two-way tables: MA5-PRO-P-01
   - networks: MA5-NET-P-01
   - direct variation: MA5-RAT-P-01
+- **Import direction:** NCM 8 files import NCM 7 (and 9 Adv imports NCM 8), never the reverse. A kind both books need
+  goes in the lower book and the higher one reuses it; move its check with it.
+- **Fall-through `case` chains** in checkers: insert a new `case` before a chain, not inside it.
 - **Reading the artifact:** a `read` of it costs a lot of context (2.5 MB page). Do it once, only right before
   publishing.
 
@@ -160,12 +168,15 @@ Candidate ideas, from the previous session (check each is still true before offe
 
 **Issues to fix**
 
-- 2.03 sideways spill on iPad and small screens (S, if not already fixed in Step 1).
+- ~~2.03 sideways spill on iPad and small screens~~ fixed in Step 1 (Version 24).
+- Small gaps left after the NCM 7/8 audit (S–M): inserting grouping symbols (NCM 7 1.08, NCM 8 2.04), coordinates
+  that are not whole numbers (syllabus MA4-LIN-C-01; NCM 7 9.02–9.03), raffle and "or" questions in NCM 7 11.02 (the
+  NCM 8 kinds would move down), non-monic binomial products (NCM 8 3.11, extension); with the 9 Std ones below.
 - The open-top cylinder question (NCM 8 12.05 `open`) shows a closed cylinder (S).
 - Remove the textbook's name "Alla" from the 9 Advanced `costs` kind (XS, but it touches a 9 Advanced file: ask).
 - The artifact viewer blocks the page's plain download links (the publish warns about it), so any "download" button does
-  nothing in the preview. Fix: use the artifact `downloads` capability in the preview build, or hide those buttons there
-  (S; find which buttons first).
+  nothing in the preview. The buttons are the CSV exports (`app/src/lib/csv.ts`, used by `RatingsSheet.tsx` and
+  `teacher-class.tsx`). Fix: use the artifact `downloads` capability in the preview build, or hide them there (S).
 - Trigonometry (9 Std Ch 4) is played without calculators, so it only asks for the ratio or the set-up. An optional
   "calculator allowed" mode with rounded answers (M).
 
