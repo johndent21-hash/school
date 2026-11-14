@@ -80,24 +80,7 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
     if (!m) throw new Error('no polygon named')
     return SIDES[m[1]]
   }
-  const shown = q.options.map(ctx.plain)
-  const one = (ok: boolean[], what: string): Expect => {
-    const hits = ok.map((x, k) => (x ? k : -1)).filter((k) => k >= 0)
-    if (hits.length !== 1) ctx.fail(`${hits.length} options ${what}`)
-    return hits.length ? { text: shown[hits[0]] } : null
-  }
   switch (kind) {
-    case '4.03 possible': {
-      // an equilateral triangle is always acute-angled; two obtuse or two right angles already reach 180°
-      const can = shown.map((o) => !(/^Equilateral/.test(o) && !/acute/.test(o)) && !/^With two (obtuse|right)/.test(o))
-      if (!shown.every((o) => /^(Equilateral|Isosceles|Scalene) and (acute|right|obtuse)-angled$|^With two (obtuse|right) angles$/.test(o))) ctx.fail('an option cannot be read')
-      return /CAN/.test(words) ? one(can, 'can be drawn') : one(can.map((c) => !c), 'are impossible')
-    }
-    case '4.04 convex': {
-      const a = [...words.matchAll(/(\d+)°/g)].map((m) => Number(m[1]))
-      if (a.length !== 4 || a.reduce((x, y) => x + y) !== 360) ctx.fail('the four angles do not add to 360°')
-      return { text: a.every((x) => x < 180) ? 'Yes: every angle is less than 180°' : 'No: one angle is more than 180°' }
-    }
     case '4.07 sum':
       return { text: `${(polygon() - 2) * 180}°` }
     case '4.07 regular': {

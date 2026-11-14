@@ -135,6 +135,23 @@ export function rework(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
     }
     case '3.10 value':
       return { v: (m.ps as number[]).reduce((t, x) => t * x, 1) }
+    case '3.11 common':
+    case '3.12 multiple': {
+      // worked from the words: the numbers in the question and each option
+      const w = ctx.plain(q.prompt)
+      const shown = q.options.map((o) => Number(ctx.plain(o).replace(/\s/g, '')))
+      let ok: boolean[]
+      if (m.t === 'common') {
+        const [, a, b] = w.match(/common factor of (\d+) and (\d+)\?/)!.map(Number)
+        ok = shown.map((x) => a % x === 0 && b % x === 0)
+      } else {
+        const n = Number(w.match(/a multiple of (\d+)\?/)![1])
+        ok = shown.map((x) => (x % n === 0) !== /NOT/.test(w))
+      }
+      const hits = ok.filter(Boolean).length
+      if (hits !== 1) ctx.fail(`${hits} options are right`)
+      return { v: shown[ok.indexOf(true)] }
+    }
     case '3.11 hcf':
       has(String(m.a), String(m.c))
       return { v: gcd(m.a, m.c) }

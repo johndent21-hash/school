@@ -10,6 +10,9 @@
 // cube roots, primes and prime factors); Fractions, decimals and percentages MA4-FRC-C-01 (the HCF of 2 whole
 // numbers). Rounding, mental multiplication and division are revision of Stage 3; long division, Roman numerals
 // and the lowest common multiple are marked as extension in the textbook.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added common factors (3.11) and multiples
+// (3.12).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { DIVIDE, TIMES, chance, gq, int, mk, num, pick, sample, shuffle } from './helpers'
 
@@ -678,15 +681,56 @@ function m312lcm(): GameQuestion {
   })
 }
 
+function m311common(): GameQuestion {
+  // a = hp and b = hq with p, q coprime, so the common factors are the factors of h
+  const h = pick([4, 6, 8, 9, 10, 12])
+  let p: number, q: number
+  do {
+    p = int(2, 7)
+    q = int(2, 7)
+  } while (p === q || gcd(p, q) !== 1)
+  const [a, b] = [h * p, h * q]
+  const right = pick(Array.from({ length: h - 1 }, (_, i) => i + 2).filter((x) => h % x === 0))
+  return gq({
+    t: 'common',
+    prompt: `Which number is a common factor of ${a} and ${b}?`,
+    correct: num(right),
+    // a factor of only one of them, a common multiple instead; a spare
+    wrong: [num(a), num(b), num(h * p * q), num(2 * h * p * q)],
+    why: `${right} divides both: ${a} = ${right} ${TIMES} ${a / right} and ${b} = ${right} ${TIMES} ${b / right}.`,
+    meta: { a, b },
+  })
+}
+
 const SET_311: GameSet = {
   id: 'ncm7-3.11',
   exercise: '3.11',
   ref: 'NCM 7 Ex 3.11',
   title: 'Highest common factor',
-  focus: 'Find the highest common factor of two numbers.',
+  focus: 'Find common factors and the highest common factor of two numbers.',
   lessons: ['y7-wn-hcf-lcm'],
   outcomes: [FRC],
-  makers: [mk('hcf', m311hcf)],
+  makers: [mk('hcf', m311hcf), mk('common', m311common)],
+}
+
+function m312multiple(): GameQuestion {
+  const n = int(3, 9)
+  const k = int(6, 15)
+  const findNot = chance()
+  // numbers just off a multiple (one more or less, or half of n more)
+  const near = [n * (k + 1) + 1, n * (k + 2) - 1, n * (k + 3) + Math.max(1, Math.floor(n / 2)), n * (k - 1) + 2].filter((x) => x % n !== 0)
+  const multiples = [n * k, n * (k + 2), n * (k + 4), n * (k + 5)]
+  const right = findNot ? near[0] : multiples[0]
+  return gq({
+    t: 'multiple',
+    prompt: `Which number is ${findNot ? 'NOT ' : ''}a multiple of ${n}?`,
+    correct: num(right),
+    wrong: (findNot ? multiples.slice(1) : near.slice(1)).map(num),
+    why: findNot
+      ? `${right} = ${n} ${TIMES} ${Math.floor(right / n)} + ${right % n}: it is not in the ${n} times table. The others are.`
+      : `${right} = ${n} ${TIMES} ${k}, so it is in the ${n} times table.`,
+    meta: { n },
+  })
 }
 
 const SET_312: GameSet = {
@@ -694,11 +738,11 @@ const SET_312: GameSet = {
   exercise: '3.12',
   ref: 'NCM 7 Ex 3.12',
   title: 'Lowest common multiple',
-  focus: 'Find the lowest common multiple of two numbers.',
+  focus: 'Recognise multiples, and find the lowest common multiple of two numbers.',
   lessons: ['y7-wn-hcf-lcm'],
   outcomes: [],
   teacherNote: `${EXTENSION} The LCM is used when adding fractions with different denominators.`,
-  makers: [mk('lcm', m312lcm)],
+  makers: [mk('lcm', m312lcm), mk('multiple', m312multiple)],
 }
 
 export const NCM7_CH3: GameChapter = {

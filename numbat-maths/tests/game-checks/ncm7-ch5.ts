@@ -250,6 +250,23 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       }
       return want
     }
+    case '5.03 expanded': {
+      // the right option lists the number once and each letter as often as its power, nothing else
+      const tm = bigT.match(/^(\d+)((?:[a-z](?:\^\(\d+\))?)+)$/)!
+      const want = { c: Number(tm[1]), p: {} as Record<string, number> }
+      for (const l of tm[2].matchAll(/([a-z])(?:\^\((\d+)\))?/g)) want.p[l[1]] = Number(l[2] ?? 1)
+      const ok = shown.map((o) => {
+          const f = o.replace(/\s/g, '').split('×')
+          const nums = f.filter((x) => /^\d+$/.test(x))
+          const ls = f.filter((x) => /^[a-z]$/.test(x))
+          if (nums.length !== 1 || nums.length + ls.length !== f.length || Number(nums[0]) !== want.c) return false
+          const p: Record<string, number> = {}
+          for (const l of ls) p[l] = (p[l] ?? 0) + 1
+          return Object.keys({ ...p, ...want.p }).every((l) => p[l] === want.p[l])
+        })
+      if (ok.filter(Boolean).length !== 1) ctx.fail(`${ok.filter(Boolean).length} options are the expanded form`)
+      return { text: shown[ok.indexOf(true)] ?? '' }
+    }
     case '5.03 notEqual': {
       const target = parse(prompt.match(/notequalto(.+)\?$/)![1])
       const L = [...new Set(opts.flatMap(lettersIn))]

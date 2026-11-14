@@ -34,9 +34,12 @@ export function rework(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
   const t = q.meta.t as string
   const exs = FROM[set.exercise]
   if (exs) {
-    // a kind not found there is one of this chapter's own (3.01 expanded)
     const ex = exs.find((e) => NCM7_CH5.sets.find((s) => s.exercise === e)?.makers.some((m) => m.t === t))
-    if (ex) return rework5({ ...set, exercise: ex }, q, ctx)
+    if (!ex) {
+      ctx.fail('reused kind not found in NCM 7 Chapter 5')
+      return null
+    }
+    return rework5({ ...set, exercise: ex }, q, ctx)
   }
   let want: Expect = null
   try {
@@ -77,22 +80,6 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
     case '3.12 square':
     case '3.13 diff':
       return one(equal(), 'equal the expression')
-    case '3.01 expanded': {
-      // the right option lists the number once and each letter as often as its power, nothing else
-      const want = mono(bigT)
-      return one(
-        shown.map((o) => {
-          const f = o.replace(/\s/g, '').split('×')
-          const nums = f.filter((x) => /^\d+$/.test(x))
-          const ls = f.filter((x) => /^[a-z]$/.test(x))
-          if (nums.length !== 1 || nums.length + ls.length !== f.length || Number(nums[0]) !== want.c) return false
-          const p: Record<string, number> = {}
-          for (const l of ls) p[l] = (p[l] ?? 0) + 1
-          return Object.keys({ ...p, ...want.p }).every((l) => p[l] === want.p[l])
-        }),
-        'are the expanded form',
-      )
-    }
     case '3.09 fully':
     case '3.09 letter':
     case '3.10 negative': {

@@ -257,6 +257,21 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       return { text: `${360 / orderOf(OWN[name])}°` }
     }
     // ---------------------------------------------------------------- 6.05: triangles classified
+    case '6.05 possible': {
+      // an equilateral triangle is always acute-angled; two obtuse or two right angles already reach 180°
+      const words = ctx.plain(q.prompt)
+      const shown = q.options.map(ctx.plain)
+      const can = shown.map((o) => !(/^Equilateral/.test(o) && !/acute/.test(o)) && !/^With two (obtuse|right)/.test(o))
+      if (!shown.every((o) => /^(Equilateral|Isosceles|Scalene) and (acute|right|obtuse)-angled$|^With two (obtuse|right) angles$/.test(o))) ctx.fail('an option cannot be read')
+      const ok = /CAN/.test(words) ? can : can.map((c) => !c)
+      if (ok.filter(Boolean).length !== 1) ctx.fail(`${ok.filter(Boolean).length} options are right`)
+      return { text: shown[ok.indexOf(true)] ?? '' }
+    }
+    case '6.08 convex': {
+      const a = [...ctx.plain(q.prompt).matchAll(/(\d+)°/g)].map((m) => Number(m[1]))
+      if (a.length !== 4 || a.reduce((x, y) => x + y) !== 360) ctx.fail('the four angles do not add to 360°')
+      return { text: a.every((x) => x < 180) ? 'Yes: every angle is less than 180°' : 'No: one angle is more than 180°' }
+    }
     case '6.05 angles': {
       const a = [...words.matchAll(/(\d+)°/g)].map((m) => Number(m[1]))
       if (a.length !== 3) ctx.fail('expected three angles')
@@ -359,6 +374,8 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
     case '6.09 special': {
       const a = [...words.matchAll(/(\d+)°/g)].map((m) => Number(m[1]))
       if (/kite/.test(words)) return { text: `${(360 - a[0] - a[1]) / 2}°` }
+      // a parallelogram or rhombus with a right angle is a rectangle or square: it would be misnamed
+      if (a[0] === 90) ctx.fail('a right angle makes it a rectangle or square')
       return { text: /opposite it/.test(words) ? `${a[0]}°` : `${180 - a[0]}°` }
     }
     // ---------------------------------------------------------------- 6.08, 6.10: quadrilaterals

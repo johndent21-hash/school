@@ -8,6 +8,9 @@
 // "subtract a negative" as subtracting, ignoring order of operations, and so on.
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Computation with integers MA4-INT-C-01.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added "always positive, always negative or could be
+// either" for sums, differences, products and quotients of positive and negative integers (1.04–1.07).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { DIVIDE, MINUS, TIMES, chance, gq, int, mk, nonZero, num, pick, sample, shuffle } from './helpers'
 import { intLine, vScale } from '@/lib/maths/diagrams4'
@@ -290,6 +293,57 @@ function m104negPlusNeg(): GameQuestion {
   return opQuestion('negPlusNeg', `${num(a)} + ${br(c)}`, a + c, [-(a + c), a - c, c - a], `Both go left from zero: ${num(a)} ${MINUS} ${-c} = ${num(a + c)}.`, { a, c })
 }
 
+// ================================================================== 1.04–1.07 The sign of an answer
+
+const SIGNS = ['Always positive', 'Always negative', 'Could be either', 'Always zero']
+const SAME = 'Same signs give a positive answer: always positive.'
+const DIFF = 'Different signs give a negative answer: always negative.'
+/** [first number, second number, the answer (index in SIGNS), why] for each operation */
+const SIGN_CASES: Record<string, [string, string, number, string][]> = {
+  '+': [
+    ['positive', 'positive', 0, 'Adding two positives gives a positive: always positive.'],
+    ['negative', 'negative', 1, 'Adding two negatives goes further below zero: always negative.'],
+    ['positive', 'negative', 2, `It depends which is further from zero: 5 + (${MINUS}2) = 3 but 2 + (${MINUS}5) = ${MINUS}3. Could be either.`],
+    ['negative', 'positive', 2, `It depends which is further from zero: ${MINUS}2 + 5 = 3 but ${MINUS}5 + 2 = ${MINUS}3. Could be either.`],
+  ],
+  [MINUS]: [
+    ['positive', 'negative', 0, 'Subtracting a negative is adding a positive, so positive + positive: always positive.'],
+    ['negative', 'positive', 1, 'Start below zero and go further down: always negative.'],
+    ['positive', 'positive', 2, `7 ${MINUS} 2 = 5 but 2 ${MINUS} 7 = ${MINUS}5. Could be either.`],
+    ['negative', 'negative', 2, `${MINUS}2 ${MINUS} (${MINUS}7) = 5 but ${MINUS}7 ${MINUS} (${MINUS}2) = ${MINUS}5. Could be either.`],
+  ],
+  [TIMES]: [
+    ['positive', 'positive', 0, SAME],
+    ['negative', 'negative', 0, SAME],
+    ['positive', 'negative', 1, DIFF],
+    ['negative', 'positive', 1, DIFF],
+  ],
+  [DIVIDE]: [
+    ['positive', 'positive', 0, SAME],
+    ['negative', 'negative', 0, SAME],
+    ['positive', 'negative', 1, DIFF],
+    ['negative', 'positive', 1, DIFF],
+  ],
+}
+
+/** the sign of a sum, difference, product or quotient of a positive and/or negative integer */
+const signKind = (op: string) =>
+  mk(
+    'sign',
+    (): GameQuestion => {
+      const [a, b, k, why] = pick(SIGN_CASES[op])
+      return gq({
+        t: 'sign',
+        prompt: `What is the sign of the answer?<div class="big">(${a}) ${op} (${b})</div>`,
+        correct: SIGNS[k],
+        inOrder: SIGNS,
+        why,
+        meta: { op, a, b },
+      })
+    },
+    2,
+  )
+
 const SET_104: GameSet = {
   id: 'ncm7-1.04',
   exercise: '1.04',
@@ -298,7 +352,7 @@ const SET_104: GameSet = {
   focus: 'Add integers: start at the first number and move right for a positive, left for a negative.',
   lessons: ['y7-int-add'],
   outcomes: [INT],
-  makers: [mk('negPlusPos', m104negPlusPos), mk('posPlusNeg', m104posPlusNeg), mk('negPlusNeg', m104negPlusNeg)],
+  makers: [mk('negPlusPos', m104negPlusPos), mk('posPlusNeg', m104posPlusNeg), mk('negPlusNeg', m104negPlusNeg), signKind('+')],
 }
 
 function m105smallMinusBig(): GameQuestion {
@@ -325,7 +379,7 @@ const SET_105: GameSet = {
   focus: 'Subtract integers: subtracting a positive moves left; subtracting a negative is the same as adding.',
   lessons: ['y7-int-sub'],
   outcomes: [INT],
-  makers: [mk('smallMinusBig', m105smallMinusBig), mk('negMinusPos', m105negMinusPos), mk('minusNeg', m105minusNeg, 2)],
+  makers: [mk('smallMinusBig', m105smallMinusBig), mk('negMinusPos', m105negMinusPos), mk('minusNeg', m105minusNeg, 2), signKind(MINUS)],
 }
 
 function m106negTimesPos(): GameQuestion {
@@ -352,7 +406,7 @@ const SET_106: GameSet = {
   focus: 'Multiply integers: same signs give a positive answer, different signs give a negative answer.',
   lessons: ['y7-int-mul'],
   outcomes: [INT],
-  makers: [mk('negTimesPos', m106negTimesPos), mk('negTimesNeg', m106negTimesNeg), mk('square', m106square, 2)],
+  makers: [mk('negTimesPos', m106negTimesPos), mk('negTimesNeg', m106negTimesNeg), mk('square', m106square, 2), signKind(TIMES)],
 }
 
 function m107negDivPos(): GameQuestion {
@@ -382,7 +436,7 @@ const SET_107: GameSet = {
   focus: 'Divide integers with the same sign rules as multiplying.',
   lessons: ['y7-int-div'],
   outcomes: [INT],
-  makers: [mk('negDivPos', m107negDivPos), mk('negDivNeg', m107negDivNeg), mk('posDivNeg', m107posDivNeg)],
+  makers: [mk('negDivPos', m107negDivPos), mk('negDivNeg', m107negDivNeg), mk('posDivNeg', m107posDivNeg), signKind(DIVIDE)],
 }
 
 // ================================================================== 1.08 Order of operations

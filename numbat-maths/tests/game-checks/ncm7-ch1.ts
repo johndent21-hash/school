@@ -28,6 +28,19 @@ export function rework(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
   const has = (...xs: (string | number)[]) => xs.forEach((x) => !ctx.page.includes(typeof x === 'number' ? n(x) : x) && ctx.fail(`"${typeof x === 'number' ? n(x) : x}" is not on the page`))
   const svg = q.diagram ?? ''
   switch (`${set.exercise} ${m.t}`) {
+    case '1.04 sign':
+    case '1.05 sign':
+    case '1.06 sign':
+    case '1.07 sign': {
+      // every pair of integers from −12 to 12 of the signs shown, worked out
+      const w = ctx.plain(q.prompt).match(/\((positive|negative)\)\s*([+−×÷])\s*\((positive|negative)\)/)!
+      const nums = (s: string) => Array.from({ length: 12 }, (_, i) => (s === 'positive' ? i + 1 : -(i + 1)))
+      const f: Record<string, (a: number, b: number) => number> = { '+': (a, b) => a + b, '−': (a, b) => a - b, '×': (a, b) => a * b, '÷': (a, b) => a / b }
+      const want: Record<string, string> = { '1.04': '+', '1.05': '−', '1.06': '×', '1.07': '÷' }
+      if (w[2] !== want[set.exercise]) ctx.fail('the operation does not match the exercise')
+      const vals = nums(w[1]).flatMap((a) => nums(w[3]).map((b) => f[w[2]](a, b)))
+      return { text: vals.every((v) => v > 0) ? 'Always positive' : vals.every((v) => v < 0) ? 'Always negative' : 'Could be either' }
+    }
     case '1.01 opposite':
       has(m.n)
       return { v: -m.n }

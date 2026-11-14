@@ -8,6 +8,8 @@
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Algebraic techniques MA4-ALG-C-01 (5.01–5.09) and
 // Equations MA4-EQU-C-01 (5.10–5.13).
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added writing a term in expanded form (5.03).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { D, DIVIDE, MINUS, TIMES, chance, ex, gq, int, mk, num, pick, sample, v } from './helpers'
 
@@ -304,6 +306,30 @@ function m503notEqual(): GameQuestion {
   })
 }
 
+/** a term such as 5a³b² written out in expanded form, 5 × a × a × a × b × b */
+function m503expanded(): GameQuestion {
+  const [x, y] = sample(['a', 'b', 'k', 'm', 'n', 'p', 'x', 'y'], 2).sort()
+  const c = int(2, 9)
+  const e1 = int(2, 4)
+  const e2 = int(1, 2)
+  const out = (k: number, i: number, j: number) => [String(k), ...Array(i).fill(x), ...Array(j).fill(y)].join(' × ')
+  const short = `${c}${x}^${e1}${y}${e2 > 1 ? `^${e2}` : ''}`
+  return gq({
+    t: 'expanded',
+    prompt: `Write in expanded form:${big(E(short))}`,
+    correct: out(c, e1, e2),
+    // the index read as a factor, the index used on the number too, the powers swapped; a spare
+    wrong: [
+      [String(c), x, String(e1), y, ...(e2 > 1 ? [String(e2)] : [])].join(' × '),
+      [...Array(e1).fill(String(c)), ...Array(e1).fill(x), ...Array(e2).fill(y)].join(' × '),
+      out(c, e2, e1),
+      out(c, e1 + 1, e2),
+    ].filter((w) => w !== out(c, e1, e2)),
+    why: `${E(short)} means ${c} × ${x} (${e1} times) × ${y}${e2 > 1 ? ` (${e2} times)` : ''}: ${out(c, e1, e2)}.`,
+    meta: { c, x, y, e1, e2 },
+  })
+}
+
 const SET_503: GameSet = {
   id: 'ncm7-5.03',
   exercise: '5.03',
@@ -312,7 +338,7 @@ const SET_503: GameSet = {
   focus: 'Use algebra’s shorthand: 3w for w × 3, b² for b × b, and a fraction for division.',
   lessons: ['y7-alg-words'],
   outcomes: [ALG],
-  makers: [mk('simplify', m503simplify), mk('notEqual', m503notEqual, 2)],
+  makers: [mk('simplify', m503simplify), mk('notEqual', m503notEqual, 2), mk('expanded', m503expanded, 2)],
 }
 
 // ================================================================== 5.04 Creating algebraic expressions

@@ -8,6 +8,10 @@
 // Syllabus: NSW Mathematics K–10 (2022). 6.05–6.10 are Stage 4, Properties of geometrical figures MA4-GEO-C-01.
 // 6.01–6.04 (transformations and symmetry) have no Stage 4 content point: they are Stage 3 content
 // (two-dimensional spatial structure), and Stage 5 returns to them on the number plane (path MA5-LIN-P-01).
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added which triangles can be drawn (6.05) and convex
+// or non-convex quadrilaterals (6.08); a parallelogram or rhombus in 6.09 no longer has a right angle (that would be
+// a rectangle or square).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { D, chance, gq, int, mk, num, pick, sample, shuffle } from './helpers'
 
@@ -426,6 +430,26 @@ function m605drawn(): GameQuestion {
   })
 }
 
+// ================================================================== 6.05 Which triangles can be drawn?
+
+const CAN = ['Isosceles and right-angled', 'Isosceles and obtuse-angled', 'Scalene and right-angled', 'Scalene and obtuse-angled', 'Equilateral and acute-angled', 'Scalene and acute-angled']
+const CANNOT = ['Equilateral and right-angled', 'Equilateral and obtuse-angled', 'With two obtuse angles', 'With two right angles']
+
+function m605possible(): GameQuestion {
+  const findCan = chance()
+  const right = pick(findCan ? CAN : CANNOT)
+  // the others from the opposite list; for "impossible", the right-angled isosceles (often thought impossible) first
+  const others = findCan ? sample(CANNOT, 3) : [CAN[0], ...sample(CAN.slice(1), 3)]
+  return gq({
+    t: 'possible',
+    prompt: findCan ? 'Which triangle CAN be drawn?' : 'Which triangle is impossible to draw?',
+    correct: right,
+    wrong: others,
+    why: `${findCan ? `${right}: it can be drawn; the others cannot.` : `${right}: impossible.`} An equilateral triangle has three 60° angles, so it is always acute-angled, and two obtuse or two right angles leave nothing for the third angle.`,
+    meta: { findCan },
+  })
+}
+
 const SET_605: GameSet = {
   id: 'ncm7-6.05',
   exercise: '6.05',
@@ -434,7 +458,7 @@ const SET_605: GameSet = {
   focus: 'Classify triangles by their sides (equilateral, isosceles, scalene) and by their angles (acute, right, obtuse).',
   lessons: ['y7-geo-classify'],
   outcomes: [GEO],
-  makers: [mk('drawn', m605drawn), mk('angles', m605angles)],
+  makers: [mk('drawn', m605drawn), mk('angles', m605angles), mk('possible', m605possible, 2)],
 }
 
 // ================================================================== 6.06 Angle sum of a triangle
@@ -678,6 +702,30 @@ function m608describe(): GameQuestion {
   })
 }
 
+// ================================================================== 6.08 Convex and non-convex quadrilaterals
+
+const CONVEX = ['Yes: every angle is less than 180°', 'No: one angle is more than 180°', 'Yes: the angles add to 360°', 'No: the angles are not all equal']
+
+function m608convex(): GameQuestion {
+  const convex = chance()
+  let a: number[]
+  do {
+    // three angles, then the fourth makes 360°; a reflex angle for a non-convex quadrilateral
+    a = convex ? [int(50, 130), int(50, 130), int(50, 130)] : [int(15, 60), int(15, 60), int(15, 60)]
+    a.push(360 - a[0] - a[1] - a[2])
+  } while (convex ? a[3] < 40 || a[3] > 170 : a[3] <= 190)
+  const shown = shuffle(a.map((x) => x * 1))
+  return gq({
+    t: 'convex',
+    prompt: `A quadrilateral has angles of ${shown.slice(0, 3).map(deg).join(', ')} and ${deg(shown[3])}. Is it convex?`,
+    correct: CONVEX[convex ? 0 : 1],
+    wrong: CONVEX.filter((_, i) => i !== (convex ? 0 : 1)),
+    why: convex
+      ? 'Yes: every angle is less than 180°, so it is convex. (Every quadrilateral has angles adding to 360°.)'
+      : `No: one angle is more than 180° (${deg(Math.max(...a))} is reflex), so it is non-convex.`,
+    meta: { convex },
+  })
+}
 const SET_608: GameSet = {
   id: 'ncm7-6.08',
   exercise: '6.08',
@@ -686,7 +734,7 @@ const SET_608: GameSet = {
   focus: 'Name the special quadrilaterals from their markings and descriptions: square, rectangle, rhombus, parallelogram, kite, trapezium.',
   lessons: ['y7-geo-quad'],
   outcomes: [GEO],
-  makers: [mk('drawn', m608drawn), mk('describe', m608describe)],
+  makers: [mk('drawn', m608drawn), mk('describe', m608describe), mk('convex', m608convex)],
 }
 
 // ================================================================== 6.09 Angle sum of a quadrilateral
@@ -733,7 +781,9 @@ function m609words(): GameQuestion {
 
 function m609special(): GameQuestion {
   const kind = int(0, 2)
-  const a = 5 * int(10, 25)
+  let a: number
+  do a = 5 * int(10, 25)
+  while (a === 90)
   if (kind === 2) {
     // kite: one pair of equal opposite angles
     let p: number, q: number

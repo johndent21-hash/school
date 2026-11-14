@@ -7,6 +7,9 @@
 // right one, except in "simplest form" questions, where a fraction that is only partly simplified is offered.
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Fractions, decimals and percentages MA4-FRC-C-01.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added "bigger or smaller?" for multiplying and
+// dividing by a fraction less than or greater than 1 (4.06, 4.07).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { D2, DIVIDE, MINUS, TIMES, chance, frac, gcd, gq, int, mixed, mk, num, pick, sample, shuffle } from './helpers'
 
@@ -514,6 +517,38 @@ function m406mixed(): GameQuestion {
   })
 }
 
+/** Without working it out: does multiplying (or dividing) by this fraction make the number bigger or smaller? */
+const sizeKind = (op: 'times' | 'divide') =>
+  mk(
+    'size',
+    (): GameQuestion => {
+      const b = int(2, 9)
+      const proper = chance()
+      let a: number
+      do a = proper ? int(1, b - 1) : int(b + 1, 2 * b + 3)
+      while (gcd(a, b) !== 1)
+      const n = pick([12, 18, 20, 24, 30, 36, 40, 60])
+      const bigger = (op === 'times') !== proper
+      const opts = [`Bigger than ${n}`, `Smaller than ${n}`, `Equal to ${n}`, 'Cannot tell without working']
+      return gq({
+        t: 'size',
+        prompt: `Without working it out: is the answer bigger or smaller than ${n}?<div class="big">${n} ${op === 'times' ? TIMES : DIVIDE} ${frac(a, b)}</div>`,
+        correct: opts[bigger ? 0 : 1],
+        inOrder: opts,
+        why:
+          op === 'times'
+            ? proper
+              ? `${frac(a, b)} is less than 1, so you get only part of ${n}: smaller than ${n}.`
+              : `${frac(a, b)} is more than 1, so you get more than ${n}: bigger than ${n}.`
+            : proper
+              ? `Dividing by a fraction less than 1 asks how many of these small parts fit into ${n}: more than ${n}, so bigger than ${n}.`
+              : `Dividing by a number more than 1 shares ${n} into bigger parts: smaller than ${n}.`,
+        meta: { n, a, b, op },
+      })
+    },
+    2,
+  )
+
 const SET_406: GameSet = {
   id: 'ncm7-4.06',
   exercise: '4.06',
@@ -522,7 +557,7 @@ const SET_406: GameSet = {
   focus: 'Multiply fractions: numerator times numerator, denominator times denominator, then simplify. Change mixed numerals to improper fractions first.',
   lessons: ['y7-frac-muldiv'],
   outcomes: [FRC],
-  makers: [mk('times', m406times), mk('whole', m406whole), mk('cancel', m406cancel, 2), mk('mixedTimes', m406mixed, 2)],
+  makers: [mk('times', m406times), mk('whole', m406whole), mk('cancel', m406cancel, 2), mk('mixedTimes', m406mixed, 2), sizeKind('times')],
 }
 
 // ================================================================== 4.07 Dividing fractions
@@ -614,7 +649,7 @@ const SET_407: GameSet = {
   focus: 'Find reciprocals, and divide by a fraction by multiplying by its reciprocal.',
   lessons: ['y7-frac-muldiv'],
   outcomes: [FRC],
-  makers: [mk('reciprocal', m407reciprocal), mk('wholeBy', m407wholeBy), mk('divide', m407divide, 2), mk('byWhole', m407byWhole, 2)],
+  makers: [mk('reciprocal', m407reciprocal), mk('wholeBy', m407wholeBy), mk('divide', m407divide, 2), mk('byWhole', m407byWhole, 2), sizeKind('divide')],
 }
 
 // ================================================================== 4.08 Fraction problems

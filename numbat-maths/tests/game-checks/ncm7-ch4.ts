@@ -169,6 +169,17 @@ function solve(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
       if (f[0] === f[1]) ctx.fail('the fraction is 1')
       return { text: 2 * f[0] < f[1] ? 'Less than ½' : 2 * f[0] === f[1] ? 'Exactly ½' : f[0] < f[1] ? 'Between ½ and 1' : 'More than 1' }
     }
+    case '4.06 size':
+    case '4.07 size': {
+      // read n, the operation and the fraction (from its label) off the page, and work it out
+      const html = q.prompt.match(/<div class="big">(.*?)<\/div>/)![1]
+      const n = Number(html.match(/^(\d+)/)![1])
+      const [, a, b] = html.match(/aria-label="(\d+) over (\d+)"/)!.map(Number)
+      const op = html.includes('÷') ? '÷' : '×'
+      if ((op === '÷') !== (set.exercise === '4.07')) ctx.fail('the operation does not match the exercise')
+      const v = op === '×' ? (n * a) / b : (n * b) / a
+      return { text: v > n ? `Bigger than ${n}` : v < n ? `Smaller than ${n}` : `Equal to ${n}` }
+    }
     // ---------------------------------------------------------------- 4.03, 4.04, 4.06, 4.07: worked exactly
     case '4.03 same':
     case '4.03 related':
