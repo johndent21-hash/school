@@ -135,6 +135,26 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
         'equal the expression',
       )
     }
+    case '2.08 estimate': {
+      const m = ctx.plain(q.prompt).replace(/\s/g, '').match(/^(3)?√(\d+)lies/)!
+      const [p, x] = [m[1] ? 3 : 2, Number(m[2])]
+      let lo = 0
+      while ((lo + 1) ** p <= x) lo++
+      if (lo ** p === x) ctx.fail('the root is exact')
+      return { text: `${lo} and ${lo + 1}` }
+    }
+    case '2.10 hcfLcm': {
+      // the two numbers, their factorisations checked, then HCF and LCM by Euclid
+      const w = ctx.plain(q.prompt).replace(/\s/g, '')
+      const m = w.match(/^(\d+)=([\d^×]+)and(\d+)=([\d^×]+)\.Whatisthe(lowest|highest)/)!
+      const val = (f: string) => f.split('×').reduce((v, t) => v * Number(t.split('^')[0]) ** Number(t.split('^')[1] ?? 1), 1)
+      const [a, b] = [Number(m[1]), Number(m[3])]
+      if (val(m[2]) !== a || val(m[4]) !== b) ctx.fail('a prime factorisation is wrong')
+      const g = (x: number, y: number): number => (y ? g(y, x % y) : x)
+      return { v: m[5] === 'lowest' ? (a * b) / g(a, b) : g(a, b) }
+    }
+    case '2.11 value':
+      return { v: Number(indexValue(bigText)) }
     case '2.12 zero':
       return { v: Number(indexValue(bigText)) }
   }

@@ -11,6 +11,9 @@
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Algebraic techniques MA4-ALG-C-01 (3.01–3.05, 3.07–3.09).
 // 3.06 (index laws with pronumerals) and 3.10–3.13 (negative common factors, binomial products) are starred as
 // extension in the textbook and belong to Stage 5 (MA5-IND-C-01, MA5-ALG-P-01).
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added writing terms in expanded form (3.01) and
+// expanding and simplifying two brackets (3.07). Not added: non-monic binomial products (3.11, extension).
 import type { GameChapter, GameMaker, GameQuestion, GameSet } from '@/lib/game/types'
 import { chance, ex, gcd, gq, int, mk, num, pick, sample, v } from './helpers'
 import { NCM7_CH5 } from './ncm7-ch5'
@@ -52,11 +55,38 @@ const revisionSets: GameSet[] = REVISE.map(([exn, title, focus, kinds]) => ({
   focus,
   lessons: LESSONS[exn] ?? [],
   outcomes: [ALG],
-  makers: kinds.flatMap((k) => {
-    const [e5, t] = k.split(':')
-    return from(e5, t)
-  }),
+  makers: [
+    ...kinds.flatMap((k) => {
+      const [e5, t] = k.split(':')
+      return from(e5, t)
+    }),
+    ...(exn === '3.01' ? [mk('expanded', m301expanded)] : []),
+  ],
 }))
+
+/** a term such as 5a³b² written out in expanded form, 5 × a × a × a × b × b */
+function m301expanded(): GameQuestion {
+  const [x, y] = sample(['a', 'b', 'k', 'm', 'n', 'p', 'x', 'y'], 2).sort()
+  const c = int(2, 9)
+  const e1 = int(2, 4)
+  const e2 = int(1, 2)
+  const out = (k: number, i: number, j: number) => [String(k), ...Array(i).fill(x), ...Array(j).fill(y)].join(' × ')
+  const short = `${c}${x}^${e1}${y}${e2 > 1 ? `^${e2}` : ''}`
+  return gq({
+    t: 'expanded',
+    prompt: `Write in expanded form:${big(E(short))}`,
+    correct: out(c, e1, e2),
+    // the index read as a factor, the index used on the number too, the powers swapped; a spare
+    wrong: [
+      [String(c), x, String(e1), y, ...(e2 > 1 ? [String(e2)] : [])].join(' × '),
+      [...Array(e1).fill(String(c)), ...Array(e1).fill(x), ...Array(e2).fill(y)].join(' × '),
+      out(c, e2, e1),
+      out(c, e1 + 1, e2),
+    ].filter((w) => w !== out(c, e1, e2)),
+    why: `${E(short)} means ${c} × ${x} (${e1} times) × ${y}${e2 > 1 ? ` (${e2} times)` : ''}: ${out(c, e1, e2)}.`,
+    meta: { c, x, y, e1, e2 },
+  })
+}
 
 // ================================================================== 3.06 The index laws (extension)
 
@@ -162,6 +192,32 @@ function m307simplify(): GameQuestion {
   })
 }
 
+function m307twoBrackets(): GameQuestion {
+  const L = pick(LET)
+  const a = int(2, 6)
+  const b = int(1, 9)
+  let c: number
+  do c = int(2, 5)
+  while (c === a)
+  const d = int(1, 9)
+  const minus = chance()
+  // a(L + b) − c(L + d)  or  a(L + b) + c(L − d): either way the constant is ab − cd
+  const k = minus ? a - c : a + c
+  const right = sum([[k, L], [a * b - c * d, '']])
+  const wrong = minus
+    ? [sum([[k, L], [a * b + c * d, '']]), sum([[a + c, L], [a * b - c * d, '']]), sum([[k, L], [b - d, '']]), sum([[k, L], [a * b - c * d + 1, '']])]
+    : [sum([[k, L], [a * b + c * d, '']]), sum([[k, L], [b - d, '']]), sum([[a * c, L], [a * b - c * d, '']]), sum([[k, L], [a * b - c * d - 1, '']])]
+  return gq({
+    t: 'twoBrackets',
+    prompt: `Expand and simplify:${big(E(minus ? `${a}(${L} + ${b}) - ${c}(${L} + ${d})` : `${a}(${L} + ${b}) + ${c}(${L} - ${d})`))}`,
+    correct: E(right),
+    // a sign lost on the second bracket, only the first term multiplied, the outside numbers multiplied; a spare
+    wrong: wrong.filter((w) => w !== right).map(E),
+    why: `Expand each bracket: ${E(sum([[a, L], [a * b, '']]))} and ${E(sum([[minus ? -c : c, L], [-c * d, '']]))}. Then collect like terms: ${E(right)}.`,
+    meta: { L, a, b, c, d, minus },
+  })
+}
+
 const SET_307: GameSet = {
   id: 'ncm8-3.07',
   exercise: '3.07',
@@ -170,7 +226,7 @@ const SET_307: GameSet = {
   focus: 'Expand brackets with the distributive law, then simplify.',
   lessons: ['y8-alg-expand', 'y8-alg-expand-simplify'],
   outcomes: [ALG],
-  makers: [mk('expand', m307expand), mk('simplify', m307simplify, 2)],
+  makers: [mk('expand', m307expand), mk('simplify', m307simplify, 2), mk('twoBrackets', m307twoBrackets, 2)],
 }
 
 // ================================================================== 3.08 Factorising algebraic terms

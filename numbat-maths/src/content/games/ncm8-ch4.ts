@@ -5,19 +5,67 @@
 // and 6 kinds, which are checked by those chapters' checks (see reuse.ts). New kinds are the starred extension work:
 // the angle sum of a polygon and networks (tests/game-checks/ncm8-ch4.ts).
 //
+// Audit against the textbook, exercise by exercise (Nov 2026): added which triangles can be drawn (4.03) and convex
+// or non-convex quadrilaterals (4.04); the extension notes now give the Stage 5 path outcomes.
+//
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4: Angle relationships MA4-ANG-C-01 (4.01, 4.02) and Properties of
 // geometrical figures MA4-GEO-C-01 (4.03–4.06). 4.07 (angle sum of a polygon) is starred as extension in the
-// textbook and is Stage 5 content; 4.08 (networks) is starred as extension and is not in the K–10 syllabus.
+// textbook and is Stage 5 path content (MA5-GEO-P-01); 4.08 (networks) is starred as extension and is Stage 5 path
+// content (MA5-NET-P-01).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
-import { D, gq, int, mk, num, pick, sample } from './helpers'
+import { D, chance, gq, int, mk, num, pick, sample, shuffle } from './helpers'
 import { NCM7_CH2 } from './ncm7-ch2'
 import { NCM7_CH6 } from './ncm7-ch6'
 import { reuse } from './reuse'
 
 const ANG = 'MA4-ANG-C-01'
 const GEO = 'MA4-GEO-C-01'
-const EXT_POLY = 'Marked as extension in the textbook: the angle sum of a polygon is Stage 5 content.'
-const EXT_NET = 'Marked as extension in the textbook: networks are not part of the K–10 syllabus.'
+const EXT_POLY = 'Marked as extension in the textbook: the angle sum of a polygon is Stage 5 path content (MA5-GEO-P-01).'
+const EXT_NET = 'Marked as extension in the textbook: networks are Stage 5 path content (MA5-NET-P-01).'
+const an = (w: string) => (/^[aeiou]/.test(w) ? `an ${w}` : `a ${w}`)
+
+// ================================================================== 4.03 Which triangles can be drawn?
+
+const CAN = ['Isosceles and right-angled', 'Isosceles and obtuse-angled', 'Scalene and right-angled', 'Scalene and obtuse-angled', 'Equilateral and acute-angled', 'Scalene and acute-angled']
+const CANNOT = ['Equilateral and right-angled', 'Equilateral and obtuse-angled', 'With two obtuse angles', 'With two right angles']
+
+function m403possible(): GameQuestion {
+  const findCan = chance()
+  const right = pick(findCan ? CAN : CANNOT)
+  // the others from the opposite list; for "impossible", the right-angled isosceles (often thought impossible) first
+  const others = findCan ? sample(CANNOT, 3) : [CAN[0], ...sample(CAN.slice(1), 3)]
+  return gq({
+    t: 'possible',
+    prompt: findCan ? 'Which triangle CAN be drawn?' : 'Which triangle is impossible to draw?',
+    correct: right,
+    wrong: others,
+    why: `${findCan ? `${right}: it can be drawn; the others cannot.` : `${right}: impossible.`} An equilateral triangle has three 60° angles, so it is always acute-angled, and two obtuse or two right angles leave nothing for the third angle.`,
+    meta: { findCan },
+  })
+}
+
+// ================================================================== 4.04 Convex and non-convex quadrilaterals
+
+const CONVEX = ['Yes: every angle is less than 180°', 'No: one angle is more than 180°', 'Yes: the angles add to 360°', 'No: the angles are not all equal']
+
+function m404convex(): GameQuestion {
+  const convex = chance()
+  let a: number[]
+  do {
+    // three angles, then the fourth makes 360°; a reflex angle for a non-convex quadrilateral
+    a = convex ? [int(50, 130), int(50, 130), int(50, 130)] : [int(15, 60), int(15, 60), int(15, 60)]
+    a.push(360 - a[0] - a[1] - a[2])
+  } while (convex ? a[3] < 40 || a[3] > 170 : a[3] <= 190)
+  const shown = shuffle(a.map((x) => x * 1))
+  return gq({
+    t: 'convex',
+    prompt: `A quadrilateral has angles of ${shown.slice(0, 3).map(deg).join(', ')} and ${deg(shown[3])}. Is it convex?`,
+    correct: CONVEX[convex ? 0 : 1],
+    wrong: CONVEX.filter((_, i) => i !== (convex ? 0 : 1)),
+    why: convex ? 'Every angle is less than 180°, so it is convex. (All quadrilaterals have angles adding to 360°.)' : `The ${deg(Math.max(...a))} angle is reflex (more than 180°), so it is non-convex.`,
+    meta: { convex },
+  })
+}
 const deg = (x: number) => `${num(x)}°`
 
 const set = (exn: string, title: string, focus: string, outcomes: string[], makers: GameSet['makers'], extra: Partial<GameSet> = {}): GameSet => ({
@@ -45,8 +93,8 @@ const SET_402 = set('4.02', 'Angles on parallel lines', 'Name and use correspond
   reuse(NCM7_CH2, '2.09', 'find', 'coInterior'),
   reuse(NCM7_CH2, '2.11', 'prove'),
 ])
-const SET_403 = set('4.03', 'Classifying triangles', 'Classify triangles by their sides and angles.', [GEO], [reuse(NCM7_CH6, '6.05', 'drawn'), reuse(NCM7_CH6, '6.05', 'angles')])
-const SET_404 = set('4.04', 'Classifying quadrilaterals', 'Name the special quadrilaterals from their markings and descriptions.', [GEO], [reuse(NCM7_CH6, '6.08', 'drawn'), reuse(NCM7_CH6, '6.08', 'describe')])
+const SET_403 = set('4.03', 'Classifying triangles', 'Classify triangles by their sides and angles.', [GEO], [reuse(NCM7_CH6, '6.05', 'drawn'), reuse(NCM7_CH6, '6.05', 'angles'), mk('possible', m403possible)])
+const SET_404 = set('4.04', 'Classifying quadrilaterals', 'Name the special quadrilaterals from their markings and descriptions.', [GEO], [reuse(NCM7_CH6, '6.08', 'drawn'), reuse(NCM7_CH6, '6.08', 'describe'), mk('convex', m404convex)])
 const SET_405 = set('4.05', 'Properties of quadrilaterals', 'Know the properties of the sides, angles and diagonals of the special quadrilaterals.', [GEO], [
   reuse(NCM7_CH6, '6.10', 'always'),
   reuse(NCM7_CH6, '6.10', 'which'),
@@ -77,11 +125,11 @@ function m407sum(): GameQuestion {
   const s = (n - 2) * 180
   return gq({
     t: 'sum',
-    prompt: `What is the angle sum of a ${name}?`,
+    prompt: `What is the angle sum of ${an(name)}?`,
     correct: deg(s),
     // n × 180°, (n − 1) × 180°, n × 360° ÷ 2 … the usual slips
     wrong: angWrong(s, [n * 180, (n - 1) * 180, (n - 3) * 180, n * 90]),
-    why: `A ${name} has ${n} sides, so it splits into ${n - 2} triangles: (${n} − 2) × 180° = ${deg(s)}.`,
+    why: `${an(name).replace(/^a/, 'A')} has ${n} sides, so it splits into ${n - 2} triangles: (${n} − 2) × 180° = ${deg(s)}.`,
     meta: { n },
   })
 }

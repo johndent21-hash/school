@@ -9,12 +9,20 @@
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4: Integers MA4-INT-C-01 (2.02–2.04), Fractions, decimals and
 // percentages MA4-FRC-C-01 (2.05–2.07), Indices MA4-IND-C-01 (2.08, 2.10–2.12). 2.01 (mental calculation) is
 // revision; 2.09 (simplifying surds) is starred as extension in the textbook and surds belong to the Stage 5 path.
+// HCF (2.10) is listed under MA4-FRC-C-01.
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added integer word problems (2.02), adding and
+// subtracting decimals (2.05), estimating square and cube roots (2.08), simplifying surds (2.09), HCF and LCM from
+// prime factors (2.10) and simplifying then evaluating with the index laws (2.11). Not added: the book's index laws
+// with pronumerals (2.11, 2.12), which the syllabus places in Stage 5 (Stage 4 index laws use numerical bases).
 import type { GameChapter, GameMaker, GameQuestion, GameSet } from '@/lib/game/types'
-import { DIVIDE, MINUS, TIMES, chance, frac, gcd, gq, int, mk, num, pick, sqrt } from './helpers'
+import { DIVIDE, MINUS, TIMES, cbrt, chance, frac, gcd, gq, int, mk, num, pick, sqrt } from './helpers'
 import { NCM7_CH1 } from './ncm7-ch1'
 import { NCM7_CH3 } from './ncm7-ch3'
 import { NCM7_CH5 } from './ncm7-ch5'
 import { NCM7_CH7 } from './ncm7-ch7'
+import { NCM9_CH2 } from './ncm9-ch2'
+import { reuse } from './reuse'
 
 const INT = 'MA4-INT-C-01'
 const FRC = 'MA4-FRC-C-01'
@@ -98,7 +106,12 @@ const SET_202: GameSet = {
   title: 'Adding and subtracting integers',
   focus: 'Add and subtract positive and negative integers.',
   outcomes: [INT],
-  makers: [...from(NCM7_CH1, '1.04', 'negPlusPos', 'posPlusNeg', 'negPlusNeg'), ...from(NCM7_CH1, '1.05', 'negMinusPos', 'minusNeg')],
+  makers: [
+    ...from(NCM7_CH1, '1.04', 'negPlusPos', 'posPlusNeg', 'negPlusNeg'),
+    ...from(NCM7_CH1, '1.05', 'negMinusPos', 'minusNeg'),
+    reuse(NCM7_CH1, '1.10', 'temperature'),
+    reuse(NCM7_CH1, '1.10', 'difference'),
+  ],
 }
 
 const SET_203: GameSet = {
@@ -130,7 +143,7 @@ const SET_205: GameSet = {
   title: 'Decimals',
   focus: 'Order decimals place by place, and round them.',
   outcomes: [FRC],
-  makers: [...from(NCM7_CH7, '7.01', 'order', 'between'), ...from(NCM7_CH7, '7.10', 'round', 'carry')],
+  makers: [...from(NCM7_CH7, '7.01', 'order', 'between'), ...from(NCM7_CH7, '7.10', 'round', 'carry'), reuse(NCM7_CH7, '7.03', 'add'), reuse(NCM7_CH7, '7.03', 'sub')],
 }
 
 const SET_206: GameSet = {
@@ -195,14 +208,36 @@ function m208negPower(): GameQuestion {
   })
 }
 
+function m208estimate(): GameQuestion {
+  const p = chance() ? 3 : 2
+  let x: number, lo: number
+  do {
+    x = p === 3 ? int(10, 400) : int(20, 300)
+    lo = 1
+    while ((lo + 1) ** p <= x) lo++
+  } while (lo ** p === x)
+  const root = p === 3 ? cbrt(x) : sqrt(x)
+  const pair = (a: number) => `${a} and ${a + 1}`
+  const h = Math.floor(x / p)
+  return gq({
+    t: 'estimate',
+    prompt: `${root} lies between which two whole numbers?`,
+    correct: pair(lo),
+    // the number divided by the index, one pair out either way
+    wrong: [pair(h), pair(lo - 1), pair(lo + 1), pair(lo + 2)],
+    why: `${lo}<sup>${p}</sup> = ${lo ** p} and ${lo + 1}<sup>${p}</sup> = ${(lo + 1) ** p}. ${x} is between them, so ${root} is between ${pair(lo)}.`,
+    meta: { x, p },
+  })
+}
+
 const SET_208: GameSet = {
   id: 'ncm8-2.08',
   exercise: '2.08',
   ref: 'NCM 8 Ex 2.08',
   title: 'Powers and roots',
-  focus: 'Write and evaluate powers (including of negative numbers), square roots and cube roots.',
+  focus: 'Write and evaluate powers (including of negative numbers), square roots and cube roots, and estimate roots.',
   outcomes: [IND],
-  makers: [...from(NCM7_CH3, '3.07', 'write', 'evaluate'), ...from(NCM7_CH3, '3.08', 'sqrt', 'cbrt'), mk('negPower', m208negPower, 2)],
+  makers: [...from(NCM7_CH3, '3.07', 'write', 'evaluate'), ...from(NCM7_CH3, '3.08', 'sqrt', 'cbrt'), mk('negPower', m208negPower, 2), mk('estimate', m208estimate)],
 }
 
 // ================================================================== 2.09 Simplifying surds (extension)
@@ -246,19 +281,58 @@ const SET_209: GameSet = {
   focus: 'Squaring a square root gives the number back: (√7)² = 7.',
   outcomes: [],
   teacherNote: EXTENSION,
-  makers: [mk('square', m209square), mk('product', m209product, 2)],
+  makers: [mk('square', m209square), mk('product', m209product, 2), reuse(NCM9_CH2, '2.03', 'simplify')],
 }
 
 // ================================================================== 2.10 Factor trees
+
+const PRIMES = [2, 3, 5, 7]
+/** a number from its prime-power indices [for 2, 3, 5, 7], written as a product of prime factors */
+const fromIdx = (e: number[]) => e.reduce((v, k, i) => v * PRIMES[i] ** k, 1)
+const factored = (e: number[]) =>
+  e
+    .map((k, i) => (k === 0 ? '' : k === 1 ? `${PRIMES[i]}` : `${PRIMES[i]}<sup>${k}</sup>`))
+    .filter(Boolean)
+    .join(` ${TIMES} `)
+
+function m210hcfLcm(): GameQuestion {
+  let e1: number[], e2: number[], a: number, b: number, h: number
+  do {
+    e1 = [int(0, 3), int(0, 2), int(0, 1), int(0, 1)]
+    e2 = [int(0, 3), int(0, 2), int(0, 1), int(0, 1)]
+    a = fromIdx(e1)
+    b = fromIdx(e2)
+    h = fromIdx(e1.map((k, i) => Math.min(k, e2[i])))
+  } while (a < 12 || b < 12 || a > 400 || b > 400 || h === 1 || h === a || h === b || e1.filter(Boolean).length < 2 || e2.filter(Boolean).length < 2)
+  const lcm = chance()
+  const l = (a * b) / h
+  // common primes at their higher power (a usual slip for the HCF), every prime at its lower power
+  const hiCommon = fromIdx(e1.map((k, i) => (Math.min(k, e2[i]) ? Math.max(k, e2[i]) : 0)))
+  const loAll = fromIdx(e1.map((k, i) => (k && e2[i] ? Math.min(k, e2[i]) : k || e2[i] ? 1 : 0)))
+  const ans = lcm ? l : h
+  const wrong = (lcm ? [h, a * b, loAll, l * 2, l * 3] : [hiCommon, l, h * 2, h / PRIMES[e1.findIndex((k, i) => Math.min(k, e2[i]) > 0)], h * 3]).filter((x) => x !== ans && Number.isInteger(x))
+  const lo = e1.map((k, i) => Math.min(k, e2[i]))
+  const hi = e1.map((k, i) => Math.max(k, e2[i]))
+  return gq({
+    t: 'hcfLcm',
+    prompt: `${a} = ${factored(e1)} and ${b} = ${factored(e2)}. What is the ${lcm ? 'lowest common multiple (LCM)' : 'highest common factor (HCF)'} of ${a} and ${b}?`,
+    correct: num(ans),
+    wrong: wrong.map((x) => num(x)),
+    why: lcm
+      ? `Take every prime factor at its higher power: ${factored(hi)} = ${num(l)}.`
+      : `Take only the prime factors in both numbers, at the lower power: ${factored(lo)} = ${num(h)}.`,
+    meta: { a, b, lcm },
+  })
+}
 
 const SET_210: GameSet = {
   id: 'ncm8-2.10',
   exercise: '2.10',
   ref: 'NCM 8 Ex 2.10',
   title: 'Factor trees',
-  focus: 'Write a number as a product of its prime factors, in index notation.',
-  outcomes: [IND],
-  makers: from(NCM7_CH3, '3.10', 'value', 'form'),
+  focus: 'Write a number as a product of its prime factors, in index notation, and use it to find the HCF and LCM.',
+  outcomes: [IND, FRC],
+  makers: [...from(NCM7_CH3, '3.10', 'value', 'form'), mk('hcfLcm', m210hcfLcm, 2)],
 }
 
 // ================================================================== 2.11 and 2.12 Index laws
@@ -310,6 +384,26 @@ function m211mixed(): GameQuestion {
   })
 }
 
+function m211value(): GameQuestion {
+  const a = pick([2, 2, 3, 10])
+  const e = a === 2 ? int(4, 7) : a === 3 ? int(3, 4) : int(3, 5)
+  const div = chance()
+  // multiply: m + n = e; divide: (e + n) − n = e
+  const n = div ? int(2, 4) : int(1, e - 1)
+  const m = div ? e + n : e - n
+  const v = a ** e
+  const likely = div ? [Number.isInteger(m / n) ? a ** (m / n) : a ** (m + n), a * e] : [a ** (m * n), a * e]
+  return gq({
+    t: 'value',
+    prompt: `Simplify, then evaluate:${big(`${pw(a, m)} ${div ? DIVIDE : TIMES} ${pw(a, n)}`)}`,
+    correct: num(v),
+    // indices multiplied or divided, base times index; spares one power out
+    wrong: [...likely, a ** (e + 1), a ** (e - 1), 3 * v, a ** (e + 2)].filter((x) => x !== v).map((x) => num(x)),
+    why: `Same base, so ${div ? 'subtract' : 'add'} the indices: ${m} ${div ? MINUS : '+'} ${n} = ${e}, and ${pw(a, e)} = ${num(v)}.`,
+    meta: { a, m, n, div },
+  })
+}
+
 const SET_211: GameSet = {
   id: 'ncm8-2.11',
   exercise: '2.11',
@@ -318,7 +412,7 @@ const SET_211: GameSet = {
   lessons: ['y8-ind-muldiv'],
   focus: 'With the same base, add the indices to multiply and subtract them to divide.',
   outcomes: [IND],
-  makers: [mk('multiply', m211multiply), mk('divide', m211divide), mk('mixed', m211mixed, 2)],
+  makers: [mk('multiply', m211multiply), mk('divide', m211divide), mk('mixed', m211mixed, 2), mk('value', m211value)],
 }
 
 function m212power(): GameQuestion {

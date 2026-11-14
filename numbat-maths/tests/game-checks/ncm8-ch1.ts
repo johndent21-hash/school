@@ -128,7 +128,14 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       if (!isSquare(u.sq2)) ctx.fail('the answer is not a whole number')
       return { v: Math.sqrt(u.sq2) }
     }
-    case '1.03 exact': {
+    case '1.01 surd': {
+      // √x is exact when 100x is a perfect square (the numbers have at most 2 decimal places)
+      const exact = shown.map((o) => isSquare(Math.round(Number(o.replace(/[√\s]/g, '')) * 100)))
+      return one(/NOT/.test(words) ? exact : exact.map((e) => !e), /NOT/.test(words) ? 'are exact' : 'are surds')
+    }
+    case '1.03 exact':
+    case '1.04 exact':
+    case '1.05 exact': {
       const u = unknown()
       if (isSquare(u.sq2)) ctx.fail('the exact answer is a whole number')
       return { text: `√${u.sq2}` }
@@ -173,6 +180,12 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       if (m) return { text: `${Math.hypot(Number(m[1]), Number(m[2]))} cm` }
       m = words.match(/sails (\d+) km south, then (\d+) km east/)
       if (m) return { text: `${Math.hypot(Number(m[1]), Number(m[2]))} km` }
+      m = words.match(/has a (\d+) cm diagonal and is (\d+) cm wide\. How tall/)
+      if (m) return { text: `${Math.sqrt(Number(m[1]) ** 2 - Number(m[2]) ** 2)} cm` }
+      m = words.match(/slant height of (\d+) cm and a base radius of (\d+) cm/)
+      if (m) return { text: `${Math.sqrt(Number(m[1]) ** 2 - Number(m[2]) ** 2)} cm` }
+      m = words.match(/two sides of (\d+) cm and a base of (\d+) cm\. How high/)
+      if (m) return { text: `${Math.sqrt(Number(m[1]) ** 2 - (Number(m[2]) / 2) ** 2)} cm` }
       m = words.match(/rises (\d+) m over a horizontal distance of (\d+) m/)!
       return { text: `${Math.hypot(Number(m[1]), Number(m[2]))} m` }
     }

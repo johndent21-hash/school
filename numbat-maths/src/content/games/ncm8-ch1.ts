@@ -7,13 +7,18 @@
 // and measured by the test (tests/game-checks/ncm8-ch1.ts).
 //
 // Syllabus: NSW Mathematics K–10 (2022), Stage 4, Right-angled triangles (Pythagoras' theorem) MA4-PYT-C-01, and
-// for square roots (1.01) Fractions, decimals and percentages MA4-FRC-C-01 (irrational numbers, approximations).
+// for square roots and surds (1.01) Indices MA4-IND-C-01 (square roots, estimating them, exact and approximate
+// values) and Fractions, decimals and percentages MA4-FRC-C-01 (irrational numbers).
+//
+// Audit against the textbook, exercise by exercise (Nov 2026): added recognising surds (1.01), a shorter side as a
+// surd (1.04, mixed into 1.05) and shorter-side, cone and isosceles-triangle problems (1.08).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { chance, gq, int, mk, num, pick, sample, shuffle, sqrt } from './helpers'
 import { fig, rtPts, type P } from '@/lib/maths/diagrams6'
 
 const PYT = 'MA4-PYT-C-01'
 const FRC = 'MA4-FRC-C-01'
+const IND = 'MA4-IND-C-01'
 const big = (s: string) => `<div class="big">${s}</div>`
 const sq = (x: number | string) => `${x}<sup>2</sup>`
 /** Pythagorean triads, short sides first; none so thin that the drawing gets hard to read */
@@ -85,15 +90,47 @@ function m101between(): GameQuestion {
   })
 }
 
+// perfect squares (whole and decimal, as √1.44 = 1.2) and numbers that are not; √0.4 is not 0.2 (0.2² = 0.04)
+const SQUARES = [4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 0.25, 0.36, 0.49, 0.64, 1.44, 2.25]
+const NOT_SQUARES = [0.4, 8, 27, 1.6, 2, 3, 5, 6, 7, 10, 12, 15, 18, 20, 24, 32, 40, 45, 50, 75, 90, 2.5]
+
+function m101surd(): GameQuestion {
+  const findNot = chance()
+  if (findNot) {
+    // one perfect square among three surds; the surds that look exact (√0.4, cubes) first
+    const right = pick(SQUARES)
+    const wrong = [...sample(NOT_SQUARES.slice(0, 4), 2), ...sample(NOT_SQUARES.slice(4), 2)]
+    return gq({
+      t: 'surd',
+      prompt: 'Which of these is NOT a surd?',
+      correct: sqrt(num(right)),
+      wrong: wrong.map((x) => sqrt(num(x))),
+      why: `${sqrt(num(right))} = ${num(Math.round(Math.sqrt(right) * 10) / 10)} exactly, so it is not a surd. A surd is a square root that is not exact.`,
+      meta: { right },
+    })
+  }
+  // one surd among perfect squares; decimal and larger squares first, as they look least like squares
+  const right = pick(NOT_SQUARES)
+  const wrong = [...sample(SQUARES.slice(14), 1), ...sample(SQUARES.slice(9, 14), 1), ...sample(SQUARES.slice(0, 9), 2)]
+  return gq({
+    t: 'surd',
+    prompt: 'Which of these is a surd?',
+    correct: sqrt(num(right)),
+    wrong: wrong.map((x) => sqrt(num(x))),
+    why: `${num(right)} is not a perfect square, so ${sqrt(num(right))} has no exact decimal value: it is a surd. The others are exact.`,
+    meta: { right },
+  })
+}
+
 const SET_101: GameSet = {
   id: 'ncm8-1.01',
   exercise: '1.01',
   ref: 'NCM 8 Ex 1.01',
   title: 'Square roots and surds',
-  focus: 'Find square roots of perfect squares, and estimate other square roots between whole numbers.',
+  focus: 'Find square roots of perfect squares, estimate other square roots between whole numbers, and recognise surds.',
   lessons: ['y8-pyt-hyp'],
-  outcomes: [FRC],
-  makers: [mk('sqrt', m101sqrt), mk('between', m101between)],
+  outcomes: [IND, FRC],
+  makers: [mk('sqrt', m101sqrt), mk('between', m101between), mk('surd', m101surd)],
 }
 
 // ================================================================== 1.02 Discovering Pythagoras' theorem
@@ -214,6 +251,29 @@ function m104short(): GameQuestion {
   })
 }
 
+function m104exact(): GameQuestion {
+  let a: number, c: number, s: number
+  // a shorter side that is not whole; legs no thinner than 1 : 3.5 so the drawing stays readable
+  do {
+    a = int(2, 9)
+    c = int(a + 1, 13)
+    s = c * c - a * a
+  } while (Number.isInteger(Math.sqrt(s)) || Math.sqrt(s) / a > 3.5 || a / Math.sqrt(s) > 3.5)
+  const L = pick(['x', 'y', 'k', 'w'])
+  const first = chance()
+  const lab: [string, string, string] = first ? [`<i>${L}</i> m`, `${a} m`, `${c} m`] : [`${a} m`, `<i>${L}</i> m`, `${c} m`]
+  return gq({
+    t: 'exact',
+    prompt: `Find the exact value of <i>${L}</i>.`,
+    diagram: first ? rightTri(Math.sqrt(s), a, lab) : rightTri(a, Math.sqrt(s), lab),
+    correct: sqrt(s),
+    // added the squares, no square root, the sides subtracted
+    wrong: [sqrt(c * c + a * a), num(s), num(c - a), sqrt(c - a)],
+    why: `${sq('<i>' + L + '</i>')} = ${sq(c)} − ${sq(a)} = ${c * c} − ${a * a} = ${s}, so <i>${L}</i> = ${sqrt(s)} (exact).`,
+    meta: { a, c },
+  })
+}
+
 const SET_104: GameSet = {
   id: 'ncm8-1.04',
   exercise: '1.04',
@@ -222,7 +282,7 @@ const SET_104: GameSet = {
   focus: 'Square the hypotenuse and the known side, subtract, then take the square root.',
   lessons: ['y8-pyt-short'],
   outcomes: [PYT],
-  makers: [mk('short', m104short)],
+  makers: [mk('short', m104short), mk('exact', m104exact, 2)],
 }
 
 // ================================================================== 1.05 Hypotenuse or shorter side?
@@ -275,7 +335,7 @@ const SET_105: GameSet = {
   focus: 'Decide whether the unknown is the hypotenuse (add the squares) or a shorter side (subtract them).',
   lessons: ['y8-pyt-short'],
   outcomes: [PYT],
-  makers: [mk('which', m105which), mk('find', m105find, 2)],
+  makers: [mk('which', m105which), mk('find', m105find, 2), mk('exact', () => (chance() ? m103exact() : m104exact()), 2)],
 }
 
 // ================================================================== 1.06 Testing for right-angled triangles
@@ -289,7 +349,7 @@ function nearMiss(): [number, number, number] {
     if (s[0] + s[1] > s[2] && s[0] * s[0] + s[1] * s[1] !== s[2] * s[2]) return t
   }
 }
-const sides = (t: number[]) => t.join(' cm, ').replace(/, (\d+)$/, ' cm and $1') + ' cm'
+const sides = (t: number[]) => t.join(' cm, ').replace(/, (\d+)$/, ' and $1') + ' cm'
 
 function m106which(): GameQuestion {
   const right = shuffle([...pick(TRIADS)])
@@ -387,19 +447,28 @@ const SET_107: GameSet = {
 
 function m108problem(): GameQuestion {
   const [a, b, c] = pick(TRIADS)
-  const kind = int(0, 3)
+  const kind = int(0, 6)
   const [prompt, ans, unit, likely] = [
     [`A ladder ${c} m long leans against a wall. Its foot is ${a} m from the wall. How high up the wall does it reach?`, b, 'm', [c - a, Math.round(Math.sqrt(c * c + a * a))]],
     [`A rectangle is ${a} cm wide and ${b} cm long. How long is its diagonal?`, c, 'cm', [a + b, 2 * (a + b)]],
     [`A ship sails ${a} km south, then ${b} km east. How far is it from where it started?`, c, 'km', [a + b, b - a]],
     [`A ramp rises ${a} m over a horizontal distance of ${b} m. How long is the sloping surface?`, c, 'm', [a + b, b - a]],
+    [`A rectangular screen has a ${5 * c} cm diagonal and is ${5 * b} cm wide. How tall is it?`, 5 * a, 'cm', [5 * (c - b), Math.round(5 * Math.sqrt(c * c + b * b))]],
+    [`A cone has a slant height of ${c} cm and a base radius of ${a} cm. How high is the cone?`, b, 'cm', [c - a, Math.round(Math.sqrt(c * c + a * a))]],
+    [`An isosceles triangle has two sides of ${c} cm and a base of ${2 * a} cm. How high is it?`, b, 'cm', [c - a, Math.round(Math.sqrt(c * c + a * a)), c - 2 * a]],
   ][kind] as [string, number, string, number[]]
   return gq({
     t: 'problem',
     prompt,
     correct: `${num(ans)} ${unit}`,
     wrong: intWrong(ans, likely).map((x) => `${x} ${unit}`),
-    why: kind === 0 ? `The ladder is the hypotenuse: height² = ${c}² − ${a}² = ${b * b}, so the height is ${b} m.` : `The answer is the hypotenuse: ${a}² + ${b}² = ${c * c}, so it is ${c} ${unit}.`,
+    why: [
+      `The ladder is the hypotenuse: height² = ${c}² − ${a}² = ${b * b}, so the height is ${b} m.`,
+      `The diagonal is the hypotenuse: height² = ${5 * c}² − ${5 * b}² = ${25 * a * a}, so the height is ${5 * a} cm.`,
+      `The slant height is the hypotenuse: height² = ${c}² − ${a}² = ${b * b}, so the height is ${b} cm.`,
+      `The height cuts the base in half (${a} cm); a side of ${c} cm is the hypotenuse: height² = ${c}² − ${a}² = ${b * b}, so the height is ${b} cm.`,
+      `The answer is the hypotenuse: ${a}² + ${b}² = ${c * c}, so it is ${c} ${unit}.`,
+    ][kind === 0 ? 0 : kind >= 4 ? kind - 3 : 4],
     meta: { a, b, c, kind },
   })
 }
