@@ -321,7 +321,7 @@ Also:
       (MA5-IND-P-01) and fractional indices (MA5-IND-P-02) labelled extension. The test caught a real slip here:
       0.007005 to 3 significant figures was given as 0.007 (floating point); rounding is now done in whole numbers.
     - NCM 9 Advanced is **paused** after Chapter 5 at the user's request (Ch 6–13 not done; not board-checked or published).
-    New Century Maths 9 (Standard) (`ncm9s.ts`, book id `ncm9s`): all 13 chapters, one set per exercise (101 sets).
+    New Century Maths 9 (Standard) (`ncm9s.ts`, book id `ncm9s`): all 13 chapters, one set per exercise (91 sets, 216 kinds).
       Most sets reuse kinds from NCM 7, NCM 8 and NCM 9 Advanced (checked by the chapter that first made them;
       `reuse()` now keeps a kind's original source when it is reused again). New kinds, checked by
       `tests/game-checks/ncm9s.ts`: Euler's formula (Path, MA5-NET-P-01, extension), earning money (wages, salaries over
