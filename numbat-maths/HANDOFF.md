@@ -3,6 +3,27 @@
 For the next session. Goal: **finish New Century Maths 9 (Standard)** to the same quality as NCM 7 and 8, as
 efficiently as possible, then publish once and stop. Update this file when done.
 
+## Status: done (14 Nov 2026)
+
+The exercise-by-exercise audit is finished for all 13 chapters (91 sets, now 253 kinds). Every gap in the table below
+was fixed, and the rest of the audit found more, all fixed: 1.08 HCF of terms; 1.09 binomials with negatives and
+coefficients, perfect squares; 2.01 square roots (outcome corrected: square roots MA4-IND-C-01 and irrational numbers
+MA4-FRC-C-01 are Stage 4, only the word "surd" is Path); 3.02 fractions to decimals and recurring decimals; 3.03 mixed
+numerals and comparing; 3.04 ordering; 3.05 one amount as a percentage of another; 3.06 GST included; 3.07 finding
+the rate or time; 3.08 rates (the book's 3.08 is ratios *and* rates); 5.05 writing negative indices; 6.01/6.02 reasons
+for angle steps; 8.03 is "Commission, piecework and leave loading" in the book (retitled, leave loading moved there);
+9.01 a missing score from the mean; 10.01 rebuilt (the book's 10.01 is length/mass/capacity/time prefixes, not area
+or volume units; outcome MA5-MAG-C-01); 11.04 x-intercepts, horizontal and vertical lines; 11.05 steepest line;
+11.10 concave up/down and vertex; 12.01 complements as percentages; 12.05 draws without replacement (dependent events
+are core MA5-PRO-C-01). Ch 9 needs no quartiles or IQR (none in the chapter). 13 new kinds, each with an independent
+check and a planted-error test (all caught). Board check (sets of Chapters 1, 2, 3, 5, 6, 8–13 and all 13 chapter
+games) and the one publish: see the next commit.
+
+Not done (left as found): Ch 4 and Ch 7 matched the book already. 6.03/6.04 networks have no "connected graph"
+question (Path, extension). 7.05 has no "no solution" question. The NCM 9 Advanced kind `costs` (reused in 3.06) uses
+the textbook's name "Alla" in its prompt; it lives in `ncm9-ch3.ts` (9 Advanced, paused), so it was not changed.
+The open-top cylinder drawing (NCM 8 kind) is unchanged.
+
 ## Scope (from the user)
 
 - **Do:** NCM 9 Standard only (`src/content/games/ncm9s.ts`, book id `ncm9s`, 13 chapters, 91 sets, 216 kinds).
