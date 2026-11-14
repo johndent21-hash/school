@@ -1,84 +1,115 @@
-# Handoff: Numbat Maths class games
+# Handoff: finish the Year 9 Standard class games
 
-Notes for picking up this work in a new session. Delete or update when the work is done.
+For the next session. Goal: **finish New Century Maths 9 (Standard)** to the same quality as NCM 7 and 8, as
+efficiently as possible, then publish once and stop. Update this file when done.
 
-## The job
+## Scope (from the user)
 
-Build the class game (`/games`, an on-the-board team quiz) for every exercise in the New Century Maths textbooks:
-NCM 7 is done (all 12 chapters). Now **NCM 8**, then NCM 9, then NCM 10, one chapter at a time. The user said
-"keep going with Year 8".
+- **Do:** NCM 9 Standard only (`src/content/games/ncm9s.ts`, book id `ncm9s`, 13 chapters, 91 sets, 216 kinds).
+- **Don't:** NCM 9 Advanced (paused after Ch 5; its Ch 1–5 stay in the repo but are left out of builds), 10 Standard,
+  10 Advanced. Don't start them unless the user asks.
+- **Quality must not drop; usage must be minimal.** Prefer reusing existing kinds; write new kinds only where an
+  exercise has a question type nothing covers.
+- Repo `johndent21-hash/school`, folder `numbat-maths/`, branch **`claude/numbat-maths-game-section-5nghxv`** only.
+  No pull requests. Commit messages end with the attribution lines the session's system reminder gives.
+- Preview: artifact https://claude.ai/artifact/NHrcC9eBrYkDQ8f8CXFiYU (Version 22 = NCM 7, NCM 8, NCM 9 Standard).
+  `read` it once before republishing; publish the same scratchpad file name, no icon.
+- Textbook: public repo `johndent21-hash/Year-9-Standard` (clone read-only:
+  `GIT_LFS_SKIP_SMUDGE=1 git clone -q --depth 1 https://github.com/johndent21-hash/year-9-standard /home/user/johndent21-hash/year-9-standard`).
+  PDFs `01 Algebra (1).pdf` … `13 Similar figures_compressed.pdf`, plus the NESA K–10 syllabus PDF. Never copy textbook
+  wording or numbers.
+- Syllabus: NSW Mathematics K–10 (2022). Every set lists its outcome; Stage 4 work is labelled revision; Path content
+  has empty `outcomes` and a teacher note saying extension (code in the note).
 
-- Repo `johndent21-hash/school`, folder `numbat-maths/`. Branch **`claude/numbat-maths-game-section-5nghxv`** only. No pull requests.
-- Textbook PDFs: repo `johndent21-hash/Year-8-Advanced` (`Chapter N *.pdf`); Year 9/10 repos likewise. Extract with
-  `pdftotext` into the scratchpad and read only the exercise headings and a few sample questions. Never copy textbook wording or numbers.
-- Syllabus: NSW Mathematics K–10 (2022). Put outcome codes on each set. Mark earlier-stage work as revision, and
-  starred or later-stage work as extension (`teacherNote`, empty `outcomes`).
-- Preview: artifact https://claude.ai/artifact/NHrcC9eBrYkDQ8f8CXFiYU (Version 22: NCM 7, NCM 8 and NCM 9 Standard; the partial NCM 9 Advanced book is left out of builds).
-  A new session must `read` it before republishing. Same file name each time, no icon.
-- Commit messages end with the attribution lines the session's system reminder gives.
+## What "finish" means: an exercise-by-exercise coverage audit
 
-## State right now
+Version 22 was built by matching **exercise titles** to existing kinds. The question types inside each exercise were
+not checked one by one, and a spot check found real gaps. For each chapter:
 
-NCM 7 and NCM 8 are complete (published, Version 21): every chapter has class games, an independent checker, a README entry, and passes
-`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Year 9 Standard is done and PUBLISHED (Version 22)** (`ncm9s.ts`, 13 chapters, 91 sets; board-checked on all screens).
-WORK IS STOPPED here at the user's request. Do not start 9 Advanced (Ch 6–13), 10 Standard or 10 Advanced unless
-the user asks. When building, remove the `ncm9` (Advanced) book from `index.ts` first, then restore it. NCM 9 Advanced is PAUSED after Ch 5 (user's request,
-to save usage); its Ch 1–5 are committed but not board-checked or published. After Year 9 Standard is published,
-STOP updating the site: the user does not want 9 Advanced, 10 Standard or 10 Advanced done for now.
+1. List the textbook exercise's question stems (the command below), and the set's current kinds
+   (`npx tsx tests/list-ncm9s.ts <chapter>`; `kind*` = written for 9 Std, `kind<source>` = reused).
+2. For each question type in the exercise: covered by a kind at the right level? If not, add a kind (prefer
+   reusing one from NCM 7/8/9 Adv; check `tests/list-ncm9s.ts`-style listings of those books) or write a new one.
+3. Check the outcome code against the syllabus content for that exercise (not just the chapter).
 
-NCM 8 notes worth knowing:
-- Reused kinds now record `meta.reused` (not `meta.from`, which the unit-conversion kinds already use for the unit).
-- New drawings live in `src/lib/maths/diagrams13.ts`: `circleFeature`, `sectorGraph`, `freqTable`, `gridTable`.
-- Later-stage chapters marked extension: 6.11 simple interest, 8.03–8.04 Venn/two-way, 9.03, 9.04, 9.08, 11.09,
-  11.10, all of Chapter 12 (similar figures, surface area are Stage 5).
-- Board check: run per chapter (`ONLY=ncm8-7` etc., plus `ONLY=ncm8-ch7` for chapter games), logging to a file in
-  the background; a single `ONLY=ncm8` run takes over 25 minutes. Never pipe it through `tail` (output is lost if it
-  is killed).
+**Gaps already found** (fix these first, then audit the remaining exercises the same way):
 
-## How a chapter is built
+| Ex | Gap |
+|---|---|
+| 3.01 Integers | comparing (<, >) and ordering integers are missing; the set only has operations |
+| 8.04 Income tax | taxable income = income − allowable deductions (and whether the book uses the Medicare levy); the set has only leave loading and a simple scale |
+| 8.05 PAYG / net pay | check against the book (PAYG from a weekly or fortnightly amount, annual adjustments) |
+| 10.01 Metric units | choosing a sensible unit; capacity and volume conversions (kL to mL) |
+| 10.09 Volumes | V = lwh for boxes and converting volume units (cm³ ↔ m³, mm³) as well as V = Ah and cylinders |
+| 13.03 Scale drawings | finding the scale from a drawn length and the real length (1 : n), not only using a given scale |
 
-- File `src/content/games/ncm8-chN.ts` exporting `NCM8_CHN: GameChapter`. One `GameSet` per exercise
-  (`id 'ncm8-N.0k'`, `exercise`, `ref`, `title`, `focus`, `outcomes`, `makers`). Model files: `ncm8-ch1.ts` (new kinds),
-  `ncm8-ch4.ts` (reuse).
-- Each kind: `mk(t, make, d)`, d = 2 for the harder kinds. `make()` returns `gq({t, prompt, diagram?, correct, wrong | inOrder, why, meta})`:
-  exactly 4 options; prompt ≤ 175 characters; options ≤ 42; wrong = likely mistakes, most likely first; `meta` must not use the key `t`.
-- Revision of a Year 7 kind: `reuse(NCM7_CHx, 'x.yy', 'kind', 'newName?')`. It is checked by the Year 7 checker automatically.
-- Checker `tests/game-checks/ncm8-chN.ts` exports `rework(set, q, ctx): Expect`, where `Expect` is `{v, unit?}`, `{text}` or `null`.
-  It must work the answer out again from what the student sees (prompt text, SVG geometry), never from `meta` answers.
-  Use exact arithmetic (BigInt or rationals) and check expressions are equal by testing values. `ctx.fail(msg)` reports a problem.
-  Model: `tests/game-checks/ncm8-ch1.ts`; algebra helpers are in `tests/game-checks/ncm7-ch5.ts` (`parse`, `same`, `txt`).
-- README (`numbat-maths/README.md`): one entry per chapter covering outcomes, revision and extension notes, and how the checker works.
+Likely worth checking closely: Ch 9 (data: confirm no quartiles or IQR are needed; a spot grep found none),
+Ch 11.04–11.06 (the book's own graph types), Ch 6.01–6.02 (proofs or reasons?), 2.01 surds (the book's scope).
 
-## Commands (from `numbat-maths/`)
+Known minor issues (fix only if cheap): once, the Chapter 2 mixed game spilled 11 px sideways on the 1024 × 640 screen
+(not reproduced in 120 more questions); the open-top cylinder (10.08) uses the closed-cylinder drawing.
+
+## How the Standard book is built
+
+- `src/content/games/ncm9s.ts`: chapters made with `S(ch, exn, title, focus, outcomes, parts, note?)`, where each part
+  is a reused kind `[CHAPTER, 'exercise', 'kind', 'newName?']` or a new maker `mk('kind', fn, d)`.
+- `reuse()` keeps a kind's original source (`meta.reused`), so a reused kind is checked by the chapter that first
+  made it. New kinds are checked by `tests/game-checks/ncm9s.ts` (one `solve` keyed by the kind name `t`), registered
+  in `OTHER_CHAPTERS` in `tests/games.test.ts` for `ncm9s-6, -8, -10, -11, -12`. **Add the chapter key**
+  (e.g. `'ncm9s-3': rework9S`) when a chapter gets its first new kind.
+- A new kind: `gq({t, prompt, diagram?, correct, wrong | inOrder, why, meta: {}})`: exactly 4 options; prompt ≤ 175
+  characters; options ≤ 42; wrong = likely mistakes first, then 2–3 spares (`wrongs()` helper adds spares);
+  `why` must contain the answer. Each set needs ≥ 15 different questions (vary numbers; add a second kind if needed).
+- The checker works the answer out from what the student sees (prompt text, SVG), never from `meta`; exactly one
+  option may equal it.
+- README: the Year 9 Standard entry (search "New Century Maths 9 (Standard)") lists the new kinds: keep it current.
+
+## Commands (from `numbat-maths/`; `S=/tmp/claude-0/<session scratchpad>`)
 
 ```
-npm ci                                              # first time in a fresh container (check harness/ too)
-npx tsc --noEmit -p tsconfig.json
-N=400 npx tsx tests/games.test.ts 2>&1 | tail -15    # all game checks
-SHOTS=$SCRATCH/shots ONLY=ncm8-4 ALL=1 K=1 npx tsx tests/gallery-games.ts   # gallery of every kind
-cd harness && ./sync.sh                             # before a board check or build
-# board check (one browser job at a time, never during sync):
-cd harness && VITE_PREVIEW_ONLY=1 VITE_CONVEX_URL=https://preview-only.convex.cloud VITE_STAGE1=1 VITE_STAGE2=1 nohup npx vite dev --port 3102 --host 127.0.0.1 > $SCRATCH/dev.log 2>&1 &
-ONLY=ncm8 SHOTS=$SCRATCH/shots node qa/game-check.mjs
-# build for the artifact:
-cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh $SCRATCH/numbat-maths-1-9.html "Numbat Maths 1–9"
-node qa/game-preview-check.mjs $SCRATCH/numbat-maths-1-9.html     # needs a static server on 3200 (see qa/)
-git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit ...; git push -u origin claude/numbat-maths-game-section-5nghxv
+npm ci; (cd harness && npm ci)                       # fresh container only; Playwright: ln -sfn /opt/node-tools/node_modules/playwright node_modules/playwright
+npx tsc --noEmit -p tsconfig.json 2>&1 | grep -v playwright
+N=150 npx tsx tests/games.test.ts > $S/t.log 2>&1; grep -E "^\s+[0-9]+ × " $S/t.log | sort | uniq | head; tail -1 $S/t.log
+python3 qa/plant.py src/content/games/ncm9s.ts "exact old snippet" "wrong snippet"   # once per new kind
+# textbook stems for one exercise (after pdftotext -layout of the chapter PDF into $S/c.txt):
+n=$(grep -n "EXERCISE 3.01" $S/c.txt | cut -d: -f1); sed -n "$((n+1)),$((n+70))p" $S/c.txt | grep -E "^\s*[0-9]+\s+[A-Z]" | cut -c1-100
+# full run before every commit; commit ONLY if it prints "all passed":
+N=400 npx tsx tests/games.test.ts > $S/t.log 2>&1; tail -1 $S/t.log; grep -q "^all passed" $S/t.log && git commit ...
 ```
 
-## Pitfalls already hit
+Board check (only the chapters you changed), build and publish, once at the end:
 
-- `meta.t` overwrote the kind name, so `gq` now throws if `meta` has `t`.
-- Distractors that coincide with the answer (2 × 2 = 2 + 2, 4² = 2⁴, √225 = 15) leave fewer than 3 wrong options: add spare candidates.
-- With `inOrder`, the right answer must not always fall in the same slot.
-- The Bash safety check rejects heredocs containing `$${`. Write a Python edit script to the scratchpad and run it.
-- A checker that normalises "text :" to "text:" breaks ratios such as "2 : 3"; leave colons alone.
-- Each set needs at least 15 different questions (games of 15 must not repeat): a set with one fixed-wording kind fails.
-- Options must be at most 42 characters; long sample/census descriptions had to be shortened.
-- On the board, long words in options break the 4-across layout (see `GameBoard.tsx` row4 rule). Keep diagrams small.
+```
+cd harness && ./sync.sh                              # never while a board check runs
+# dev server: run in the background with the longest timeout (it dies when the container restarts)
+VITE_PREVIEW_ONLY=1 VITE_CONVEX_URL=https://preview-only.convex.cloud VITE_STAGE1=1 VITE_STAGE2=1 npx vite dev --port 3102 --host 127.0.0.1
+# per changed chapter, in the background, logging to a file (never pipe through tail):
+ONLY=ncm9s-3. SHOTS=$S/board/3 node qa/game-check.mjs   # sets of Ch 3 (the dot stops ncm9s-1 matching 10–13)
+ONLY=ncm9s-ch3 SHOTS=$S/board/ch3 node qa/game-check.mjs
+# build WITHOUT the NCM 9 Advanced book: delete the { id: 'ncm9', … } entry from src/content/games/index.ts, build,
+# then `git checkout src/content/games/index.ts`
+cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh $S/numbat-maths-1-9.html "Numbat Maths 1–9"
+node qa/game-preview-check.mjs $S/numbat-maths-1-9.html
+grep -c "New Century Maths 9 Advanced" $S/numbat-maths-1-9.html   # must be 0
+```
+
+## Pitfalls already hit (don't repeat)
+
+- Distractors that equal the answer leave < 3 wrong options (e.g. 2 × 2 = 2 + 2, answer 0 or 1, (0, 0)): always add spares.
+- `inOrder` lists: the right answer must be able to fall in every slot (a test checks this).
+- Floating point: round with whole numbers (0.007005 to 3 s.f. came out as 0.007); use relative tolerances for tiny
+  numbers; algebraic fractions need non-whole test points (denominators can be 0 at whole numbers).
+- Plain text of a prompt puts spaces where tags were ("24π m ." / "sum of −1 ?"): normalise `\s+([.?,)])` but never
+  touch colons (ratios "2 : 3").
+- A planted error that equals a listed distractor makes `gq` throw instead of testing the checker: plant another value.
+- The Bash safety check rejects heredocs containing `$${`: write Python edit scripts to a file in the scratchpad.
+- Outcome codes: check the syllabus line, don't guess (surds are MA5-IND-P-02; algebraic negative indices are
+  MA5-IND-P-01; networks MA5-NET-P-01; Venn/two-way MA5-PRO-P-01; direct variation MA5-RAT-P-01).
+- `ONLY=ncm9s-1` also matches Chapters 10–13: use `ncm9s-1.`.
 
 ## Keeping usage down
 
-- Pipe test output through `tail` or `grep`. Read files in parts (`sed -n`), not whole.
-- Look at gallery screenshots only for new diagram kinds, a few at a time. Images cost a lot.
-- Board-check and publish once per batch of chapters, not after every chapter.
+- Audit with the two listing commands above; read only exercise stems, not whole chapters or whole source files.
+- Send test output to a file and `grep` it; read files with `sed -n`/`grep`, not whole.
+- No gallery screenshots unless a kind has a new kind of drawing (prefer text-only kinds).
+- One board check of the changed chapters, one build, one publish, one short report to the user, then stop.
