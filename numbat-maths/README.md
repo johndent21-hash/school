@@ -321,6 +321,15 @@ Also:
       (MA5-IND-P-01) and fractional indices (MA5-IND-P-02) labelled extension. The test caught a real slip here:
       0.007005 to 3 significant figures was given as 0.007 (floating point); rounding is now done in whole numbers.
     - NCM 9 Advanced is **paused** after Chapter 5 at the user's request (Ch 6–13 not done; not board-checked or published).
+    New Century Maths 9 (Standard) (`ncm9s.ts`, book id `ncm9s`): all 13 chapters, one set per exercise (101 sets).
+      Most sets reuse kinds from NCM 7, NCM 8 and NCM 9 Advanced (checked by the chapter that first made them;
+      `reuse()` now keeps a kind's original source when it is reused again). New kinds, checked by
+      `tests/game-checks/ncm9s.ts`: Euler's formula (Path, MA5-NET-P-01, extension), earning money (wages, salaries over
+      52 weeks, overtime, commission, piecework, leave loading, tax from a scale stated in the question, net pay;
+      MA5-FIN-C-01), absolute and percentage error (MA5-MAG-C-01), interval length and midpoint (MA5-LIN-C-01), direct
+      variation (Path MA5-RAT-P-01, extension), parabolas (MA5-NLI-C-01) and tree diagrams (MA5-PRO-C-01). Each set lists
+      its outcome; Stage 4 work the book revises says so; Path content has no outcome on the set and an extension note.
+      The tax questions use a simple scale given in the question, not current ATO rates.
   - **Building a game** (`src/lib/game/build.ts`): a seed gives the same questions every time (that is how a game is
     carried on after a refresh); every kind of question comes up once, the most basic kinds first, before any kind
     repeats; no question appears twice in a game and no kind twice in a row.

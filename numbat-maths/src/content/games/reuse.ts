@@ -12,9 +12,10 @@ export function reuse(ch: GameChapter, exercise: string, t: string, as = t): Gam
     d: m.d,
     make: () => {
       const q = m.make()
-      // (not "from": unit-conversion kinds already use meta.from for the unit)
-      if ('reused' in q.meta) throw new Error(`reuse: ${ch.id} ${t} already has meta.reused`)
-      return { ...q, meta: { ...q.meta, t: as, reused: `${ch.id}|${exercise}|${t}` } }
+      // (not "from": unit-conversion kinds already use meta.from for the unit). A kind that is itself reused keeps
+      // its original source, so it is still checked by the chapter that first made it.
+      const reused = typeof q.meta.reused === 'string' ? q.meta.reused : `${ch.id}|${exercise}|${t}`
+      return { ...q, meta: { ...q.meta, t: as, reused } }
     },
   }
 }

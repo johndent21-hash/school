@@ -20,7 +20,8 @@ NCM 7 is done (all 12 chapters). Now **NCM 8**, then NCM 9, then NCM 10, one cha
 ## State right now
 
 NCM 7 and NCM 8 are complete (published, Version 21): every chapter has class games, an independent checker, a README entry, and passes
-`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Now: Year 9 Standard** (repo `johndent21-hash/Year-9-Standard`). NCM 9 Advanced is PAUSED after Ch 5 (user's request,
+`N=400 npx tsx tests/games.test.ts` with planted-error checks. **Year 9 Standard is built** (`ncm9s.ts`, all 13 chapters; repo `johndent21-hash/Year-9-Standard`). Next: board-check
+it and publish (leave the NCM 9 Advanced book out of the build), then STOP. NCM 9 Advanced is PAUSED after Ch 5 (user's request,
 to save usage); its Ch 1–5 are committed but not board-checked or published. After Year 9 Standard is published,
 STOP updating the site: the user does not want 9 Advanced, 10 Standard or 10 Advanced done for now.
 
