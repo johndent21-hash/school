@@ -93,8 +93,8 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
     case '12.05 closed':
     case '12.05 curved':
     case '12.05 open': {
-      const rx = Number(svg.match(/<ellipse class="sh sh2"[^>]* rx="([\d.]+)"/)![1])
-      const cx = Number(svg.match(/<ellipse class="sh sh2" cx="([\d.]+)"/)![1])
+      const rx = Number(svg.match(/<ellipse class="sh (?:sh2|hole)"[^>]* rx="([\d.]+)"/)![1])
+      const cx = Number(svg.match(/<ellipse class="sh (?:sh2|hole)" cx="([\d.]+)"/)![1])
       const ln = svg.match(new RegExp(`<line class="ln hlstroke" x1="${NUMS}" y1="${NUMS}" x2="${NUMS}" y2="${NUMS}"`))!
       const len = Math.hypot(+ln[1] - +ln[3], +ln[2] - +ln[4])
       const shows = Math.abs(len - rx) < 1 ? 'radius' : Math.abs(len - 2 * rx) < 1 ? 'diameter' : null
@@ -107,6 +107,7 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       if (!/in terms of π/.test(words)) ctx.fail('not asked in terms of π')
       const k = kind === '12.05 curved' ? 2 * r * h : kind === '12.05 open' ? r * r + 2 * r * h : 2 * r * r + 2 * r * h
       if (kind === '12.05 open' && !/open at the top/.test(words)) ctx.fail('the open end is not stated')
+      if ((kind === '12.05 open') !== /class="sh hole"/.test(svg)) ctx.fail('the drawing does not match whether the top is open')
       return { v: k, unit: hl.u + '²', pi: true }
     }
   }

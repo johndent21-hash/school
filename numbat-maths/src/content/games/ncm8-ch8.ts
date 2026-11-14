@@ -11,7 +11,8 @@
 // (MA5-PRO-P-01), so they are marked as extension.
 //
 // Audit against the textbook, exercise by exercise (Nov 2026): added chance words and values that cannot be
-// probabilities (8.01) and letters of a word (8.05), reused from NCM 7.
+// probabilities (8.01) and letters of a word (8.05), reused from NCM 7. Step 4 (Nov 2026): the "or" and raffle kinds
+// moved down to NCM 7 11.02 (which needed them); 8.01 and 8.05 reuse them.
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { gridTable } from '@/lib/maths/diagrams13'
 import { D, chance, frac, gq, int, mk, num, pick, sample } from './helpers'
@@ -60,30 +61,12 @@ const COLOURS = ['red', 'green', 'yellow', 'blue']
 
 // ================================================================== 8.01 Probability
 
-function m801or(): GameQuestion {
-  const counts = COLOURS.map(() => int(1, 7))
-  const total = counts.reduce((t, x) => t + x, 0)
-  const [i, j] = sample([0, 1, 2, 3], 2).sort()
-  const what = pick(['lollies', 'marbles', 'counters'])
-  const desc = counts.map((c, k) => `${c} ${COLOURS[k]}`).join(', ').replace(/, ([^,]*)$/, ' and $1')
-  const fav = counts[i] + counts[j]
-  return gq({
-    t: 'or',
-    prompt: `A jar has ${desc} ${what}. One is chosen at random. What is the probability that it is ${b(`${COLOURS[i]} or ${COLOURS[j]}`)}?`,
-    correct: F(fav, total),
-    // only one of the colours, multiplied, out of the other colours
-    wrong: probWrong([fav, total], [[counts[i], total], [counts[j], total], [fav, total - fav], [2, total]]),
-    why: `${counts[i]} + ${counts[j]} = ${fav} of the ${total} ${what} are ${COLOURS[i]} or ${COLOURS[j]}: ${Fwhy(fav, total)}.`,
-    meta: {},
-  })
-}
-
 const SET_801 = set('8.01', 'Probability', 'List sample spaces and find probabilities of equally likely outcomes, including "or" events.', [PRO], [
   R7('11.01', 'count'),
   R7('11.02', 'die'),
   R7('11.02', 'bag'),
   R7('11.02', 'spin'),
-  mk('or', m801or),
+  R7('11.02', 'or'),
   R7('11.03', 'words'),
   R7('11.03', 'cannot'),
 ])
@@ -278,21 +261,6 @@ function m805balls(): GameQuestion {
   })
 }
 
-function m805tickets(): GameQuestion {
-  const n = pick([2, 4, 5, 10, 20, 25])
-  const N = pick([100, 200, 500, 1000])
-  const name = pick(['Sophia', 'Ari', 'Noah', 'Mei'])
-  return gq({
-    t: 'tickets',
-    prompt: `${name} buys ${b(`${n} tickets`)} in a raffle that sells ${b(`${num(N)} tickets`)}. What is the probability that ${name} wins the one prize?`,
-    correct: F(n, N),
-    // one ticket's chance, out of the others, n over 100
-    wrong: probWrong([n, N], [[1, N], [n, N - n], [1, n], [n, 100]]),
-    why: `${n} of the ${num(N)} tickets win for ${name}: ${Fwhy(n, N)}.`,
-    meta: {},
-  })
-}
-
 function m805coin(): GameQuestion {
   const k = int(4, 9)
   const side = pick(['tail', 'head'])
@@ -309,9 +277,9 @@ function m805coin(): GameQuestion {
 
 const SET_805 = set('8.05', 'Probability problems', 'Solve probability problems: numbered balls, raffles, and repeated independent trials.', [PRO], [
   mk('balls', m805balls),
-  mk('tickets', m805tickets),
+  R7('11.02', 'tickets'),
   mk('coin', m805coin),
-  mk('or', m801or),
+  R7('11.02', 'or'),
   mk('not', m802not),
   R7('11.03', 'letter'),
 ])

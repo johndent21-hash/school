@@ -175,6 +175,45 @@ function m1102spin(): GameQuestion {
   })
 }
 
+// "or" events and raffles (first written for NCM 8 8.01 and 8.05, which reuse them)
+const b = (s: string) => `<b>${s}</b>`
+/** "n/d = simplest" for the explanation */
+const Fwhy = (n: number, d: number) => (gcd(n, d) > 1 && n !== 0 && n !== d ? `${frac(n, d)} = ${F(n, d)}` : F(n, d))
+const JAR = ['red', 'green', 'yellow', 'blue']
+
+function m1102or(): GameQuestion {
+  const counts = JAR.map(() => int(1, 7))
+  const total = counts.reduce((t, x) => t + x, 0)
+  const [i, j] = sample([0, 1, 2, 3], 2).sort()
+  const what = pick(['lollies', 'marbles', 'counters'])
+  const desc = counts.map((c, k) => `${c} ${JAR[k]}`).join(', ').replace(/, ([^,]*)$/, ' and $1')
+  const fav = counts[i] + counts[j]
+  return gq({
+    t: 'or',
+    prompt: `A jar has ${desc} ${what}. One is chosen at random. What is the probability that it is ${b(`${JAR[i]} or ${JAR[j]}`)}?`,
+    correct: F(fav, total),
+    // only one of the colours, multiplied, out of the other colours
+    wrong: probWrong([fav, total], [[counts[i], total], [counts[j], total], [fav, total - fav], [2, total]]),
+    why: `${counts[i]} + ${counts[j]} = ${fav} of the ${total} ${what} are ${JAR[i]} or ${JAR[j]}: ${Fwhy(fav, total)}.`,
+    meta: {},
+  })
+}
+
+function m1102tickets(): GameQuestion {
+  const n = pick([2, 4, 5, 10, 20, 25])
+  const N = pick([100, 200, 500, 1000])
+  const name = pick(['Sophia', 'Ari', 'Noah', 'Mei'])
+  return gq({
+    t: 'tickets',
+    prompt: `${name} buys ${b(`${n} tickets`)} in a raffle that sells ${b(`${num(N)} tickets`)}. What is the probability that ${name} wins the one prize?`,
+    correct: F(n, N),
+    // one ticket's chance, out of the others, n over 100
+    wrong: probWrong([n, N], [[1, N], [n, N - n], [1, n], [n, 100]]),
+    why: `${n} of the ${num(N)} tickets win for ${name}: ${Fwhy(n, N)}.`,
+    meta: {},
+  })
+}
+
 const SET_1102: GameSet = {
   id: 'ncm7-11.02',
   exercise: '11.02',
@@ -183,7 +222,7 @@ const SET_1102: GameSet = {
   focus: 'Probability = number of favourable outcomes ÷ number of possible outcomes, when the outcomes are equally likely.',
   lessons: ['y7-prob-simple'],
   outcomes: [PRO],
-  makers: [mk('die', m1102die), mk('bag', m1102bag), mk('spin', m1102spin, 2)],
+  makers: [mk('die', m1102die), mk('bag', m1102bag), mk('spin', m1102spin, 2), mk('or', m1102or, 2), mk('tickets', m1102tickets)],
 }
 
 // ================================================================== 11.03 The range of probability

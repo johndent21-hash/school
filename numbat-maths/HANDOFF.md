@@ -1,6 +1,6 @@
 # Handoff: build the improvements the user chose (Step 4)
 
-**Current work: Step 4 at the end of this file.** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
+**Current work: Step 4, Batch 2 (see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
 board-checked and published (Version 24, 14 Nov 2026), and the user has chosen the improvements. Build the Step 4
 batches in order. After each batch: full tests, one board check of what changed, one build and one publish, update
 this file (mark the batch done, note anything left), commit and push. Then go on to the next batch, unless context is
@@ -222,3 +222,30 @@ everything chosen: about 5 units. The order groups work that shares machinery; i
 5. **Spot the mistake (about 0.5–1.5):** worked steps per kind; start with a few chapters.
 
 Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
+
+## Step 4 progress
+
+### Batch 1 (fixes) — done, published as Version 25 (14 Nov 2026)
+
+- **Open-top cylinder** (NCM 8 12.05 `open`, reused by 10.08): `D.cylinder(..., open = true)` draws the rim with the
+  inside showing (class `hole`, `src/maths.css`); the 12.05 check now fails if the drawing and "open at the top" disagree.
+- **Preview downloads:** `app/src/lib/csv.ts` offers files through the artifact `downloads` capability when the page runs
+  in the claude.ai viewer (plain link elsewhere); the ratings CSV is no longer blocked in the preview. **Publish with
+  `capabilities: {"downloads": true}`** (stored on the artifact now; omit `capabilities` on later publishes to keep it).
+  `saveText()` there is for Batch 2's printable pages.
+- **"Alla"** replaced by a random name from Priya/Omar/Zara/Kai and "the profit" (9 Adv `ncm9-ch3.ts` 3.03 `costs`).
+- **Gaps filled** (each with an independent check and a planted error caught):
+  - inserting grouping symbols: NCM 7 1.08 `insert` (d2), reused by NCM 8 2.04;
+  - coordinates ending in .5: NCM 7 9.02 and 9.03 `half` (d2), MA4-LIN-C-01;
+  - "or" and raffle questions: moved from NCM 8 8.01/8.05 down to NCM 7 11.02 (`or`, `tickets`); NCM 8 reuses them;
+  - non-monic binomial products: NCM 8 3.11 `nonmonic` (d2, extension like the rest of 3.11);
+  - is a network connected / how many parts: NCM 8 4.08 `connected` (d2), reused by 9 Std 6.03 (Path, extension);
+  - "no solution": 9 Std 7.05 now reuses NCM 8 9.05 `count` (x² = negative → None, 40% of the time).
+- Board check: the 12 changed sets at all four sizes, no overflow, no spill, no page errors. N=400 all passed
+  (386 exercises, 1157 kinds); content, engine, open, practice, keypad and calc tests passed.
+- Pitfall: **don't run the tests while the build has 9 Advanced removed** from `index.ts` (the test then silently skips
+  it: check the "386 exercises" line).
+
+### Batch 2 (worksheets/tests + year revision mix) — in progress
+
+Work in progress is in `git stash` on this branch only if a session stopped mid-way (see the commit log for what landed).

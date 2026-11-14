@@ -224,7 +224,7 @@ function m1205open(): GameQuestion {
   return gq({
     t: 'open',
     prompt: 'Find the outside surface area of this cylinder, which is open at the top, in terms of π.',
-    diagram: D.cylinder(r, h, U(d, u), U(h, u), true),
+    diagram: D.cylinder(r, h, U(d, u), U(h, u), true, true),
     note: NOT_TO_SCALE,
     // both ends, the diameter used as the radius, no ends
     ...numOpts(k, [2 * r * r + 2 * r * h, d * d + 2 * d * h, 2 * r * h, r * r + r * h], (x) => piU(x, sq(u))),

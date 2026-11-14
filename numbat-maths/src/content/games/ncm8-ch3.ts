@@ -13,7 +13,7 @@
 // extension in the textbook and belong to Stage 5 (MA5-IND-C-01, MA5-ALG-P-01).
 //
 // Audit against the textbook, exercise by exercise (Nov 2026): added writing terms in expanded form (3.01, from
-// NCM 7 5.03) and expanding and simplifying two brackets (3.07). Not added: non-monic binomial products (3.11, extension).
+// NCM 7 5.03) and expanding and simplifying two brackets (3.07). Step 4 (Nov 2026): non-monic binomial products added to 3.11 (extension, like the rest of 3.11).
 import type { GameChapter, GameMaker, GameQuestion, GameSet } from '@/lib/game/types'
 import { chance, ex, gcd, gq, int, mk, num, pick, sample, v } from './helpers'
 import { NCM7_CH5 } from './ncm7-ch5'
@@ -403,6 +403,41 @@ function m311binomial(): GameQuestion {
   })
 }
 
+/** (px + a)(qx + b) with p or q bigger than 1 */
+function m311nonmonic(): GameQuestion {
+  const L = pick(['x', 'y', 'a', 'm', 'n'])
+  const [p, q] = pick([[2, 1], [1, 2], [3, 1], [1, 3], [2, 3], [3, 2], [2, 2]])
+  const a = pick([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
+  let b: number
+  // no middle term would make it a difference of two squares (3.13)
+  do b = pick([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
+  while (p * b + q * a === 0)
+  const coef = (k: number) => (k === 1 ? '' : String(k))
+  const br = (c: number, k: number) => (k < 0 ? `(${coef(c)}${L} - ${-k})` : `(${coef(c)}${L} + ${k})`)
+  const right = sum([[p * q, `${L}^2`], [p * b + q * a, L], [a * b, '']])
+  return gq({
+    t: 'nonmonic',
+    prompt: `Expand:${big(E(`${br(p, a)}${br(q, b)}`))}`,
+    correct: E(right),
+    // the inner and outer products swapped, the middle term as a + b (as if both coefficients were 1), the middle
+    // term forgotten, a sign slip in the last term, then spares
+    wrong: [
+      sum([[p * q, `${L}^2`], [p * a + q * b, L], [a * b, '']]),
+      sum([[p * q, `${L}^2`], [a + b, L], [a * b, '']]),
+      sum([[p * q, `${L}^2`], [a * b, '']]),
+      sum([[p * q, `${L}^2`], [p * b + q * a, L], [-a * b, '']]),
+      sum([[p + q, `${L}^2`], [p * b + q * a, L], [a * b, '']]),
+      sum([[p * q, `${L}^2`], [-(p * b + q * a), L], [a * b, '']]),
+      sum([[p * q, `${L}^2`], [p * b + q * a, L], [a + b, '']]),
+      sum([[p * q, `${L}^2`], [p * b + q * a + 1, L], [a * b, '']]),
+    ]
+      .filter((w) => w !== right)
+      .map(E),
+    why: `First, outer, inner, last: ${E(`${coef(p * q)}${L}^2`)} + ${bn(p * b)}${v(L)} + ${bn(q * a)}${v(L)} + ${bn(a * b)} = ${E(right)}.`,
+    meta: { L, p, q, a, b },
+  })
+}
+
 function m312square(): GameQuestion {
   const L = pick(['x', 'y', 'a', 'm', 'n'])
   const a = int(1, 9)
@@ -444,7 +479,7 @@ const extSet = (exn: string, title: string, focus: string, makers: GameMaker[]):
   teacherNote: EXT_ALG,
   makers,
 })
-const SET_311 = extSet('3.11', 'Expanding binomial products', 'Multiply each term of one bracket by each term of the other.', [mk('binomial', m311binomial)])
+const SET_311 = extSet('3.11', 'Expanding binomial products', 'Multiply each term of one bracket by each term of the other.', [mk('binomial', m311binomial), mk('nonmonic', m311nonmonic, 2)])
 const SET_312 = extSet('3.12', 'Perfect squares', '(a + b)² = a² + 2ab + b²: do not forget the middle term.', [mk('square', m312square)])
 const SET_313 = extSet('3.13', 'Difference of 2 squares', '(a + b)(a − b) = a² − b²: the middle terms cancel.', [mk('diff', m313diff)])
 

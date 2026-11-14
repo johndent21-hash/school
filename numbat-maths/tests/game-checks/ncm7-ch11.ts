@@ -72,7 +72,7 @@ export function rework(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
 
 function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
   const svg = q.diagram ?? ''
-  const words = ctx.plain(q.prompt)
+  const words = ctx.plain(q.prompt).replace(/\s+([.?,:)])/g, '$1')
   const shown = q.options.map(ctx.plain)
   const one = (ok: boolean[], what: string): Expect => {
     const hits = ok.map((x, k) => (x ? k : -1)).filter((k) => k >= 0)
@@ -100,6 +100,16 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       const parts = [...m[1].matchAll(/(\d+) (\w+)/g)].map((p) => ({ n: Number(p[1]), c: p[2] }))
       const total = parts.reduce((t, p) => t + p.n, 0)
       return { text: prob(parts.find((p) => p.c === m[3])!.n, total) }
+    }
+    case '11.02 or': {
+      const c = Object.fromEntries([...words.matchAll(/(\d+) (red|green|yellow|blue)\b/g)].map((x) => [x[2], Number(x[1])])) as Record<string, number>
+      const m = words.match(/that it is (\w+) or (\w+)\?/)!
+      if (m[1] === m[2] || c[m[1]] === undefined || c[m[2]] === undefined) ctx.fail('the two colours are not both in the jar')
+      return { text: prob(c[m[1]] + c[m[2]], Object.values(c).reduce((t, x) => t + x, 0)) }
+    }
+    case '11.02 tickets': {
+      const m = words.match(/buys (\d+) tickets in a raffle that sells ([\d ]+) tickets.+wins the one prize\?/)!
+      return { text: prob(Number(m[1]), Number(m[2].replace(/\s/g, ''))) }
     }
     case '11.02 spin': {
       const l = spinnerLetters(svg, ctx)

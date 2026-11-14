@@ -272,7 +272,7 @@ function m601reason(shape: 'tri' | 'quad'): GameQuestion {
 const CH6 = chapter(6, 'Geometry and networks', 'Measurement and space', 40, [
   S(6, '6.01', 'Triangle geometry', 'Angle sums, exterior angles and isosceles triangles.', ['MA4-GEO-C-01'], [[NCM8_CH4, '4.06', 'triangle'], [NCM8_CH4, '4.06', 'exterior'], [NCM8_CH4, '4.06', 'isosceles'], [NCM8_CH4, '4.03', 'angles'], mk('reason', () => m601reason('tri'), 2)], REV('MA4-GEO-C-01')),
   S(6, '6.02', 'Quadrilateral geometry', 'Angle sums and properties of the special quadrilaterals.', ['MA4-GEO-C-01'], [[NCM8_CH4, '4.06', 'quadrilateral'], [NCM8_CH4, '4.06', 'special'], [NCM8_CH4, '4.05', 'always'], mk('reason', () => m601reason('quad'), 2)], REV('MA4-GEO-C-01')),
-  S(6, '6.03', 'Networks', 'Degrees of vertices, and whether a network can be traced.', [], [[NCM8_CH4, '4.08', 'degree'], [NCM8_CH4, '4.08', 'trace']], PATH('Networks', 'MA5-NET-P-01')),
+  S(6, '6.03', 'Networks', 'Degrees of vertices, whether a network is connected, and whether it can be traced.', [], [[NCM8_CH4, '4.08', 'degree'], [NCM8_CH4, '4.08', 'trace'], [NCM8_CH4, '4.08', 'connected']], PATH('Networks', 'MA5-NET-P-01')),
   S(6, '6.04', "Planar graphs and Euler's formula", 'For a connected planar graph, V − E + F = 2.', [], [mk('euler', m604euler)], PATH("Euler's formula", 'MA5-NET-P-01')),
 ])
 
@@ -284,7 +284,7 @@ const CH7 = chapter(7, 'Equations', 'Number and algebra', 265, [
   S(7, '7.02', 'Equations with variables on both sides', 'Collect the unknown on one side, then solve.', [EQU5], [[NCM8_CH9, '9.03', 'first'], [NCM8_CH9, '9.03', 'both']]),
   S(7, '7.03', 'Equations with brackets', 'Divide first or expand the brackets.', [EQU5], [[NCM8_CH9, '9.04', 'expand'], [NCM8_CH9, '9.04', 'brackets']]),
   S(7, '7.04', 'Equation problems', 'Write an equation, solve it, answer the question.', [EQU5], [[NCM8_CH9, '9.06', 'model'], [NCM8_CH9, '9.06', 'solveWords'], [NCM8_CH9, '9.06', 'rect']]),
-  S(7, '7.05', 'Simple quadratic equations', 'x² = c has two answers, ±√c.', ['MA4-EQU-C-01'], [[NCM8_CH9, '9.05', 'square'], [NCM8_CH9, '9.05', 'ax2'], [NCM8_CH9, '9.05', 'surd']], REV('MA4-EQU-C-01')),
+  S(7, '7.05', 'Simple quadratic equations', 'x² = c has two answers, ±√c.', ['MA4-EQU-C-01'], [[NCM8_CH9, '9.05', 'square'], [NCM8_CH9, '9.05', 'ax2'], [NCM8_CH9, '9.05', 'surd'], [NCM8_CH9, '9.05', 'count']], REV('MA4-EQU-C-01')),
   S(7, '7.06', 'Equations and formulas', 'Substitute into a formula and solve for the unknown.', [EQU5], [[NCM8_CH9, '9.07', 'formula']]),
 ])
 

@@ -175,7 +175,7 @@ function m303costs(): GameQuestion {
     const sell = cost + profit
     return gq({
       t: 'costs',
-      prompt: `Alla buys a car for ${b($(buy))}, spends ${b($(extra))} on repairs and sells it for ${b($(sell))}. What is her profit as a percentage of the total cost?`,
+      prompt: `${pick(['Priya', 'Omar', 'Zara', 'Kai'])} buys a car for ${b($(buy))}, spends ${b($(extra))} on repairs and sells it for ${b($(sell))}. What is the profit as a percentage of the total cost?`,
       correct: `${p}%`,
       // ignored the repairs, profit as a percentage of the selling price, the profit in hundreds
       wrong: [Math.round(((sell - buy) / buy) * 1000) / 10, Math.round((profit / sell) * 1000) / 10, p + 5, p * 2, Math.round((profit / buy) * 1000) / 10]

@@ -508,12 +508,12 @@ function Markbook({ report }: { report: Report }) {
     if (previewBlocked()) return
     if (topic) {
       const cols = [...topic.skills.map((s) => ({ id: s.id, title: s.title })), { id: testItemId(topic.id), title: 'Topic test' }]
-      downloadCsv(`${report.class.name} - ${topic.title}.csv`, [
+      void downloadCsv(`${report.class.name} - ${topic.title}.csv`, [
         ['Student', ...cols.map((c) => c.title)],
         ...students.map((s) => [s.name, ...cols.map((c) => (s.progress[c.id] ? s.progress[c.id].best : ''))]),
       ])
     } else {
-      downloadCsv(`${report.class.name} - Year ${year} overview.csv`, [
+      void downloadCsv(`${report.class.name} - Year ${year} overview.csv`, [
         ['Student', 'Points', ...topics.flatMap((t) => [`${t.title}: skills mastered`, `${t.title}: test best`])],
         ...students.map((s) => [
           s.name,

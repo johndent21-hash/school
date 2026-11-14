@@ -683,7 +683,8 @@ export function triPrism(b: number, h: number, l: number, bl: string, hl: string
   return svg(330, 240, body, 'Triangular prism')
 }
 
-export function cylinder(r: number, h: number, rl: string, hl: string, showDiameter = false): string {
+/** open: no top, so the inside shows through the rim (darker) with the back of the inside wall drawn. */
+export function cylinder(r: number, h: number, rl: string, hl: string, showDiameter = false, open = false): string {
   const W = 260
   const H = 260
   const ratio = Math.max(0.5, Math.min(2.2, h / (2 * r)))
@@ -694,13 +695,18 @@ export function cylinder(r: number, h: number, rl: string, hl: string, showDiame
   const top = (H - hh) / 2
   const bot = top + hh
   let body = `<path class="sh" d="M${cx - rx},${top} L${cx - rx},${bot} A${rx},${ry} 0 0 0 ${cx + rx},${bot} L${cx + rx},${top}"/>`
-  body += `<ellipse class="sh sh2" cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}"/>`
+  if (open) {
+    // the inside: the far half of the inner wall is lit, the near half is in shadow below the front rim
+    body += `<ellipse class="sh hole" cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}"/>`
+    body += `<path class="sh sh2" d="M${cx - rx},${top} A${rx},${ry} 0 0 1 ${cx + rx},${top} A${rx},${ry * 0.55} 0 0 0 ${cx - rx},${top}Z"/>`
+    body += `<path class="ln" d="M${cx - rx},${top} A${rx},${ry} 0 0 0 ${cx + rx},${top}"/>`
+  } else body += `<ellipse class="sh sh2" cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}"/>`
   body += `<path class="ln dash" d="M${cx - rx},${bot} A${rx},${ry} 0 0 1 ${cx + rx},${bot}"/>`
   body += dot([cx, top], 2.5)
   if (showDiameter) body += line([cx - rx, top], [cx + rx, top], 'ln hlstroke') + text([cx, top - ry - 10], rl, 'dl side')
   else body += line([cx, top], [cx + rx, top], 'ln hlstroke') + text([cx + rx / 2, top - ry - 8], rl, 'dl side')
   body += text([cx + rx + 10, (top + bot) / 2], hl, 'dl side', 'start')
-  return svg(W, H, body, 'Cylinder', 260)
+  return svg(W, H, body, open ? 'Cylinder, open at the top' : 'Cylinder', 260)
 }
 
 // ---------------- Number plane and graphs ----------------

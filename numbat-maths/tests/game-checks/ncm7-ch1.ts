@@ -41,6 +41,22 @@ export function rework(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
       const vals = nums(w[1]).flatMap((a) => nums(w[3]).map((b) => f[w[2]](a, b)))
       return { text: vals.every((v) => v > 0) ? 'Always positive' : vals.every((v) => v < 0) ? 'Always negative' : 'Could be either' }
     }
+    case '1.08 insert': {
+      // every option must be the prompt's numbers and signs with brackets added; exactly one must give the target
+      const [lhs, rhs] = ctx.plain(q.prompt.match(/<div class="big">(.*?)<\/div>/)?.[1] ?? '').split(' = ')
+      const target = Number(rhs.replace('−', '-'))
+      const evalJs = (e: string) => {
+        const js = e.replace(/−/g, '-').replace(/×/g, '*')
+        if (/[^0-9+\-*() ]/.test(js)) return ctx.fail(`cannot read "${e}"`), NaN
+        return Function(`"use strict"; return (${js})`)() as number
+      }
+      const opts = q.options.map(ctx.plain)
+      opts.forEach((o) => o.replace(/[()]/g, '') !== lhs && ctx.fail(`option "${o}" is not "${lhs}" with brackets`))
+      if (evalJs(lhs) === target) ctx.fail('true without brackets')
+      const hits = opts.filter((o) => evalJs(o) === target)
+      if (hits.length !== 1) ctx.fail(`${hits.length} options make it true`)
+      return { text: hits[0] ?? '' }
+    }
     case '1.01 opposite':
       has(m.n)
       return { v: -m.n }

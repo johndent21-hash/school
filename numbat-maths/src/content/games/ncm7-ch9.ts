@@ -9,7 +9,8 @@
 // is earlier-stage content and marked as revision.
 //
 // Audit against the textbook, exercise by exercise (Nov 2026): added increasing or decreasing lines (9.06; NCM 8
-// 11.06 reuses it).
+// 11.06 reuses it). Step 4 (Nov 2026): points with a coordinate ending in .5 (9.02, 9.03; the syllabus asks for
+// coordinates that are not whole numbers).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { D, MINUS, chance, gq, int, mk, num, pick, sample, shuffle, v } from './helpers'
 
@@ -117,6 +118,31 @@ function m902read(): GameQuestion {
   })
 }
 
+/** A point with one coordinate halfway between grid lines (coordinates that are not whole numbers, MA4-LIN-C-01).
+ *  first: first quadrant only (9.02); otherwise all four quadrants (9.03). */
+function halfRead(first: boolean): () => GameQuestion {
+  return () => {
+    const whole = () => (first ? int(1, 6) : nz())
+    const half = () => (first ? int(0, 6) + 0.5 : pick([-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5]))
+    const p: P = chance() ? [half(), whole()] : [whole(), half()]
+    const L = pick(['P', 'Q', 'R', 'M', 'K'])
+    const [lo, hi] = first ? [0, 8] : [-5, 5]
+    // the half dropped or rounded up, the coordinates swapped, a sign lost
+    const down = (x: number) => (Number.isInteger(x) ? x : Math.floor(x))
+    const up = (x: number) => (Number.isInteger(x) ? x : Math.ceil(x))
+    const cands: P[] = [[down(p[0]), down(p[1])], [up(p[0]), up(p[1])], [p[1], p[0]], [-p[0], p[1]], [p[0], -p[1]], [p[0] + 1, p[1]]]
+    return gq({
+      t: 'half',
+      prompt: `What are the coordinates of point ${L}?`,
+      diagram: D.numberPlane({ xmin: lo, xmax: hi, ymin: lo, ymax: hi, points: [{ x: p[0], y: p[1], label: L }] }),
+      correct: pt(p),
+      wrong: cands.filter(([a, c]) => a >= lo && a <= hi && c >= lo && c <= hi).map(pt),
+      why: `${L} is halfway between two grid lines, so one coordinate ends in .5: across ${num(p[0])}, then ${p[1] < 0 ? 'down' : 'up'} ${num(Math.abs(p[1]))}: ${pt(p)}.`,
+      meta: { p },
+    })
+  }
+}
+
 function m902which(): GameQuestion {
   let p: P
   do p = [int(1, 7), int(1, 7)]
@@ -149,7 +175,7 @@ const SET_902: GameSet = {
   focus: 'Read and plot points (x, y) on the number plane: across first, then up.',
   lessons: ['y7-np-coords'],
   outcomes: [LIN],
-  makers: [mk('read', m902read), mk('which', m902which)],
+  makers: [mk('read', m902read), mk('which', m902which), mk('half', halfRead(true), 2)],
 }
 
 // ================================================================== 9.03 Quadrants of the number plane
@@ -213,7 +239,7 @@ const SET_903: GameSet = {
   focus: 'Read and plot points with negative coordinates, and name the four quadrants.',
   lessons: ['y7-np-coords'],
   outcomes: [LIN],
-  makers: [mk('read', m903read), mk('quadrant', m903quadrant), mk('axis', m903axis, 2)],
+  makers: [mk('read', m903read), mk('quadrant', m903quadrant), mk('axis', m903axis, 2), mk('half', halfRead(false), 2)],
 }
 
 // ================================================================== tables of values (9.04, 9.05)

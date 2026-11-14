@@ -77,6 +77,7 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
     case '3.07 twoBrackets':
     case '3.09 factorise':
     case '3.11 binomial':
+    case '3.11 nonmonic':
     case '3.12 square':
     case '3.13 diff':
       return one(equal(), 'equal the expression')

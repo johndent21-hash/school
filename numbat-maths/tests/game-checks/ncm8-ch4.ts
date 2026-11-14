@@ -13,7 +13,7 @@ const dist = (a: P, b: P) => Math.hypot(a[0] - b[0], a[1] - b[1])
 const orient = (a: P, b: P, c: P) => Math.sign((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]))
 
 /** the network as drawn: vertex names, and edges as pairs of vertex indices */
-function readNetwork(svg: string, ctx: Ctx) {
+function readNetwork(svg: string, ctx: Ctx, mustConnect = true) {
   const nodes = [...svg.matchAll(/<circle class="[^"]*\bnode\b[^"]*" cx="([\d.-]+)" cy="([\d.-]+)"/g)].map((m) => [Number(m[1]), Number(m[2])] as P)
   const labels = [...svg.matchAll(/<text class="[^"]*" x="([\d.-]+)" y="([\d.-]+)"[^>]*>([A-Z])<\/text>/g)].map((m) => ({ p: [Number(m[1]), Number(m[2])] as P, s: m[3] }))
   if (nodes.length < 3 || labels.length !== nodes.length) ctx.fail(`${nodes.length} vertices but ${labels.length} letters`)
@@ -47,20 +47,25 @@ function readNetwork(svg: string, ctx: Ctx) {
       const foot: P = [u[0] + t * (v[0] - u[0]), u[1] + t * (v[1] - u[1])]
       if (t > 0 && t < 1 && dist(foot, p) < 8) ctx.fail('an edge passes through another vertex')
     })
-  // connected
-  const seen = new Set([0])
-  for (let grew = true; grew; ) {
-    grew = false
-    for (const [a, b] of edges)
-      if (seen.has(a) !== seen.has(b)) {
-        seen.add(a)
-        seen.add(b)
-        grew = true
-      }
+  // the separate parts: grow each part from a vertex not yet reached
+  const part = nodes.map(() => -1)
+  let parts = 0
+  for (let s0 = 0; s0 < nodes.length; s0++) {
+    if (part[s0] >= 0) continue
+    part[s0] = parts
+    for (let grew = true; grew; ) {
+      grew = false
+      for (const [a, b] of edges)
+        if ((part[a] === parts) !== (part[b] === parts)) {
+          part[a] = part[b] = parts
+          grew = true
+        }
+    }
+    parts++
   }
-  if (seen.size !== nodes.length) ctx.fail('the network is not connected')
+  if (mustConnect && parts !== 1) ctx.fail('the network is not connected')
   const degree = (i: number) => edges.reduce((n, [a, b]) => n + (a === i ? 1 : 0) + (b === i ? 1 : 0), 0)
-  return { names, edges, degree }
+  return { names, edges, degree, parts }
 }
 
 export function rework(set: GameSet, q: GameQuestion, ctx: Ctx): Expect {
@@ -106,6 +111,10 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       const odd = g.names.filter((_, i) => g.degree(i) % 2 === 1).length
       if (odd % 2 !== 0) ctx.fail('an odd number of odd vertices (impossible)')
       return { text: odd === 0 ? 'Yes, starting anywhere' : odd === 2 ? 'Yes, but only from an odd vertex' : 'No: more than 2 odd vertices' }
+    }
+    case '4.08 connected': {
+      const g = readNetwork(q.diagram ?? '', ctx, false)
+      return { text: g.parts === 1 ? 'Yes, it is connected' : `No: it is in ${g.parts} separate parts` }
     }
   }
   ctx.fail('no independent check for this kind of question')

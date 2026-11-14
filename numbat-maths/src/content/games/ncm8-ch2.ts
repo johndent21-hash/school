@@ -131,7 +131,7 @@ const SET_204: GameSet = {
   title: 'Order of operations',
   focus: 'Brackets first, then powers, then × and ÷, then + and −, with integers.',
   outcomes: [INT],
-  makers: from(NCM7_CH1, '1.08', 'multFirst', 'brackets', 'divideFirst', 'powers'),
+  makers: from(NCM7_CH1, '1.08', 'multFirst', 'brackets', 'divideFirst', 'powers', 'insert'),
 }
 
 // ================================================================== 2.05–2.07 Decimals

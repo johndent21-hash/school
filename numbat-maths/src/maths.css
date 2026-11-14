@@ -167,6 +167,10 @@
 .dg .sh3 {
   fill: hsl(var(--shape-3));
 }
+/* the inside of an open container, seen through its rim */
+.dg .hole {
+  fill: hsl(var(--foreground) / 0.22);
+}
 .dg .arc {
   stroke: hsl(var(--primary));
   stroke-width: 2;

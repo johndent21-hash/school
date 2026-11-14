@@ -472,6 +472,63 @@ function m108powers(): GameQuestion {
   return opQuestion('powers', expr, right, [-right, neg ? -2 * a : 2 * a, neg ? 2 * a : -2 * a], neg ? `Only the ${a} is squared, then the answer is made negative: ${MINUS}(${a} ${TIMES} ${a}) = ${num(right)}.` : `The whole of ${MINUS}${a} is squared: ${br(-a)} ${TIMES} ${br(-a)} = ${right}.`, { a, neg })
 }
 
+/** Inserting grouping symbols: four numbers and three operations; exactly one bracketing makes the statement true. */
+function m108insert(): GameQuestion {
+  const ops: Record<string, (x: number, y: number) => number> = { '+': (x, y) => x + y, [MINUS]: (x, y) => x - y, [TIMES]: (x, y) => x * y }
+  // the six ways to put one pair of brackets (or two, around both halves) into a op b op c op d
+  const ways: [number, number][][] = [[[0, 1]], [[1, 2]], [[2, 3]], [[0, 2]], [[1, 3]], [[0, 1], [2, 3]]]
+  for (;;) {
+    const xs = [int(1, 9), int(1, 9), int(1, 9), int(1, 9)]
+    const os = [pick(['+', MINUS]), TIMES, pick(['+', MINUS, TIMES])]
+    if (chance()) os.reverse()
+    // value with the given groups worked first, then × before + and −, left to right
+    const value = (groups: [number, number][]) => {
+      let vs = xs.slice()
+      let o = os.slice()
+      for (const [i, j] of groups.slice().sort((p, q) => q[0] - p[0])) {
+        let v = vs[i]
+        const inner = o.slice(i, j)
+        const iv = vs.slice(i, j + 1)
+        // inside the brackets: × first
+        const stack = [iv[0]]
+        const sops: string[] = []
+        inner.forEach((op, k) => (op === TIMES ? stack.push(stack.pop()! * iv[k + 1]) : (sops.push(op), stack.push(iv[k + 1]))))
+        v = stack.reduce((acc, x, k) => (k === 0 ? x : ops[sops[k - 1]](acc, x)))
+        vs = [...vs.slice(0, i), v, ...vs.slice(j + 1)]
+        o = [...o.slice(0, i), ...o.slice(j)]
+      }
+      const stack = [vs[0]]
+      const sops: string[] = []
+      o.forEach((op, k) => (op === TIMES ? stack.push(stack.pop()! * vs[k + 1]) : (sops.push(op), stack.push(vs[k + 1]))))
+      return stack.reduce((acc, x, k) => (k === 0 ? x : ops[sops[k - 1]](acc, x)))
+    }
+    const show = (groups: [number, number][]) =>
+      xs
+        .map((x, k) => {
+          const open = groups.some((g) => g[0] === k) ? '(' : ''
+          const close = groups.some((g) => g[1] === k) ? ')' : ''
+          return open + num(x) + close + (k < 3 ? ` ${os[k]} ` : '')
+        })
+        .join('')
+    const plainValue = value([])
+    const vals = ways.map(value)
+    // the right bracketing changes the value and no other bracketing gives the same value
+    const okIdx = ways.map((_, k) => k).filter((k) => vals[k] !== plainValue && vals.filter((v) => v === vals[k]).length === 1)
+    if (okIdx.length === 0) continue
+    const k = pick(okIdx)
+    const others = shuffle(ways.map((_, j) => j).filter((j) => j !== k && vals[j] !== vals[k]))
+    if (others.length < 3) continue
+    return gq({
+      t: 'insert',
+      prompt: `Where do the brackets go to make this true?${big(`${show([])} = ${num(vals[k])}`)}`,
+      correct: show(ways[k]),
+      wrong: others.map((j) => show(ways[j])),
+      why: `${show(ways[k])}: work out the brackets first, then the rest in order of operations, to get ${num(vals[k])}.`,
+      meta: { xs, os },
+    })
+  }
+}
+
 const SET_108: GameSet = {
   id: 'ncm7-1.08',
   exercise: '1.08',
@@ -480,7 +537,7 @@ const SET_108: GameSet = {
   focus: 'Use the order of operations with integers: brackets, powers, then × and ÷, then + and −.',
   lessons: ['y7-int-orderops'],
   outcomes: [INT],
-  makers: [mk('multFirst', m108multFirst), mk('brackets', m108brackets), mk('divideFirst', m108divideFirst, 2), mk('powers', m108powers, 2)],
+  makers: [mk('multFirst', m108multFirst), mk('brackets', m108brackets), mk('divideFirst', m108divideFirst, 2), mk('powers', m108powers, 2), mk('insert', m108insert, 2)],
 }
 
 // ================================================================== 1.09 Integers and the calculator

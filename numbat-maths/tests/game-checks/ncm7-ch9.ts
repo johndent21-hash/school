@@ -42,15 +42,16 @@ function planeScale(svg: string) {
   return { toX: (px: number) => (px - X.a) / X.b, toY: (py: number) => (py - Y.a) / Y.b }
 }
 /** the labelled dots on a number plane, as coordinates */
-function planePoints(svg: string): { label: string; p: P }[] {
+function planePoints(svg: string, step = 1): { label: string; p: P }[] {
   const sc = planeScale(svg)
   const dots = [...svg.matchAll(/<circle class="pt hlfill" cx="([\d.-]+)" cy="([\d.-]+)"/g)].map((m) => [Number(m[1]), Number(m[2])] as P)
   const labs = texts(svg).filter((t) => /\bsmall\b/.test(t.cls) && /^[A-Z]$/.test(t.s))
   return labs.map((l) => {
     const d = dots.reduce((best, q) => (Math.hypot(q[0] - l.x, q[1] - l.y) < Math.hypot(best[0] - l.x, best[1] - l.y) ? q : best))
     const p: P = [sc.toX(d[0]), sc.toY(d[1])]
-    if (!close(p[0], Math.round(p[0])) || !close(p[1], Math.round(p[1]))) throw new Error('a point is not on grid lines')
-    return { label: l.s, p: [Math.round(p[0]), Math.round(p[1])] as P }
+    const r = (x: number) => Math.round(x / step) * step
+    if (!close(p[0], r(p[0])) || !close(p[1], r(p[1]))) throw new Error('a point is not on grid lines')
+    return { label: l.s, p: [r(p[0]), r(p[1])] as P }
   })
 }
 /** a rule "y = 2x + 1", "y = 6 − x" as a function of x */
@@ -128,6 +129,15 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       const pts = planePoints(svg)
       if (pts.length !== 1) ctx.fail(`${pts.length} labelled points`)
       return { text: show(pts[0].p) }
+    }
+    case '9.02 half':
+    case '9.03 half': {
+      // read to the nearest half; exactly one coordinate must be a half
+      const pts = planePoints(svg, 0.5)
+      if (pts.length !== 1) ctx.fail(`${pts.length} labelled points`)
+      const p = pts[0].p
+      if (Number.isInteger(p[0]) === Number.isInteger(p[1])) ctx.fail('not exactly one half coordinate')
+      return { text: show(p) }
     }
     case '9.02 which': {
       const want = asked()

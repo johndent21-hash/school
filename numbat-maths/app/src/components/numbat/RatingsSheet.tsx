@@ -130,8 +130,7 @@ export function RatingsSheet({ classId, className, students }: { classId: string
   }
 
   const exportCsv = () => {
-    if (previewBlocked()) return
-    downloadCsv(`${className} - lesson ratings.csv`, [
+    void downloadCsv(`${className} - lesson ratings.csv`, [
       ['Student', ...lessons.map((l) => `${l.date}${l.label ? ` ${l.label}` : ''}`)],
       ...students.map((s) => [
         s.name,

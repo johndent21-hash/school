@@ -86,13 +86,6 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
   /** "4 red, 2 green and 7 blue" → colour counts */
   const counts = () => Object.fromEntries([...words.matchAll(/(\d+) (red|green|yellow|blue)\b/g)].map((m) => [m[2], Number(m[1])])) as Record<string, number>
   switch (kind) {
-    case '8.01 or':
-    case '8.05 or': {
-      const c = counts()
-      const m = words.match(/that it is (\w+) or (\w+)\?/)!
-      const total = Object.values(c).reduce((t, x) => t + x, 0)
-      return P(c[m[1]] + c[m[2]], total)
-    }
     case '8.02 not':
     case '8.05 not': {
       const c = counts()
@@ -158,10 +151,6 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       }
       if (!tests[say]) throw new Error(`unknown event "${say}"`)
       return P(Array.from({ length: 100 }, (_, i) => i + 1).filter(tests[say]).length, 100)
-    }
-    case '8.05 tickets': {
-      const m = words.match(/buys (\d+) tickets in a raffle that sells ([\d ]+) tickets/)!
-      return P(Number(m[1]), Number(m[2].replace(/\s/g, '')))
     }
     case '8.05 coin':
       if (!/A fair coin/.test(words)) ctx.fail('the coin is not said to be fair')

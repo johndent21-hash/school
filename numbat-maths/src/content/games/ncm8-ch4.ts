@@ -125,31 +125,27 @@ const SET_407 = set('4.07', 'Angle sum of a polygon', 'The angles of an n-sided 
 
 /** edges a–b and c–d of a polygon's vertices cross inside it when exactly one of c, d lies strictly between a and b */
 const cross = ([a, b]: [number, number], [c, d]: [number, number]) => new Set([a, b, c, d]).size === 4 && (a < c && c < b) !== (a < d && d < b)
-/** a connected network on 4–6 vertices placed around a circle, with no repeated edges and no edges crossing */
-function network(): { names: string[]; pos: [number, number][]; edges: [number, number][] } {
+/** a network on 4–6 vertices placed around a circle, with no repeated edges and no edges crossing.
+ *  parts: how many separate pieces it is in (1 = connected); a vertex with no edges is a piece of its own. */
+function network(parts = 1): { names: string[]; pos: [number, number][]; edges: [number, number][] } {
   for (;;) {
-    const n = int(4, 6)
+    const n = int(Math.max(4, parts + 3), 6)
     const names = 'ABCDEF'.slice(0, n).split('')
     const all: [number, number][] = []
     for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) all.push([i, j])
-    const edges = sample(all, int(n, Math.min(all.length, n + 3)))
-    // connected?
-    const seen = new Set([0])
-    let grew = true
-    while (grew) {
-      grew = false
-      for (const [a, b] of edges)
-        if (seen.has(a) !== seen.has(b)) {
-          seen.add(a)
-          seen.add(b)
-          grew = true
-        }
-    }
-    if (seen.size < n || edges.some((e, k) => edges.slice(k + 1).some((f) => cross(e, f)))) continue
+    const edges = sample(all, parts === 1 ? int(n, Math.min(all.length, n + 3)) : int(n - parts, n))
+    if (pieces(n, edges) !== parts || edges.some((e, k) => edges.slice(k + 1).some((f) => cross(e, f)))) continue
     const off = int(0, 59)
     const pos = names.map((_, i) => [130 + 95 * Math.cos(((360 * i) / n + off - 90) * (Math.PI / 180)), 120 + 95 * Math.sin(((360 * i) / n + off - 90) * (Math.PI / 180))] as [number, number])
     return { names, pos, edges }
   }
+}
+/** how many separate pieces n vertices and these edges make */
+function pieces(n: number, edges: [number, number][]): number {
+  const root = Array.from({ length: n }, (_, i) => i)
+  const find = (i: number): number => (root[i] === i ? i : (root[i] = find(root[i])))
+  for (const [a, b] of edges) root[find(a)] = find(b)
+  return new Set(root.map((_, i) => find(i))).size
 }
 function drawNetwork(g: ReturnType<typeof network>): string {
   let body = ''
@@ -203,7 +199,26 @@ function m408trace(): GameQuestion {
   })
 }
 
-const SET_408 = set('4.08', 'Networks', 'Find degrees of vertices, and decide whether a network can be traced (by counting odd vertices).', [], [mk('degree', m408degree), mk('trace', m408trace, 2)], { teacherNote: EXT_NET })
+const CONNECTED = ['Yes, it is connected', 'No: it is in 2 separate parts', 'No: it is in 3 separate parts', 'No: it is in 4 separate parts']
+
+function m408connected(): GameQuestion {
+  const parts = pick([1, 1, 2, 2, 3])
+  const g = network(parts)
+  return gq({
+    t: 'connected',
+    prompt: 'Is this network connected? If not, how many separate parts is it in?',
+    diagram: drawNetwork(g),
+    correct: CONNECTED[parts - 1],
+    inOrder: CONNECTED,
+    why:
+      parts === 1
+        ? 'You can travel along edges from any vertex to every other vertex, so it is connected.'
+        : `Some vertices cannot be reached from others: it is in ${parts} separate parts (a vertex with no edges is a part on its own), so it is not connected.`,
+    meta: { edges: g.edges },
+  })
+}
+
+const SET_408 = set('4.08', 'Networks', 'Find degrees of vertices, and decide whether a network can be traced (by counting odd vertices).', [], [mk('degree', m408degree), mk('trace', m408trace, 2), mk('connected', m408connected, 2)], { teacherNote: EXT_NET })
 
 export const NCM8_CH4: GameChapter = {
   id: 'ncm8-ch4',
