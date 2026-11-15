@@ -100,6 +100,8 @@ export interface Skill {
   tag?: 'extension' | 'extra'
   /** Worked examples, if they should differ from practice questions (e.g. drawn on a number line) */
   example?: Generator
+  /** Science: the lesson's number in the sequence (Lesson 1 to 30), shown instead of a textbook exercise */
+  lessonNo?: number
 }
 
 /** One question of a fixed topic test: which skill it practises, its level, and how it's made. */
@@ -113,7 +115,9 @@ export interface Topic {
   id: string
   year: 1 | 2 | 3 | 4 | 7 | 8 | 9
   title: string
-  strand: 'Number and algebra' | 'Measurement and space' | 'Statistics and probability'
+  strand: 'Number and algebra' | 'Measurement and space' | 'Statistics and probability' | 'Chemistry'
+  /** 'science' for the science section; maths topics leave it out */
+  subject?: 'science'
   outcomes: string[]
   blurb: string
   skills: Skill[]

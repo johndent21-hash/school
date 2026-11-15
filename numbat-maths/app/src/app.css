@@ -1541,6 +1541,7 @@ div.bar.tinted > span {
 @media not ((min-width: 900px) and (orientation: landscape)) {
   .q-split {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
   }
 }
@@ -1651,4 +1652,31 @@ div.bar.tinted > span {
 }
 .exit-sum {
   overflow-wrap: anywhere;
+}
+
+/* the Maths | Science switch in the header */
+.subject-switch {
+  flex-wrap: nowrap;
+}
+.subject-switch a {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.9rem;
+}
+@media (max-width: 430px) {
+  .subject-switch a {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* a question that contains a data table: the table scrolls inside its box instead of widening the card */
+.q-card,
+.q-main,
+.q-card > .mx,
+.q-card > .q-prompt,
+.q-main > .q-prompt {
+  min-width: 0;
+}
+.tablewrap {
+  max-width: 100%;
 }

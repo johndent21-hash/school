@@ -10,8 +10,9 @@ export const SET_LEVELS: Level[] = [1, 1, 1, 2, 2, 2, 2, 3, 3, 3]
 export const SET_LEVELS_20: Level[] = [...Array(8).fill(1), ...Array(8).fill(2), ...Array(4).fill(3)]
 
 /** The levels of a saved practice set for a year group. */
-export function setLevelsFor(year: number): Level[] {
-  return year <= 2 ? SET_LEVELS : SET_LEVELS_20
+export function setLevelsFor(year: number, subject?: 'science'): Level[] {
+  // science sets are 10 multiple-choice questions (3 Foundation, 4 Standard, 3 Challenge)
+  return year <= 2 || subject === 'science' ? SET_LEVELS : SET_LEVELS_20
 }
 export const EXTRA_COUNT = 5
 export const MASTERY = 80

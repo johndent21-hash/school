@@ -7,8 +7,10 @@ import { fullAnswerHtml } from '@/lib/answer'
 import { buildSet, type Posed } from '@/lib/practice'
 import { Diagram, MathHtml } from './MathHtml'
 import { LevelPill, ReadAloud, Steps } from './QuestionCard'
+import { cn } from '@/lib/utils'
 
-export function WorkedExample({ skill }: { skill: Skill }) {
+/** showOptions: list a multiple-choice question's choices (science), marking the right one once the answer shows */
+export function WorkedExample({ skill, showOptions = false }: { skill: Skill; showOptions?: boolean }) {
   const [level, setLevel] = useState<Level>(1)
   const [ex, setEx] = useState<Posed | null>(null)
   const [shown, setShown] = useState(0)
@@ -45,6 +47,18 @@ export function WorkedExample({ skill }: { skill: Skill }) {
 
       <MathHtml className="q-prompt" html={q.prompt} />
       <Diagram svg={q.diagram} note={q.note} />
+      {showOptions && q.answer.kind === 'mc' && (
+        <ul className="mc-options cols-2" aria-label="Choices">
+          {q.answer.options.map((o, k) => (
+            <li key={k} className={cn('mc-option', done && q.answer.kind === 'mc' && k === q.answer.correct && 'right')}>
+              <span className="letter" aria-hidden="true">
+                {String.fromCharCode(65 + k)}
+              </span>
+              <MathHtml inline html={o} />
+            </li>
+          ))}
+        </ul>
+      )}
 
       {shown > 0 && <Steps steps={q.steps} upTo={shown} animate />}
 

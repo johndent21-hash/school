@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link } from '@tanstack/react-router'
+import { useRouterState, Link } from '@tanstack/react-router'
 import { LogOut, Star } from 'lucide-react'
 import { Logo } from './Logo'
 import { firstName, useSession } from '@/lib/session'
@@ -22,8 +22,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
             aria-label="Numbat Maths home"
           >
             <Logo />
-            <span className="font-display truncate text-xl font-semibold max-[380px]:hidden">Numbat Maths</span>
+            <span className="font-display truncate text-xl font-semibold max-[520px]:hidden">Numbat Maths</span>
           </Link>
+          <SubjectSwitch />
 
           <nav className="ml-auto flex items-center gap-2" aria-label="Account">
             {show && student && (
@@ -75,12 +76,18 @@ export function Shell({ children }: { children: React.ReactNode }) {
                     <span className="max-[430px]:hidden">Class </span>games
                   </span>
                 </Link>
-                <Link to="/parent" className="btn btn-ghost btn-sm max-[430px]:hidden">
-                  Parents
-                </Link>
+                {/* (a wrapper carries the hiding: .btn's own display rule would override it on the link) */}
+                <span className="max-[430px]:hidden">
+                  <Link to="/parent" className="btn btn-ghost btn-sm">
+                    Parents
+                  </Link>
+                </span>
+                {/* in the preview, "Topics" is the same as Maths in the subject switch, so phones leave it out */}
+                <span className={PREVIEW_ONLY ? 'max-[520px]:hidden' : undefined}>
                 <Link to={PREVIEW_ONLY ? '/home' : '/'} className="btn btn-primary btn-sm">
                   {PREVIEW_ONLY ? 'Topics' : 'Log in'}
                 </Link>
+                </span>
               </>
             )}
           </nav>
@@ -165,5 +172,22 @@ export function PreviewLocked({ what }: { what: string }) {
         Try the lessons and practice
       </Link>
     </div>
+  )
+}
+
+/** Maths or Science: one tap to switch subject. Science pages are /science and lessons whose ids start with "sci". */
+function SubjectSwitch() {
+  const loc = useRouterState({ select: (s) => s.location })
+  const id = (loc.search as { id?: unknown }).id
+  const science = loc.pathname === '/science' || (typeof id === 'string' && id.startsWith('sci'))
+  return (
+    <nav className="tabs subject-switch" aria-label="Subject">
+      <Link to="/home" aria-current={science ? undefined : 'page'} className={science ? '' : 'active'}>
+        Maths
+      </Link>
+      <Link to="/science" aria-current={science ? 'page' : undefined} className={science ? 'active' : ''}>
+        Science
+      </Link>
+    </nav>
   )
 }

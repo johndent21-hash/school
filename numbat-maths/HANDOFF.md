@@ -357,6 +357,20 @@ the last log is open. 9 Std 11.01 length: 60 s; NCM 7 sign kinds: 20 s (set by h
 `games.test.ts` (planted bad time caught); `qa/game-check.mjs` checks the logs open one a second, Space can't skip,
 and − / + (it uses a test-only fast-dig hook added by `harness/sync.sh` for the long sections).
 
+### Science section: Year 7 chemistry sample (15 Nov 2026) — published as Version 31
+
+User's request: a science section, easy to switch to from maths, with 30 Year 7 chemistry lessons and practice sets
+(no games), as a sample for the science faculty; don't touch the parent portal etc. Source: public repo
+`johndent21-hash/Year-7-Science` (only the NESA Science 7–10 syllabus and support PDFs; no textbook). **User's choice:
+all Stage 4 chemistry** (SOL 16 lessons, PRT 10, the Chemical change part of CHG 4). Files: `src/content/science/`
+(`kit.ts` banks, diagrams, element data; four lesson files; `index.ts`), `app/src/routes/science.tsx`, the header switch
+(`SubjectSwitch` in `Shell.tsx`), science tweaks in `topic.tsx`, `lesson.tsx` and `WorkedExample.tsx` (choices shown).
+Practice sets are 10 questions for science. Tests: `tests/science.test.ts` (18 000 questions; planted errors in the
+element data, a density formula and a curve label were caught), `qa/science-check.mjs` (all 30 sets answered, phone
+fit). Fixed on the way: the header's "Parents" button was never hidden on phones (`.btn` overrode the hide class; now a
+wrapper span hides it), and practice cards now shrink to the phone width when a question has a data table.
+Not done: Year 8 science, science games or topic tests, science in the teacher markbook or parent view (all on purpose).
+
 ### Batch 5 (spot the mistake) — next
 
 Worked steps per kind with one wrong line; start with a few chapters (the labelled ones are a good start, since the

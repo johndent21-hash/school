@@ -68,5 +68,9 @@
     "title": "Exit ticket · Numbat Maths",
     "description": "Answer your teacher's exit ticket: a few quick questions at the end of the lesson.",
     "noindex": true
+  },
+  "/science": {
+    "title": "Science: Year 7 chemistry · Numbat Maths",
+    "description": "A sample of Year 7 chemistry lessons and practice sets for the NSW Science 7–10 Syllabus (2023), Stage 4."
   }
 }

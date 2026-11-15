@@ -35,12 +35,20 @@ function TopicView() {
   const stats = topicStats(topic, items)
   const test = items[testItemId(topic.id)]
   const games = gamesForTopic(topic.id)
+  // science: lessons numbered 1–30 across the topics, and no topic test (the sample is lessons and practice sets)
+  const science = topic.subject === 'science'
 
   return (
     <div className="grid gap-6" style={{ ['--hue' as string]: topic.colour }}>
-      <Link to="/home" search={{ year: topic.year }} className="btn btn-ghost btn-sm w-fit">
-        <ArrowLeft size={16} aria-hidden="true" /> Year {topic.year} topics
-      </Link>
+      {science ? (
+        <Link to="/science" className="btn btn-ghost btn-sm w-fit">
+          <ArrowLeft size={16} aria-hidden="true" /> Year {topic.year} science
+        </Link>
+      ) : (
+        <Link to="/home" search={{ year: topic.year }} className="btn btn-ghost btn-sm w-fit">
+          <ArrowLeft size={16} aria-hidden="true" /> Year {topic.year} topics
+        </Link>
+      )}
 
       <header className="topic-tile cursor-default hover:transform-none">
         <div className="flex flex-wrap items-center gap-2">
@@ -56,13 +64,13 @@ function TopicView() {
         <h1 className="font-display text-3xl font-semibold sm:text-4xl">{topic.title}</h1>
         <p className="max-w-3xl text-muted-foreground">{topic.blurb}</p>
         <p className="text-sm font-bold">
-          {stats.mastered} of {stats.total} skills mastered
+          {stats.mastered} of {stats.total} {science ? 'lessons' : 'skills'} mastered
         </p>
       </header>
 
       <section className="grid gap-3" aria-labelledby="skills">
         <h2 id="skills" className="font-display text-2xl font-semibold">
-          Skills
+          {science ? 'Lessons' : 'Skills'}
         </h2>
         <ol className="grid gap-3">
           {topic.skills.map((s, k) => {
@@ -72,7 +80,7 @@ function TopicView() {
                 <div className="grid gap-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-display text-lg font-semibold">
-                      {exerciseNumber(s) ?? k + 1}. {s.title}
+                      {exerciseNumber(s) ?? s.lessonNo ?? k + 1}. {s.title}
                     </span>
                     <SkillTags skill={s} />
                     <MasteryBadge state={masteryOf(p)} best={p?.best} />
@@ -124,6 +132,7 @@ function TopicView() {
         </section>
       )}
 
+      {!science && (
       <section className="panel grid gap-3 p-5 sm:grid-cols-[1fr_auto] sm:items-center" aria-labelledby="test">
         <div className="grid gap-1">
           <h2 id="test" className="font-display flex items-center gap-2 text-2xl font-semibold">
@@ -146,6 +155,7 @@ function TopicView() {
           Start test
         </Link>
       </section>
+      )}
     </div>
   )
 }

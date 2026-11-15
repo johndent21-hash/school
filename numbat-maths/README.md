@@ -34,6 +34,19 @@ Also:
 - **Lesson ratings** (`app/convex/ratings.ts`, `RatingsSheet.tsx`): a colour-coded sheet where the teacher gives each student
   4 (excellent), 3 (good), 2 (below expectations), 1 (well below) or A (absent) for each lesson. Type or tap; the next student
   is selected after each entry. Students rated below expectations in 2 of their last 3 rated lessons appear under "May need help".
+- **Science: Year 7 chemistry (a sample)** (`/science`, `app/src/routes/science.tsx`; content in `src/content/science/`):
+  30 lessons for the NSW Science 7–10 Syllabus (2023), Stage 4 chemistry, in three topics: Solutions and mixtures
+  (Lessons 1–16, SC4-SOL-01), Periodic table and atomic structure (17–26, SC4-PRT-01) and the Chemical change part of
+  Change (27–30, SC4-CHG-01), with Working scientifically codes where a lesson practises them. Each lesson has an
+  explanation, key points, vocabulary, worked examples (with the choices shown) and a 10-question practice set
+  (3 Foundation, 4 Standard, 3 Challenge; `setLevelsFor(year, 'science')`). Questions come from banks
+  (`bank()` in `kit.ts`): mostly multiple choice, some calculations (density, concentration, solubility, subatomic
+  particles), and drawings made to match (particle boxes, a heating curve, planetary atom models). Only the
+  calculation lessons allow a calculator. The syllabus doesn't split Stage 4 into years; the user chose all Stage 4
+  chemistry. The questions are the site's own (the Year 7 Science repo holds only the syllabus and its support
+  document, no textbook). A Maths | Science switch is in the header. Science topics are kept out of `ALL_TOPICS`, so
+  maths pages, the markbook, teacher pages and the parent view are unchanged; `findSkill` and `findTopic` find them.
+  No games or topic tests for science.
 - **Parent accounts** (`app/src/routes/parent.tsx`, `app/convex/parents.ts`): each student has an 8-character parent code
   (`students.parentCode`, printed on the login cards; made for older students the first time the cards are opened,
   `classes.ensureParentCodes`). At `/parent` a parent chooses "First time here", types the code, checks the child's name
@@ -487,6 +500,7 @@ npx tsx tests/ncm9-ch9.test.ts               # Year 9 Analysing data: data read 
 npx tsx tests/gallery-ncm9-9.ts              # screenshots of Chapter 9 (Year 9) questions
 npx tsx tests/ncm9-ch10.test.ts              # Year 9 Surface area and volume: labels read off the diagrams, shapes and sector angles measured
 npx tsx tests/gallery-ncm9-10.ts             # screenshots of Chapter 10 (Year 9) questions
+npx tsx tests/science.test.ts                # science: calculations re-worked from the question text, drawings read back, element data checked, sets built
 npx tsx tests/exit.test.ts                   # exit tickets: every game rebuilds from its seed; summaries and most-missed worked by hand
 npx tsx tests/games.test.ts                  # class games: every answer re-worked from its numbers, drawings measured, game building, luck rules
                                              # (each chapter's own re-working is in tests/game-checks/, e.g. ncm7-ch4.ts: exact fraction arithmetic)
@@ -517,6 +531,7 @@ node qa/game-check.mjs        # (preview server on :3102) class games: set-up, a
                               # then every game played through at four screen sizes with nothing needing scrolling
 node qa/game-preview-check.mjs out.html   # the built stand-alone page: a class game played by clicking only, and carried on after a reload
 node qa/exit-check.mjs [folder]          # (preview server on :3102) exit tickets: teacher tab, a student handing one in, parent pages; phone and laptop
+node qa/science-check.mjs                # (preview server on :3102) science: every lesson's Learn tab and practice set answered, phone fit, the subject switch
 npx tsx tests/calc-skills.ts; node qa/calc-check.mjs   # (preview server on :3102) every calculator skill's practice set: the button on every question
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)

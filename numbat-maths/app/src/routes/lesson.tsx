@@ -9,7 +9,7 @@ import { ReadAloud } from '@/components/numbat/QuestionCard'
 import { WorkedExample } from '@/components/numbat/WorkedExample'
 import { SkillTags } from '@/components/numbat/TextbookTags'
 import { PracticeRunner } from '@/components/numbat/PracticeRunner'
-import { findSkill } from '@/content'
+import { SCIENCE_TOPICS, findSkill } from '@/content'
 import { LEVEL_NAMES, type Level, type Skill, type Topic } from '@/lib/maths/types'
 import { masteryOf } from '@/lib/mastery'
 import { pageHead } from '@/lib/meta'
@@ -50,22 +50,29 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
   const p = items[skill.id]
   const k = topic.skills.indexOf(skill)
   const prev = topic.skills[k - 1]
-  const next = topic.skills[k + 1]
+  const science = topic.subject === 'science'
+  // science lessons run on from one topic to the next (Lessons 1–30)
+  const scienceAll = science ? SCIENCE_TOPICS.flatMap((t) => t.skills) : []
+  const next = topic.skills[k + 1] ?? (science ? scienceAll[scienceAll.indexOf(skill) + 1] : undefined)
 
   return (
     <div className="grid gap-6" style={{ ['--hue' as string]: topic.colour }}>
       <nav className="flex flex-wrap items-center gap-1 text-sm" aria-label="Breadcrumb" data-focus-hide>
-        <Link to="/home" search={{ year: topic.year }} className="font-bold text-primary">
-          Year {topic.year}
-        </Link>
+        {science ? (
+          <Link to="/science" className="font-bold text-primary">
+            Year {topic.year} science
+          </Link>
+        ) : (
+          <Link to="/home" search={{ year: topic.year }} className="font-bold text-primary">
+            Year {topic.year}
+          </Link>
+        )}
         <span className="text-muted-foreground">/</span>
         <Link to="/topic" search={{ id: topic.id }} className="font-bold text-primary">
           {topic.title}
         </Link>
         <span className="text-muted-foreground">/</span>
-        <span className="text-muted-foreground">
-          Skill {k + 1} of {topic.skills.length}
-        </span>
+        <span className="text-muted-foreground">{science ? `Lesson ${skill.lessonNo}` : `Skill ${k + 1} of ${topic.skills.length}`}</span>
       </nav>
 
       <header className="grid gap-2" data-focus-hide>
@@ -94,7 +101,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
       </div>
 
       {tab === 'learn' ? (
-        <Learn skill={skill} onPractise={() => void navigate({ to: '/lesson', search: { id: skill.id, tab: 'practice' } })} />
+        <Learn skill={skill} showOptions={science} onPractise={() => void navigate({ to: '/lesson', search: { id: skill.id, tab: 'practice' } })} />
       ) : (
         <Practise skill={skill} topic={topic} next={next} best={p?.best} />
       )}
@@ -111,6 +118,10 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
           <Link to="/lesson" search={{ id: next.id, tab: 'learn' }} className="btn btn-ghost">
             {next.title} <ArrowRight size={18} aria-hidden="true" />
           </Link>
+        ) : science ? (
+          <Link to="/science" className="btn btn-ghost">
+            All science lessons <ArrowRight size={18} aria-hidden="true" />
+          </Link>
         ) : (
           <Link to="/test" search={{ id: topic.id }} className="btn btn-ghost">
             Topic test <ArrowRight size={18} aria-hidden="true" />
@@ -121,7 +132,7 @@ function Lesson({ skill, topic, tab }: { skill: Skill; topic: Topic; tab: Tab })
   )
 }
 
-function Learn({ skill, onPractise }: { skill: Skill; onPractise: () => void }) {
+function Learn({ skill, onPractise, showOptions = false }: { skill: Skill; onPractise: () => void; showOptions?: boolean }) {
   const { intro, keyPoints, vocab } = skill.learn
   const all = [intro, '<p>Key points.</p>', ...keyPoints].join(' ')
   return (
@@ -159,7 +170,7 @@ function Learn({ skill, onPractise }: { skill: Skill; onPractise: () => void }) 
         )}
       </section>
 
-      <WorkedExample skill={skill} />
+      <WorkedExample skill={skill} showOptions={showOptions} />
 
       <div className="flex flex-wrap items-center gap-3">
         <button type="button" className="btn btn-primary btn-lg" onClick={onPractise}>
@@ -178,7 +189,7 @@ function Practise({ skill, topic, next, best }: { skill: Skill; topic: Topic; ne
   const [run, setRun] = useState<Run | null>(null)
   // whose place to keep on this device: the student, or a guest (not teachers or parents)
   const who = student ? student.studentId : teacher || parent ? null : 'guest'
-  const levels = setLevelsFor(topic.year)
+  const levels = setLevelsFor(topic.year, topic.subject)
   // a saved set is only offered if it still rebuilds the same questions (an update may have changed the skill)
   const loadSaved = () => {
     const r = who ? loadRun(who, skill.id) : null

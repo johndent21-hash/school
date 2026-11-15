@@ -20,6 +20,9 @@ import { Y1C } from './y1c'
 import { Y2A } from './y2a'
 import { Y2B } from './y2b'
 import { Y2C } from './y2c'
+import { SCIENCE_TOPICS } from './science'
+
+export { SCIENCE_TOPICS } from './science'
 
 /** Years 1–2 (Stage 1). Only included in builds made with VITE_STAGE1=1 (or STAGE1=1 for tests). */
 export const STAGE1_TOPICS: Topic[] = [...Y1A, ...Y1B, ...Y1C, ...Y2A, ...Y2B, ...Y2C]
@@ -57,12 +60,13 @@ export function topicsForYear(year: number): Topic[] {
 }
 
 const skillIndex = new Map<string, { skill: Skill; topic: Topic }>()
-for (const t of ALL_TOPICS) for (const s of t.skills) skillIndex.set(s.id, { skill: s, topic: t })
+// science lessons use the same lesson and practice pages, so they are found here too (but not listed with maths)
+for (const t of [...ALL_TOPICS, ...SCIENCE_TOPICS]) for (const s of t.skills) skillIndex.set(s.id, { skill: s, topic: t })
 
 export function findSkill(id: string): { skill: Skill; topic: Topic } | undefined {
   return skillIndex.get(id)
 }
 
 export function findTopic(id: string): Topic | undefined {
-  return ALL_TOPICS.find((t) => t.id === id)
+  return ALL_TOPICS.find((t) => t.id === id) ?? SCIENCE_TOPICS.find((t) => t.id === id)
 }
