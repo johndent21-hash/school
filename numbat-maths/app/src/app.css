@@ -1643,3 +1643,12 @@ div.bar.tinted > span {
     grid-column: 1 / -1;
   }
 }
+
+/* exit tickets: questions in the teacher's summary at reading size, not board size */
+.mx.exit-sum .big {
+  font-size: 1.15rem;
+  margin: 0.2rem 0;
+}
+.exit-sum {
+  overflow-wrap: anywhere;
+}

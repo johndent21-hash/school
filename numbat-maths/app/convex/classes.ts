@@ -3,7 +3,7 @@ import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
 import type { Id } from "./_generated/dataModel"
 import type { MutationCtx } from "./_generated/server"
-import { cleanName, deleteRatingsFor, getTeacher, newClassCode, ownedClass } from "./lib/security"
+import { cleanName, deleteRatingsFor, getTeacher, newClassCode, newParentCode, ownedClass } from "./lib/security"
 import { DEFAULT_GOAL, MAX_HISTORY } from "./learning"
 import { ratingsForStudent } from "./ratings"
 
@@ -90,6 +90,16 @@ async function deleteStudentData(ctx: MutationCtx, studentId: Id<"students">) {
     .withIndex("by_student", (q) => q.eq("studentId", studentId))
     .collect())
     await ctx.db.delete(s._id)
+  for (const a of await ctx.db
+    .query("exitAnswers")
+    .withIndex("by_student", (q) => q.eq("studentId", studentId))
+    .collect())
+    await ctx.db.delete(a._id)
+  for (const l of await ctx.db
+    .query("parentLinks")
+    .withIndex("by_student", (q) => q.eq("studentId", studentId))
+    .collect())
+    await ctx.db.delete(l._id)
 }
 
 export const deleteClass = mutation({
@@ -118,6 +128,11 @@ export const deleteClass = mutation({
       .withIndex("by_class", (q) => q.eq("classId", c._id))
       .collect())
       await ctx.db.delete(l._id)
+    for (const k of await ctx.db
+      .query("exitTickets")
+      .withIndex("by_class", (q) => q.eq("classId", c._id))
+      .collect())
+      await ctx.db.delete(k._id)
     await ctx.db.delete(c._id)
     return { ok: true }
   },
@@ -150,7 +165,7 @@ export const addStudents = mutation({
         continue
       }
       taken.add(n.toLowerCase())
-      await ctx.db.insert("students", { classId: c._id, name: n, failedAttempts: 0, points: 0, createdAt: Date.now() })
+      await ctx.db.insert("students", { classId: c._id, name: n, failedAttempts: 0, points: 0, createdAt: Date.now(), parentCode: await newParentCode(ctx) })
       added++
     }
     return { ok: true, added, skipped }
@@ -204,6 +219,51 @@ export const resetPin = mutation({
   },
 })
 
+/** Gives every student in the class a parent code if they have none yet (students added before parent codes). */
+export const ensureParentCodes = mutation({
+  args: { token: v.string(), classId: v.id("classes") },
+  returns: v.any(),
+  handler: async (ctx, { token, classId }) => {
+    const t = await getTeacher(ctx, token)
+    if (!t) return fail(NOT_TEACHER)
+    const c = await ownedClass(ctx, t._id, classId)
+    if (!c) return fail("Class not found.")
+    let made = 0
+    for (const s of await ctx.db
+      .query("students")
+      .withIndex("by_class", (q) => q.eq("classId", c._id))
+      .collect())
+      if (!s.parentCode) {
+        await ctx.db.patch(s._id, { parentCode: await newParentCode(ctx) })
+        made++
+      }
+    return { ok: true, made }
+  },
+})
+
+/**
+ * A new parent code for one student (e.g. a card was lost or seen by someone else). The old code stops working and
+ * parent accounts linked to this child are unlinked; the family sets up again with the new code.
+ */
+export const newStudentParentCode = mutation({
+  args: { token: v.string(), studentId: v.id("students") },
+  returns: v.any(),
+  handler: async (ctx, { token, studentId }) => {
+    const t = await getTeacher(ctx, token)
+    if (!t) return fail(NOT_TEACHER)
+    const s = await ctx.db.get(studentId)
+    if (!s || !(await ownedClass(ctx, t._id, s.classId))) return fail("Student not found.")
+    const code = await newParentCode(ctx)
+    await ctx.db.patch(s._id, { parentCode: code, parentFailed: 0, parentLockedUntil: undefined, parentLockCount: 0 })
+    for (const l of await ctx.db
+      .query("parentLinks")
+      .withIndex("by_student", (q) => q.eq("studentId", s._id))
+      .collect())
+      await ctx.db.delete(l._id)
+    return { ok: true, code }
+  },
+})
+
 /** Everything the class page needs: students, their best results and the class tasks. */
 export const classReport = query({
   args: { token: v.optional(v.string()), classId: v.id("classes") },
@@ -231,6 +291,17 @@ export const classReport = query({
       .query("assignments")
       .withIndex("by_class", (q) => q.eq("classId", c._id))
       .collect()
+    const parentAccounts = new Map<string, number>()
+    for (const s of students)
+      parentAccounts.set(
+        s._id,
+        (
+          await ctx.db
+            .query("parentLinks")
+            .withIndex("by_student", (q) => q.eq("studentId", s._id))
+            .collect()
+        ).length,
+      )
     return {
       ok: true,
       class: { id: c._id, name: c.name, year: c.year, code: c.code, weeklyGoal: c.weeklyGoal ?? DEFAULT_GOAL },
@@ -243,6 +314,8 @@ export const classReport = query({
           points: s.points,
           lastActive: s.lastActive ?? null,
           progress: byStudent.get(s._id) ?? {},
+          parentCode: s.parentCode ?? null,
+          parentAccounts: parentAccounts.get(s._id) ?? 0,
         }))
         .sort((a, b) => a.name.localeCompare(b.name)),
       assignments: assignments

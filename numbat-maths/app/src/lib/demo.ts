@@ -17,14 +17,17 @@ const NAMES = [
 // The class worked through these Year 7 topics, three weeks each, over the last 12 weeks
 const PLAN = ['y7-integers', 'y7-whole-numbers', 'y7-fractions', 'y7-algebra']
 
-type Kind = 'strong' | 'steady' | 'struggling' | 'declining' | 'quiet' | 'never'
+export type Kind = 'strong' | 'steady' | 'struggling' | 'declining' | 'quiet' | 'never'
 // one profile per student, in name order
 const PROFILES: Kind[] = [
   'strong', 'steady', 'struggling', 'steady', 'strong', 'quiet', 'steady', 'declining', 'strong', 'steady', 'never', 'steady',
   'strong', 'struggling', 'steady', 'quiet', 'strong', 'steady', 'strong', 'never', 'steady', 'declining', 'steady', 'quiet',
 ]
 
-function rng(seed: number) {
+/** an example student's profile (ids are demo-1 … demo-24, in name order) */
+export const demoProfile = (id: string): Kind => PROFILES[Number(id.split('-')[1]) - 1] ?? 'steady'
+
+export function rng(seed: number) {
   let a = seed >>> 0
   return () => {
     a = (a + 0x6d2b79f5) >>> 0

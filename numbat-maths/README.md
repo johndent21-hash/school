@@ -30,9 +30,18 @@ Also:
 - **Lesson ratings** (`app/convex/ratings.ts`, `RatingsSheet.tsx`): a colour-coded sheet where the teacher gives each student
   4 (excellent), 3 (good), 2 (below expectations), 1 (well below) or A (absent) for each lesson. Type or tap; the next student
   is selected after each entry. Students rated below expectations in 2 of their last 3 rated lessons appear under "May need help".
-- **Parent view** (`app/src/routes/parent.tsx`, `app/convex/parents.ts`): parents log in at `/parent` with the same class code,
-  name and PIN their child uses and get a read-only page with the lesson ratings and Numbat Maths practice. Wrong PINs pause the
-  account for 10 minutes, then 20, 40 ... up to a day, so 4-digit PINs can't be guessed by trying them all.
+- **Parent accounts** (`app/src/routes/parent.tsx`, `app/convex/parents.ts`): each student has an 8-character parent code
+  (`students.parentCode`, printed on the login cards; made for older students the first time the cards are opened,
+  `classes.ensureParentCodes`). At `/parent` a parent chooses "First time here", types the code, checks the child's name
+  and chooses their own 6-digit PIN; that makes a parent account (`parents`, linked to children by `parentLinks`).
+  Brothers and sisters are added with their own codes ("Add a child"), so one log-in covers them all. Log-in is any linked
+  child's code plus the parent's PIN. Read-only, and only the linked children. Wrong parent PINs pause parent log-ins with
+  that code for 10 minutes, then 20, 40 ... up to a day; this pause is kept apart from the child's own PIN, so it never
+  locks the child out. A second household can set up its own account with the same code and a different PIN (up to 4
+  accounts per child). Teachers see how many parent accounts each student has (Students tab) and can give a student a new
+  parent code (lost card), which unlinks the child from every parent account. The old parent log-in (the child's class
+  code, name and PIN) was switched off on 15 Nov 2026; its sessions are no longer accepted and `/join?as=parent` explains
+  the change. Forgotten parent PIN: set up again with the same code.
 - **Textbook alignment, Year 7 Integers** (`src/content/y7-ncm1.ts`): follows New Century Maths 7 (3rd edition) Chapter 1.
   One skill per exercise (Ex 1.01–1.10, labelled on the site), Power plus as an extension set, and a 12-question topic
   test in the order of Test Yourself 1. The questions are the site's own (no textbook wording or numbers), matching each
@@ -156,6 +165,21 @@ Also:
     stand-alone HTML document (its own styles, `sheetHtml`), previewed in a frame and printed with Print → Save as PDF;
     in the claude.ai preview, where printing may be blocked, it can be saved as an .html file instead (`saveText`,
     artifact `downloads` capability).
+  - **Exit tickets** (class page → Exit tickets, `components/numbat/ExitTickets.tsx`; students at `/exit` and a card on
+    their home page; `app/convex/exits.ts`; logic in `src/lib/game/exit.ts`): 3, 5 or 8 game questions from any exercise
+    or whole chapter, answered once on each student's own device. Open until the teacher closes it, for up to 2 days;
+    starting a new one closes the last. The server keeps the game id and seed, and per question only the kind, the right
+    option and the mistake labels (plain text, never HTML); each device rebuilds the questions from the seed and checks
+    their fingerprint (`gameCheck`), so a ticket made before a site update is never answered with different questions.
+    The server marks the answers. The teacher sees who has handed in, each question with how many chose each option,
+    the mistake behind each wrong option and who chose it, and **Most missed**: the kinds of question the class gets
+    wrong most often over all its tickets (at least 4 answers, 25 % or more wrong), with the commonest mistakes.
+  - **Mistake labels** (`miss()` in `src/content/games/helpers.ts`; `q.mistakes`): a wrong option can carry a short
+    label naming the mistake that gives it ("multiplied only the first term"). Never shown in the game; used by the exit
+    ticket summaries. Labels follow their option through the de-duplication and shuffle, and adding them does not change
+    any question (`tests/fingerprints.ts` prints a fingerprint per exercise to compare before and after). So far:
+    NCM 7 Ch 1, NCM 8 Ch 3 and NCM 9 Ch 4 / 9 Std Ch 4 (92 kinds, counting reuses). `tests/games.test.ts` checks every
+    label is on a wrong option, short and plain, and that a "wrong sign" option is the answer's opposite.
   - **Questions** (`src/content/games/`, types in `src/lib/game/types.ts`): one set for each exercise, organised
     book → chapter → exercise. These are separate from the lessons' practice questions: every game question is ONE step,
     done in the head in about 15 seconds with friendly numbers, and its wrong choices are the answers the usual mistakes
@@ -453,6 +477,7 @@ npx tsx tests/ncm9-ch9.test.ts               # Year 9 Analysing data: data read 
 npx tsx tests/gallery-ncm9-9.ts              # screenshots of Chapter 9 (Year 9) questions
 npx tsx tests/ncm9-ch10.test.ts              # Year 9 Surface area and volume: labels read off the diagrams, shapes and sector angles measured
 npx tsx tests/gallery-ncm9-10.ts             # screenshots of Chapter 10 (Year 9) questions
+npx tsx tests/exit.test.ts                   # exit tickets: every game rebuilds from its seed; summaries and most-missed worked by hand
 npx tsx tests/games.test.ts                  # class games: every answer re-worked from its numbers, drawings measured, game building, luck rules
                                              # (each chapter's own re-working is in tests/game-checks/, e.g. ncm7-ch4.ts: exact fraction arithmetic)
 K=3 npx tsx tests/games-dump.ts              # class games: sample questions as plain text (ONLY=ncm7-8.05 for one exercise)
@@ -481,6 +506,7 @@ node qa/fit-sweep.mjs ipad    # (Years 1–4 on) every question fits without scr
 node qa/game-check.mjs        # (preview server on :3102) class games: set-up, a whole game, keys, timer, undo, carrying on after a refresh,
                               # then every game played through at four screen sizes with nothing needing scrolling
 node qa/game-preview-check.mjs out.html   # the built stand-alone page: a class game played by clicking only, and carried on after a reload
+node qa/exit-check.mjs [folder]          # (preview server on :3102) exit tickets: teacher tab, a student handing one in, parent pages; phone and laptop
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)
 cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh out.html "Numbat Maths 1–9"   # preview with Years 1–4 added

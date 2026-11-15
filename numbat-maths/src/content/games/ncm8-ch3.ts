@@ -15,7 +15,7 @@
 // Audit against the textbook, exercise by exercise (Nov 2026): added writing terms in expanded form (3.01, from
 // NCM 7 5.03) and expanding and simplifying two brackets (3.07). Step 4 (Nov 2026): non-monic binomial products added to 3.11 (extension, like the rest of 3.11).
 import type { GameChapter, GameMaker, GameQuestion, GameSet } from '@/lib/game/types'
-import { chance, ex, gcd, gq, int, mk, num, pick, sample, v } from './helpers'
+import { type Miss, chance, ex, gcd, gq, int, miss, mk, num, pick, sample, v } from './helpers'
 import { NCM7_CH5 } from './ncm7-ch5'
 
 const ALG = 'MA4-ALG-C-01'
@@ -23,6 +23,9 @@ const EXT_IND = 'Marked as extension in the textbook: index laws with pronumeral
 const EXT_ALG = 'Marked as extension in the textbook: this is Stage 5 path content (MA5-ALG-P-01).'
 const big = (s: string) => `<div class="big">${s}</div>`
 const E = ex
+/** a wrong option as algebra, keeping its mistake label if it has one */
+const EO = (w: string | Miss) => (typeof w === 'string' ? E(w) : miss(E(w.v), w.m))
+const M = miss
 const LET = ['a', 'b', 'c', 'd', 'g', 'h', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'w', 'x', 'y', 'z']
 function from(ex5: string, ...ts: string[]): GameMaker[] {
   const s = NCM7_CH5.sets.find((x) => x.exercise === ex5)!
@@ -73,16 +76,16 @@ function m306laws(): GameQuestion {
   const n = m === 2 ? int(3, 6) : int(2, 6)
   const P = (e: number) => (e === 1 ? L : `${L}^${e}`)
   const [expr, right, wrong] = [
-    [`${L}^${m} * ${L}^${n}`, P(m + n), [P(m * n), `2${P(m + n)}`, P(m + n + 1), `${m + n}${L}`, P(m + n - 1)]],
-    [`${a}${L}^${m} * ${b}${L}^${n}`, `${a * b}${P(m + n)}`, [`${a + b}${P(m + n)}`, `${a * b}${P(m * n)}`, `${a + b}${P(m * n)}`, `${a * b}${P(m + n + 1)}`]],
-    [`${L}^${m + n} ÷ ${L}^${n}`, P(m), [P(m + 2 * n), ...((m + n) % n === 0 ? [P((m + n) / n)] : []), P(m + 1), P(m + n), `${m}${L}`]],
-    [`(${L}^${m})^${n}`, P(m * n), [P(m + n), `${n}${P(m)}`, P(m * n + 1), `${m * n}${L}`]],
-  ][kind] as [string, string, string[]]
+    [`${L}^${m} * ${L}^${n}`, P(m + n), [M(P(m * n), 'multiplied the indices'), M(`2${P(m + n)}`, 'added the indices and doubled'), P(m + n + 1), M(`${m + n}${L}`, 'wrote the index as a coefficient'), P(m + n - 1)]],
+    [`${a}${L}^${m} * ${b}${L}^${n}`, `${a * b}${P(m + n)}`, [M(`${a + b}${P(m + n)}`, 'added the numbers instead of multiplying'), M(`${a * b}${P(m * n)}`, 'multiplied the indices'), M(`${a + b}${P(m * n)}`, 'added the numbers, multiplied the indices'), `${a * b}${P(m + n + 1)}`]],
+    [`${L}^${m + n} ÷ ${L}^${n}`, P(m), [M(P(m + 2 * n), 'added the indices'), ...((m + n) % n === 0 ? [M(P((m + n) / n), 'divided the indices')] : []), P(m + 1), M(P(m + n), 'left the index unchanged'), M(`${m}${L}`, 'wrote the index as a coefficient')]],
+    [`(${L}^${m})^${n}`, P(m * n), [M(P(m + n), 'added the indices'), M(`${n}${P(m)}`, 'multiplied by the outer index'), P(m * n + 1), M(`${m * n}${L}`, 'wrote the index as a coefficient')]],
+  ][kind] as [string, string, (string | Miss)[]]
   return gq({
     t: 'laws',
     prompt: `Simplify:${big(E(expr))}`,
     correct: E(right),
-    wrong: wrong.filter((w) => w !== right).map(E),
+    wrong: wrong.map(EO),
     why: [`Multiplying: add the indices: ${E(right)}.`, `Multiply the numbers, add the indices: ${E(right)}.`, `Dividing: subtract the indices: ${E(right)}.`, `Power of a power: multiply the indices: ${E(right)}.`][kind],
     meta: { kind, L, a, b, m, n },
   })
@@ -93,14 +96,14 @@ function m306zero(): GameQuestion {
   const k = int(2, 9)
   const kind = int(0, 1)
   const [expr, right, wrong] = [
-    [`${L}^0`, '1', ['0', L, '10']],
-    [`${k}${L}^0`, String(k), ['1', '0', `${k}${L}`]],
-  ][kind] as [string, string, string[]]
+    [`${L}^0`, '1', [M('0', 'thought a power of 0 gives 0'), M(L, 'thought a power of 0 leaves it unchanged'), '10']],
+    [`${k}${L}^0`, String(k), [M('1', 'made the whole term 1, not just the pronumeral'), M('0', 'thought a power of 0 gives 0'), M(`${k}${L}`, 'thought a power of 0 leaves it unchanged')]],
+  ][kind] as [string, string, (string | Miss)[]]
   return gq({
     t: 'zero',
     prompt: `Simplify:${big(E(expr))}`,
     correct: E(right),
-    wrong: wrong.map(E),
+    wrong: wrong.map(EO),
     why: kind === 0 ? `Any non-zero number to the power 0 is 1: ${E(expr)} = 1.` : `${E(`${L}^0`)} = 1, so ${E(expr)} = ${k} × 1 = ${k}.`,
     meta: { L, k, kind },
   })
@@ -127,19 +130,19 @@ function m307expand(): GameQuestion {
   const b = a === 2 ? pick([1, 3, 4, 5, 6, 7, 8, 9]) : int(1, 9)
   const [expr, right, wrong] = [
     // a(L + b)
-    [`${a}(${L} + ${b})`, sum([[a, L], [a * b, '']]), [sum([[a, L], [b, '']]), sum([[a, L], [a + b, '']]), sum([[a + 1, L], [a * b, '']])]],
+    [`${a}(${L} + ${b})`, sum([[a, L], [a * b, '']]), [M(sum([[a, L], [b, '']]), 'multiplied only the first term'), M(sum([[a, L], [a + b, '']]), 'added instead of multiplied'), sum([[a + 1, L], [a * b, '']])]],
     // a(L − b)
-    [`${a}(${L} - ${b})`, sum([[a, L], [-a * b, '']]), [sum([[a, L], [-b, '']]), sum([[a, L], [a * b, '']]), sum([[a, L], [-(a + b), '']])]],
+    [`${a}(${L} - ${b})`, sum([[a, L], [-a * b, '']]), [M(sum([[a, L], [-b, '']]), 'multiplied only the first term'), M(sum([[a, L], [a * b, '']]), 'lost the minus sign'), M(sum([[a, L], [-(a + b), '']]), 'added instead of multiplied')]],
     // −a(L − b)
-    [`-${a}(${L} - ${b})`, sum([[-a, L], [a * b, '']]), [sum([[-a, L], [-a * b, '']]), sum([[-a, L], [-b, '']]), sum([[a, L], [-a * b, '']])]],
+    [`-${a}(${L} - ${b})`, sum([[-a, L], [a * b, '']]), [M(sum([[-a, L], [-a * b, '']]), 'negative × negative left negative'), M(sum([[-a, L], [-b, '']]), 'multiplied only the first term'), M(sum([[a, L], [-a * b, '']]), 'lost the negative outside the brackets')]],
     // L(L + b)
-    [`${L}(${L} + ${b})`, sum([[1, `${L}^2`], [b, L]]), [sum([[1, `${L}^2`], [b, '']]), sum([[2, L], [b, L]]), sum([[1, `${L}^2`], [b, `${L}^2`]])]],
-  ][kind] as [string, string, string[]]
+    [`${L}(${L} + ${b})`, sum([[1, `${L}^2`], [b, L]]), [M(sum([[1, `${L}^2`], [b, '']]), 'multiplied only the first term'), M(sum([[2, L], [b, L]]), 'wrote the pronumeral × itself as 2 times it'), M(sum([[1, `${L}^2`], [b, `${L}^2`]]), 'squared the pronumeral in both terms')]],
+  ][kind] as [string, string, (string | Miss)[]]
   return gq({
     t: 'expand',
     prompt: `Expand:${big(E(expr))}`,
     correct: E(right),
-    wrong: wrong.filter((w) => w !== right).map(E),
+    wrong: wrong.map(EO),
     why: `Multiply every term inside the brackets by the term outside: ${E(right)}.`,
     meta: { kind, L, a, b },
   })
@@ -152,14 +155,14 @@ function m307simplify(): GameQuestion {
   const c = int(2, 9)
   const plus = chance()
   // a(L + b) + cL  or  a(L + b) − c
-  const [expr, right, wrong] = plus
-    ? [`${a}(${L} + ${b}) + ${c}${L}`, sum([[a + c, L], [a * b, '']]), [sum([[a + c, L], [b, '']]), sum([[a * c, L], [a * b, '']]), sum([[a, L], [a * b + c, '']]), sum([[a + c + 1, L], [a * b, '']])]]
-    : [`${a}(${L} + ${b}) - ${c}`, sum([[a, L], [a * b - c, '']]), [sum([[a, L], [b - c, '']]), sum([[a, L], [a * b + c, '']]), sum([[a - c, L], [a * b, '']]), sum([[a, L], [a * b - c + 1, '']])]]
+  const [expr, right, wrong]: [string, string, (string | Miss)[]] = plus
+    ? [`${a}(${L} + ${b}) + ${c}${L}`, sum([[a + c, L], [a * b, '']]), [M(sum([[a + c, L], [b, '']]), 'multiplied only the first term'), M(sum([[a * c, L], [a * b, '']]), 'multiplied like terms instead of adding'), M(sum([[a, L], [a * b + c, '']]), 'added unlike terms'), sum([[a + c + 1, L], [a * b, '']])]]
+    : [`${a}(${L} + ${b}) - ${c}`, sum([[a, L], [a * b - c, '']]), [M(sum([[a, L], [b - c, '']]), 'multiplied only the first term'), M(sum([[a, L], [a * b + c, '']]), 'added instead of subtracted'), M(sum([[a - c, L], [a * b, '']]), 'combined unlike terms'), sum([[a, L], [a * b - c + 1, '']])]]
   return gq({
     t: 'simplify',
     prompt: `Expand and simplify:${big(E(expr))}`,
     correct: E(right),
-    wrong: wrong.filter((w) => w !== right).map(E),
+    wrong: wrong.map(EO),
     why: `Expand first: ${E(sum([[a, L], [a * b, '']]))}. Then collect like terms: ${E(right)}.`,
     meta: { L, a, b, c, plus },
   })
@@ -177,15 +180,15 @@ function m307twoBrackets(): GameQuestion {
   // a(L + b) − c(L + d)  or  a(L + b) + c(L − d): either way the constant is ab − cd
   const k = minus ? a - c : a + c
   const right = sum([[k, L], [a * b - c * d, '']])
-  const wrong = minus
-    ? [sum([[k, L], [a * b + c * d, '']]), sum([[a + c, L], [a * b - c * d, '']]), sum([[k, L], [b - d, '']]), sum([[k, L], [a * b - c * d + 1, '']])]
-    : [sum([[k, L], [a * b + c * d, '']]), sum([[k, L], [b - d, '']]), sum([[a * c, L], [a * b - c * d, '']]), sum([[k, L], [a * b - c * d - 1, '']])]
+  const wrong: (string | Miss)[] = minus
+    ? [M(sum([[k, L], [a * b + c * d, '']]), 'lost the minus on the second bracket’s last term'), M(sum([[a + c, L], [a * b - c * d, '']]), 'lost the minus on the second bracket’s first term'), M(sum([[k, L], [b - d, '']]), 'multiplied only the first terms'), sum([[k, L], [a * b - c * d + 1, '']])]
+    : [M(sum([[k, L], [a * b + c * d, '']]), 'lost the minus sign inside the second bracket'), M(sum([[k, L], [b - d, '']]), 'multiplied only the first terms'), M(sum([[a * c, L], [a * b - c * d, '']]), 'multiplied like terms instead of adding'), sum([[k, L], [a * b - c * d - 1, '']])]
   return gq({
     t: 'twoBrackets',
     prompt: `Expand and simplify:${big(E(minus ? `${a}(${L} + ${b}) - ${c}(${L} + ${d})` : `${a}(${L} + ${b}) + ${c}(${L} - ${d})`))}`,
     correct: E(right),
     // a sign lost on the second bracket, only the first term multiplied, the outside numbers multiplied; a spare
-    wrong: wrong.filter((w) => w !== right).map(E),
+    wrong: wrong.map(EO),
     why: `Expand each bracket: ${E(sum([[a, L], [a * b, '']]))} and ${E(sum([[minus ? -c : c, L], [-c * d, '']]))}. Then collect like terms: ${E(right)}.`,
     meta: { L, a, b, c, d, minus },
   })
@@ -234,7 +237,7 @@ function m308hcf(): GameQuestion {
     prompt: `What is the highest common factor of ${E(t1)} and ${E(t2)}?`,
     correct: E(right),
     // the number only, the letters only, the higher power, the product
-    wrong: [E(String(g)), E(mono(1, { [L]: Math.min(e1, e2) })), E(mono(g, { [L]: Math.max(e1, e2) + (e1 === e2 ? 1 : 0) })), E(mono(g * p * q, { [L]: Math.min(e1, e2) })), E(mono(g, { [L]: Math.min(e1, e2), [M]: 1 }))].filter((w) => w !== E(right)),
+    wrong: [miss(E(String(g)), 'left out the pronumeral'), miss(E(mono(1, { [L]: Math.min(e1, e2) })), 'left out the number'), miss(E(mono(g, { [L]: Math.max(e1, e2) + (e1 === e2 ? 1 : 0) })), 'did not take the lowest power'), miss(E(mono(g * p * q, { [L]: Math.min(e1, e2) })), 'used the LCM of the numbers'), miss(E(mono(g, { [L]: Math.min(e1, e2), [M]: 1 })), 'included a letter not in both terms')],
     why: `HCF of the numbers: ${g}. Lowest power of ${v(L)} in both: ${E(mono(1, { [L]: Math.min(e1, e2) }))}. HCF: ${E(right)}.`,
     meta: { g, p, q, e1, e2, withM },
   })
@@ -252,7 +255,7 @@ function m308factor(): GameQuestion {
     prompt: `Which is a factor of ${E(t)}?`,
     correct: E(right),
     // a number that does not divide, too high a power, a letter that is not there
-    wrong: [E(mono(pick(nondivs), { [L]: 1 })), E(mono(pick(divs), { [L]: 3 })), E(mono(pick(divs), { [M]: 2 })), E(mono(1, { [pick(LET.filter((x) => x !== L && x !== M))]: 1 }))],
+    wrong: [miss(E(mono(pick(nondivs), { [L]: 1 })), 'a number that does not divide it'), miss(E(mono(pick(divs), { [L]: 3 })), 'a power higher than in the term'), miss(E(mono(pick(divs), { [M]: 2 })), 'a power higher than in the term'), miss(E(mono(1, { [pick(LET.filter((x) => x !== L && x !== M))]: 1 })), 'a letter that is not in the term')],
     why: `${E(right)} divides ${E(t)} exactly: its number divides ${c}, and its letters appear in ${E(t)} with at least the same powers.`,
     meta: { c, L, M },
   })
@@ -287,7 +290,7 @@ function m309factorise(): GameQuestion {
     prompt: `Factorise:${big(E(expr))}`,
     correct: E(`${g}(${inside})`),
     // the HCF taken from one term only, the sign changed, the HCF put next to the wrong term
-    wrong: [`${g}(${sum([[p, L], [minus ? -g * q : g * q, '']])})`, `${g}(${sum([[p, L], [minus ? q : -q, '']])})`, `${g * p}(${sum([[1, L], [minus ? -q : q, '']])})`, `${g}(${sum([[g * p, L], [minus ? -q : q, '']])})`].map(E),
+    wrong: [M(`${g}(${sum([[p, L], [minus ? -g * q : g * q, '']])})`, 'divided only the first term by the HCF'), M(`${g}(${sum([[p, L], [minus ? q : -q, '']])})`, 'changed the sign inside'), M(`${g * p}(${sum([[1, L], [minus ? -q : q, '']])})`, 'took out the first term’s number, not the HCF'), M(`${g}(${sum([[g * p, L], [minus ? -q : q, '']])})`, 'divided only the second term by the HCF')].map(EO),
     why: `The highest common factor of ${E(expr)} is ${g}: ${E(`${g}(${inside})`)}. Check by expanding.`,
     meta: { L, g, p, q, minus },
   })
@@ -309,7 +312,7 @@ function m309fully(): GameQuestion {
     prompt: `Factorise fully:${big(E(expr))}`,
     correct: E(right),
     // only partly factorised (still a common factor inside), a wrong bracket
-    wrong: [`${part}(${sum([[(g / part) * p, L], [(g / part) * q, '']])})`, `${g}(${sum([[p, L], [g * q, '']])})`, `${g}(${sum([[p, L], [q + 1, '']])})`].map(E),
+    wrong: [M(`${part}(${sum([[(g / part) * p, L], [(g / part) * q, '']])})`, 'not fully factorised: a common factor is left'), M(`${g}(${sum([[p, L], [g * q, '']])})`, 'divided only the first term by the HCF'), `${g}(${sum([[p, L], [q + 1, '']])})`].map(EO),
     why: `The highest common factor is ${g}, not just ${part}: ${E(right)}.`,
     meta: { L, g, p, q },
   })
@@ -320,14 +323,14 @@ function m309letter(): GameQuestion {
   const a = int(2, 9)
   const kind = int(0, 1)
   const [expr, right, wrong] = [
-    [`${L}^2 + ${a}${L}`, `${L}(${L} + ${a})`, [`${L}(${L}^2 + ${a})`, `${L}(${L} + ${a}${L})`, `${a}${L}(${L} + 1)`]],
-    [`${a}${L}^2 - ${a}${L}`, `${a}${L}(${L} - 1)`, [`${a}${L}(${L})`, `${a}(${L}^2 - 1)`, `${L}(${a}${L} - 1)`]],
-  ][kind] as [string, string, string[]]
+    [`${L}^2 + ${a}${L}`, `${L}(${L} + ${a})`, [M(`${L}(${L}^2 + ${a})`, 'took out the pronumeral but left the square'), M(`${L}(${L} + ${a}${L})`, 'divided only the first term'), M(`${a}${L}(${L} + 1)`, 'took out a number that is not common')]],
+    [`${a}${L}^2 - ${a}${L}`, `${a}${L}(${L} - 1)`, [M(`${a}${L}(${L})`, 'left out the 1 (the term divided by itself)'), M(`${a}(${L}^2 - 1)`, 'took out the number only'), M(`${L}(${a}${L} - 1)`, 'took out the letter only and lost a factor')]],
+  ][kind] as [string, string, (string | Miss)[]]
   return gq({
     t: 'letter',
     prompt: `Factorise fully:${big(E(expr))}`,
     correct: E(right),
-    wrong: wrong.map(E),
+    wrong: wrong.map(EO),
     why: `Take out the highest common factor, ${kind === 0 ? v(L) : E(`${a}${L}`)}: ${E(right)}.`,
     meta: { L, a, kind },
   })
@@ -362,7 +365,7 @@ function m310negative(): GameQuestion {
     prompt: `Factorise using a negative common factor:${big(E(expr))}`,
     correct: E(`-${g}(${inside})`),
     // the second sign not changed, a positive factor with a wrong bracket, the factor left in one term
-    wrong: [`-${g}(${sum([[p, L], [minus ? -q : q, '']])})`, `${g}(${sum([[-p, L], [minus ? q : -q, '']])})`, `-${g}(${sum([[p, L], [minus ? g * q : -g * q, '']])})`].map(E),
+    wrong: [M(`-${g}(${sum([[p, L], [minus ? -q : q, '']])})`, 'did not change the second sign'), M(`${g}(${sum([[-p, L], [minus ? q : -q, '']])})`, 'took out a positive factor'), M(`-${g}(${sum([[p, L], [minus ? g * q : -g * q, '']])})`, 'divided only the first term by the HCF')].map(EO),
     why: `Take out −${g}: every sign inside the brackets changes. ${E(`-${g}(${inside})`)}.`,
     meta: { L, g, p, q, minus },
   })
@@ -397,7 +400,7 @@ function m311binomial(): GameQuestion {
     prompt: `Expand:${big(E(`${br(a)}${br(b)}`))}`,
     correct: E(right),
     // the middle term forgotten, the numbers added and multiplied the wrong way round, a sign slip
-    wrong: [sum([[1, `${L}^2`], [a * b, '']]), sum([[1, `${L}^2`], [a * b, L], [a + b, '']]), sum([[1, `${L}^2`], [a + b, L], [-a * b, '']]), sum([[1, `${L}^2`], [a - b, L], [a * b, '']])].filter((w) => w !== right).map(E),
+    wrong: [M(sum([[1, `${L}^2`], [a * b, '']]), 'left out the middle term'), M(sum([[1, `${L}^2`], [a * b, L], [a + b, '']]), 'swapped the sum and the product'), M(sum([[1, `${L}^2`], [a + b, L], [-a * b, '']]), 'sign slip on the last term'), M(sum([[1, `${L}^2`], [a - b, L], [a * b, '']]), 'sign slip on the middle term')].map(EO),
     why: `Multiply each term in the first bracket by each term in the second: ${E(`${L}^2`)} + (${bn(a)} + ${bn(b)})${v(L)} + ${bn(a)} × ${bn(b)} = ${E(right)}.`,
     meta: { L, a, b },
   })

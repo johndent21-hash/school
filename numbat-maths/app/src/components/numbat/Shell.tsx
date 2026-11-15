@@ -60,7 +60,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             {show && parent && (
               <>
                 <Link to="/parent" className="btn btn-ghost btn-sm">
-                  {firstName(parent.childName)}’s progress
+                  {parent.children.length === 1 ? `${firstName(parent.children[0].name)}’s progress` : 'My children'}
                 </Link>
                 <button type="button" className="btn btn-ghost btn-sm" onClick={() => void signOut()}>
                   <LogOut size={16} aria-hidden="true" />

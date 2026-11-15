@@ -15,6 +15,7 @@ import { RewardsPanel } from '@/components/numbat/Rewards'
 import { firstName, useSession } from '@/lib/session'
 import { load, save } from '@/lib/storage'
 import { useMounted } from '@/lib/use-mounted'
+import { useMyExitTicket } from '@/lib/exit-data'
 
 export const Route = createFileRoute('/home')({
   validateSearch: (s: Record<string, unknown>): { year?: number } => {
@@ -80,6 +81,7 @@ function Dashboard() {
         </div>
       )}
 
+      {student && <ExitCard />}
       {student && <Tasks tasks={tasks} items={items} />}
 
       {!teacher && !rewards.loading && <RewardsPanel summary={rewards.summary} guest={!student} />}
@@ -207,6 +209,25 @@ function Tasks({ tasks, items }: { tasks: Task[] | undefined; items: ProgressMap
           )
         })}
       </div>
+    </section>
+  )
+}
+
+/** The class's open exit ticket, if the student hasn't handed it in yet. */
+function ExitCard() {
+  const my = useMyExitTicket()
+  if (!my || !my.ok || !my.ticket || my.done) return null
+  return (
+    <section className="panel flex flex-wrap items-center justify-between gap-3 border-2 border-[hsl(var(--primary))] p-4" aria-label="Exit ticket">
+      <div className="grid gap-1">
+        <h2 className="font-display text-xl font-semibold">Exit ticket from your teacher</h2>
+        <p className="text-muted-foreground">
+          {my.ticket.title} · {my.ticket.count} quick questions
+        </p>
+      </div>
+      <Link to="/exit" className="btn btn-primary">
+        Start
+      </Link>
     </section>
   )
 }

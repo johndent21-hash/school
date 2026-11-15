@@ -12,7 +12,7 @@
 // Audit against the textbook, exercise by exercise (Nov 2026): added "always positive, always negative or could be
 // either" for sums, differences, products and quotients of positive and negative integers (1.04–1.07).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
-import { DIVIDE, MINUS, TIMES, chance, gq, int, mk, nonZero, num, pick, sample, shuffle } from './helpers'
+import { DIVIDE, MINUS, TIMES, type Miss, chance, gq, int, miss, mk, nonZero, num, pick, sample, shuffle } from './helpers'
 import { intLine, vScale } from '@/lib/maths/diagrams4'
 
 const INT = 'MA4-INT-C-01'
@@ -22,15 +22,22 @@ const b = (s: string) => `<b>${s}</b>`
 const br = (x: number) => (x < 0 ? `(${num(x)})` : num(x))
 /** a signed amount of money: −$15 or $15 */
 const dollarsSigned = (x: number) => (x < 0 ? MINUS + '$' + -x : '$' + x)
-/** three wrong integers: the likely mistakes first, then near misses; never the right answer, never twice */
-function intWrong(right: number, likely: number[]): string[] {
-  const out: number[] = []
-  for (const x of [...likely, right + 1, right - 1, -right, right + 2, right - 2, right + 10]) {
-    if (x !== right && !out.includes(x) && Number.isInteger(x)) out.push(x)
+type Likely = number | [number, string]
+/**
+ * three wrong integers: the likely mistakes first (each a number, or [number, the mistake it comes from]), then
+ * near misses; never the right answer, never twice
+ */
+function intWrong(right: number, likely: Likely[], unit = ''): (string | Miss)[] {
+  const out: [number, string | null][] = []
+  for (const l of [...likely, right + 1, right - 1, -right, right + 2, right - 2, right + 10]) {
+    const [x, m] = typeof l === 'number' ? [l, null] : l
+    if (x !== right && !out.some((o) => o[0] === x) && Number.isInteger(x)) out.push([x, m])
     if (out.length === 3) break
   }
-  return out.map((x) => num(x))
+  return out.map(([x, m]) => (m ? miss(num(x) + unit, m) : num(x) + unit))
 }
+const SIGN = 'wrong sign'
+
 
 // ================================================================== 1.01 Numbers above and below zero
 
@@ -40,7 +47,7 @@ function m101opposite(): GameQuestion {
     t: 'opposite',
     prompt: `What is the opposite of ${b(num(n))}?`,
     correct: num(-n),
-    wrong: intWrong(-n, [n, 0, n > 0 ? -n - 1 : -n + 1]),
+    wrong: intWrong(-n, [[n, 'gave the number itself'], [0, 'chose zero'], n > 0 ? -n - 1 : -n + 1]),
     why: `${num(n)} is ${Math.abs(n)} ${n > 0 ? 'above' : 'below'} zero, so its opposite is ${Math.abs(n)} ${n > 0 ? 'below' : 'above'} zero: ${num(-n)}.`,
     meta: { n },
   })
@@ -66,7 +73,7 @@ function m101integer(): GameQuestion {
     t: 'integer',
     prompt: `Which integer shows ${b(phrase.replace('N', String(n)))}?`,
     correct: num(sg * n),
-    wrong: intWrong(sg * n, [-sg * n, sg * (n + 10), -sg * (n - 1)]),
+    wrong: intWrong(sg * n, [[-sg * n, SIGN], sg * (n + 10), -sg * (n - 1)]),
     why: sg > 0 ? `Above, up, a rise or money in is positive: ${num(n)}.` : `Below, down, a fall, before or money out is negative: ${num(-n)}.`,
     meta: { n, sg },
   })
@@ -106,7 +113,7 @@ function m101thermometer(): GameQuestion {
     prompt: `What temperature is marked ${b('A')} on this scale?`,
     diagram: vScale({ min: -40, max: 40, step: 10, unit: '°C', labelEvery: 2, marks }),
     correct: `${num(t)}°C`,
-    wrong: [`${num(-t)}°C`, `${num(t + 10)}°C`, `${num(t - 10)}°C`],
+    wrong: [miss(`${num(-t)}°C`, 'read the scale on the wrong side of zero'), miss(`${num(t + 10)}°C`, 'misread by one mark'), miss(`${num(t - 10)}°C`, 'misread by one mark')],
     why: `The mark is ${Math.abs(t)} degrees ${t < 0 ? 'below' : 'above'} zero: ${num(t)}°C.`,
     meta: { temp: t },
   })
@@ -134,7 +141,7 @@ function m102arrow(): GameQuestion {
     prompt: `What number is arrow ${b('A')} pointing to?`,
     diagram: intLine({ min: -10, max: 10, step: 1, labels: [-10, -5, 0, 5, 10], arrows: [{ value: v, label: 'A' }] }),
     correct: num(v),
-    wrong: intWrong(v, [-v, v + 1, v - 1]),
+    wrong: intWrong(v, [[-v, 'read the wrong side of zero'], [v + 1, 'counted one step too many or few'], [v - 1, 'counted one step too many or few']]),
     why: `Count the steps from the nearest labelled number: arrow A is at ${num(v)}.`,
     meta: { v },
   })
@@ -151,7 +158,7 @@ function m102move(): GameQuestion {
     t: 'move',
     prompt: `Start at ${b(num(start))} on a number line and move ${Math.abs(move)} ${Math.abs(move) === 1 ? 'place' : 'places'} to the ${b(dir)}. Where do you finish?`,
     correct: num(end),
-    wrong: intWrong(end, [start - move, -end, end + (move > 0 ? -1 : 1)]),
+    wrong: intWrong(end, [[start - move, 'moved the wrong way'], [-end, SIGN], [end + (move > 0 ? -1 : 1), 'counted the starting point as a step']]),
     why: `Moving ${dir} ${move > 0 ? 'adds' : 'subtracts'} ${Math.abs(move)}: ${num(start)} ${move > 0 ? '+' : MINUS} ${Math.abs(move)} = ${num(end)}.`,
     meta: { start, move },
   })
@@ -165,7 +172,7 @@ function m102between(): GameQuestion {
     t: 'between',
     prompt: `How many integers are there between ${b(num(a))} and ${b(num(c))}? (Do not count ${num(a)} or ${num(c)}.)`,
     correct: String(n),
-    wrong: [String(n + 2), String(n + 1), String(n - 1), String(n + 3)],
+    wrong: [miss(String(n + 2), 'counted both end numbers'), miss(String(n + 1), 'counted one end number'), miss(String(n - 1), 'left out zero'), String(n + 3)],
     why: `${n === 1 ? 'It is' : 'They are'} ${Array.from({ length: n }, (_, k) => num(a + 1 + k)).join(', ')}: ${n} ${n === 1 ? 'integer' : 'integers'}.`,
     meta: { a, c },
   })
@@ -180,7 +187,7 @@ function m102missing(): GameQuestion {
     prompt: `What number goes where the ${b('?')} is?`,
     diagram: intLine({ min, max: 4 * step, step, labels: [min, 0, 4 * step], ask }),
     correct: num(ask),
-    wrong: intWrong(ask, [-ask, ask / step, ask + step]),
+    wrong: intWrong(ask, [[-ask, 'read the wrong side of zero'], [ask / step, 'counted marks, not the scale'], [ask + step, 'misread by one mark']]),
     why: `The marks go up in ${step}s, so the ? is at ${num(ask)}.`,
     meta: { step, ask },
   })
@@ -230,7 +237,7 @@ function m103statement(): GameQuestion {
   const [lo, hi] = a < c ? [a, c] : [c, a]
   const right = chance() ? `${num(lo)} &lt; ${num(hi)}` : `${num(hi)} &gt; ${num(lo)}`
   // the three false statements
-  const wrong = [`${num(lo)} &gt; ${num(hi)}`, `${num(hi)} &lt; ${num(lo)}`, `${num(lo)} = ${num(hi)}`]
+  const wrong = [miss(`${num(lo)} &gt; ${num(hi)}`, 'compared sizes, ignoring the sign'), miss(`${num(hi)} &lt; ${num(lo)}`, 'compared sizes, ignoring the sign'), `${num(lo)} = ${num(hi)}`]
   return gq({
     t: 'statement',
     prompt: 'Which statement is true?',
@@ -248,12 +255,15 @@ function m103order(): GameQuestion {
   const asc = xs.slice().sort((p, q) => p - q)
   const byAbs = xs.slice().sort((p, q) => Math.abs(p) - Math.abs(q))
   const right = asc.map((x) => num(x)).join(', ')
-  const others = [byAbs, asc.slice().reverse(), [asc[1], asc[0], asc[2]], [asc[0], asc[2], asc[1]]].map((o) => o.map((x) => num(x)).join(', ')).filter((o) => o !== right)
+  const show = (o: number[]) => o.map((x) => num(x)).join(', ')
+  const others = [miss(show(byAbs), 'ordered by size, ignoring the signs'), miss(show(asc.slice().reverse()), 'descending order (largest first)'), show([asc[1], asc[0], asc[2]]), show([asc[0], asc[2], asc[1]])].filter(
+    (o) => (typeof o === 'string' ? o : o.v) !== right,
+  )
   return gq({
     t: 'order',
     prompt: `Which list is in ${b('ascending order')} (smallest first)?`,
     correct: right,
-    wrong: [...new Set(others)].slice(0, 3),
+    wrong: others,
     why: `Smallest to largest, left to right on a number line: ${right}.`,
     meta: { xs },
   })
@@ -273,24 +283,24 @@ const SET_103: GameSet = {
 // ================================================================== 1.04 to 1.07 the four operations
 
 /** an operation question: the expression, the right answer and the usual wrong answers */
-function opQuestion(t: string, expr: string, right: number, likely: number[], why: string, meta: Record<string, unknown>): GameQuestion {
+function opQuestion(t: string, expr: string, right: number, likely: Likely[], why: string, meta: Record<string, unknown>): GameQuestion {
   return gq({ t, prompt: `Evaluate:${big(expr)}`, correct: num(right), wrong: intWrong(right, likely), why, meta })
 }
 
 function m104negPlusPos(): GameQuestion {
   const a = -int(2, 15)
   const c = int(2, 15)
-  return opQuestion('negPlusPos', `${num(a)} + ${num(c)}`, a + c, [-(a + c), a - c, -a + c], `Start at ${num(a)} and move ${c} to the right: ${num(a + c)}.`, { a, c })
+  return opQuestion('negPlusPos', `${num(a)} + ${num(c)}`, a + c, [[-(a + c), SIGN], [a - c, 'moved left instead of right'], [-a + c, 'ignored the negative sign']], `Start at ${num(a)} and move ${c} to the right: ${num(a + c)}.`, { a, c })
 }
 function m104posPlusNeg(): GameQuestion {
   const a = int(2, 15)
   const c = -int(2, 15)
-  return opQuestion('posPlusNeg', `${num(a)} + ${br(c)}`, a + c, [a - c, -(a + c), -a + c], `Adding a negative is the same as subtracting: ${num(a)} ${MINUS} ${-c} = ${num(a + c)}.`, { a, c })
+  return opQuestion('posPlusNeg', `${num(a)} + ${br(c)}`, a + c, [[a - c, 'added the negative as a positive'], [-(a + c), SIGN], [-a + c, 'subtracted the wrong way round']], `Adding a negative is the same as subtracting: ${num(a)} ${MINUS} ${-c} = ${num(a + c)}.`, { a, c })
 }
 function m104negPlusNeg(): GameQuestion {
   const a = -int(2, 12)
   const c = -int(2, 12)
-  return opQuestion('negPlusNeg', `${num(a)} + ${br(c)}`, a + c, [-(a + c), a - c, c - a], `Both go left from zero: ${num(a)} ${MINUS} ${-c} = ${num(a + c)}.`, { a, c })
+  return opQuestion('negPlusNeg', `${num(a)} + ${br(c)}`, a + c, [[-(a + c), 'two negatives make a positive (that is for × and ÷)'], [a - c, 'subtracted instead of added'], [c - a, 'subtracted instead of added']], `Both go left from zero: ${num(a)} ${MINUS} ${-c} = ${num(a + c)}.`, { a, c })
 }
 
 // ================================================================== 1.04–1.07 The sign of an answer
@@ -358,17 +368,17 @@ const SET_104: GameSet = {
 function m105smallMinusBig(): GameQuestion {
   const a = int(1, 9)
   const c = int(a + 2, 15)
-  return opQuestion('smallMinusBig', `${num(a)} ${MINUS} ${num(c)}`, a - c, [c - a, a + c, -(a + c)], `Start at ${a} and move ${c} to the left, past zero: ${num(a - c)}.`, { a, c })
+  return opQuestion('smallMinusBig', `${num(a)} ${MINUS} ${num(c)}`, a - c, [[c - a, 'took the smaller from the larger'], [a + c, 'added instead of subtracted'], [-(a + c), 'added, then made it negative']], `Start at ${a} and move ${c} to the left, past zero: ${num(a - c)}.`, { a, c })
 }
 function m105minusNeg(): GameQuestion {
   const a = int(-9, 9)
   const c = -int(2, 12)
-  return opQuestion('minusNeg', `${num(a)} ${MINUS} ${br(c)}`, a - c, [a + c, -(a - c), c - a], `Subtracting a negative is the same as adding: ${num(a)} + ${-c} = ${num(a - c)}.`, { a, c })
+  return opQuestion('minusNeg', `${num(a)} ${MINUS} ${br(c)}`, a - c, [[a + c, 'subtracted the negative as it is'], [-(a - c), SIGN], [c - a, 'subtracted the wrong way round']], `Subtracting a negative is the same as adding: ${num(a)} + ${-c} = ${num(a - c)}.`, { a, c })
 }
 function m105negMinusPos(): GameQuestion {
   const a = -int(2, 12)
   const c = int(2, 12)
-  return opQuestion('negMinusPos', `${num(a)} ${MINUS} ${num(c)}`, a - c, [a + c, -(a - c), c - a], `Start at ${num(a)} and move ${c} further left: ${num(a - c)}.`, { a, c })
+  return opQuestion('negMinusPos', `${num(a)} ${MINUS} ${num(c)}`, a - c, [[a + c, 'added the numbers, sign of the first'], [-(a - c), 'two negatives make a positive (that is for × and ÷)'], [c - a, 'subtracted the wrong way round']], `Start at ${num(a)} and move ${c} further left: ${num(a - c)}.`, { a, c })
 }
 
 const SET_105: GameSet = {
@@ -386,16 +396,16 @@ function m106negTimesPos(): GameQuestion {
   const a = -int(2, 9)
   const c = int(2, 9)
   const [x, y] = chance() ? [a, c] : [c, a]
-  return opQuestion('negTimesPos', `${br(x)} ${TIMES} ${br(y)}`, a * c, [-(a * c), a + c, a - c], `Different signs give a negative answer: ${Math.abs(a)} ${TIMES} ${c} = ${Math.abs(a * c)}, so the answer is ${num(a * c)}.`, { a, c })
+  return opQuestion('negTimesPos', `${br(x)} ${TIMES} ${br(y)}`, a * c, [[-(a * c), 'different signs give a negative: sign wrong'], [a + c, 'added instead of multiplied'], [a - c, 'subtracted instead of multiplied']], `Different signs give a negative answer: ${Math.abs(a)} ${TIMES} ${c} = ${Math.abs(a * c)}, so the answer is ${num(a * c)}.`, { a, c })
 }
 function m106negTimesNeg(): GameQuestion {
   const a = -int(2, 9)
   const c = -int(2, 9)
-  return opQuestion('negTimesNeg', `${br(a)} ${TIMES} ${br(c)}`, a * c, [-(a * c), a + c, -(a + c)], `Two negatives give a positive answer: ${Math.abs(a)} ${TIMES} ${Math.abs(c)} = ${a * c}.`, { a, c })
+  return opQuestion('negTimesNeg', `${br(a)} ${TIMES} ${br(c)}`, a * c, [[-(a * c), 'two negatives give a positive: sign wrong'], [a + c, 'added instead of multiplied'], [-(a + c), 'added instead of multiplied']], `Two negatives give a positive answer: ${Math.abs(a)} ${TIMES} ${Math.abs(c)} = ${a * c}.`, { a, c })
 }
 function m106square(): GameQuestion {
   const a = -int(2, 9)
-  return opQuestion('square', `(${num(a)})<sup>2</sup>`, a * a, [-(a * a), 2 * a, -2 * a], `(${num(a)})<sup>2</sup> = ${br(a)} ${TIMES} ${br(a)} = ${a * a}: a negative times a negative is positive.`, { a })
+  return opQuestion('square', `(${num(a)})<sup>2</sup>`, a * a, [[-(a * a), 'squared, but kept the negative sign'], [2 * a, 'doubled instead of squared'], [-2 * a, 'doubled instead of squared']], `(${num(a)})<sup>2</sup> = ${br(a)} ${TIMES} ${br(a)} = ${a * a}: a negative times a negative is positive.`, { a })
 }
 
 const SET_106: GameSet = {
@@ -413,19 +423,19 @@ function m107negDivPos(): GameQuestion {
   const q = -int(2, 9)
   const c = int(2, 9)
   const a = q * c
-  return opQuestion('negDivPos', `${num(a)} ${DIVIDE} ${num(c)}`, q, [-q, a + c, a - c], `Different signs give a negative answer: ${Math.abs(a)} ${DIVIDE} ${c} = ${-q}, so the answer is ${num(q)}.`, { a, c })
+  return opQuestion('negDivPos', `${num(a)} ${DIVIDE} ${num(c)}`, q, [[-q, 'different signs give a negative: sign wrong'], [a + c, 'added instead of divided'], [a - c, 'subtracted instead of divided']], `Different signs give a negative answer: ${Math.abs(a)} ${DIVIDE} ${c} = ${-q}, so the answer is ${num(q)}.`, { a, c })
 }
 function m107posDivNeg(): GameQuestion {
   const q = -int(2, 9)
   const c = -int(2, 9)
   const a = q * c
-  return opQuestion('posDivNeg', `${num(a)} ${DIVIDE} ${br(c)}`, q, [-q, a + c, a * c > 0 ? -q * 10 : q * 10], `Different signs give a negative answer: ${a} ${DIVIDE} ${-c} = ${-q}, so the answer is ${num(q)}.`, { a, c })
+  return opQuestion('posDivNeg', `${num(a)} ${DIVIDE} ${br(c)}`, q, [[-q, 'different signs give a negative: sign wrong'], [a + c, 'added instead of divided'], [a * c > 0 ? -q * 10 : q * 10, 'place value slip']], `Different signs give a negative answer: ${a} ${DIVIDE} ${-c} = ${-q}, so the answer is ${num(q)}.`, { a, c })
 }
 function m107negDivNeg(): GameQuestion {
   const q = int(2, 9)
   const c = -int(2, 9)
   const a = q * c
-  return opQuestion('negDivNeg', `${num(a)} ${DIVIDE} ${br(c)}`, q, [-q, a - c, a + c], `Two negatives give a positive answer: ${-a} ${DIVIDE} ${-c} = ${q}.`, { a, c })
+  return opQuestion('negDivNeg', `${num(a)} ${DIVIDE} ${br(c)}`, q, [[-q, 'two negatives give a positive: sign wrong'], [a - c, 'subtracted instead of divided'], [a + c, 'added instead of divided']], `Two negatives give a positive answer: ${-a} ${DIVIDE} ${-c} = ${q}.`, { a, c })
 }
 
 const SET_107: GameSet = {
@@ -447,14 +457,14 @@ function m108multFirst(): GameQuestion {
   const d = -int(2, 5)
   const right = a + c * d
   const leftToRight = (a + c) * d
-  return opQuestion('multFirst', `${num(a)} + ${num(c)} ${TIMES} ${br(d)}`, right, [leftToRight, -right, a + c + d], `Multiply first: ${c} ${TIMES} ${br(d)} = ${num(c * d)}. Then ${num(a)} + ${br(c * d)} = ${num(right)}.`, { a, c, d })
+  return opQuestion('multFirst', `${num(a)} + ${num(c)} ${TIMES} ${br(d)}`, right, [[leftToRight, 'worked left to right, not × first'], [-right, SIGN], [a + c + d, 'added instead of multiplied']], `Multiply first: ${c} ${TIMES} ${br(d)} = ${num(c * d)}. Then ${num(a)} + ${br(c * d)} = ${num(right)}.`, { a, c, d })
 }
 function m108brackets(): GameQuestion {
   const a = -int(2, 9)
   const c = int(1, 8)
   const d = pick([2, 3, -2, -3])
   const right = (a + c) * d
-  return opQuestion('brackets', `(${num(a)} + ${num(c)}) ${TIMES} ${br(d)}`, right, [a + c * d, -right, a + c + d], `Brackets first: ${num(a)} + ${c} = ${num(a + c)}. Then ${br(a + c)} ${TIMES} ${br(d)} = ${num(right)}.`, { a, c, d })
+  return opQuestion('brackets', `(${num(a)} + ${num(c)}) ${TIMES} ${br(d)}`, right, [[a + c * d, 'ignored the brackets (× first)'], [-right, SIGN], [a + c + d, 'added instead of multiplied']], `Brackets first: ${num(a)} + ${c} = ${num(a + c)}. Then ${br(a + c)} ${TIMES} ${br(d)} = ${num(right)}.`, { a, c, d })
 }
 function m108divideFirst(): GameQuestion {
   const q = pick([-4, -3, -2, 2, 3, 4])
@@ -462,14 +472,14 @@ function m108divideFirst(): GameQuestion {
   const a = q * c
   const e = int(1, 9)
   const right = a / c - e
-  return opQuestion('divideFirst', `${num(a)} ${DIVIDE} ${num(c)} ${MINUS} ${num(e)}`, right, [a / c + e, -right, (a - e) / c === Math.trunc((a - e) / c) ? (a - e) / c : right + c], `Divide first: ${num(a)} ${DIVIDE} ${c} = ${num(q)}. Then ${num(q)} ${MINUS} ${e} = ${num(right)}.`, { a, c, e })
+  return opQuestion('divideFirst', `${num(a)} ${DIVIDE} ${num(c)} ${MINUS} ${num(e)}`, right, [[a / c + e, 'added instead of subtracted'], [-right, SIGN], (a - e) / c === Math.trunc((a - e) / c) ? [(a - e) / c, 'subtracted before dividing'] : right + c], `Divide first: ${num(a)} ${DIVIDE} ${c} = ${num(q)}. Then ${num(q)} ${MINUS} ${e} = ${num(right)}.`, { a, c, e })
 }
 function m108powers(): GameQuestion {
   const a = int(2, 6)
   const neg = chance()
   const right = neg ? -(a * a) : a * a
   const expr = neg ? `${MINUS}${a}<sup>2</sup>` : `(${MINUS}${a})<sup>2</sup>`
-  return opQuestion('powers', expr, right, [-right, neg ? -2 * a : 2 * a, neg ? 2 * a : -2 * a], neg ? `Only the ${a} is squared, then the answer is made negative: ${MINUS}(${a} ${TIMES} ${a}) = ${num(right)}.` : `The whole of ${MINUS}${a} is squared: ${br(-a)} ${TIMES} ${br(-a)} = ${right}.`, { a, neg })
+  return opQuestion('powers', expr, right, [[-right, neg ? 'squared the negative too (−a² is −(a²))' : 'squared, but kept the negative sign'], [neg ? -2 * a : 2 * a, 'doubled instead of squared'], [neg ? 2 * a : -2 * a, 'doubled instead of squared']], neg ? `Only the ${a} is squared, then the answer is made negative: ${MINUS}(${a} ${TIMES} ${a}) = ${num(right)}.` : `The whole of ${MINUS}${a} is squared: ${br(-a)} ${TIMES} ${br(-a)} = ${right}.`, { a, neg })
 }
 
 /** Inserting grouping symbols: four numbers and three operations; exactly one bracketing makes the statement true. */
@@ -548,7 +558,7 @@ function m109key(): GameQuestion {
     t: 'key',
     prompt: `Which keys enter the number ${b(num(-n))} at the start of a calculation?`,
     correct: `(${MINUS}) ${n}`,
-    wrong: [`${n} (${MINUS})`, `${n} ${MINUS}`, `= ${MINUS}${n}`],
+    wrong: [miss(`${n} (${MINUS})`, 'pressed the sign key after the number'), miss(`${n} ${MINUS}`, 'used the subtract key, after the number'), `= ${MINUS}${n}`],
     why: `The sign-change key (${MINUS}) goes first, then the number: (${MINUS}) ${n}.`,
     meta: { n },
   })
@@ -562,7 +572,7 @@ function m109estimate(): GameQuestion {
     t: 'estimate',
     prompt: `Before using a calculator, estimate:${big(`${num(a)} ${DIVIDE} ${c}`)}`,
     correct: num(est),
-    wrong: [num(-est), num(round100 * c), num(est / 10)],
+    wrong: [miss(num(-est), SIGN), miss(num(round100 * c), 'multiplied instead of divided'), miss(num(est / 10), 'place value slip')],
     why: `${num(a)} is about ${num(round100)}, and ${num(round100)} ${DIVIDE} ${c} = ${num(est)}. A negative divided by a positive is negative.`,
     meta: { a, c },
   })
@@ -593,7 +603,7 @@ function m110temperature(): GameQuestion {
     t: 'temperature',
     prompt: `The temperature was ${b(`${num(start)}°C`)}. It ${word} by ${Math.abs(change)} ${Math.abs(change) === 1 ? 'degree' : 'degrees'}. What is the temperature now?`,
     correct: `${num(end)}°C`,
-    wrong: intWrong(end, [start - change, -end, change - start]).map((w) => `${w}°C`),
+    wrong: intWrong(end, [[start - change, 'went the wrong way'], [-end, SIGN], [change - start, 'subtracted the wrong way round']], '°C'),
     why: `${num(start)} ${change > 0 ? '+' : MINUS} ${Math.abs(change)} = ${num(end)}, so it is now ${num(end)}°C.`,
     meta: { start, change },
   })
@@ -612,7 +622,7 @@ function m110difference(): GameQuestion {
         : `One night the temperature was ${b(`${num(lo)}°C`)}; the next day it was ${b(`${hi}°C`)}. By how many degrees did it rise?`,
     correct: `${diff}${unit}`,
     // the usual mistake is to subtract the sizes (ignoring that one is below zero)
-    wrong: intWrong(diff, [Math.abs(hi + lo), Math.max(hi, -lo), diff + 10]).map((w) => `${w}${unit}`),
+    wrong: intWrong(diff, [[Math.abs(hi + lo), 'subtracted the sizes, ignoring below zero'], [Math.max(hi, -lo), 'gave the larger number only'], diff + 10], unit),
     why: `${hi} ${MINUS} ${br(lo)} = ${hi} + ${-lo} = ${diff}.`,
     meta: { hi, lo },
   })
@@ -625,7 +635,7 @@ function m110bank(): GameQuestion {
     t: 'bank',
     prompt: `A bank account has ${b(`$${had}`)} in it. Then ${b(`$${out}`)} is taken out. What is the balance now?`,
     correct: dollarsSigned(end),
-    wrong: [-end, -(had + out), had + out].map(dollarsSigned),
+    wrong: [miss(dollarsSigned(-end), 'took the smaller from the larger'), miss(dollarsSigned(-(had + out)), 'added the amounts'), miss(dollarsSigned(had + out), 'added the amounts')],
     why: `${had} ${MINUS} ${out} = ${num(end)}: the account is overdrawn by $${-end}.`,
     meta: { had, out },
   })
@@ -638,7 +648,7 @@ function m110lift(): GameQuestion {
     t: 'lift',
     prompt: `A lift is at floor ${b(num(start))} (floor 0 is the ground floor). It goes down ${down} floors. Which floor is it on now?`,
     correct: num(end),
-    wrong: intWrong(end, [start + down, -end, end + 1]),
+    wrong: intWrong(end, [[start + down, 'went up instead of down'], [-end, SIGN], [end + 1, 'counted the starting floor']]),
     why: `${num(start)} ${MINUS} ${down} = ${num(end)}: ${end < 0 ? `${-end} ${-end === 1 ? 'floor' : 'floors'} below the ground floor` : 'that floor'}.`,
     meta: { start, down },
   })

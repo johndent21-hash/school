@@ -1,7 +1,7 @@
 // Sign-up, log-in and "who am I" for teachers, students and parents.
 import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
-import { cleanName, createSession, getSession, hashSecret, verifySecret } from "./lib/security"
+import { cleanName, createSession, getSession, hashSecret, parentChildren, verifySecret } from "./lib/security"
 
 const MINUTE = 60 * 1000
 const fail = (message: string) => ({ ok: false as const, message })
@@ -24,12 +24,17 @@ export const me = query({
       if (!c) return null
       return { kind: "student", studentId: st._id, name: st.name, classId: c._id, className: c.name, year: c.year, points: st.points }
     }
-    if (s.kind === "parent" && s.studentId) {
-      const st = await ctx.db.get(s.studentId)
-      if (!st) return null
-      const c = await ctx.db.get(st.classId)
-      if (!c) return null
-      return { kind: "parent", studentId: st._id, childName: st.name, classId: c._id, className: c.name, year: c.year }
+    if (s.kind === "parent" && s.parentId) {
+      const p = await ctx.db.get(s.parentId)
+      if (!p) return null
+      const children = await parentChildren(ctx, p._id)
+      return {
+        kind: "parent",
+        parentId: p._id,
+        children: children
+          .map(({ student, cls }) => ({ id: student._id, name: student.name, className: cls.name, year: cls.year }))
+          .sort((a, b) => a.name.localeCompare(b.name)),
+      }
     }
     return null
   },
@@ -138,18 +143,21 @@ async function studentInClass(ctx: any, code: string, studentId: any) {
 
 // Each pause for wrong PINs is twice as long as the last (10 minutes, 20, 40 ... up to a day),
 // so a 4-digit PIN cannot be found by trying them all.
-const lockMinutes = (lockCount: number) => Math.min(24 * 60, 10 * 2 ** lockCount)
+export const lockMinutes = (lockCount: number) => Math.min(24 * 60, 10 * 2 ** lockCount)
 
-/** Checks a PIN for a student or for their parent, who uses the same class code, name and PIN. */
-async function checkPin(ctx: any, code: string, studentId: any, pin: string, as: "student" | "parent") {
+/** "1 hour 20 minutes" */
+export function waitText(mins: number) {
+  const h = Math.floor(mins / 60)
+  const m = mins % 60
+  return [h ? `${h} ${h === 1 ? "hour" : "hours"}` : "", m ? `${m} minutes` : ""].filter(Boolean).join(" ")
+}
+
+/** Checks a student's PIN. (Parents have their own accounts and PINs: see parents.ts.) */
+async function checkPin(ctx: any, code: string, studentId: any, pin: string) {
   const s = await studentInClass(ctx, code, studentId)
   if (!s) return fail("Something went wrong. Start again with the class code.")
-  if (!s.pinHash) {
-    return as === "student"
-      ? { ok: false, needsPin: true, message: "Choose a PIN first." }
-      : fail("Your child hasn’t chosen a PIN yet. They choose one the first time they log in. Ask them, or their teacher.")
-  }
-  const reset = as === "student" ? "ask your teacher to reset your PIN" : "ask the teacher to reset the PIN"
+  if (!s.pinHash) return { ok: false, needsPin: true, message: "Choose a PIN first." }
+  const reset = "ask your teacher to reset your PIN"
   if (s.lockedUntil && s.lockedUntil > Date.now()) {
     return fail(`Too many wrong PINs. Try again in ${Math.ceil((s.lockedUntil - Date.now()) / MINUTE)} minutes, or ${reset}.`)
   }
@@ -159,30 +167,20 @@ async function checkPin(ctx: any, code: string, studentId: any, pin: string, as:
       const lockCount = s.lockCount ?? 0
       const mins = lockMinutes(lockCount)
       await ctx.db.patch(s._id, { failedAttempts: 0, lockedUntil: Date.now() + mins * MINUTE, lockCount: lockCount + 1 })
-      const h = Math.floor(mins / 60)
-      const m = mins % 60
-      const wait = [h ? `${h} ${h === 1 ? "hour" : "hours"}` : "", m ? `${m} minutes` : ""].filter(Boolean).join(" ")
-      return fail(`That PIN is not right. The account is paused for ${wait}. The teacher can reset the PIN.`)
+      return fail(`That PIN is not right. The account is paused for ${waitText(mins)}. The teacher can reset the PIN.`)
     }
     await ctx.db.patch(s._id, { failedAttempts: n })
     return fail(`That PIN is not right. ${5 - n} ${5 - n === 1 ? "try" : "tries"} left.`)
   }
-  await ctx.db.patch(s._id, { failedAttempts: 0, lockedUntil: undefined, lockCount: 0, ...(as === "student" ? { lastActive: Date.now() } : {}) })
-  const token = await createSession(ctx, { kind: as, studentId: s._id }, 60)
+  await ctx.db.patch(s._id, { failedAttempts: 0, lockedUntil: undefined, lockCount: 0, lastActive: Date.now() })
+  const token = await createSession(ctx, { kind: "student", studentId: s._id }, 60)
   return { ok: true, token }
 }
 
 export const studentLogIn = mutation({
   args: { code: v.string(), studentId: v.id("students"), pin: v.string() },
   returns: v.any(),
-  handler: async (ctx, { code, studentId, pin }) => checkPin(ctx, code, studentId, pin, "student"),
-})
-
-/** Parents log in with their child's class code, name and PIN, and get a read-only parent view. */
-export const parentLogIn = mutation({
-  args: { code: v.string(), studentId: v.id("students"), pin: v.string() },
-  returns: v.any(),
-  handler: async (ctx, { code, studentId, pin }) => checkPin(ctx, code, studentId, pin, "parent"),
+  handler: async (ctx, { code, studentId, pin }) => checkPin(ctx, code, studentId, pin),
 })
 
 /** First log-in: the student chooses a 4-digit PIN. Only works while no PIN is set. */

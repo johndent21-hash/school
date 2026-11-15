@@ -1,6 +1,7 @@
-// Printable login cards: one per student, with the site address and class code.
+// Printable login cards: one per student, with the site address, the class code and the parent code.
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { useQuery } from 'convex/react'
+import { useEffect, useRef } from 'react'
+import { useMutation, useQuery } from 'convex/react'
 import { ArrowLeft, Printer } from 'lucide-react'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
@@ -41,9 +42,20 @@ function Cards() {
   const { id } = Route.useSearch()
   const { token } = useSession()
   const report = useQuery(api.classes.classReport, token && id ? { token, classId: id as Id<'classes'> } : 'skip') as
-    | { ok: true; class: { id: string; name: string; year: number; code: string }; students: { id: string; name: string }[] }
+    | { ok: true; class: { id: string; name: string; year: number; code: string }; students: { id: string; name: string; parentCode: string | null }[] }
     | { ok: false; message: string }
     | undefined
+
+  // students added before parent codes existed get theirs the first time the cards are opened
+  const ensure = useMutation(api.classes.ensureParentCodes)
+  const asked = useRef(false)
+  const missing = !!report?.ok && report.students.some((s) => !s.parentCode)
+  useEffect(() => {
+    if (missing && token && id && !asked.current) {
+      asked.current = true
+      void ensure({ token, classId: id as Id<'classes'> })
+    }
+  }, [missing, token, id, ensure])
 
   if (report === undefined) return <PageLoading />
   if (!report.ok) return <p className="feedback bad">{report.message}</p>
@@ -79,9 +91,18 @@ function Cards() {
                 <dd className="chip-code text-lg font-bold tracking-widest">{report.class.code}</dd>
               </dl>
               <p className="text-sm text-muted-foreground">Type the class code, tap your name, then choose a 4-digit PIN. Keep your PIN secret.</p>
-              <p className="border-t border-dashed border-border pt-1 text-xs text-muted-foreground">
-                <strong className="text-foreground">Parents and carers:</strong> go to {site}/parent and log in with the same class code, your child’s name and their PIN to see their progress.
-              </p>
+              <div className="grid gap-1 border-t border-dashed border-border pt-1 text-xs text-muted-foreground">
+                <p>
+                  <strong className="text-foreground">Parents and carers:</strong> go to {site}/parent, choose “First time here”, type this parent code and
+                  choose your own PIN. Already have an account? Add this child with the code.
+                </p>
+                <p className="flex items-center gap-2">
+                  <span>Parent code</span>
+                  <span className="chip-code text-base font-bold tracking-widest text-foreground">
+                    {s.parentCode ? `${s.parentCode.slice(0, 4)}-${s.parentCode.slice(4)}` : '…'}
+                  </span>
+                </p>
+              </div>
             </div>
           ))}
         </div>

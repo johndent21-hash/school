@@ -1,8 +1,11 @@
-// Parents and carers: a simple, read-only view of one child's lesson ratings and practice.
-// Parents log in with the same class code, name and PIN their child uses (/join?as=parent).
+// Parents and carers: a simple, read-only view of their children's lesson ratings and practice.
+// Parents set up their own account with the parent code on their child's card and a 6-digit PIN they choose, and
+// add brothers and sisters with their own codes (app/convex/parents.ts).
 import { useMemo, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
-import { CheckCircle2, Circle, Flame, Info, LogOut } from 'lucide-react'
+import { useMutation, useQuery } from 'convex/react'
+import { CheckCircle2, Circle, Flame, Info, LogOut, Plus } from 'lucide-react'
+import { api } from '@/convex/_generated/api'
 import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { ProgressBar } from '@/components/numbat/Mastery'
 import { WeekColumns } from '@/components/numbat/Charts'
@@ -44,7 +47,7 @@ function ParentPage() {
       ) : PREVIEW_ONLY ? (
         <ExampleParent />
       ) : parent ? (
-        <ParentDashboard />
+        <ParentHome />
       ) : (
         <ParentIntro />
       )}
@@ -77,18 +80,7 @@ function ParentIntro() {
           </Link>
         </div>
       ) : (
-        <div className="panel grid gap-4 p-6">
-          <h2 className="font-display text-xl font-semibold">Log in with your child’s details</h2>
-          <ol className="grid list-decimal gap-2 pl-5">
-            <li>Type your child’s 6-character class code. It’s on their login card, or ask their teacher.</li>
-            <li>Tap your child’s name.</li>
-            <li>Enter their 4-digit PIN, the same one they use.</li>
-          </ol>
-          <Link to="/join" search={{ as: 'parent' }} className="btn btn-primary btn-lg">
-            Log in as a parent
-          </Link>
-          <p className="text-sm text-muted-foreground">You’ll only see your own child’s progress, and nothing you do changes their results.</p>
-        </div>
+        <ParentLogIn />
       )}
     </div>
   )
@@ -102,8 +94,8 @@ function ExampleParent() {
         <p className="flex min-w-0 items-start gap-2 sm:flex-1">
           <Info size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
           <span>
-            <strong>Example parent view.</strong> This child and their results are made up. On the full site, parents log in with their child’s class code,
-            name and PIN.
+            <strong>Example parent view.</strong> This child and their results are made up. On the full site, parents log in with the parent code
+            from their child’s card and their own PIN, and can add brothers and sisters to the same account.
           </span>
         </p>
         <label className="flex items-center gap-2">
@@ -122,9 +114,264 @@ function ExampleParent() {
   )
 }
 
-function ParentDashboard({ example }: { example?: string }) {
-  const { signOut } = useSession()
-  const data = useParentOverview(example)
+/** "ABCD-EFGH" as it is typed */
+const showCode = (v: string) => {
+  const c = v.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 8)
+  return c.length > 4 ? `${c.slice(0, 4)}-${c.slice(4)}` : c
+}
+const codeOk = (v: string) => v.replace(/[^a-zA-Z0-9]/g, '').length === 8
+const NETWORK = 'We can’t reach the Numbat Maths server. Check your internet connection and try again.'
+
+function ParentLogIn() {
+  const { signIn } = useSession()
+  const [mode, setMode] = useState<'login' | 'setup'>('login')
+  const [code, setCode] = useState('')
+  const [pin, setPin] = useState('')
+  const [pin2, setPin2] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
+  const logIn = useMutation(api.parents.parentLogIn)
+  const signUp = useMutation(api.parents.parentSignUp)
+  const lookup = useQuery(api.parents.parentCodeLookup, mode === 'setup' && codeOk(code) ? { code } : 'skip') as
+    | { ok: true; childName: string; className: string; accounts: number }
+    | { ok: false; message: string }
+    | undefined
+
+  const run = async (fn: () => Promise<unknown>) => {
+    setBusy(true)
+    setError(null)
+    try {
+      const r = (await fn()) as { ok: true; token: string } | { ok: false; message: string }
+      if (r.ok) signIn(r.token)
+      else {
+        setError(r.message)
+        setPin('')
+        setPin2('')
+      }
+    } catch {
+      setError(NETWORK)
+    }
+    setBusy(false)
+  }
+  const switchTo = (m: 'login' | 'setup') => {
+    setMode(m)
+    setError(null)
+    setPin('')
+    setPin2('')
+  }
+  const pinField = (value: string, set: (v: string) => void, label: string, id: string) => (
+    <label className="grid gap-1" htmlFor={id}>
+      <span className="label">{label}</span>
+      <input
+        id={id}
+        className="field w-40 font-display text-xl tracking-[0.4em]"
+        type="password"
+        inputMode="numeric"
+        autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+        maxLength={6}
+        value={value}
+        onChange={(e) => set(e.target.value.replace(/\D/g, '').slice(0, 6))}
+      />
+    </label>
+  )
+  const codeField = (
+    <label className="grid gap-1" htmlFor="parent-code">
+      <span className="label">Parent code</span>
+      <input
+        id="parent-code"
+        className="field w-48 font-display text-xl uppercase tracking-widest"
+        autoComplete="username"
+        autoCapitalize="characters"
+        spellCheck={false}
+        value={showCode(code)}
+        onChange={(e) => setCode(showCode(e.target.value))}
+        placeholder="ABCD-EFGH"
+      />
+      <span className="text-sm text-muted-foreground">On your child’s login card, under “Parents and carers”.</span>
+    </label>
+  )
+
+  return (
+    <div className="panel grid gap-5 p-6">
+      <div className="tabs w-fit" role="tablist" aria-label="Log in or set up">
+        <button type="button" role="tab" aria-selected={mode === 'login'} className={mode === 'login' ? 'active' : ''} onClick={() => switchTo('login')}>
+          Log in
+        </button>
+        <button type="button" role="tab" aria-selected={mode === 'setup'} className={mode === 'setup' ? 'active' : ''} onClick={() => switchTo('setup')}>
+          First time here
+        </button>
+      </div>
+      {mode === 'login' ? (
+        <form
+          className="grid gap-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (codeOk(code) && pin.length === 6) void run(() => logIn({ code, pin }))
+          }}
+        >
+          {codeField}
+          {pinField(pin, setPin, 'Your 6-digit PIN', 'parent-pin')}
+          <button type="submit" className="btn btn-primary btn-lg w-fit" disabled={busy || !codeOk(code) || pin.length !== 6}>
+            Log in
+          </button>
+          <p className="text-sm text-muted-foreground">
+            Any of your children’s parent codes works with your PIN. Forgotten your PIN? Choose “First time here” and set up again with the same code.
+          </p>
+        </form>
+      ) : (
+        <form
+          className="grid gap-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            if (pin !== pin2) {
+              setError('The two PINs are different. Type them again.')
+              setPin('')
+              setPin2('')
+              return
+            }
+            void run(() => signUp({ code, pin }))
+          }}
+        >
+          {codeField}
+          {lookup && !lookup.ok && <p className="feedback bad">{lookup.message}</p>}
+          {lookup?.ok && (
+            <>
+              <p className="feedback good">
+                This card is for <strong>{lookup.childName}</strong> ({lookup.className}).
+              </p>
+              {lookup.accounts > 0 && (
+                <p className="text-sm text-muted-foreground">
+                  A parent account has already been set up with this code. If it’s yours, log in instead. Another family member can set up their own account
+                  here with a different PIN.
+                </p>
+              )}
+              {pinField(pin, setPin, 'Choose a 6-digit PIN', 'new-pin')}
+              {pinField(pin2, setPin2, 'Type it again', 'new-pin-2')}
+              <p className="text-sm text-muted-foreground">Not your child’s PIN, and not 123456 or six of the same digit. Keep it to yourself.</p>
+              <button type="submit" className="btn btn-primary btn-lg w-fit" disabled={busy || pin.length !== 6 || pin2.length !== 6}>
+                Set up my parent account
+              </button>
+            </>
+          )}
+        </form>
+      )}
+      {error && (
+        <p className="feedback bad" role="alert">
+          {error}
+        </p>
+      )}
+      <p className="text-sm text-muted-foreground">You’ll only see your own children’s progress, and nothing you do here changes their results.</p>
+    </div>
+  )
+}
+
+/** A logged-in parent: their children (tabs when there are several), adding another child, and the child's progress. */
+function ParentHome() {
+  const { parent, token, signOut } = useSession()
+  const children = parent?.children ?? []
+  const [chosen, setChosen] = useState<string | null>(null)
+  const [adding, setAdding] = useState(false)
+  const [code, setCode] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
+  const add = useMutation(api.parents.parentAddChild)
+  const current = children.find((c) => c.id === chosen) ?? children[0]
+
+  const addChild = async () => {
+    setBusy(true)
+    setError(null)
+    try {
+      const r = (await add({ token: token!, code })) as { ok: true; studentId: string } | { ok: false; message: string }
+      if (r.ok) {
+        setChosen(r.studentId)
+        setAdding(false)
+        setCode('')
+      } else setError(r.message)
+    } catch {
+      setError(NETWORK)
+    }
+    setBusy(false)
+  }
+
+  const addForm = (
+    <form
+      className="panel grid gap-3 p-5"
+      onSubmit={(e) => {
+        e.preventDefault()
+        if (codeOk(code)) void addChild()
+      }}
+    >
+      <h2 className="font-display text-xl font-semibold">Add a child</h2>
+      <p className="text-sm text-muted-foreground">Type the parent code from their login card. Each child has their own code.</p>
+      <label className="grid gap-1" htmlFor="add-code">
+        <span className="label">Parent code</span>
+        <input
+          id="add-code"
+          className="field w-48 font-display text-xl uppercase tracking-widest"
+          autoCapitalize="characters"
+          spellCheck={false}
+          value={showCode(code)}
+          onChange={(e) => setCode(showCode(e.target.value))}
+          placeholder="ABCD-EFGH"
+        />
+      </label>
+      <div className="flex flex-wrap gap-2">
+        <button type="submit" className="btn btn-primary w-fit" disabled={busy || !codeOk(code)}>
+          Add
+        </button>
+        {children.length > 0 && (
+          <button type="button" className="btn btn-ghost w-fit" onClick={() => setAdding(false)}>
+            Cancel
+          </button>
+        )}
+      </div>
+      {error && <p className="feedback bad">{error}</p>}
+    </form>
+  )
+
+  return (
+    <div className="grid gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {children.length > 1 ? (
+          <div className="tabs w-fit" role="tablist" aria-label="Your children">
+            {children.map((c) => (
+              <button key={c.id} type="button" role="tab" aria-selected={c.id === current?.id} className={c.id === current?.id ? 'active' : ''} onClick={() => setChosen(c.id)}>
+                {firstName(c.name)}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <span />
+        )}
+        <div className="flex flex-wrap gap-2">
+          {children.length > 0 && !adding && (
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setAdding(true)}>
+              <Plus size={16} aria-hidden="true" /> Add a child
+            </button>
+          )}
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => void signOut()}>
+            <LogOut size={16} aria-hidden="true" /> Log out
+          </button>
+        </div>
+      </div>
+      {(adding || children.length === 0) && (
+        <>
+          {children.length === 0 && (
+            <p className="feedback info">
+              No children are linked to this account. This happens if the teacher has given a child a new parent code. Add them again with the code on
+              their new card.
+            </p>
+          )}
+          {addForm}
+        </>
+      )}
+      {current && <ParentDashboard key={current.id} childId={current.id} />}
+    </div>
+  )
+}
+
+function ParentDashboard({ example, childId }: { example?: string; childId?: string }) {
+  const data = useParentOverview(example, childId)
   const extra = useMemo(() => {
     if (!data || !data.ok) return null
     const now = Date.now()
@@ -157,11 +404,6 @@ function ParentDashboard({ example }: { example?: string }) {
             {data.class.teacherName ? ` · ${data.class.teacherName}` : ''}
           </p>
         </div>
-        {!example && (
-          <button type="button" className="btn btn-ghost btn-sm" onClick={() => void signOut()}>
-            <LogOut size={16} aria-hidden="true" /> Log out
-          </button>
-        )}
       </header>
 
       {/* three plain-language headlines */}

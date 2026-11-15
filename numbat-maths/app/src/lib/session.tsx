@@ -1,5 +1,5 @@
-// Who is using the site: a student (class code + PIN), a parent (the same details as their
-// child, but a read-only parent view), a teacher, or a guest.
+// Who is using the site: a student (class code + PIN), a parent (a parent code from the child's card and the
+// parent's own PIN; a read-only parent view of their children), a teacher, or a guest.
 // The log-in token lives in localStorage; the server is asked who it belongs to.
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useMutation } from 'convex/react'
@@ -26,11 +26,9 @@ export interface TeacherMe {
 
 export interface ParentMe {
   kind: 'parent'
-  studentId: string
-  childName: string
-  classId: string
-  className: string
-  year: number
+  parentId: string
+  /** the children linked to this parent account (brothers and sisters are added with their own parent codes) */
+  children: { id: string; name: string; className: string; year: number }[]
 }
 
 export type Me = StudentMe | TeacherMe | ParentMe

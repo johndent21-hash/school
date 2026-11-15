@@ -79,11 +79,26 @@ export async function getStudent(ctx: QueryCtx | MutationCtx, token: string | un
   return await ctx.db.get(s.studentId)
 }
 
-/** The child a parent is signed in for (parents sign in with their child's class code, name and PIN). */
-export async function getParentChild(ctx: QueryCtx | MutationCtx, token: string | undefined): Promise<Doc<"students"> | null> {
+/** The parent account signed in. Sessions from the old parent log-in (no parentId) are not accepted. */
+export async function getParent(ctx: QueryCtx | MutationCtx, token: string | undefined): Promise<Doc<"parents"> | null> {
   const s = await getSession(ctx, token)
-  if (!s || s.kind !== "parent" || !s.studentId) return null
-  return await ctx.db.get(s.studentId)
+  if (!s || s.kind !== "parent" || !s.parentId) return null
+  return await ctx.db.get(s.parentId)
+}
+
+/** The children linked to a parent account that still exist, with their classes. */
+export async function parentChildren(ctx: QueryCtx | MutationCtx, parentId: Id<"parents">) {
+  const links = await ctx.db
+    .query("parentLinks")
+    .withIndex("by_parent", (q) => q.eq("parentId", parentId))
+    .collect()
+  const out: { student: Doc<"students">; cls: Doc<"classes"> }[] = []
+  for (const l of links) {
+    const student = await ctx.db.get(l.studentId)
+    const cls = student && (await ctx.db.get(student.classId))
+    if (student && cls) out.push({ student, cls })
+  }
+  return out
 }
 
 /** Removes a student's lesson ratings (used when a student, lesson or class is deleted). */
@@ -110,7 +125,7 @@ export async function ownedClass(ctx: QueryCtx | MutationCtx, teacherId: Id<"tea
 
 export async function createSession(
   ctx: MutationCtx,
-  data: { kind: "teacher"; teacherId: Id<"teachers"> } | { kind: "student" | "parent"; studentId: Id<"students"> },
+  data: { kind: "teacher"; teacherId: Id<"teachers"> } | { kind: "student"; studentId: Id<"students"> } | { kind: "parent"; parentId: Id<"parents"> },
   days: number,
 ): Promise<string> {
   const token = randomHex(32)
@@ -133,6 +148,28 @@ export async function newClassCode(ctx: MutationCtx): Promise<string> {
     if (!existing) return code
   }
   throw new Error("Could not create a unique class code")
+}
+
+/** Parent codes: 8 characters (shown as ABCD-EFGH), unique across the site. */
+export async function newParentCode(ctx: MutationCtx): Promise<string> {
+  for (let tries = 0; tries < 50; tries++) {
+    const a = new Uint8Array(8)
+    crypto.getRandomValues(a)
+    let code = ""
+    for (const b of a) code += CODE_CHARS[b % CODE_CHARS.length]
+    const existing = await ctx.db
+      .query("students")
+      .withIndex("by_parent_code", (q) => q.eq("parentCode", code))
+      .first()
+    if (!existing) return code
+  }
+  throw new Error("Could not create a unique parent code")
+}
+
+/** A typed parent code without spaces, dashes or lower case; "" if it cannot be one. */
+export function cleanParentCode(code: string): string {
+  const c = code.replace(/[^a-zA-Z0-9]/g, "").toUpperCase()
+  return c.length === 8 ? c : ""
 }
 
 export function cleanName(s: string): string {

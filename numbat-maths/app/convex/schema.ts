@@ -18,10 +18,12 @@ export default defineSchema({
   // One row per signed-in device
   sessions: defineTable({
     token: v.string(),
-    // "parent": a parent signed in with their child's class code, name and PIN (read-only)
+    // "parent": a parent account (parent code + the parent's own PIN), read-only. Sessions from the old parent
+    // log-in (the child's class code, name and PIN) have a studentId and no parentId; they are no longer accepted.
     kind: v.union(v.literal("teacher"), v.literal("student"), v.literal("parent")),
     teacherId: v.optional(v.id("teachers")),
     studentId: v.optional(v.id("students")),
+    parentId: v.optional(v.id("parents")),
     expiresAt: v.number(),
   })
     .index("by_token", ["token"])
@@ -51,7 +53,66 @@ export default defineSchema({
     points: v.number(),
     lastActive: v.optional(v.number()),
     createdAt: v.number(),
+    // the code on the child's card that a parent uses to set up a parent account and to log in (8 characters)
+    parentCode: v.optional(v.string()),
+    // wrong parent PINs entered with this child's parent code: kept apart from the child's own PIN, so a parent's
+    // mistakes never lock the child out
+    parentFailed: v.optional(v.number()),
+    parentLockedUntil: v.optional(v.number()),
+    parentLockCount: v.optional(v.number()),
+  })
+    .index("by_class", ["classId"])
+    .index("by_parent_code", ["parentCode"]),
+
+  // A parent or carer account: their own 6-digit PIN, linked to one or more children (parentLinks). Read-only.
+  parents: defineTable({
+    pinHash: v.string(),
+    createdAt: v.number(),
+  }),
+
+  parentLinks: defineTable({
+    parentId: v.id("parents"),
+    studentId: v.id("students"),
+    createdAt: v.number(),
+  })
+    .index("by_parent", ["parentId"])
+    .index("by_student", ["studentId"]),
+
+  // An exit ticket: a few class-game questions answered on students' own devices at the end of a lesson.
+  // The questions are rebuilt on each device from gameId + seed (+ calc); check is their fingerprint, so a ticket made
+  // before a site update is not answered with different questions. qs keeps what marking and the teacher's summary
+  // need, as plain text: the question kind ("ncm8-3.07:expand"), the right option and each option's mistake label.
+  exitTickets: defineTable({
+    classId: v.id("classes"),
+    gameId: v.string(),
+    title: v.string(),
+    seed: v.number(),
+    count: v.number(),
+    calc: v.boolean(),
+    check: v.string(),
+    qs: v.array(
+      v.object({
+        kind: v.string(),
+        correct: v.number(),
+        mistakes: v.array(v.union(v.string(), v.null())),
+      }),
+    ),
+    createdAt: v.number(),
+    closedAt: v.optional(v.number()),
   }).index("by_class", ["classId"]),
+
+  // One student's answers to an exit ticket: the option chosen for each question (0–3, or −1 if left out)
+  exitAnswers: defineTable({
+    ticketId: v.id("exitTickets"),
+    classId: v.id("classes"),
+    studentId: v.id("students"),
+    choices: v.array(v.number()),
+    correct: v.number(),
+    finishedAt: v.number(),
+  })
+    .index("by_ticket", ["ticketId"])
+    .index("by_student", ["studentId"])
+    .index("by_ticket_student", ["ticketId", "studentId"]),
 
   // Best result per student per item. itemId is a skill id, or "test:<topicId>" for a topic test.
   progress: defineTable({

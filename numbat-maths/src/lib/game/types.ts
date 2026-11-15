@@ -13,6 +13,11 @@ export interface GameQuestion {
   why: string
   /** The question type and the numbers it was made from, so tests can re-work the answer independently. Never shown. */
   meta: { t: string } & Record<string, unknown>
+  /**
+   * For each option, the mistake that gives it (null for the right option and for unlabelled ones), when the kind
+   * labels its wrong options. Never shown in the game; used by the teacher's most-missed view.
+   */
+  mistakes?: (string | null)[]
 }
 
 /** One kind of question in a set. d: 1 = the most basic form (asked first), 2 = slightly more thinking, still one step. */

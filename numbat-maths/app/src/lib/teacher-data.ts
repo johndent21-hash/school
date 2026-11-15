@@ -19,6 +19,8 @@ import {
 } from './demo'
 import type { ActivityRow, Mastery } from './insights'
 import { PREVIEW_ONLY } from './preview'
+import { demoExitTickets } from './demo-exit'
+import type { ExitTicket } from '@/lib/game/exit'
 import { useSession } from './session'
 
 type Fail = { ok: false; message: string }
@@ -123,6 +125,38 @@ export function useRatingActions(classId: string) {
   }
 }
 
+/* ---------------- exit tickets ---------------- */
+
+export function useExitTickets(id: string | undefined): { ok: true; tickets: ExitTicket[] } | Fail | undefined {
+  const { token } = useSession()
+  const live = useQuery(api.exits.classExitTickets, !PREVIEW_ONLY && token && id ? { token, classId: id as Id<'classes'> } : 'skip')
+  if (PREVIEW_ONLY) return id === DEMO_CLASS_ID ? { ok: true, tickets: demoExitTickets() } : NOT_FOUND
+  return live as { ok: true; tickets: ExitTicket[] } | Fail | undefined
+}
+
+/** Starting, closing and deleting exit tickets. Each returns an error message, or null when it worked. */
+export function useExitActions(classId: string) {
+  const { token } = useSession()
+  const createM = useMutation(api.exits.createExitTicket)
+  const closeM = useMutation(api.exits.closeExitTicket)
+  const deleteM = useMutation(api.exits.deleteExitTicket)
+  const run = async (fn: () => Promise<unknown>): Promise<string | null> => {
+    if (previewBlocked()) return null
+    try {
+      const r = (await fn()) as Result
+      return r.ok ? null : r.message
+    } catch {
+      return 'That didn’t save. Check your internet connection and try again.'
+    }
+  }
+  return {
+    create: (t: { gameId: string; title: string; seed: number; calc: boolean; check: string; qs: ExitTicket['qs'] }) =>
+      run(() => createM({ token: token!, classId: classId as Id<'classes'>, ...t })),
+    close: (ticketId: string) => run(() => closeM({ token: token!, ticketId: ticketId as Id<'exitTickets'> })),
+    remove: (ticketId: string) => run(() => deleteM({ token: token!, ticketId: ticketId as Id<'exitTickets'> })),
+  }
+}
+
 /* ---------------- parent view ---------------- */
 
 export interface ParentOverview {
@@ -135,9 +169,9 @@ export interface ParentOverview {
   lessons: { id: string; date: string; label: string | null; value: number | null }[]
 }
 
-export function useParentOverview(exampleChild?: string): ParentOverview | Fail | undefined {
+export function useParentOverview(exampleChild?: string, childId?: string): ParentOverview | Fail | undefined {
   const { token, parent } = useSession()
-  const live = useQuery(api.parents.parentOverview, !PREVIEW_ONLY && token && parent ? { token } : 'skip')
+  const live = useQuery(api.parents.parentOverview, !PREVIEW_ONLY && token && parent ? { token, ...(childId ? { studentId: childId as Id<'students'> } : {}) } : 'skip')
   const version = useDemoVersion()
   const demo = useMemo(() => (PREVIEW_ONLY ? demoParentOverview(exampleChild) : null), [exampleChild, version])
   if (PREVIEW_ONLY) return demo!

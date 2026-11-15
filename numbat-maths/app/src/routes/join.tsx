@@ -1,5 +1,5 @@
 // Student log-in: class code → tap your name → PIN (chosen the first time).
-// Parents use the same page (/join?as=parent) with their child's details and get the parent view.
+// Parents have their own log-in at /parent (a parent code and their own PIN); /join?as=parent points them there.
 import { useEffect, useMemo, useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
@@ -36,13 +36,28 @@ interface Lookup {
 
 function JoinPage() {
   const mounted = useMounted()
-  return <Shell>{PREVIEW_ONLY ? <PreviewLocked what="Student log-ins" /> : mounted ? <Join /> : <PageLoading />}</Shell>
+  const { as } = Route.useSearch()
+  return <Shell>{PREVIEW_ONLY ? <PreviewLocked what="Student log-ins" /> : as === 'parent' ? <ParentMoved /> : mounted ? <Join /> : <PageLoading />}</Shell>
+}
+
+/** The old parent log-in link (from cards printed before parent codes). */
+function ParentMoved() {
+  return (
+    <div className="mx-auto grid max-w-md gap-4">
+      <h1 className="font-display text-3xl font-semibold">Parents and carers</h1>
+      <p className="panel p-5">
+        Parents now have their own log-in, with the parent code from your child’s new login card and a PIN you choose. Logging in with your child’s
+        class code and PIN no longer works. If you don’t have a card with a parent code, ask the teacher for one.
+      </p>
+      <Link to="/parent" className="btn btn-primary w-fit">
+        Go to the parent log-in
+      </Link>
+    </div>
+  )
 }
 
 function Join() {
   const search = Route.useSearch()
-  const asParent = search.as === 'parent'
-  const keep = asParent ? { as: 'parent' as const } : {}
   const navigate = useNavigate()
   const { signIn } = useSession()
   const [codeInput, setCodeInput] = useState(search.code ?? cleanCode(load('numbat.lastCode') ?? ''))
@@ -61,8 +76,7 @@ function Join() {
     | { ok: false; message: string }
     | undefined
   const studentLogIn = useMutation(api.accounts.studentLogIn)
-  const parentLogIn = useMutation(api.accounts.parentLogIn)
-  const logIn = asParent ? parentLogIn : studentLogIn
+  const logIn = studentLogIn
   const setPinM = useMutation(api.accounts.studentSetPin)
 
   useEffect(() => {
@@ -78,12 +92,12 @@ function Join() {
   const done = (token: string) => {
     if (code) save('numbat.lastCode', code)
     signIn(token)
-    void navigate({ to: asParent ? '/parent' : '/home' })
+    void navigate({ to: '/home' })
   }
 
   const choose = (s: Lookup['students'][number]) => {
     setWho(s)
-    setMode(s.hasPin || asParent ? 'enter' : 'create')
+    setMode(s.hasPin ? 'enter' : 'create')
     setPin('')
     setFirstPin('')
     setError(null)
@@ -140,12 +154,7 @@ function Join() {
   if (!code) {
     return (
       <div className="mx-auto grid max-w-md gap-5">
-        <h1 className="font-display text-3xl font-semibold">{asParent ? 'Parent and carer log in' : 'Log in'}</h1>
-        {asParent && (
-          <p className="text-muted-foreground">
-            Use the same details your child uses: their class code, their name and their 4-digit PIN. You’ll see their progress; nothing you do here changes it.
-          </p>
-        )}
+        <h1 className="font-display text-3xl font-semibold">Log in</h1>
         <form
           className="panel grid gap-4 p-6"
           onSubmit={(e) => {
@@ -188,7 +197,7 @@ function Join() {
           onClick={() => {
             setCode(null)
             setCodeInput(code)
-            void navigate({ to: '/join', search: keep })
+            void navigate({ to: '/join', search: {} })
           }}
         >
           Try another code
@@ -198,24 +207,9 @@ function Join() {
   }
 
   // Step 3: PIN
-  if (who && asParent && !who.hasPin) {
-    return (
-      <div className="mx-auto grid max-w-md gap-4">
-        <button type="button" className="btn btn-ghost btn-sm w-fit" onClick={() => setWho(null)}>
-          <ArrowLeft size={16} aria-hidden="true" /> Back
-        </button>
-        <h1 className="font-display text-3xl font-semibold">{firstName(who.name)} hasn’t chosen a PIN yet</h1>
-        <p className="text-muted-foreground">
-          Students choose their PIN the first time they log in. Once {firstName(who.name)} has done that, use the same PIN here. If they’ve forgotten it, the teacher can reset it.
-        </p>
-      </div>
-    )
-  }
-
   if (who) {
-    const title = asParent
-      ? `Enter ${firstName(who.name)}’s PIN`
-      : mode === 'enter'
+    const title =
+      mode === 'enter'
         ? `Hi ${firstName(who.name)}! Enter your PIN`
         : mode === 'create'
           ? `Hi ${firstName(who.name)}! Choose a PIN`
@@ -228,7 +222,7 @@ function Join() {
         <div className="grid gap-1">
           <h1 className="font-display text-3xl font-semibold">{title}</h1>
           <p className="text-muted-foreground">
-            {mode === 'enter' && (asParent ? `The same 4 digits ${firstName(who.name)} uses to log in` : '4 digits')}
+            {mode === 'enter' && '4 digits'}
             {mode === 'create' && 'Pick 4 digits you’ll remember, and keep them secret. Not 1234 or 1111.'}
             {mode === 'confirm' && 'Just checking you typed it the way you meant.'}
           </p>
@@ -241,7 +235,7 @@ function Join() {
         )}
         {mode === 'enter' && (
           <p className="text-sm text-muted-foreground">
-            {asParent ? `Don’t know it? Ask ${firstName(who.name)}, or ask the teacher to reset it.` : 'Forgotten your PIN? Ask your teacher to reset it.'}
+            Forgotten your PIN? Ask your teacher to reset it.
           </p>
         )}
       </div>
@@ -265,13 +259,13 @@ function Join() {
           className="btn btn-ghost btn-sm"
           onClick={() => {
             setCode(null)
-            void navigate({ to: '/join', search: keep })
+            void navigate({ to: '/join', search: {} })
           }}
         >
           Wrong class?
         </button>
       </div>
-      <h2 className="font-display text-xl font-semibold">{asParent ? 'Tap your child’s name' : 'Tap your name'}</h2>
+      <h2 className="font-display text-xl font-semibold">Tap your name</h2>
       {students.length > 12 && (
         <label className="relative block max-w-sm">
           <span className="sr-only">Find your name</span>
@@ -290,7 +284,7 @@ function Join() {
           ))}
         </div>
       )}
-      <p className="text-sm text-muted-foreground">{asParent ? 'Not on the list? Check the class code with your child or their teacher.' : 'Not on the list? Ask your teacher to add you.'}</p>
+      <p className="text-sm text-muted-foreground">Not on the list? Ask your teacher to add you.</p>
       <p className="text-sm">
         <Link to="/" className="font-bold text-primary">
           Back to the start

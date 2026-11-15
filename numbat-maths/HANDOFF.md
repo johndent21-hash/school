@@ -1,6 +1,6 @@
 # Handoff: build the improvements the user chose (Step 4)
 
-**Current work: Step 4, Batch 4 (see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
+**Current work: Step 4, Batch 5 (spot the mistake; see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
 board-checked and published (Version 24, 14 Nov 2026), and the user has chosen the improvements. Build the Step 4
 batches in order. After each batch: full tests, one board check of what changed, one build and one publish, update
 this file (mark the batch done, note anything left), commit and push. Then go on to the next batch, unless context is
@@ -305,9 +305,38 @@ Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
   sizes clean, no page errors. N=400 all passed (386 exercises, 1167 kinds); other test files passed.
 - `tests/games.test.ts`: a calculator question never appears without calculators; with them every kind is asked.
 
-### Batch 4 (exit ticket, most-missed view, mistake labels, parent logins) — next
+### Batch 4 (exit ticket, most-missed view, mistake labels, parent logins) — done, published as Version 28 (15 Nov 2026)
 
-Batch 4 now also includes mistake labels and separate parent logins (see item 4 of Step 4 above). Other ideas offered
-on 15 Nov 2026 and not chosen (offer again only if asked): "this week in maths" help page for parents, upcoming
-assessments, good-news notes, weekly email/SMS digest, printable term report, translated parent page, spaced review,
-diagnostic quiz, weekly family challenge.
+- **User's choices (15 Nov 2026):** parents sign in with a **parent code + their own 6-digit PIN** (no emails stored);
+  the old parent log-in (child's class code, name and PIN) is **switched off now** (no transition term).
+- **Mistake labels:** `miss(value, label)` in `helpers.ts`; `gq` keeps each label with its option through de-dup and
+  shuffle and puts `q.mistakes` (aligned with `options`, null for the right one) on the question; `numOpts` takes
+  `[value, label]`. Labelled so far: NCM 7 Ch 1, NCM 8 Ch 3, NCM 9 Ch 4 (so 9 Std Ch 4, incl. calculator kinds):
+  **92 of 1167 kinds** counting reuses. Labels don't change any question: `npx tsx tests/fingerprints.ts` before and
+  after must be identical (it was: 1158 lines). `games.test.ts` checks labels (on wrong options only, ≤ 60 chars, no
+  HTML, "wrong sign" = the answer's opposite); planted mislabels were caught. **Next chapters to label** (most likely
+  to be used for exit tickets): NCM 7 Ch 4, 5; NCM 8 Ch 1, 2; 9 Std's own kinds (`ncm9s.ts`). Inside a chapter, wrap the
+  values where they are made (`miss(E(x), '…')`; for lists mapped with `E`, a local `EO` as in `ncm8-ch3.ts`).
+- **Exit tickets:** tables `exitTickets`, `exitAnswers`; `app/convex/exits.ts` (create closes any open ticket; open 2
+  days unless closed; one hand-in per student, marked on the server; clean-up on ticket/student/class delete).
+  Shared logic `src/lib/game/exit.ts` (rebuild from seed, snapshot, `summarise`, `mostMissed`); teacher tab
+  `components/numbat/ExitTickets.tsx` (class page → Exit tickets); student page `app/src/routes/exit.tsx`, home card.
+  Preview: four example tickets on Integers from the made-up class (`app/src/lib/demo-exit.ts`); "Try the open example
+  ticket as a student" answers it locally.
+- **Parent accounts:** tables `parents`, `parentLinks`; `students.parentCode` (+ `parentFailed`, `parentLockedUntil`,
+  `parentLockCount`, separate from the child's PIN lock); `sessions.parentId`. `app/convex/parents.ts`
+  (`parentCodeLookup`, `parentSignUp`, `parentLogIn`, `parentAddChild`, `parentRemoveChild`, `parentOverview`);
+  `classes.ensureParentCodes` (cards page) and `classes.newStudentParentCode` (Students tab). Cards print the parent code.
+- Tests: backend (vitest) 4 tests incl. new exit-ticket and parent-account tests (planted marking and lock-out bugs were
+  caught); `tests/exit.test.ts` (2592 tickets rebuilt from 432 games; summaries worked by hand); N=400 games and the
+  other test files passed; `qa/exit-check.mjs` (phone and laptop, no spill, no page errors).
+- **Not checked end to end:** the live log-ins against a real Convex backend (no backend here; the backend logic is
+  tested in memory with convex-test, the pages render-checked without a server). **Before the live site gets this:**
+  deploy the Convex schema and functions (new tables and fields are optional, so existing data loads), print new login
+  cards for every class (they carry the parent codes), and tell families the old parent log-in has stopped.
+- Left as found: the Students tab spills about 30 px sideways on a phone (it did before this batch too).
+
+### Batch 5 (spot the mistake) — next
+
+Worked steps per kind with one wrong line; start with a few chapters (the labelled ones are a good start, since the
+labels already name the mistake).

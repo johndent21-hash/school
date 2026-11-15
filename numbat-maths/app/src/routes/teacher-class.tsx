@@ -2,13 +2,14 @@
 import { useMemo, useState } from 'react'
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation } from 'convex/react'
-import { AlertTriangle, ArrowLeft, ArrowRight, Download, KeyRound, Pencil, Printer, Trash2, UserPlus, UserX } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowRight, Download, KeyRound, Pencil, Printer, Trash2, UserPlus, Users, UserX } from 'lucide-react'
 import { toast } from 'sonner'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
 import { PageLoading, Shell } from '@/components/numbat/Shell'
 import { StatTile, WeekColumns, WeekLine } from '@/components/numbat/Charts'
 import { DemoBanner } from '@/components/numbat/DemoBanner'
+import { ExitTicketsTab } from '@/components/numbat/ExitTickets'
 import { RatingsSheet } from '@/components/numbat/RatingsSheet'
 import { shortRefTitle } from '@/components/numbat/TextbookTags'
 import { findTopic, topicsForYear, YEARS } from '@/content'
@@ -25,10 +26,11 @@ import { useMounted } from '@/lib/use-mounted'
 import { cn } from '@/lib/utils'
 import { downloadCsv } from '@/lib/csv'
 
-type Tab = 'overview' | 'students' | 'ratings' | 'markbook' | 'tasks' | 'settings'
+type Tab = 'overview' | 'students' | 'ratings' | 'exit' | 'markbook' | 'tasks' | 'settings'
 const TABS: { id: Tab; label: string }[] = [
   { id: 'overview', label: 'Overview' },
   { id: 'students', label: 'Students' },
+  { id: 'exit', label: 'Exit tickets' },
   { id: 'ratings', label: 'Lesson ratings' },
   { id: 'markbook', label: 'Markbook' },
   { id: 'tasks', label: 'Tasks' },
@@ -52,6 +54,9 @@ interface ReportStudent {
   points: number
   lastActive: number | null
   progress: ProgressMap
+  /** the code on the child's card for parents; parent accounts linked to the child */
+  parentCode?: string | null
+  parentAccounts?: number
 }
 interface ReportTask {
   id: Id<'assignments'>
@@ -144,6 +149,7 @@ function ClassView() {
       {tab === 'overview' && <OverviewTab report={report} />}
       {tab === 'students' && <StudentsTab report={report} />}
       {tab === 'ratings' && <RatingsSheet classId={report.class.id} className={report.class.name} students={report.students} />}
+      {tab === 'exit' && <ExitTicketsTab classId={report.class.id} year={report.class.year} students={report.students} />}
       {tab === 'markbook' && <Markbook report={report} />}
       {tab === 'tasks' && <TasksTab report={report} />}
       {tab === 'settings' && <SettingsTab report={report} />}
@@ -337,6 +343,7 @@ function StudentsTab({ report }: { report: Report }) {
   const reset = useMutation(api.classes.resetPin)
   const remove = useMutation(api.classes.removeStudent)
   const rename = useMutation(api.classes.renameStudent)
+  const newParentCode = useMutation(api.classes.newStudentParentCode)
   const [names, setNames] = useState('')
   const [busy, setBusy] = useState(false)
   const c = report.class
@@ -370,8 +377,8 @@ function StudentsTab({ report }: { report: Report }) {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-      <section className="panel overflow-hidden">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <section className="panel min-w-0 overflow-hidden">
         {report.students.length === 0 ? (
           <p className="p-5 text-muted-foreground">No students yet. Add their names to get started.</p>
         ) : (
@@ -381,6 +388,9 @@ function StudentsTab({ report }: { report: Report }) {
                 <tr>
                   <th className="px-4 py-2">Name</th>
                   <th className="px-3 py-2">PIN</th>
+                  <th className="px-3 py-2" title="Parent accounts linked to this student">
+                    Parents
+                  </th>
                   <th className="px-3 py-2">Last active</th>
                   <th className="px-3 py-2 text-right">Points</th>
                   <th className="px-3 py-2">
@@ -399,6 +409,7 @@ function StudentsTab({ report }: { report: Report }) {
                     <td className="px-3 py-2">
                       {s.locked ? <span className="m-badge m-practise">Locked</span> : s.hasPin ? <span className="m-badge m-mastered">Set</span> : <span className="m-badge m-none">Not yet</span>}
                     </td>
+                    <td className="px-3 py-2 text-muted-foreground">{s.parentAccounts ? `${s.parentAccounts} linked` : 'None yet'}</td>
                     <td className="px-3 py-2 text-muted-foreground">{ago(s.lastActive)}</td>
                     <td className="px-3 py-2 text-right font-bold tabular-nums">{s.points.toLocaleString('en-AU')}</td>
                     <td className="px-3 py-2">
@@ -415,6 +426,24 @@ function StudentsTab({ report }: { report: Report }) {
                           }}
                         >
                           <KeyRound size={15} aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-sm"
+                          title="New parent code"
+                          aria-label={`New parent code for ${s.name}`}
+                          onClick={() => {
+                            if (previewBlocked()) return
+                            if (
+                              token &&
+                              window.confirm(
+                                `Give ${s.name} a new parent code? The old code stops working and ${s.name} is taken off any parent accounts; the family sets up again with the new code. Print a new card for them.`,
+                              )
+                            )
+                              void act(() => newParentCode({ token, studentId: s.id }), `${s.name} has a new parent code. Print a new card from Login cards.`)
+                          }}
+                        >
+                          <Users size={15} aria-hidden="true" />
                         </button>
                         <button
                           type="button"

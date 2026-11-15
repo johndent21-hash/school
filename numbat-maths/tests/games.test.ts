@@ -545,6 +545,7 @@ function circleShows(q: GameQuestion, part: 'radius' | 'diameter', where: string
 const OTHER_CHAPTERS: Record<string, typeof reworkCh1> = { 'ncm7-1': reworkCh1, 'ncm7-2': reworkCh2, 'ncm7-3': reworkCh3, 'ncm7-4': reworkCh4, 'ncm7-5': reworkCh5, 'ncm7-6': reworkCh6, 'ncm7-7': reworkCh7, 'ncm7-9': reworkCh9, 'ncm7-10': reworkCh10, 'ncm7-11': reworkCh11, 'ncm7-12': reworkCh12, 'ncm8-1': rework8Ch1, 'ncm8-2': rework8Ch2, 'ncm8-3': rework8Ch3, 'ncm8-4': rework8Ch4, 'ncm8-5': rework8Ch5, 'ncm8-6': rework8Ch6, 'ncm8-7': rework8Ch7, 'ncm8-8': rework8Ch8, 'ncm8-9': rework8Ch9, 'ncm8-10': rework8Ch10, 'ncm8-11': rework8Ch11, 'ncm8-12': rework8Ch12, 'ncm9-1': rework9Ch1, 'ncm9-2': rework9Ch2, 'ncm9-3': rework9Ch3, 'ncm9-4': rework9Ch4, 'ncm9-5': rework9Ch5, 'ncm9s-1': rework9S, 'ncm9s-5': rework9S, 'ncm9s-6': rework9S, 'ncm9s-8': rework9S, 'ncm9s-10': rework9S, 'ncm9s-11': rework9S, 'ncm9s-12': rework9S, 'ncm9s-13': rework9S }
 
 const kinds: string[] = []
+const labelled = new Set<string>()
 for (const set of ALL_GAME_SETS) {
   for (const maker of set.makers) {
     const where = `${set.exercise} ${maker.t}`
@@ -577,6 +578,20 @@ for (const set of ALL_GAME_SETS) {
       if ([plain(q.prompt), ...shown].some((t) => /[1-9]\d*?(0{6,}|9{6,})[1-9]|[.,]\d{15,}/.test(t.replace(/\s/g, '')))) fail(where, 'a number shows floating-point residue', q)
       if (q.diagram && (q.diagram.match(/<svg[\s\S]*?<\/svg>/g) ?? []).some((sv) => /<(i|sup|b|div|p|br|span)[ >]/.test(sv))) fail(where, 'HTML tag inside the diagram', q)
       if (/<svg/.test(q.prompt + q.options.join('') + q.why)) fail(where, 'a drawing outside the diagram', q)
+      // ---- mistake labels: one per option, none on the right one, short plain text
+      if (q.mistakes) {
+        labelled.add(where)
+        if (q.mistakes.length !== 4) fail(where, `${q.mistakes.length} mistake labels for 4 options`, q)
+        if (q.mistakes[q.correct] !== null) fail(where, 'the right option has a mistake label', q)
+        // a "wrong sign" option is the answer with its sign changed
+        q.mistakes.forEach((m, i) => {
+          if (m !== 'wrong sign') return
+          const lead = (x: string) => plain(x).replace(/^([−-]?)\$/, '$1').match(/^[−-]?\d[\d ]*(?:\.\d+)?/)?.[0]
+          const [o, r] = [lead(q.options[i]), lead(q.options[q.correct])].map((x) => (x === undefined ? NaN : Number(x.replace(/ /g, '').replace('−', '-'))))
+          if (!near(o, -r)) fail(where, `option ${'ABCD'[i]} is labelled "wrong sign" but is not the answer's opposite`, q)
+        })
+        for (const m of q.mistakes) if (m !== null && (typeof m !== 'string' || !m.trim() || m.length > 60 || /[<>]/.test(m))) fail(where, `bad mistake label "${m}"`, q)
+      }
       // ---- no two options equal in value (e.g. 0.5 m and 50 cm)
       const qs = q.options.map(quantity)
       if (qs.every((x) => x && SIZE[x.unit])) {
@@ -799,6 +814,7 @@ if (share[0] < 50) fail('luck', `the strongest team wins only ${share[0]}% of ga
 if (mostRightWins / decided < 0.6) fail('luck', `the team with the most right answers wins only ${Math.round((mostRightWins / decided) * 100)}% of the time`)
 
 console.log(`class games: ${ALL_GAME_SETS.length} exercises, ${kinds.length} kinds of question`)
+console.log(`mistake labels on ${labelled.size} of ${kinds.length} kinds`)
 console.log(`checked ${checked} questions; ${reworked} answers re-worked independently; ${measured} drawings measured`)
 console.log(`luck: teams that get 90%, 75%, 60% and 45% right win ${share.join('%, ')}% of games; the team with the most right answers wins ${Math.round((mostRightWins / decided) * 100)}%`)
 if (failures) for (const [k, c] of [...failKinds].sort((a, b) => b[1] - a[1])) console.log(`  ${String(c).padStart(5)} × ${k}`)

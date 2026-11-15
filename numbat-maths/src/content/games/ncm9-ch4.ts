@@ -10,7 +10,7 @@
 // MA5-TRG-C-02 (angles of elevation and depression and bearings, 4.08–4.10).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { fig, rtPts } from '@/lib/maths/diagrams6'
-import { chance, frac, gq, int, mk, mkCalc, num, pick, shuffle } from './helpers'
+import { type Miss, chance, frac, gq, int, miss, mk, mkCalc, num, pick, shuffle } from './helpers'
 
 const TRG = 'MA5-TRG-C-01'
 const TRG2 = 'MA5-TRG-C-02'
@@ -115,7 +115,7 @@ function m402ratio(): GameQuestion {
     diagram: tri({ th, mark: 'θ', opp: num(opp), adj: num(adj), hyp: num(hyp) }),
     correct: right,
     // the other ratios, and the ratio upside down
-    wrong: [F(opp, hyp), F(adj, hyp), F(opp, adj), which === 'sin' ? F(hyp, opp) : which === 'cos' ? F(hyp, adj) : F(adj, opp)].filter((x) => x !== right),
+    wrong: [miss(F(opp, hyp), 'used opposite ÷ hypotenuse (sin)'), miss(F(adj, hyp), 'used adjacent ÷ hypotenuse (cos)'), miss(F(opp, adj), 'used opposite ÷ adjacent (tan)'), miss(which === 'sin' ? F(hyp, opp) : which === 'cos' ? F(hyp, adj) : F(adj, opp), 'ratio upside down')],
     why: `${which} θ = ${which === 'sin' ? 'opposite ÷ hypotenuse' : which === 'cos' ? 'adjacent ÷ hypotenuse' : 'opposite ÷ adjacent'} = ${which === 'sin' ? `${opp}/${hyp}` : which === 'cos' ? `${adj}/${hyp}` : `${opp}/${adj}`}${gcd(which === 'cos' ? adj : opp, which === 'tan' ? adj : hyp) > 1 ? ' (simplified)' : ''}.`,
     meta: {},
   })
@@ -164,8 +164,8 @@ function m404dm(): GameQuestion {
     correct: toDM ? dm : dd,
     // the decimal digits read as minutes, divided by 100 instead of 60, one degree out
     wrong: toDM
-      ? [`${d}°${Math.round(dec * 100)}′`, `${d}°${Math.round(dec * 10)}′`, `${d}°${Math.round(dec * 100 * 0.6 + 1)}′`, `${d + 1}°${m}′`]
-      : [`${num(d + m / 100)}°`, `${num(d + m / 10)}°`, `${num(d + 1 + dec)}°`, `${num(d + dec / 2)}°`],
+      ? [miss(`${d}°${Math.round(dec * 100)}′`, 'read the decimal digits as minutes'), miss(`${d}°${Math.round(dec * 10)}′`, 'read the first decimal digit as minutes'), `${d}°${Math.round(dec * 100 * 0.6 + 1)}′`, `${d + 1}°${m}′`]
+      : [miss(`${num(d + m / 100)}°`, 'wrote the minutes as decimal digits'), miss(`${num(d + m / 10)}°`, 'divided the minutes by 10, not 60'), `${num(d + 1 + dec)}°`, `${num(d + dec / 2)}°`],
     why: `There are 60 minutes in a degree: ${m}′ = ${m} ÷ 60 = ${num(dec)}°, so ${dm} = ${dd}.`,
     meta: {},
   })
@@ -180,7 +180,7 @@ function m404round(): GameQuestion {
     prompt: `Round ${b(`${d}°${m}′`)} to the nearest degree.`,
     correct: `${up ? d + 1 : d}°`,
     // rounded the other way, kept the minutes as a decimal, rounded at 50′
-    wrong: [`${up ? d : d + 1}°`, `${d}.${String(m).padStart(2, '0')}°`, `${up ? d + 2 : d - 1}°`, `${d + m}°`],
+    wrong: [miss(`${up ? d : d + 1}°`, 'rounded the wrong way'), miss(`${d}.${String(m).padStart(2, '0')}°`, 'wrote the minutes as decimal digits'), `${up ? d + 2 : d - 1}°`, miss(`${d + m}°`, 'added the minutes to the degrees')],
     why: `${m}′ is ${up ? 'more' : 'less'} than 30′ (half a degree), so round ${up ? 'up' : 'down'}: ${up ? d + 1 : d}°.`,
     meta: {},
   })
@@ -208,7 +208,7 @@ function m404calcRatio(): GameQuestion {
       prompt: `Use a calculator to find ${b(`${f} ${a}°`)}, correct to 4 decimal places.`,
       correct: fx(v, 4),
       // the calculator in radians, the other ratio, cut off instead of rounded, the next angle
-      wrong: [fx(FN[f](a), 4), fx(FN[other](rad(a)), 4), fx(Math.trunc(v * 1e4) / 1e4, 4), fx(FN[f](rad(a + 1)), 4), fx(1 / v, 4)],
+      wrong: [miss(fx(FN[f](a), 4), 'calculator in radians'), miss(fx(FN[other](rad(a)), 4), `pressed ${other} instead of ${f}`), miss(fx(Math.trunc(v * 1e4) / 1e4, 4), 'cut off instead of rounding'), fx(FN[f](rad(a + 1)), 4), miss(fx(1 / v, 4), 'found 1 ÷ the ratio')],
       why: `With the calculator in degrees, ${f} ${a}° = ${v.toFixed(6)}…, which is ${fx(v, 4)} to 4 decimal places.`,
       meta: {},
     })
@@ -238,10 +238,10 @@ function calcSide(t: string, denominator: boolean): GameQuestion {
       correct: fx(val, 1),
       // multiplied instead of divided (or the reverse), the other ratios, the calculator in radians
       wrong: [
-        fx(denominator ? k * r : k / r, 1),
-        fx(denominator ? k / FN[others[0]](rad(a)) : k * FN[others[0]](rad(a)), 1),
-        fx(denominator ? k / FN[others[1]](rad(a)) : k * FN[others[1]](rad(a)), 1),
-        fx(denominator ? k / FN[f](a) : k * FN[f](a), 1),
+        miss(fx(denominator ? k * r : k / r, 1), denominator ? 'multiplied instead of divided' : 'divided instead of multiplied'),
+        miss(fx(denominator ? k / FN[others[0]](rad(a)) : k * FN[others[0]](rad(a)), 1), `used ${others[0]} instead of ${f}`),
+        miss(fx(denominator ? k / FN[others[1]](rad(a)) : k * FN[others[1]](rad(a)), 1), `used ${others[1]} instead of ${f}`),
+        miss(fx(denominator ? k / FN[f](a) : k * FN[f](a), 1), 'calculator in radians'),
         fx(val + 1, 1),
       ],
       why: `${showEq(eq)} = ${val.toFixed(3)}…, so ${it('x')} = ${fx(val, 1)} to 1 decimal place.`,
@@ -276,7 +276,12 @@ function m407calcAngle(): GameQuestion {
       correct: `${right}°`,
       // the other angle of the triangle, the wrong inverse ratio, one degree out
       // (sin⁻¹ and cos⁻¹ only of a ratio below 1)
-      wrong: [`${Math.round(90 - th)}°`, ...(['sin', 'cos', 'tan'] as const).filter((g) => g !== f && (g === 'tan' || r < 1)).map((g) => `${other(g)}°`), `${right + 1}°`, `${right - 1}°`],
+      wrong: [
+        miss(`${Math.round(90 - th)}°`, f === 'tan' ? 'gave the other acute angle' : `used ${f === 'sin' ? 'cos' : 'sin'}⁻¹ (gives the other acute angle)`),
+        ...(['sin', 'cos', 'tan'] as const).filter((g) => g !== f && (g === 'tan' || r < 1)).map((g) => miss(`${other(g)}°`, `used ${g}⁻¹ instead of ${f}⁻¹`)),
+        miss(`${right + 1}°`, 'rounding slip'),
+        miss(`${right - 1}°`, 'rounding slip'),
+      ],
       why: `${f} θ = ${top}/${bottom}, so θ = ${f}⁻¹(${top}/${bottom}) = ${th.toFixed(2)}°…, which is ${right}° to the nearest degree.`,
       meta: {},
     })
@@ -309,17 +314,19 @@ function sideQuestion(t: string, denominator: boolean): GameQuestion {
   const [x, known] = pick(pairs)
   const right = sideEq(x, known, k, a)
   const labels: Partial<Record<Role, string>> = { [x]: 'x', [known]: num(k) }
-  const wrongs: string[] = []
-  for (const f of ['sin', 'cos', 'tan']) for (const form of [`x = ${k} ${f} ${a}°`, `x = ${k} ÷ ${f} ${a}°`]) if (form !== right) wrongs.push(form)
   // the most likely slips first: the same ratio the other way up, then the other ratios
   const fRight = right.match(/(sin|cos|tan)/)![1]
-  wrongs.sort((p, q) => Number(!p.includes(fRight)) - Number(!q.includes(fRight)))
+  const wrongs: Miss[] = []
+  for (const f of ['sin', 'cos', 'tan'])
+    for (const form of [`x = ${k} ${f} ${a}°`, `x = ${k} ÷ ${f} ${a}°`])
+      if (form !== right) wrongs.push(miss(form, f === fRight ? (denominator ? 'multiplied instead of divided' : 'divided instead of multiplied') : `used ${f} instead of ${fRight}`))
+  wrongs.sort((p, q) => Number(!p.v.includes(fRight)) - Number(!q.v.includes(fRight)))
   return gq({
     t,
     prompt: `Which equation gives the value of ${it('x')}?`,
     diagram: tri({ th: a, mark: `${a}°`, opp: labels.opp, adj: labels.adj, hyp: labels.hyp }),
     correct: showEq(right),
-    wrong: wrongs.slice(0, 5).map(showEq),
+    wrong: wrongs.slice(0, 5).map((w) => miss(showEq(w.v), w.m)),
     why: `${x === 'hyp' ? 'x is the hypotenuse' : x === 'opp' ? 'x is opposite the angle' : 'x is adjacent to the angle'} and ${num(k)} is the ${known === 'hyp' ? 'hypotenuse' : known === 'opp' ? 'opposite side' : 'adjacent side'}, so use ${fRight}: ${showEq(right)}.`,
     meta: {},
   })
@@ -343,7 +350,7 @@ function m407angle(): GameQuestion {
     diagram: tri({ th, mark: 'θ', ...labels }),
     correct: right,
     // the ratio upside down, the wrong function
-    wrong: [inv(f, bottom, top), inv(others[0], top, bottom), inv(others[1], top, bottom), `θ = ${f} (${top}/${bottom})`],
+    wrong: [miss(inv(f, bottom, top), 'ratio upside down'), miss(inv(others[0], top, bottom), `used ${others[0]}⁻¹ instead of ${f}⁻¹`), miss(inv(others[1], top, bottom), `used ${others[1]}⁻¹ instead of ${f}⁻¹`), miss(`θ = ${f} (${top}/${bottom})`, 'used the ratio, not its inverse')],
     why: `The sides given are the ${f === 'sin' ? 'opposite and hypotenuse' : f === 'cos' ? 'adjacent and hypotenuse' : 'opposite and adjacent'}, so ${f} θ = ${top}/${bottom} and ${right}.`,
     meta: {},
   })
