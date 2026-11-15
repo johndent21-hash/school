@@ -221,7 +221,20 @@ everything chosen: about 5 units. The order groups work that shares machinery; i
      `d` 1 or 2), marks adding to the stated total, a realistic time allowance; offer Version A / Version B (seeds).
 3. **Speed round / buzzer game (about 0.3–0.5)** and **trigonometry calculator mode (about 0.3–0.5)**.
 4. **Exit ticket (about 0.4–0.6)** and **teacher view of most-missed questions (about 0.5–1.5)**: both store results
-   (backend), so build the storage once.
+   (backend), so build the storage once. The user added two items to this batch (15 Nov 2026):
+   - **Mistake labels (about 0.3–0.5):** give each wrong option a short label naming the error it encodes (most kinds
+     already say so in a comment above `wrong:`, e.g. "the middle term forgotten"). Suggested shape: an optional
+     `mistakes` list in `gq()` parallel to `wrong`, kept on the question (e.g. `q.mistakes[optionIndex]`, never shown in
+     the game itself), so the most-missed view can say "40% chose B: squared only the 3, not the −3". Store the chosen
+     option, not just right/wrong. Start with the chapters the teacher view will show most (NCM 7, NCM 8, 9 Std);
+     a test should check every label belongs to a wrong option and that labelled kinds still pass their checks.
+   - **Separate parent logins (about 0.2–0.3):** today parents log in with the child's class code, name and PIN
+     (`app/src/routes/parent.tsx`, `app/convex/parents.ts`), so a parent can log in as the student, the site can't
+     tell parent from student, and siblings need two logins. Build: a parent code issued by the teacher (on the
+     printable cards, `teacher-cards.tsx`), one parent account able to link several children, read-only as now; keep
+     the lock-out after wrong PINs. Plan the switch-over for families already using the old login (keep it working for
+     a term, or ask the teacher to reissue cards). Note for the user: before a wider roll-out, the school should check
+     its privacy requirements for third-party apps holding student data (Convex hosting).
 5. **Spot the mistake (about 0.5–1.5):** worked steps per kind; start with a few chapters.
 
 Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
@@ -272,3 +285,8 @@ Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
   Copy it to the scratchpad before removing NCM 9 Advanced, and copy it back after the build.
 
 ### Batch 3 (speed round / buzzer, trigonometry calculator mode) — next
+
+Batch 4 now also includes mistake labels and separate parent logins (see item 4 of Step 4 above). Other ideas offered
+on 15 Nov 2026 and not chosen (offer again only if asked): "this week in maths" help page for parents, upcoming
+assessments, good-news notes, weekly email/SMS digest, printable term report, translated parent page, spaced review,
+diagnostic quiz, weekly family challenge.
