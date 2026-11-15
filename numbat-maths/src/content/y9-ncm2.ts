@@ -295,6 +295,7 @@ function between(): Question {
     answer: mcFixedA(opts, `${k} and ${k + 1}`),
     hint: `List some square numbers: which two are either side of ${n}?`,
     steps: [`${sqN(k)} = ${k * k} and ${sqN(k + 1)} = ${(k + 1) ** 2}`, `${n} is between ${k * k} and ${(k + 1) ** 2}, so ${sqrt(n)} is between ${k} and ${k + 1}.`],
+    noCalc: true,
     meta: { t: 'between', n },
   })
 }

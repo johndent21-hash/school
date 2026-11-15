@@ -72,6 +72,9 @@ export interface Question {
   hint: string // HTML
   steps: string[] // worked solution, one HTML string per step
   calc?: boolean | 'trig' // calculator allowed; 'trig' also shows sin, cos and tan (Year 9 trigonometry)
+  /** the question or its exercise says to work without a calculator: it never gets one, even in a practice set where
+   *  the other questions do (practice sets otherwise give every question the calculator if any question has it) */
+  noCalc?: boolean
   note?: string // e.g. "Diagram not to scale"
   /** The numbers a question was made from, so tests can re-work the answer independently. Never shown. */
   meta?: { t: string } & Record<string, unknown>

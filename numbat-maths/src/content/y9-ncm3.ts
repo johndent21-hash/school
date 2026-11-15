@@ -519,6 +519,7 @@ function equivDivision(): Question {
   const wrong = [`${num(r9(a * p * 10))} ${DIVIDE} ${num(r9(b * p))}`, `${num(a)} ${DIVIDE} ${num(r9(b * p))}`, `${num(r9(a / 10))} ${DIVIDE} ${num(r9(b * p))}`]
   return q({
     prompt: `${pick(NAMES)} has to work out ${num(a)} ${DIVIDE} ${num(b)} without a calculator. Which calculation gives the same answer?`,
+    noCalc: true,
     answer: mcA(right, wrong),
     hint: 'Multiply both numbers by the same power of 10, so that you divide by a whole number.',
     steps: [`Multiply both by ${num(p)}: ${num(a)} ${DIVIDE} ${num(b)} = ${right}`],
@@ -672,6 +673,7 @@ function smallPowers(): Question {
   const val = r9(b ** e)
   return q({
     prompt: `Without a calculator, evaluate (${num(b)})${sup(e)}.`,
+    noCalc: true,
     answer: numA(val),
     hint: `Work out ${num(Math.round(b * 10 ** dpOf(b)))}${sup(e)} first, then count decimal places: the answer has ${dpOf(b) * e}.`,
     steps: [`${num(Math.round(b * 10 ** dpOf(b)))}${sup(e)} = ${num(Math.round(b * 10 ** dpOf(b)) ** e)}`, `${dpOf(b)} ${TIMES} ${e} = ${dpOf(b) * e} decimal places, so (${num(b)})${sup(e)} = ${num(val)}`],

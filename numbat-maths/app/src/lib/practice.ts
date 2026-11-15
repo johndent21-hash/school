@@ -70,16 +70,32 @@ export function pose(skill: Skill, level: Level, seen: Set<string>): Posed {
 // When a level has run out of new questions, borrow from the nearest other level before repeating one
 const NEIGHBOURS: Record<Level, Level[]> = { 1: [2, 3], 2: [1, 3], 3: [2, 1] }
 
-/** A practice set. The same seed always gives the same questions, so a set can be resumed later. */
+/**
+ * A practice set. The same seed always gives the same questions, so a set can be resumed later.
+ * If any question in the set allows a calculator, every question in the set does, so the Calculator button stays
+ * put for the whole set (and never hints, by disappearing, that an answer is a whole number). Topic tests keep each
+ * question's own marking.
+ */
 export function buildSet(skill: Skill, levels: Level[], seed?: number): Posed[] {
   if (seed === undefined) reseed()
   else setSeed(seed)
   const seen = new Set<string>()
-  return levels.map((l) => {
+  const set = levels.map((l) => {
     const p = fresh(skill, l, seen, 60) ?? NEIGHBOURS[l].reduce<Posed | null>((found, other) => found ?? fresh(skill, other, seen, 30), null)
     // only if the skill has fewer different questions than the set needs
     return p ?? { q: skill.gen(l), level: l, skill }
   })
+  return withSetCalculator(set)
+}
+
+/** Every question gets the calculator if any question in the set has one ('trig' keys if any question needs them),
+ *  except questions marked noCalc. */
+export function withSetCalculator(set: Posed[]): Posed[] {
+  const kinds = set.map((p) => p.q.calc).filter(Boolean)
+  if (kinds.length === 0) return set
+  const calc = kinds.includes('trig') ? ('trig' as const) : true
+  // a question that says to work without a calculator keeps it switched off
+  return set.map((p) => (p.q.calc === calc || p.q.noCalc ? p : { ...p, q: { ...p.q, calc } }))
 }
 
 /** A short fingerprint of a whole set, so a saved set is only resumed if it rebuilds exactly the same questions. */

@@ -26,6 +26,10 @@ for (const t of ALL_TOPICS) {
       if (a.some((p, i) => p.q.prompt !== b[i].q.prompt || JSON.stringify(p.q.answer) !== JSON.stringify(b[i].q.answer) || p.level !== b[i].level))
         fail(`${s.id}: the same seed gave a different set`)
       if (setCheck(a) !== setCheck(b)) fail(`${s.id}: the same set gave a different fingerprint`)
+      // the Calculator button stays for the whole set: every question allows a calculator, or none does
+      // (questions that say to work without a calculator are the exception)
+      if (new Set(a.filter((p) => !p.q.noCalc).map((p) => String(p.q.calc ?? false))).size > 1) fail(`${s.id}: the calculator is allowed on some questions of the set and not others`)
+      if (a.some((p) => p.q.noCalc && p.q.calc)) fail(`${s.id}: a question that says “without a calculator” has one`)
       if (setCheck(a) === setCheck(buildSet(s, levels, seed + 1))) fail(`${s.id}: two different sets gave the same fingerprint`)
       const keys = a.map((p) => p.q.prompt + (p.q.diagram ?? '') + JSON.stringify(p.q.answer.kind === 'mc' ? p.q.answer.options.slice().sort() : p.q.answer))
       const dup = keys.length - new Set(keys).size

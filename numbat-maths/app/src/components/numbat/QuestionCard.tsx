@@ -67,6 +67,11 @@ export function QuestionCard({
               <Calculator size={13} aria-hidden="true" /> Calculator allowed
             </span>
           )}
+          {q.noCalc && (
+            <span className="chip" title="Work this one out without a calculator">
+              No calculator
+            </span>
+          )}
           <span className="ml-auto">
             <ReadAloud html={q.prompt} label="Read" />
           </span>

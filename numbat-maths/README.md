@@ -10,6 +10,10 @@ Also:
   keyboard on phones and tablets, opens from a button on computers. Keys depend on the answer type and year level only
   (never on the answer itself); Years 1–2 get bigger keys.
 - **Calculator** (`Calculator.tsx`, arithmetic in `src/lib/maths/calc.ts`): only on questions marked "Calculator allowed".
+  In a practice set, if any question allows a calculator, every question in the set does (`withSetCalculator` in
+  `app/src/lib/practice.ts`), so the button stays put and never hints that an answer is a whole number; questions
+  marked `noCalc` (they or their exercise say "without a calculator") are the exception and show "No calculator".
+  Topic tests keep each question's own marking.
   Basic in Year 7; √, x², xʸ, π and Ans from Year 8; sin, cos, tan and their inverses (degrees) on Year 9 trigonometry
   questions (`calc: 'trig'`), with a ° ′ ″ key for angles in degrees and minutes, so other questions keep a shorter
   calculator that fits on the screen. Arithmetic is exact (fractions are kept as fractions, using whole-number ratios),
@@ -507,6 +511,7 @@ node qa/game-check.mjs        # (preview server on :3102) class games: set-up, a
                               # then every game played through at four screen sizes with nothing needing scrolling
 node qa/game-preview-check.mjs out.html   # the built stand-alone page: a class game played by clicking only, and carried on after a reload
 node qa/exit-check.mjs [folder]          # (preview server on :3102) exit tickets: teacher tab, a student handing one in, parent pages; phone and laptop
+npx tsx tests/calc-skills.ts; node qa/calc-check.mjs   # (preview server on :3102) every calculator skill's practice set: the button on every question
 
 cd harness && ./build-preview.sh out.html                                          # stand-alone preview page (log-ins off)
 cd harness && VITE_STAGE1=1 VITE_STAGE2=1 ./build-preview.sh out.html "Numbat Maths 1–9"   # preview with Years 1–4 added

@@ -1303,7 +1303,8 @@ function calcMissing(): Question {
 }
 
 export const ex109 = (level: Level): Question => {
-  if (level === 1) return noCalc()
+  // level 1 is "working without a calculator first"
+  if (level === 1) return { ...noCalc(), noCalc: true }
   if (level === 2) return pick([minusSquared, calcEval, calcEval])()
   return pick([calcMissing, () => useNumbers(true), calcEval])()
 }

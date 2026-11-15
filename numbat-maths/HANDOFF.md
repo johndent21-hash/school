@@ -336,6 +336,17 @@ Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
   cards for every class (they carry the parent codes), and tell families the old parent log-in has stopped.
 - Left as found: the Students tab spills about 30 px sideways on a phone (it did before this batch too).
 
+### Fix after Batch 4 (15 Nov 2026): calculator button in practice sets — published as Version 29
+
+The user saw the Calculator button disappear after question 1 of a Year 9 coordinate geometry set: `calc` was set per
+question, sometimes from the answer (`calc: !isSq(d2)`), in 63 skills. **User's choice: whole set.** `buildSet` now
+gives every question the calculator if any has it, except `noCalc` questions (Y7 1.09 level 1, Y9 2.0x "without using
+a calculator", Y9 3.0x two "without a calculator" kinds), which show "No calculator". `tests/practice.test.ts` checks it;
+`qa/calc-check.mjs` played all 82 calculator skills (1640 questions): no problems. Topic tests are unchanged and still
+mark per question, so the ~25 question types whose calculator depends on the numbers still hint at whole-number
+answers there (not raised as a problem by the user; offer to fix). Side effect accepted by the user: Year 9 Fractions
+(3.03) by-hand questions now get the fraction calculator in practice sets.
+
 ### Batch 5 (spot the mistake) — next
 
 Worked steps per kind with one wrong line; start with a few chapters (the labelled ones are a good start, since the
