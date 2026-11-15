@@ -73,8 +73,8 @@ for (const [w, h, scheme] of [
     tall = Math.max(tall, await fits())
     if (k === 1) await shot('answer')
     await page.locator('.gb-main').click()
-    await page.getByRole('button', { name: 'Show all' }).click().catch(() => {})
-    await page.locator('.gb-main', { hasText: /Next question|See the winners/ }).waitFor()
+    // one log a second; the main button waits for the last
+    await page.locator('.gb-main:not([disabled])', { hasText: /Next question|See the winners/ }).waitFor()
     if (k === 1) {
       await page.waitForTimeout(700)
       await shot('dig')
@@ -94,8 +94,7 @@ for (const [w, h, scheme] of [
     await page.getByRole('button', { name: 'Show the answer' }).click()
     await page.locator('button.gb-team').first().click()
     await page.locator('.gb-main').click()
-    await page.getByRole('button', { name: 'Show all' }).click().catch(() => {})
-    await page.locator('.gb-main', { hasText: /Next question/ }).click()
+    await page.locator('.gb-main:not([disabled])', { hasText: /Next question/ }).click()
   }
   const q3 = await page.locator('.gb-prompt').textContent()
   const totals = (await page.locator('.gb-team .tscore').allTextContents()).map((s) => parseInt(s)).join(',')

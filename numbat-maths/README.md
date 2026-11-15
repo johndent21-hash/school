@@ -140,8 +140,14 @@ Also:
   A to D, on mini whiteboards); the teacher shows the answer and ticks each team that got it right; each of those teams
   digs up a log: mostly termites (points), sometimes a surprise (double dig, golden log, an echidna that got there first,
   a raid on the leading team, or a leapfrog over the team just ahead). Set-up is one page: 2 to 6 teams, 5 to 15
-  questions, 10 to 45 seconds a question or no timer, and a "see the questions first" list for the teacher. Keys: Space or
-  Enter for the next step, 1 to 6 to tick a team, A for all teams, P to pause the timer. The game's place is kept on the
+  questions, the time for each question, and a "see the questions first" list for the teacher (with each question's
+  suggested time). Time: **Suggested** (the default) gives each question its own time from what it asks
+  (`suggestedSecs` in `src/lib/game/build.ts`: reading, each step of the working in its explanation, squares and square
+  roots counting more, a diagram, a calculator, d2; rounded up to 15, 20, 30, 45, 60, 90 or 120 s; a kind can set
+  `secs`), or a fixed 10 s to 2 minutes, or no timer. During the game, −15 s and +15 s beside the clock (keys − and +)
+  change the time left on that question and the time for every question after it (`adjust` in the saved game). After
+  the dig the logs open one at a time, a second apart, and the next step waits for the last one (also with "reduce
+  motion" on). Keys: Space or Enter for the next step, 1 to 6 to tick a team, A for all teams, P to pause the timer. The game's place is kept on the
   device (`numbat.game`), so a refresh or a sleeping laptop loses nothing, and "Undo this dig" fixes a mis-tick. The end
   screen ranks the teams and lists the questions the fewest teams got right.
   - **Speed round** (choose "Speed round" at set-up; `buzzIn`, `buzzRight`, `buzzWrong` in `app/src/lib/board.ts`): the

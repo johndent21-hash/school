@@ -27,6 +27,8 @@ export interface GameMaker {
   d?: 1 | 2
   /** needs a calculator: only asked when the teacher allows calculators (never in the default, head-only game) */
   calc?: boolean
+  /** suggested seconds to answer, when the estimate from the question's working (suggestedSecs) doesn't fit */
+  secs?: number
 }
 
 /** The questions for one textbook exercise. */

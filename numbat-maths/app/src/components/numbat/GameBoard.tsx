@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowLeftRight, ArrowRight, Bug, Calculator, Check, Eye, Flag, Hand, Maximize, Pause, Play, RotateCcw, Sparkles, Swords, Trophy, Undo2, X } from 'lucide-react'
 import type { GameItem } from '@/lib/game/types'
 import { places, type Find } from '@/lib/game/luck'
-import { type BoardState, allOut, buzzIn, buzzRight, buzzWrong, clearBoard, digRound, markAll, nextQuestion, reveal, saveBoard, scoresDuring, toggleTeam, undoDig } from '@/lib/board'
+import { ADJUST_STEP, type BoardState, allOut, buzzIn, buzzRight, buzzWrong, clearBoard, digRound, markAll, nextQuestion, questionSecs, reveal, saveBoard, scoresDuring, toggleTeam, undoDig } from '@/lib/board'
 import { cn } from '@/lib/utils'
 import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
@@ -11,7 +11,6 @@ import { useFocusMode } from './Shell'
 
 const LETTERS = ['A', 'B', 'C', 'D']
 const ORDINALS = ['1st', '2nd', '3rd', '4th', '5th', '6th']
-const prefersReducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 /** A numbat-sized log: what every dig turns over. */
 function LogIcon({ className }: { className?: string }) {
@@ -54,11 +53,32 @@ function findText(f: Find, teams: string[]): { title: string; detail: string; ic
   }
 }
 
-function Countdown({ secs, left, paused, onToggle, timeUp }: { secs: number; left: number; paused: boolean; onToggle: () => void; timeUp: boolean }) {
+function Countdown({
+  secs,
+  left,
+  paused,
+  onToggle,
+  timeUp,
+  adjust,
+  onAdjust,
+}: {
+  secs: number
+  left: number
+  paused: boolean
+  onToggle: () => void
+  timeUp: boolean
+  adjust: number
+  onAdjust: (delta: number) => void
+}) {
+  const changed = adjust === 0 ? '' : ` (${adjust > 0 ? '+' : '−'}${Math.abs(adjust)} s on each question)`
   return (
     <div className="gb-clock" role="timer" aria-label={timeUp ? 'Time is up' : `${left} seconds left`}>
+      <button type="button" className="btn btn-ghost btn-sm gb-adjust" onClick={() => onAdjust(-ADJUST_STEP)} title={`Less time: ${ADJUST_STEP} s off this question and the rest${changed}`} aria-label={`${ADJUST_STEP} seconds less, for this question and the rest`}>
+        −{ADJUST_STEP}
+        <span className="max-sm:hidden"> s</span>
+      </button>
       <div className={cn('gb-timer', left <= 5 && 'low')} aria-hidden="true">
-        <span style={{ width: `${(left / secs) * 100}%` }} />
+        <span style={{ width: `${Math.min(100, (left / secs) * 100)}%` }} />
       </div>
       <span className={cn('gb-secs', left <= 5 && 'low')} aria-hidden="true">
         {left}
@@ -66,6 +86,10 @@ function Countdown({ secs, left, paused, onToggle, timeUp }: { secs: number; lef
       <button type="button" className="btn btn-ghost btn-sm" onClick={onToggle} disabled={timeUp} aria-label={paused ? 'Start the timer again' : 'Pause the timer'}>
         {paused ? <Play size={16} aria-hidden="true" /> : <Pause size={16} aria-hidden="true" />}
         <span className="max-sm:sr-only">{paused ? 'Resume' : 'Pause'}</span>
+      </button>
+      <button type="button" className="btn btn-ghost btn-sm gb-adjust" onClick={() => onAdjust(ADJUST_STEP)} title={`More time: ${ADJUST_STEP} s more on this question and the rest${changed}`} aria-label={`${ADJUST_STEP} seconds more, for this question and the rest`}>
+        +{ADJUST_STEP}
+        <span className="max-sm:hidden"> s</span>
       </button>
     </div>
   )
@@ -90,7 +114,9 @@ export function GameBoard({
   const [b, setB] = useState<BoardState>(initial)
   const total = items.length
   const teams = b.cfg.teams
-  const secs = b.cfg.secs
+  const adjust = b.adjust ?? 0
+  // this question's time: its own suggested time (or the fixed time), plus the teacher's change during the game
+  const secs = questionSecs(b.cfg.secs, adjust, items[Math.min(b.i, total - 1)])
   // speed round: the team answering now, and the teams already wrong on this question
   const speed = !!b.cfg.speed
   const buzz = speed ? (b.buzz ?? null) : null
@@ -114,11 +140,25 @@ export function GameBoard({
     else saveBoard(b)
   }, [b])
 
-  // a fresh countdown for each question
+  // a fresh countdown for each question (a change of time during the question is handled by changeTime)
   useEffect(() => {
     setLeft(secs)
     setPaused(false)
-  }, [b.i, secs])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [b.i])
+
+  // − 15 s / + 15 s: changes the time left on this question and the time for every question after it
+  const changeTime = useCallback(
+    (delta: number) => {
+      if (b.cfg.secs === 0) return
+      const next = questionSecs(b.cfg.secs, adjust + delta, items[Math.min(b.i, total - 1)])
+      const applied = next - secs
+      if (applied === 0) return
+      setB((x) => ({ ...x, adjust: (x.adjust ?? 0) + applied }))
+      if (b.phase === 'ask') setLeft((l) => Math.max(0, Math.min(next, l + applied)))
+    },
+    [b.cfg.secs, b.i, b.phase, adjust, items, total, secs],
+  )
 
   // speed round: after a wrong answer the clock starts again for the other teams
   useEffect(() => {
@@ -138,7 +178,8 @@ export function GameBoard({
   const findCount = round?.finds.length ?? 0
   useEffect(() => {
     if (b.phase !== 'dug' || shown >= findCount) return
-    const id = window.setTimeout(() => setShown((x) => x + 1), shown === 0 ? 350 : 800)
+    // one log a second, always one at a time (a device set to reduce motion just skips the bounce)
+    const id = window.setTimeout(() => setShown((x) => x + 1), shown === 0 ? 400 : 1000)
     return () => window.clearTimeout(id)
   }, [b.phase, shown, findCount])
 
@@ -150,7 +191,7 @@ export function GameBoard({
 
   const doReveal = useCallback(() => setB((x) => reveal(x)), [])
   const doDig = useCallback(() => {
-    setShown(prefersReducedMotion() ? 99 : 0)
+    setShown(0)
     setB((x) => digRound(x))
   }, [])
   const doNext = useCallback(() => {
@@ -167,10 +208,8 @@ export function GameBoard({
     if (b.phase === 'ask' && buzz !== null) return
     if (b.phase === 'ask') doReveal()
     else if (b.phase === 'reveal') doDig()
-    else if (b.phase === 'dug') {
-      if (!allShown) setShown(99)
-      else doNext()
-    }
+    // the logs open one at a time; the next step waits until the last one is open
+    else if (b.phase === 'dug' && allShown) doNext()
   }, [b.phase, buzz, allShown, doReveal, doDig, doNext])
 
   // Keys for a teacher at the laptop: Space or Enter for the next step, 1–6 to tick a team, A for all teams.
@@ -203,10 +242,12 @@ export function GameBoard({
         else if (buzz !== null && (e.key === 'n' || e.key === 'N')) setB((x) => buzzWrong(x))
       }
       if (b.phase === 'ask' && secs > 0 && (e.key === 'p' || e.key === 'P')) setPaused((p) => !p)
+      if (secs > 0 && (e.key === '-' || e.key === '_')) changeTime(-ADJUST_STEP)
+      if (secs > 0 && (e.key === '+' || e.key === '=')) changeTime(ADJUST_STEP)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [b.phase, primary, teams.length, secs, confirmEnd, speed, buzz])
+  }, [b.phase, primary, teams.length, secs, confirmEnd, speed, buzz, changeTime])
 
   // a new question, the answer or the finds: back to the top on small screens
   useEffect(() => {
@@ -228,7 +269,9 @@ export function GameBoard({
         <span className="gb-count" aria-live="polite">
           Question {b.i + 1} <span className="text-muted-foreground">of {total}</span>
         </span>
-        {b.phase === 'ask' && secs > 0 && <Countdown secs={secs} left={left} paused={paused} onToggle={() => setPaused((p) => !p)} timeUp={timeUp} />}
+        {b.phase === 'ask' && secs > 0 && (
+          <Countdown secs={secs} left={left} paused={paused} onToggle={() => setPaused((p) => !p)} timeUp={timeUp} adjust={adjust} onAdjust={changeTime} />
+        )}
         <span className="ml-auto flex items-center gap-2">
           {canFullScreen && (
             <button type="button" className="btn btn-ghost btn-sm" onClick={toggleFullScreen}>
@@ -443,9 +486,9 @@ export function GameBoard({
             )}
             {b.phase === 'dug' && (
               <>
-                <button type="button" className="btn btn-primary btn-lg gb-main" onClick={primary}>
+                <button type="button" className="btn btn-primary btn-lg gb-main" onClick={primary} disabled={!allShown}>
                   {!allShown ? (
-                    'Show all'
+                    'Opening the logs…'
                   ) : lastQuestion ? (
                     <>
                       <Trophy size={20} aria-hidden="true" /> See the winners
@@ -463,6 +506,12 @@ export function GameBoard({
             )}
             <p className="gb-keys">
               <kbd>Space</kbd> next step
+              {secs > 0 ? (
+                <>
+                  {' '}
+                  · <kbd>−</kbd> <kbd>+</kbd> time
+                </>
+              ) : null}
               {b.phase === 'reveal' ? (
                 <>
                   {' '}

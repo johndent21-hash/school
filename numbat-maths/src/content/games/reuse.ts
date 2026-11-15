@@ -11,6 +11,7 @@ export function reuse(ch: GameChapter, exercise: string, t: string, as = t): Gam
     t: as,
     d: m.d,
     calc: m.calc,
+    secs: m.secs,
     make: () => {
       const q = m.make()
       // (not "from": unit-conversion kinds already use meta.from for the unit). A kind that is itself reused keeps

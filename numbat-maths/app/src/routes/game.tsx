@@ -7,9 +7,9 @@ import { Diagram, MathHtml } from '@/components/numbat/MathHtml'
 import { NotFoundPanel, PageLoading, Shell } from '@/components/numbat/Shell'
 import { findGame, gameChapters, gameTitle, type FoundGame } from '@/content/games'
 import {
-  type BoardState, clearBoard, gameItems, loadBoard, loadSettings, MAX_TEAMS, MIN_TEAMS, newBoard, saveSettings, TEAM_NAMES, TIMER_CHOICES,
+  type BoardState, clearBoard, gameItems, loadBoard, loadSettings, MAX_TEAMS, MIN_TEAMS, newBoard, saveSettings, TEAM_NAMES, TIMER_CHOICES, SUGGESTED,
 } from '@/lib/board'
-import { GAME_LENGTHS, hasCalc } from '@/lib/game/build'
+import { GAME_LENGTHS, hasCalc, suggestedSecs } from '@/lib/game/build'
 import { pageHead } from '@/lib/meta'
 import { newSeed } from '@/lib/practice'
 import { cn } from '@/lib/utils'
@@ -99,6 +99,9 @@ const HOW_SPEED = [
   'Nobody right? Show the answer and move on. Most termites at the end wins.',
 ]
 
+/** "Suggested", "No timer", "45 s", "1 min", "1½ min", "2 min" */
+const timeLabel = (s: number) => (s === SUGGESTED ? 'Suggested' : s === 0 ? 'No timer' : s === 90 ? '1½ min' : s >= 60 ? `${s / 60} min` : `${s} s`)
+
 function Setup({
   found,
   id,
@@ -126,6 +129,11 @@ function Setup({
   const [seed, setSeed] = useState(newSeed)
   const preview = useMemo(() => gameItems({ game: id, seed, count, calc: offerCalc && calc }) ?? [], [id, seed, count, calc, offerCalc])
   const { chapter, set, upTo } = found
+  // each question's suggested time, for the "Suggested" choice and the length of the game
+  const times = useMemo(() => preview.map(suggestedSecs), [preview])
+  const lo = times.length ? Math.min(...times) : 20
+  const hi = times.length ? Math.max(...times) : 20
+  const perQuestion = secs === SUGGESTED ? times.reduce((t, x) => t + x, 0) / Math.max(1, times.length) : secs || 30
   const outcomes = set ? set.outcomes : [...new Set(gameChapters(found).flatMap((c) => c.outcomes))]
 
   const setTeamCount = (n: number) => {
@@ -284,12 +292,19 @@ function Setup({
             <div className="tabs w-fit" role="radiogroup" aria-label="Seconds for each question">
               {TIMER_CHOICES.map((s) => (
                 <button key={s} type="button" role="radio" aria-checked={s === secs} className={s === secs ? 'active' : ''} onClick={() => setSecs(s)}>
-                  {s === 0 ? 'No timer' : `${s} s`}
+                  {timeLabel(s)}
                 </button>
               ))}
             </div>
             <p className="text-sm text-muted-foreground">
-              About {Math.max(3, Math.round((count * ((secs || 20) + 25)) / 60))} minutes for {count} questions.
+              {secs === SUGGESTED && (
+                <>
+                  Suggested: each question gets its own time from the working it needs
+                  {lo === hi ? `, ${lo} s for these questions` : `, from ${lo} s to ${hi} s for these questions`}.{' '}
+                </>
+              )}
+              During the game, −15 s and +15 s beside the clock (or the − and + keys) change the time for that question and the rest.{' '}
+              About {Math.max(3, Math.round((count * (perQuestion + 25)) / 60))} minutes for {count} questions.
             </p>
           </fieldset>
 
@@ -334,6 +349,9 @@ function Setup({
                   <span className="font-display font-semibold">Q{k + 1}</span>
                   {!set && <span className="chip chip-book">Ex {it.set.exercise}</span>}
                   {it.calc && <span className="chip">Calculator</span>}
+                  <span className="chip" title="Suggested time">
+                    {times[k]} s
+                  </span>
                   <MathHtml inline html={it.q.prompt} />
                 </div>
                 {(it.q.diagram || it.q.note) && (

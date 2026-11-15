@@ -347,6 +347,16 @@ mark per question, so the ~25 question types whose calculator depends on the num
 answers there (not raised as a problem by the user; offer to fix). Side effect accepted by the user: Year 9 Fractions
 (3.03) by-hand questions now get the fraction calculator in practice sets.
 
+### Fix after Batch 4 (15 Nov 2026): game timer and dig — published as Version 30
+
+User's choices: **suggested time per question**; **−15 s / +15 s buttons** (keys − +) changing this question and the
+rest; timer choices up to **2 minutes**; logs open **automatically, one at a time**. Done: `suggestedSecs` (build.ts),
+`SUGGESTED` (−1) as the default timer choice, `questionSecs` and `adjust` (board.ts); the board's "Show all" (which
+opened every log at once) is gone and the reduced-motion shortcut too; the main button says "Opening the logs…" until
+the last log is open. 9 Std 11.01 length: 60 s; NCM 7 sign kinds: 20 s (set by hand). Tests: suggested times in
+`games.test.ts` (planted bad time caught); `qa/game-check.mjs` checks the logs open one a second, Space can't skip,
+and − / + (it uses a test-only fast-dig hook added by `harness/sync.sh` for the long sections).
+
 ### Batch 5 (spot the mistake) — next
 
 Worked steps per kind with one wrong line; start with a few chapters (the labelled ones are a good start, since the

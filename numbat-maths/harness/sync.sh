@@ -23,4 +23,9 @@ for p in ['src/components/numbat/PracticeRunner.tsx', 'src/components/numbat/Tes
     else:
         s = s.replace("  const value = answers[i]\n", "  const value = answers[i]\n  ;(window as any).__ans = set[i].q.answer.kind === 'mc' ? 'MC' + (set[i].q.answer as any).correct : __at(set[i].q.answer)\n", 1)
     open(p, 'w').write(s)
+# Test-only: browser tests can open the dig logs quickly (window.__fastDig), so long board checks don't wait a second a log
+p = 'src/components/numbat/GameBoard.tsx'
+s = open(p).read()
+s = s.replace("shown === 0 ? 400 : 1000)", "(window as any).__fastDig ? 20 : shown === 0 ? 400 : 1000)", 1)
+open(p, 'w').write(s)
 PY

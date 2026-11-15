@@ -117,6 +117,29 @@ export function buildRevisionGame(chapters: GameChapter[], seed: number, count: 
   return items
 }
 
+/** The times a question can be suggested (seconds); they are all timer choices. */
+export const SUGGEST_STEPS = [15, 20, 30, 45, 60, 90, 120] as const
+
+const plainText = (h: string) => h.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+
+/**
+ * A suggested time for a question, estimated from what the class has to do: reading the question and the choices
+ * (about 12 characters a second, the choices at half weight), each step of the working in its explanation (about
+ * 3.5 s for each +, −, ×, ÷ or =, and 6 s for each square or square root, not counting the ² of cm²), plus time for a
+ * diagram, a calculator and the harder (d2) kinds; rounded up to the next of SUGGEST_STEPS. A kind can set its own
+ * (GameMaker.secs) where the estimate doesn't fit.
+ */
+export function suggestedSecs(it: GameItem): number {
+  const maker = it.set.makers.find((m) => m.t === it.q.meta.t)
+  if (maker?.secs) return maker.secs
+  const why = plainText(it.q.why)
+  const heavy = (why.match(/√|(?<!m)[²³]|\^/g) ?? []).length
+  const light = (why.match(/ [+−×÷] | = /g) ?? []).length
+  const read = plainText(it.q.prompt).length + it.q.options.map(plainText).join('').length / 2
+  const raw = 6 + read / 12 + 3.5 * light + 6 * heavy + (it.q.diagram ? 6 : 0) + (it.calc ? 20 : 0) + ((maker?.d ?? 1) === 2 ? 5 : 0)
+  return SUGGEST_STEPS.find((s) => s >= raw) ?? 120
+}
+
 /** A short fingerprint of a game's questions, so a saved game is only resumed if it rebuilds the same questions. */
 export function gameCheck(items: GameItem[]): string {
   let h = 0

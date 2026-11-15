@@ -2,7 +2,7 @@
 // The questions aren't stored: the game's seed rebuilds exactly the same questions, so a game that is
 // interrupted (the page is refreshed, the laptop goes to sleep) can carry on where it stopped.
 import { findGame, gameChapters } from '@/content/games'
-import { buildChapterGame, buildGame, buildRevisionGame, DEFAULT_LENGTH, GAME_LENGTHS, gameCheck } from '@/lib/game/build'
+import { buildChapterGame, buildGame, buildRevisionGame, DEFAULT_LENGTH, GAME_LENGTHS, gameCheck, suggestedSecs } from '@/lib/game/build'
 import { dig, type Find } from '@/lib/game/luck'
 import type { GameItem } from '@/lib/game/types'
 import { loadJson, save, saveJson } from './storage'
@@ -10,9 +10,23 @@ import { loadJson, save, saveJson } from './storage'
 export const TEAM_NAMES = ['Numbats', 'Quokkas', 'Bilbies', 'Wombats', 'Possums', 'Dingoes']
 export const MIN_TEAMS = 2
 export const MAX_TEAMS = 6
-/** seconds to answer each question; 0 switches the countdown off */
-export const TIMER_CHOICES = [10, 15, 20, 30, 45, 0] as const
-export const DEFAULT_SECS = 20
+/** each question gets its own suggested time (suggestedSecs in src/lib/game/build.ts) */
+export const SUGGESTED = -1
+/** seconds to answer each question: suggested per question, a fixed time, or 0 for no countdown */
+export const TIMER_CHOICES = [SUGGESTED, 10, 15, 20, 30, 45, 60, 90, 120, 0] as const
+export const DEFAULT_SECS = SUGGESTED
+/** the teacher's "− 15 s" and "+ 15 s" during a game */
+export const ADJUST_STEP = 15
+const MIN_SECS = 10
+const MAX_SECS = 300
+
+/** Seconds for one question: its suggested time or the fixed time, plus the teacher's change during the game.
+ *  0 when the countdown is off. */
+export function questionSecs(secs: number, adjust: number, item: GameItem | undefined): number {
+  if (secs === 0) return 0
+  const base = secs === SUGGESTED ? (item ? suggestedSecs(item) : 30) : secs
+  return Math.min(MAX_SECS, Math.max(MIN_SECS, base + adjust))
+}
 
 export interface BoardConfig {
   /** a game id from the content: one exercise ("ncm7-8.05") or a whole chapter ("ncm7-ch8") */
@@ -53,6 +67,8 @@ export interface BoardState {
   /** speed round: the team answering now, and the teams already wrong on this question */
   buzz?: number | null
   out?: number[]
+  /** seconds the teacher has added (or taken off, if negative) to every question from the one where it was changed */
+  adjust?: number
   savedAt: number
 }
 

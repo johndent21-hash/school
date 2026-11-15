@@ -336,8 +336,10 @@ const SIGN_CASES: Record<string, [string, string, number, string][]> = {
   ],
 }
 
-/** the sign of a sum, difference, product or quotient of a positive and/or negative integer */
-const signKind = (op: string) =>
+/** the sign of a sum, difference, product or quotient of a positive and/or negative integer
+ *  (20 s: the worked examples in its explanation would otherwise make the suggested time too long) */
+const signKind = (op: string) => ({ ...signMaker(op), secs: 20 })
+const signMaker = (op: string) =>
   mk(
     'sign',
     (): GameQuestion => {

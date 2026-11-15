@@ -13,7 +13,8 @@
 // Usage: npx tsx tests/games.test.ts        (N questions of each kind, default 400)
 import { setSeed } from '../src/lib/maths/rand'
 import { ALL_GAME_SETS, GAME_BOOKS, findGame, gameChapters } from '../src/content/games/index'
-import { buildChapterGame, buildGame, buildRevisionGame, gameCheck, GAME_LENGTHS, hasCalc, playable } from '../src/lib/game/build'
+import { buildChapterGame, buildGame, buildRevisionGame, gameCheck, GAME_LENGTHS, hasCalc, playable, SUGGEST_STEPS, suggestedSecs } from '../src/lib/game/build'
+import { questionSecs, SUGGESTED, TIMER_CHOICES } from '../app/src/lib/board'
 import { buildSheet, defaultStyle, marksFor, minutesFor, sections, sheetHtml, totalMarks, type SheetSpec } from '../src/lib/game/sheet'
 import { dig, ECHIDNA, LEAP_MAX, LEAP_MIN, places, RAID } from '../src/lib/game/luck'
 import type { GameQuestion, GameSet } from '../src/lib/game/types'
@@ -812,6 +813,50 @@ const share = wins.map((w) => Math.round((w / GAMES) * 100))
 if (!(share[0] > share[1] && share[1] > share[2] && share[2] > share[3])) fail('luck', `stronger teams should win more often: ${share.join('%, ')}%`)
 if (share[0] < 50) fail('luck', `the strongest team wins only ${share[0]}% of games`)
 if (mostRightWins / decided < 0.6) fail('luck', `the team with the most right answers wins only ${Math.round((mostRightWins / decided) * 100)}% of the time`)
+
+// ---------------------------------------------------------------- suggested times
+{
+  const timeOf = (id: string, t: string, seeds = 12) => {
+    const set = ALL_GAME_SETS.find((x) => x.id === id)!
+    const maker = set.makers.find((m) => m.t === t)!
+    return Array.from({ length: seeds }, (_, i) => {
+      setSeed(500 + i)
+      return suggestedSecs({ q: maker.make(), set, calc: !!maker.calc })
+    })
+  }
+  // every suggestion is one of the timer choices
+  for (const set of ALL_GAME_SETS)
+    for (const m of set.makers) {
+      setSeed(9)
+      const x = suggestedSecs({ q: m.make(), set, calc: !!m.calc })
+      if (!(SUGGEST_STEPS as readonly number[]).includes(x) || !(TIMER_CHOICES as readonly number[]).includes(x)) fail(`${set.id} ${m.t}`, `suggested time ${x} s is not a timer choice`)
+    }
+  // what a teacher would expect: the length of an interval (run, rise, squares, a square root) about a minute;
+  // a sign question 20 s; reading a gradient or adding two integers short; units of area (cm²) are not squaring
+  const want: [string, string, (s: number) => boolean, string][] = [
+    ['ncm9s-11.01', 'length', (s) => s >= 60, 'at least 60 s'],
+    ['ncm7-1.04', 'sign', (s) => s === 20, '20 s'],
+    ['ncm7-1.04', 'negPlusPos', (s) => s <= 20, 'at most 20 s'],
+    ['ncm9s-11.05', 'parallel', (s) => s <= 20, 'at most 20 s'],
+    ['ncm7-8.05', 'rect', (s) => s <= 30, 'at most 30 s'],
+    ['ncm9s-4.05', 'calcSide', (s) => s >= 45, 'at least 45 s (a calculator question)'],
+  ]
+  for (const [id, t, ok, text] of want) for (const x of timeOf(id, t)) if (!ok(x)) fail(`${id} ${t}`, `suggested ${x} s, expected ${text}`)
+  // the teacher's change during a game: added to the question's own or fixed time, kept between 10 s and 5 minutes
+  const it = { q: (setSeed(3), ALL_GAME_SETS.find((x) => x.id === 'ncm9s-11.01')!.makers[0].make()), set: ALL_GAME_SETS.find((x) => x.id === 'ncm9s-11.01')!, calc: false }
+  const base = suggestedSecs(it)
+  const cases: [number, number, number][] = [
+    [SUGGESTED, 0, base],
+    [SUGGESTED, 15, base + 15],
+    [SUGGESTED, -30, base - 30],
+    [20, 0, 20],
+    [20, 15, 35],
+    [10, -15, 10],
+    [120, 300, 300],
+    [0, 15, 0],
+  ]
+  for (const [secs, adj, expected] of cases) if (questionSecs(secs, adj, it) !== expected) fail('timer', `questionSecs(${secs}, ${adj}) = ${questionSecs(secs, adj, it)}, expected ${expected}`)
+}
 
 console.log(`class games: ${ALL_GAME_SETS.length} exercises, ${kinds.length} kinds of question`)
 console.log(`mistake labels on ${labelled.size} of ${kinds.length} kinds`)

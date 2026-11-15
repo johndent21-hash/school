@@ -21,7 +21,10 @@ const log = (x) => {
 const shot = (page, name, full = false) => page.screenshot({ path: `${shots}/${name}.png`, fullPage: full })
 
 async function newPage(viewport, opts = {}) {
-  const ctx = await browser.newContext({ viewport, ...opts })
+  const { realDig, ...rest } = opts
+  const ctx = await browser.newContext({ viewport, ...rest })
+  // the logs open quickly in the long checks (a test-only hook added by harness/sync.sh); section 2 uses real time
+  if (!realDig) await ctx.addInitScript(() => (window.__fastDig = true))
   const page = await ctx.newPage()
   page.setDefaultTimeout(8000)
   const tag = `${viewport.width}x${viewport.height}`
@@ -95,10 +98,8 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
     for (const t of marks(k, await teams.count())) await teams.nth(t).click()
     if (k % shootEvery === 0) await shot(page, `${tag}_q${k + 1}_reveal`)
     await page.locator('.gb-main').click()
-    // let the finds turn over, or skip the wait
-    const showAll = page.getByRole('button', { name: 'Show all' })
-    if (await showAll.count()) await showAll.click()
-    await page.locator('.gb-main', { hasText: /Next question|See the winners/ }).waitFor()
+    // the finds turn over one at a time; the next step waits for the last
+    await page.locator('.gb-main:not([disabled])', { hasText: /Next question|See the winners/ }).waitFor()
     if (checkFit) worstFit = Math.max(worstFit, await overflow(page))
     if (k % shootEvery === 0) {
       await page.waitForTimeout(600) // let the cards finish popping in
@@ -156,7 +157,7 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
 
 // ---------------------------------------------------------------- 2. keys, the timer, undo and carrying on after a refresh
 {
-  const page = await newPage({ width: 1280, height: 720 })
+  const page = await newPage({ width: 1280, height: 720 }, { realDig: true })
   await page.goto(`${base}/game?id=ncm7-8.01`, { waitUntil: 'networkidle' })
   await page.getByRole('radio', { name: '5', exact: true }).click()
   await page.getByRole('radio', { name: '10 s' }).click()
@@ -169,6 +170,13 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
   await page.waitForTimeout(1400)
   const paused = Number(await page.locator('.gb-secs').textContent())
   log(`timer: after 2.3 s shows ${secs} (from 10); paused with P stays at ${paused}`)
+  // − and + change the time left now and the time for the questions after
+  await page.keyboard.press('+')
+  const plus = Number(await page.locator('.gb-secs').textContent())
+  await page.keyboard.press('-')
+  const minus = Number(await page.locator('.gb-secs').textContent())
+  await page.getByRole('button', { name: /15 seconds more/ }).click()
+  log(`time: + gave ${plus} (${paused} + 15), − gave ${minus}, the +15 s button gave ${await page.locator('.gb-secs').textContent()}`)
   await page.locator('body').click({ position: { x: 5, y: 5 } })
   await page.keyboard.press('Space')
   await page.locator('.gb-opt.right').waitFor()
@@ -182,18 +190,27 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
   await page.keyboard.press('2')
   await page.keyboard.press('Enter')
   await page.locator('.gb-dig').waitFor()
-  await page.keyboard.press('Space') // show all
-  await page.waitForTimeout(200)
+  await page.locator('.gb-main:not([disabled])', { hasText: /Next question/ }).waitFor()
   const after = (await page.locator('.gb-team .tscore').allTextContents()).map((s) => parseInt(s))
   log(`dig: totals ${after.join(',')} (only team 2 dug: ${after[1] > 0 && after.filter((x) => x > 0).length === 1})`)
   await shot(page, 'keys_dug')
   await page.getByRole('button', { name: /Undo this dig/ }).click()
   await page.locator('.gb-opt.right').waitFor()
   log(`undo: totals ${(await page.locator('.gb-team .tscore').allTextContents()).map((s) => parseInt(s)).join(',')}, team 2 still ticked ${await page.locator('button.gb-team').nth(1).getAttribute('aria-pressed')}`)
+  // every team ticked: the logs open one at a time, about a second apart, and Space can't skip them
+  await page.keyboard.press('a')
   await page.locator('.gb-main').click()
-  await page.getByRole('button', { name: 'Show all' }).click().catch(() => {})
-  await page.locator('.gb-main', { hasText: /Next question/ }).click()
+  await page.locator('.gb-dig').waitFor()
+  const opened = []
+  for (const t of [200, 900, 1000, 1000]) {
+    await page.waitForTimeout(t)
+    if (opened.length === 1) await page.keyboard.press('Space')
+    opened.push(await page.locator('.gb-find:not(.is-closed)').count())
+  }
+  log(`logs: open after 0.2, 1.1, 2.1, 3.1 s: ${opened.join(', ')} of ${await page.locator('.gb-find').count()} (Space pressed at 1.1 s); main button waits: ${await page.locator('.gb-main[disabled]').count() === 1 || opened[3] === (await page.locator('.gb-find').count())}`)
+  await page.locator('.gb-main:not([disabled])', { hasText: /Next question/ }).click()
   await page.locator('.gb-prompt').waitFor()
+  log(`time: question 2 starts at ${await page.locator('.gb-secs').textContent()} s (10 + 15)`)
   const q2 = await page.locator('.gb-prompt').textContent()
   const totalsBefore = (await page.locator('.gb-team .tscore').allTextContents()).map((s) => parseInt(s)).join(',')
   // a refresh in the middle of question 2
@@ -201,6 +218,7 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
   log(`refresh: set-up page offers to carry on: ${await page.getByRole('button', { name: /Carry on/ }).count()}`)
   await page.getByRole('button', { name: /Carry on/ }).click()
   await page.locator('.gb-prompt').waitFor()
+  log(`carry on: the clock starts at ${await page.locator('.gb-secs').textContent()} s (the +15 s kept)`)
   log(`carry on: same question ${(await page.locator('.gb-prompt').textContent()) === q2 && q2 !== q1}, ${(await page.locator('.gb-count').textContent()).replace(/\s+/g, ' ').trim()}, totals kept ${(await page.locator('.gb-team .tscore').allTextContents()).map((s) => parseInt(s)).join(',') === totalsBefore}`)
   // the home page and the games page offer it too
   await page.goto(`${base}/`, { waitUntil: 'networkidle' })
