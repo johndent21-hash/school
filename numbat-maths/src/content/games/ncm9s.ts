@@ -157,15 +157,15 @@ const CH3 = chapter(3, 'Numeracy and calculation', 'Number and algebra', 330, [
 // ================================================================== Chapter 4 Trigonometry
 
 const TRG = 'MA5-TRG-C-01'
-const CALC = 'Played without calculators: the questions choose the ratio or set up the equation.'
+const CALC = 'Played without calculators unless you allow them at set-up: then calculator questions (answers rounded) are mixed in.'
 const CH4 = chapter(4, 'Trigonometry', 'Measurement and space', 205, [
   S(4, '4.01', 'The sides of a right-angled triangle', 'Name the hypotenuse, opposite and adjacent sides.', [TRG], [[NCM9_CH4, '4.01', 'side']]),
   S(4, '4.02', 'The trigonometric ratios', 'sin = opp ÷ hyp, cos = adj ÷ hyp, tan = opp ÷ adj.', [TRG], [[NCM9_CH4, '4.02', 'ratio']]),
   S(4, '4.03', 'Similar right-angled triangles', 'Same angle, same ratios.', [TRG], [[NCM9_CH4, '4.03', 'similar']]),
-  S(4, '4.04', 'Trigonometry on a calculator', 'Degrees and minutes, and rounding angles.', [TRG], [[NCM9_CH4, '4.04', 'dm'], [NCM9_CH4, '4.04', 'round']], CALC),
-  S(4, '4.05', 'Finding an unknown side', 'Choose the ratio, then x = known × ratio.', [TRG], [[NCM9_CH4, '4.05', 'numer']], CALC),
-  S(4, '4.06', 'Finding more unknown sides', 'When x is on the bottom, x = known ÷ ratio.', [TRG], [[NCM9_CH4, '4.06', 'denom'], [NCM9_CH4, '4.06', 'numer']], CALC),
-  S(4, '4.07', 'Finding an unknown angle', 'Use the inverse ratio.', [TRG], [[NCM9_CH4, '4.07', 'angle']], CALC),
+  S(4, '4.04', 'Trigonometry on a calculator', 'Degrees and minutes, and rounding angles.', [TRG], [[NCM9_CH4, '4.04', 'dm'], [NCM9_CH4, '4.04', 'round'], [NCM9_CH4, '4.04', 'calcRatio']], CALC),
+  S(4, '4.05', 'Finding an unknown side', 'Choose the ratio, then x = known × ratio.', [TRG], [[NCM9_CH4, '4.05', 'numer'], [NCM9_CH4, '4.05', 'calcSide']], CALC),
+  S(4, '4.06', 'Finding more unknown sides', 'When x is on the bottom, x = known ÷ ratio.', [TRG], [[NCM9_CH4, '4.06', 'denom'], [NCM9_CH4, '4.06', 'numer'], [NCM9_CH4, '4.06', 'calcDiv'], [NCM9_CH4, '4.06', 'calcSide']], CALC),
+  S(4, '4.07', 'Finding an unknown angle', 'Use the inverse ratio.', [TRG], [[NCM9_CH4, '4.07', 'angle'], [NCM9_CH4, '4.07', 'calcAngle']], CALC),
 ])
 
 // ================================================================== Chapter 5 Indices

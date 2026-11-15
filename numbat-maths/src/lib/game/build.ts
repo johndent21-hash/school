@@ -6,6 +6,11 @@ import type { GameChapter, GameItem, GameMaker, GameQuestion, GameSet } from './
 export const GAME_LENGTHS = [5, 8, 10, 12, 15] as const
 export const DEFAULT_LENGTH = 10
 
+/** The kinds a game may ask: calculator kinds only when calculators are allowed. */
+export const playable = (set: GameSet, calc = false): GameMaker[] => set.makers.filter((m) => calc || !m.calc)
+/** Whether a set (or any set of a chapter) has calculator kinds, so the set-up page offers calculators. */
+export const hasCalc = (sets: GameSet[]) => sets.some((s) => s.makers.some((m) => m.calc))
+
 /** Two questions are the same if they look the same on the board. */
 const key = (q: GameQuestion) => q.prompt + '|' + (q.diagram ?? '') + '|' + q.options[q.correct]
 
@@ -25,10 +30,10 @@ function fresh(maker: GameMaker, seen: Set<string>, tries: number): GameQuestion
  * The order question types are asked in: every type once before any type repeats. The first time round
  * the most basic forms come first; after that the order is mixed, never the same type twice in a row.
  */
-function makerOrder(set: GameSet, count: number): GameMaker[] {
+function makerOrder(makers: GameMaker[], count: number): GameMaker[] {
   const out: GameMaker[] = []
   while (out.length < count) {
-    const pass = shuffle(set.makers)
+    const pass = shuffle(makers)
     if (out.length === 0) pass.sort((a, b) => (a.d ?? 1) - (b.d ?? 1))
     else if (pass.length > 1 && pass[0] === out[out.length - 1]) pass.push(pass.shift() as GameMaker)
     out.push(...pass)
@@ -37,10 +42,11 @@ function makerOrder(set: GameSet, count: number): GameMaker[] {
 }
 
 /** A game on one exercise. */
-export function buildGame(set: GameSet, seed: number, count: number): GameItem[] {
+export function buildGame(set: GameSet, seed: number, count: number, calc = false): GameItem[] {
   setSeed(seed)
   const seen = new Set<string>()
-  const order = makerOrder(set, count)
+  const makers = playable(set, calc)
+  const order = makerOrder(makers, count)
   const items: GameItem[] = []
   order.forEach((m, i) => {
     let q = fresh(m, seen, 40)
@@ -48,17 +54,17 @@ export function buildGame(set: GameSet, seed: number, count: number): GameItem[]
       // this type has run out of new questions: another type steps in, but not the type just asked or the one coming next
       const before = items[i - 1]?.q.meta.t
       const after = order[i + 1]?.t
-      const others = shuffle(set.makers.filter((o) => o !== m))
+      const others = shuffle(makers.filter((o) => o !== m))
       const spare = [...others.filter((o) => o.t !== before && o.t !== after), ...others]
       q = spare.reduce<GameQuestion | null>((found, o) => found ?? fresh(o, seen, 20), null) ?? m.make()
     }
-    items.push({ q, set })
+    items.push({ q, set, calc: !!makers.find((o) => o.t === q!.meta.t)?.calc })
   })
   return items
 }
 
 /** A whole-chapter revision game: the exercises in textbook order, one question from each, then round again. */
-export function buildChapterGame(chapter: GameChapter, seed: number, count: number): GameItem[] {
+export function buildChapterGame(chapter: GameChapter, seed: number, count: number, calc = false): GameItem[] {
   setSeed(seed)
   const seen = new Set<string>()
   const sets = chapter.sets
@@ -70,9 +76,10 @@ export function buildChapterGame(chapter: GameChapter, seed: number, count: numb
     for (const i of chosen) picks.push(sets[i])
   }
   return picks.map((set) => {
-    const makers = shuffle(set.makers)
-    const q = makers.reduce<GameQuestion | null>((found, m) => found ?? fresh(m, seen, 20), null) ?? makers[0].make()
-    return { q, set }
+    const makers = shuffle(playable(set, calc))
+    let used = makers[0]
+    const q = makers.reduce<GameQuestion | null>((found, m) => found ?? ((used = m), fresh(m, seen, 20)), null) ?? makers[0].make()
+    return { q, set, calc: !!used.calc }
   })
 }
 
@@ -81,7 +88,7 @@ export function buildChapterGame(chapter: GameChapter, seed: number, count: numb
  * often as the newest, which students have just been tested on), never the same chapter twice in a row; then a
  * random exercise of that chapter.
  */
-export function buildRevisionGame(chapters: GameChapter[], seed: number, count: number): GameItem[] {
+export function buildRevisionGame(chapters: GameChapter[], seed: number, count: number, calc = false): GameItem[] {
   setSeed(seed)
   const seen = new Set<string>()
   const n = chapters.length
@@ -98,13 +105,14 @@ export function buildRevisionGame(chapters: GameChapter[], seed: number, count: 
     const sets = shuffle(chapters[c].sets)
     let q: GameQuestion | null = null
     for (const set of sets) {
-      q = shuffle(set.makers).reduce<GameQuestion | null>((found, m) => found ?? fresh(m, seen, 20), null)
+      let used: GameMaker | undefined
+      q = shuffle(playable(set, calc)).reduce<GameQuestion | null>((found, m) => found ?? ((used = m), fresh(m, seen, 20)), null)
       if (q) {
-        items.push({ q, set })
+        items.push({ q, set, calc: !!used?.calc })
         break
       }
     }
-    if (!q) items.push({ q: sets[0].makers[0].make(), set: sets[0] })
+    if (!q) items.push({ q: playable(sets[0], calc)[0].make(), set: sets[0] })
   }
   return items
 }

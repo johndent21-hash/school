@@ -131,6 +131,16 @@ Also:
   Enter for the next step, 1 to 6 to tick a team, A for all teams, P to pause the timer. The game's place is kept on the
   device (`numbat.game`), so a refresh or a sleeping laptop loses nothing, and "Undo this dig" fixes a mis-tick. The end
   screen ranks the teams and lists the questions the fewest teams got right.
+  - **Speed round** (choose "Speed round" at set-up; `buzzIn`, `buzzRight`, `buzzWrong` in `app/src/lib/board.ts`): the
+    first team to put a hand up answers. The teacher clicks that team (or presses 1–6); the clock stops; Right (Y) shows
+    the answer with that team ticked, ready to dig; Wrong (N) puts that team out for the question and restarts the clock
+    for the others. When every team has had a go, or nobody knows, "Show the answer" moves on. Same termites and luck.
+  - **Calculators allowed** (set-up page, only where a set has calculator kinds): kinds made with `mkCalc` (`calc: true`)
+    are left out of every game, worksheet and test unless the teacher allows calculators; then they are mixed in and
+    marked "Calculator" on the board. So far: NCM 9 Ch 4 / 9 Std Ch 4 trigonometry, 4.04 a ratio to 4 decimal places,
+    4.05–4.06 a side to 1 decimal place (× or ÷ the ratio), 4.07 an angle to the nearest degree. Wrong choices: the
+    calculator in radians, the other ratio, × instead of ÷, the other acute angle. Checked by `tests/game-checks/ncm9-ch4.ts`
+    from the drawing with `Math.sin` etc.
   - **Year revision mix** (`/game?id=ncm8-rev7` = NCM 8 Chapters 1–7; `buildRevisionGame` in `src/lib/game/build.ts`):
     questions from every chapter studied so far, chosen at random with the oldest chapter about twice as likely as the
     newest, never the same chapter twice in a row. Picked from a panel at the top of each book on `/games`.

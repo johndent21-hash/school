@@ -3,7 +3,8 @@
 // Checks: no page errors, nothing needs scrolling while a question is up on a landscape screen, keys work,
 // a game carries on after a refresh, and every game in the list starts.
 // Dev harness in preview mode: VITE_PREVIEW_ONLY=1 npx vite dev --port 3102   (from harness/)
-// Usage: node qa/game-check.mjs            SHOTS=/some/folder to keep screenshots; ONLY=ncm7-2 to play only some games
+// Usage: node qa/game-check.mjs            SHOTS=/some/folder to keep screenshots; ONLY=ncm7-2 to play only some games;
+//        SPEED=1 speed rounds (a team answers on every question); CALC=1 calculators allowed where offered
 import { chromium } from 'playwright'
 import { mkdirSync } from 'node:fs'
 
@@ -64,6 +65,20 @@ async function playGame(page, tag, { marks, shootEvery = 99, checkFit = true }) 
       if (await dg.count()) smallest = Math.min(smallest, Math.round((await dg.boundingBox()).height))
     }
     if (k % shootEvery === 0) await shot(page, `${tag}_q${k + 1}_ask`)
+    // (only in a speed round: there the teams are buttons while the question is up)
+    if (process.env.SPEED && (await page.locator('button.gb-team').count())) {
+      // a team puts its hand up: the answer banner must fit too; then it is wrong, so the answer is shown as usual
+      await page.keyboard.press('1')
+      await page.locator('.gb-buzz').waitFor()
+      if (checkFit) {
+        const o = await overflow(page)
+        if (o > worstFit) log(`   too tall by ${o}px with a team answering (${tag}, question ${k + 1})`)
+        worstFit = Math.max(worstFit, o)
+        worstSpill = Math.max(worstSpill, await spill(page))
+      }
+      if (k % shootEvery === 0) await shot(page, `${tag}_q${k + 1}_buzz`)
+      await page.keyboard.press('n')
+    }
     await page.getByRole('button', { name: 'Show the answer' }).click()
     await page.locator('.gb-opt.right').waitFor()
     if (checkFit) {
@@ -233,6 +248,10 @@ for (const [w, h, name] of [
     if (await again.count()) await again.click()
     await page.getByRole('radio', { name: '15', exact: true }).click()
     await page.getByRole('radio', { name: 'No timer' }).click()
+    // SPEED=1 plays speed rounds; CALC=1 allows calculators where a set has calculator questions
+    await page.getByRole('radio', { name: process.env.SPEED ? 'Speed round' : 'Every team answers' }).click()
+    const calcRadio = page.getByRole('radio', { name: 'Allowed', exact: true })
+    if (process.env.CALC && (await calcRadio.count())) await calcRadio.click()
     await page.getByRole('button', { name: /Start the game/ }).click()
     const r = await playGame(page, `${name}_${id}`, { marks: (k, n) => (k % 4 === 3 ? [] : Array.from({ length: n }, (_, t) => t)), shootEvery: name === 'laptop' ? 5 : 99 })
     if (r.worstFit > worst.fit || r.worstSpill > worst.spill) worst = { fit: Math.max(worst.fit, r.worstFit), spill: Math.max(worst.spill, r.worstSpill), at: id }

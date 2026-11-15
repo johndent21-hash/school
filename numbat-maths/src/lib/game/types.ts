@@ -20,6 +20,8 @@ export interface GameMaker {
   t: string
   make: () => GameQuestion
   d?: 1 | 2
+  /** needs a calculator: only asked when the teacher allows calculators (never in the default, head-only game) */
+  calc?: boolean
 }
 
 /** The questions for one textbook exercise. */
@@ -64,4 +66,6 @@ export interface GameBook {
 export interface GameItem {
   q: GameQuestion
   set: GameSet
+  /** a calculator question */
+  calc?: boolean
 }

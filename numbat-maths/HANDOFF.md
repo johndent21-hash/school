@@ -1,6 +1,6 @@
 # Handoff: build the improvements the user chose (Step 4)
 
-**Current work: Step 4, Batch 3 (see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
+**Current work: Step 4, Batch 4 (see "Step 4 progress" at the end).** Steps 0–3 are done: Year 9 Standard, NCM 8 and NCM 7 are audited,
 board-checked and published (Version 24, 14 Nov 2026), and the user has chosen the improvements. Build the Step 4
 batches in order. After each batch: full tests, one board check of what changed, one build and one publish, update
 this file (mark the batch done, note anything left), commit and push. Then go on to the next batch, unless context is
@@ -284,7 +284,28 @@ Not chosen: resuming NCM 9 Advanced or starting Year 10 (still paused).
 - Pitfall: **the build step's `git checkout src/content/games/index.ts` discards uncommitted edits to that file.**
   Copy it to the scratchpad before removing NCM 9 Advanced, and copy it back after the build.
 
-### Batch 3 (speed round / buzzer, trigonometry calculator mode) — next
+### Batch 3 (speed round, trigonometry calculator mode) — done, published as Version 27 (15 Nov 2026)
+
+- **Speed round** (set-up: Game → Speed round; README "Speed round"): the teacher clicks the team whose hand went up
+  first (or presses 1–6); the clock stops; Right (Y) → reveal with that team ticked → dig; Wrong (N) → that team is out
+  for the question and the clock restarts. State: `buzz`, `out` in `BoardState` (optional, so old saved games load);
+  `buzzIn`/`buzzRight`/`buzzWrong`/`allOut` in `app/src/lib/board.ts`. Speed is remembered in the game settings.
+- **Calculators allowed** (set-up: Calculators → Allowed, shown only where a set has calculator kinds): `mkCalc` kinds
+  (`GameMaker.calc`) are filtered by `playable(set, calc)` in every builder; never in worksheets/tests (the sheets say
+  "no calculators"). New kinds in `ncm9-ch4.ts` (reused by 9 Std Ch 4): 4.04 `calcRatio` (4 d.p.), 4.05/4.06
+  `calcSide` and 4.06 `calcDiv` (1 d.p.), 4.07 `calcAngle` (nearest degree); each checked from the drawing in
+  `tests/game-checks/ncm9-ch4.ts` and each caught a planted error. The board marks them "Calculator".
+- **Fixed a Batch 2 bug** (it was live in Version 26): on `/worksheet` the school-name box called the page's own
+  file-save function (`save` shadowed the storage helper), so typing offered a download and the name wasn't kept.
+  Now `saveSetting`. Lesson: **run the harness type check every batch**:
+  `cd harness && ./sync.sh && npx tsc --noEmit -p tsconfig.json | grep -v node_modules` (two old errors remain:
+  `tpl/router.tsx` and `games.tsx(49)`; anything else is new).
+- `qa/game-check.mjs` takes `SPEED=1` (a team buzzes on every question; the answer banner is measured too) and
+  `CALC=1`. Board check: 9 Std 4.04–4.07 and Ch 4 mix with both; NCM 7 1.01–1.09 speed; 9 Std 4.0x plain: all four
+  sizes clean, no page errors. N=400 all passed (386 exercises, 1167 kinds); other test files passed.
+- `tests/games.test.ts`: a calculator question never appears without calculators; with them every kind is asked.
+
+### Batch 4 (exit ticket, most-missed view, mistake labels, parent logins) — next
 
 Batch 4 now also includes mistake labels and separate parent logins (see item 4 of Step 4 above). Other ideas offered
 on 15 Nov 2026 and not chosen (offer again only if asked): "this week in maths" help page for parents, upcoming

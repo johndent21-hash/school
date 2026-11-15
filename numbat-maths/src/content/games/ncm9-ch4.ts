@@ -10,11 +10,12 @@
 // MA5-TRG-C-02 (angles of elevation and depression and bearings, 4.08–4.10).
 import type { GameChapter, GameQuestion, GameSet } from '@/lib/game/types'
 import { fig, rtPts } from '@/lib/maths/diagrams6'
-import { chance, frac, gq, int, mk, num, pick, shuffle } from './helpers'
+import { chance, frac, gq, int, mk, mkCalc, num, pick, shuffle } from './helpers'
 
 const TRG = 'MA5-TRG-C-01'
 const TRG2 = 'MA5-TRG-C-02'
-const CALC = 'Played without calculators: the questions choose the ratio or set up the equation; the calculator work is left for the exercise.'
+const CALC =
+  'Played without calculators unless you allow them at set-up: then calculator questions (answers rounded) are mixed in with choosing the ratio or setting up the equation.'
 const b = (s: string) => `<b>${s}</b>`
 const it = (s: string) => `<i>${s}</i>`
 const gcd = (a: number, c: number): number => (c === 0 ? a : gcd(c, a % c))
@@ -189,7 +190,100 @@ function intNot30(): number {
   return m === 30 ? 31 : m
 }
 
-const SET_404 = set('4.04', 'Trigonometry on a calculator', 'Work with angles in degrees and minutes: 1° = 60′; round to the nearest degree.', [TRG], [mk('dm', m404dm), mk('round', m404round)], CALC)
+// ================================================================== calculator questions (only when calculators are allowed)
+
+/** a value to a fixed number of decimal places, with a true minus sign */
+const fx = (x: number, dp: number) => (x < 0 ? '−' : '') + Math.abs(x).toFixed(dp)
+const FN: Record<'sin' | 'cos' | 'tan', (r: number) => number> = { sin: Math.sin, cos: Math.cos, tan: Math.tan }
+
+function m404calcRatio(): GameQuestion {
+  for (;;) {
+    const f = pick(['sin', 'cos', 'tan'] as const)
+    const a = int(10, 80)
+    if (a === 45) continue
+    const v = FN[f](rad(a))
+    const other = f === 'cos' ? 'sin' : 'cos'
+    return gq({
+      t: 'calcRatio',
+      prompt: `Use a calculator to find ${b(`${f} ${a}°`)}, correct to 4 decimal places.`,
+      correct: fx(v, 4),
+      // the calculator in radians, the other ratio, cut off instead of rounded, the next angle
+      wrong: [fx(FN[f](a), 4), fx(FN[other](rad(a)), 4), fx(Math.trunc(v * 1e4) / 1e4, 4), fx(FN[f](rad(a + 1)), 4), fx(1 / v, 4)],
+      why: `With the calculator in degrees, ${f} ${a}° = ${v.toFixed(6)}…, which is ${fx(v, 4)} to 4 decimal places.`,
+      meta: {},
+    })
+  }
+}
+
+/** Find a side, rounded: x = k × ratio (numerator) or x = k ÷ ratio (denominator). */
+function calcSide(t: string, denominator: boolean): GameQuestion {
+  for (;;) {
+    const a = int(20, 70)
+    if (a === 45) continue
+    const k = int(5, 40)
+    const pairs: [Role, Role][] = denominator ? [['hyp', 'opp'], ['hyp', 'adj'], ['adj', 'opp']] : [['opp', 'hyp'], ['adj', 'hyp'], ['opp', 'adj']]
+    const [x, known] = pick(pairs)
+    const eq = sideEq(x, known, k, a)
+    const f = eq.match(/(sin|cos|tan)/)![1] as 'sin' | 'cos' | 'tan'
+    const r = FN[f](rad(a))
+    const val = denominator ? k / r : k * r
+    // too close to a rounding boundary to be fair
+    if (Math.abs(((val * 10) % 1) - 0.5) < 0.04) continue
+    const others = (['sin', 'cos', 'tan'] as const).filter((g) => g !== f)
+    const labels: Partial<Record<Role, string>> = { [x]: 'x', [known]: num(k) }
+    return gq({
+      t,
+      prompt: `Find ${it('x')}, correct to 1 decimal place.`,
+      diagram: tri({ th: a, mark: `${a}°`, opp: labels.opp, adj: labels.adj, hyp: labels.hyp }),
+      correct: fx(val, 1),
+      // multiplied instead of divided (or the reverse), the other ratios, the calculator in radians
+      wrong: [
+        fx(denominator ? k * r : k / r, 1),
+        fx(denominator ? k / FN[others[0]](rad(a)) : k * FN[others[0]](rad(a)), 1),
+        fx(denominator ? k / FN[others[1]](rad(a)) : k * FN[others[1]](rad(a)), 1),
+        fx(denominator ? k / FN[f](a) : k * FN[f](a), 1),
+        fx(val + 1, 1),
+      ],
+      why: `${showEq(eq)} = ${val.toFixed(3)}…, so ${it('x')} = ${fx(val, 1)} to 1 decimal place.`,
+      meta: {},
+    })
+  }
+}
+
+function m407calcAngle(): GameQuestion {
+  for (;;) {
+    const f = pick(['sin', 'cos', 'tan'] as const)
+    let top: number
+    let bottom: number
+    if (f === 'tan') {
+      top = int(3, 40)
+      bottom = int(3, 40)
+      if (top === bottom) continue
+    } else {
+      bottom = int(8, 40)
+      top = int(3, bottom - 2)
+    }
+    const r = top / bottom
+    const th = deg(f === 'sin' ? Math.asin(r) : f === 'cos' ? Math.acos(r) : Math.atan(r))
+    if (th < 16 || th > 74 || Math.abs((th % 1) - 0.5) < 0.05) continue
+    const labels = f === 'sin' ? { opp: num(top), hyp: num(bottom) } : f === 'cos' ? { adj: num(top), hyp: num(bottom) } : { opp: num(top), adj: num(bottom) }
+    const right = Math.round(th)
+    const other = (g: 'sin' | 'cos' | 'tan') => Math.round(deg(g === 'sin' ? Math.asin(r) : g === 'cos' ? Math.acos(r) : Math.atan(r)))
+    return gq({
+      t: 'calcAngle',
+      prompt: 'Find θ, correct to the nearest degree.',
+      diagram: tri({ th, mark: 'θ', ...labels }),
+      correct: `${right}°`,
+      // the other angle of the triangle, the wrong inverse ratio, one degree out
+      // (sin⁻¹ and cos⁻¹ only of a ratio below 1)
+      wrong: [`${Math.round(90 - th)}°`, ...(['sin', 'cos', 'tan'] as const).filter((g) => g !== f && (g === 'tan' || r < 1)).map((g) => `${other(g)}°`), `${right + 1}°`, `${right - 1}°`],
+      why: `${f} θ = ${top}/${bottom}, so θ = ${f}⁻¹(${top}/${bottom}) = ${th.toFixed(2)}°…, which is ${right}° to the nearest degree.`,
+      meta: {},
+    })
+  }
+}
+
+const SET_404 = set('4.04', 'Trigonometry on a calculator', 'Work with angles in degrees and minutes: 1° = 60′; round to the nearest degree.', [TRG], [mk('dm', m404dm), mk('round', m404round), mkCalc('calcRatio', m404calcRatio, 1)], CALC)
 
 // ================================================================== 4.05–4.07 Finding sides and angles: choose the equation
 
@@ -231,8 +325,8 @@ function sideQuestion(t: string, denominator: boolean): GameQuestion {
   })
 }
 
-const SET_405 = set('4.05', 'Finding an unknown side', 'Choose sin, cos or tan from the sides you know and want, then x = known × ratio.', [TRG], [mk('numer', () => sideQuestion('numer', false))], CALC)
-const SET_406 = set('4.06', 'Finding more unknown sides', 'When x is on the bottom of the ratio, x = known ÷ ratio.', [TRG], [mk('denom', () => sideQuestion('denom', true)), mk('numer', () => sideQuestion('numer', false))], CALC)
+const SET_405 = set('4.05', 'Finding an unknown side', 'Choose sin, cos or tan from the sides you know and want, then x = known × ratio.', [TRG], [mk('numer', () => sideQuestion('numer', false)), mkCalc('calcSide', () => calcSide('calcSide', false))], CALC)
+const SET_406 = set('4.06', 'Finding more unknown sides', 'When x is on the bottom of the ratio, x = known ÷ ratio.', [TRG], [mk('denom', () => sideQuestion('denom', true)), mk('numer', () => sideQuestion('numer', false)), mkCalc('calcDiv', () => calcSide('calcDiv', true)), mkCalc('calcSide', () => calcSide('calcSide', false))], CALC)
 
 function m407angle(): GameQuestion {
   const [adj, opp, hyp] = triad()
@@ -255,7 +349,7 @@ function m407angle(): GameQuestion {
   })
 }
 
-const SET_407 = set('4.07', 'Finding an unknown angle', 'Use the inverse ratio: θ = sin⁻¹(opposite ÷ hypotenuse), and so on.', [TRG], [mk('angle', m407angle, 2)], CALC)
+const SET_407 = set('4.07', 'Finding an unknown angle', 'Use the inverse ratio: θ = sin⁻¹(opposite ÷ hypotenuse), and so on.', [TRG], [mk('angle', m407angle, 2), mkCalc('calcAngle', m407calcAngle)], CALC)
 
 // ================================================================== 4.08 Angles of elevation and depression
 

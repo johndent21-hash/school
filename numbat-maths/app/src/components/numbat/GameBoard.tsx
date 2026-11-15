@@ -1,9 +1,9 @@
 // The class game on the board: a question for every team, the answer, then each team that was right digs.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, ArrowLeftRight, ArrowRight, Bug, Check, Eye, Flag, Maximize, Pause, Play, RotateCcw, Sparkles, Swords, Trophy, Undo2, X } from 'lucide-react'
+import { ArrowLeft, ArrowLeftRight, ArrowRight, Bug, Calculator, Check, Eye, Flag, Hand, Maximize, Pause, Play, RotateCcw, Sparkles, Swords, Trophy, Undo2, X } from 'lucide-react'
 import type { GameItem } from '@/lib/game/types'
 import { places, type Find } from '@/lib/game/luck'
-import { type BoardState, clearBoard, digRound, markAll, nextQuestion, reveal, saveBoard, scoresDuring, toggleTeam, undoDig } from '@/lib/board'
+import { type BoardState, allOut, buzzIn, buzzRight, buzzWrong, clearBoard, digRound, markAll, nextQuestion, reveal, saveBoard, scoresDuring, toggleTeam, undoDig } from '@/lib/board'
 import { cn } from '@/lib/utils'
 import { ConfirmBar } from './ConfirmBar'
 import { Diagram, MathHtml } from './MathHtml'
@@ -91,6 +91,10 @@ export function GameBoard({
   const total = items.length
   const teams = b.cfg.teams
   const secs = b.cfg.secs
+  // speed round: the team answering now, and the teams already wrong on this question
+  const speed = !!b.cfg.speed
+  const buzz = speed ? (b.buzz ?? null) : null
+  const out = speed ? (b.out ?? []) : []
   const [left, setLeft] = useState(secs)
   const [paused, setPaused] = useState(false)
   const [shown, setShown] = useState(() => (initial.phase === 'dug' ? (initial.rounds[initial.rounds.length - 1]?.finds.length ?? 0) : 0))
@@ -116,7 +120,13 @@ export function GameBoard({
     setPaused(false)
   }, [b.i, secs])
 
-  const counting = b.phase === 'ask' && secs > 0 && !paused && left > 0
+  // speed round: after a wrong answer the clock starts again for the other teams
+  useEffect(() => {
+    if (out.length) setLeft(secs)
+  }, [out.length, secs])
+
+  // the clock stops while a team gives its answer
+  const counting = b.phase === 'ask' && secs > 0 && !paused && left > 0 && buzz === null
   useEffect(() => {
     if (!counting) return
     const id = window.setTimeout(() => setLeft((x) => Math.max(0, x - 1)), 1000)
@@ -153,13 +163,15 @@ export function GameBoard({
   }, [])
 
   const primary = useCallback(() => {
+    // a team is answering: the teacher says right or wrong first
+    if (b.phase === 'ask' && buzz !== null) return
     if (b.phase === 'ask') doReveal()
     else if (b.phase === 'reveal') doDig()
     else if (b.phase === 'dug') {
       if (!allShown) setShown(99)
       else doNext()
     }
-  }, [b.phase, allShown, doReveal, doDig, doNext])
+  }, [b.phase, buzz, allShown, doReveal, doDig, doNext])
 
   // Keys for a teacher at the laptop: Space or Enter for the next step, 1–6 to tick a team, A for all teams.
   useEffect(() => {
@@ -182,11 +194,19 @@ export function GameBoard({
           setB((x) => toggleTeam(x, n - 1))
         } else if (e.key === 'a' || e.key === 'A') setB((x) => markAll(x, x.marked.length !== x.cfg.teams.length))
       }
+      if (b.phase === 'ask' && speed) {
+        const n = Number(e.key)
+        if (buzz === null && Number.isInteger(n) && n >= 1 && n <= teams.length) {
+          e.preventDefault()
+          setB((x) => buzzIn(x, n - 1))
+        } else if (buzz !== null && (e.key === 'y' || e.key === 'Y')) setB((x) => buzzRight(x))
+        else if (buzz !== null && (e.key === 'n' || e.key === 'N')) setB((x) => buzzWrong(x))
+      }
       if (b.phase === 'ask' && secs > 0 && (e.key === 'p' || e.key === 'P')) setPaused((p) => !p)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [b.phase, primary, teams.length, secs, confirmEnd])
+  }, [b.phase, primary, teams.length, secs, confirmEnd, speed, buzz])
 
   // a new question, the answer or the finds: back to the top on small screens
   useEffect(() => {
@@ -239,7 +259,16 @@ export function GameBoard({
           {b.phase !== 'dug' ? (
             <>
               <div className="gb-q">
-                {cur.set.id !== b.cfg.game && <span className="chip chip-book w-fit">Ex {cur.set.exercise} · {cur.set.title}</span>}
+                {(cur.set.id !== b.cfg.game || cur.calc) && (
+                  <span className="flex flex-wrap gap-2">
+                    {cur.set.id !== b.cfg.game && <span className="chip chip-book w-fit">Ex {cur.set.exercise} · {cur.set.title}</span>}
+                    {cur.calc && (
+                      <span className="chip w-fit">
+                        <Calculator size={13} aria-hidden="true" /> Calculator
+                      </span>
+                    )}
+                  </span>
+                )}
                 <MathHtml className={cn('gb-prompt', cur.q.prompt.replace(/<[^>]*>/g, '').length > 80 && 'long')} html={cur.q.prompt} />
                 {(cur.q.diagram || cur.q.note) && (
                   <div className="gb-diagram">
@@ -284,9 +313,29 @@ export function GameBoard({
                   <MathHtml inline html={cur.q.why} />
                 </div>
               )}
-              {timeUp && (
+              {buzz !== null && b.phase === 'ask' && (
+                <div className={cn('gb-buzz celebrate', `team-${buzz}`)} role="status">
+                  <span className="gb-buzz-who">
+                    <Hand size={22} aria-hidden="true" /> {teams[buzz]}, your answer?
+                  </span>
+                  <span className="flex flex-wrap gap-2">
+                    <button type="button" className="btn btn-primary" onClick={() => setB((x) => buzzRight(x))}>
+                      <Check size={18} aria-hidden="true" /> Right
+                    </button>
+                    <button type="button" className="btn btn-ghost" onClick={() => setB((x) => buzzWrong(x))}>
+                      <X size={18} aria-hidden="true" /> Wrong
+                    </button>
+                  </span>
+                </div>
+              )}
+              {speed && b.phase === 'ask' && buzz === null && allOut(b) && (
+                <p className="gb-timeup" role="status">
+                  Every team has had a go. Show the answer.
+                </p>
+              )}
+              {timeUp && buzz === null && !(speed && allOut(b)) && (
                 <p className="gb-timeup celebrate" role="status">
-                  Time’s up! Answers up.
+                  {speed ? 'Time’s up! Nobody? Show the answer.' : 'Time’s up! Answers up.'}
                 </p>
               )}
             </>
@@ -320,14 +369,15 @@ export function GameBoard({
         </section>
 
         <aside className="gb-rail" aria-label="Teams">
-          {b.phase === 'reveal' && <p className="gb-rail-tip">Tick every team that got it right.</p>}
+          {b.phase === 'reveal' && <p className="gb-rail-tip">{speed ? (b.marked.length ? 'Ready to dig.' : 'Nobody got it this time.') : 'Tick every team that got it right.'}</p>}
+          {speed && b.phase === 'ask' && buzz === null && !allOut(b) && <p className="gb-rail-tip">Hand up first? Click that team.</p>}
           {teams.map((name, t) => {
             const on = b.marked.includes(t)
             const dugNow = round?.finds.findIndex((f) => f.team === t) ?? -1
             const inner = (
               <>
                 <span className="tnum" aria-hidden="true">
-                  {b.phase === 'reveal' && on ? <Check size={20} strokeWidth={3.5} /> : t + 1}
+                  {b.phase === 'reveal' && on ? <Check size={20} strokeWidth={3.5} /> : speed && b.phase === 'ask' && out.includes(t) ? <X size={20} strokeWidth={3.5} /> : t + 1}
                 </span>
                 <span className="tname">{name}</span>
                 <span className={cn('tplace', anyScore && rank[t] === 1 && 'first')}>{anyScore ? ORDINALS[rank[t] - 1] : ''}</span>
@@ -337,6 +387,20 @@ export function GameBoard({
                 </span>
               </>
             )
+            const isOut = out.includes(t)
+            if (speed && b.phase === 'ask')
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  className={cn('gb-team', `team-${t}`, buzz === t && 'is-on', isOut && 'is-out')}
+                  disabled={isOut || buzz !== null}
+                  aria-label={`${name}${isOut ? ': out for this question' : ': put their hand up first'}`}
+                  onClick={() => setB((x) => buzzIn(x, t))}
+                >
+                  {inner}
+                </button>
+              )
             return b.phase === 'reveal' ? (
               <button key={t} type="button" className={cn('gb-team', `team-${t}`, on && 'is-on')} aria-pressed={on} onClick={() => setB((x) => toggleTeam(x, t))}>
                 {inner}
@@ -398,7 +462,26 @@ export function GameBoard({
               </>
             )}
             <p className="gb-keys">
-              <kbd>Space</kbd> next step{b.phase === 'reveal' ? <> · <kbd>1</kbd>–<kbd>{teams.length}</kbd> tick a team · <kbd>A</kbd> all</> : null}
+              <kbd>Space</kbd> next step
+              {b.phase === 'reveal' ? (
+                <>
+                  {' '}
+                  · <kbd>1</kbd>–<kbd>{teams.length}</kbd> tick a team · <kbd>A</kbd> all
+                </>
+              ) : null}
+              {speed && b.phase === 'ask' ? (
+                buzz === null ? (
+                  <>
+                    {' '}
+                    · <kbd>1</kbd>–<kbd>{teams.length}</kbd> hand up first
+                  </>
+                ) : (
+                  <>
+                    {' '}
+                    · <kbd>Y</kbd> right · <kbd>N</kbd> wrong
+                  </>
+                )
+              ) : null}
             </p>
           </div>
         </aside>

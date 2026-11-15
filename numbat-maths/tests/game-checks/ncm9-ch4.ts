@@ -128,6 +128,41 @@ function solve(kind: string, q: GameQuestion, ctx: Ctx): Expect {
       if (kind.endsWith('denom') !== (x !== top)) ctx.fail('x is not where this kind puts it')
       return { text: want }
     }
+    // calculator questions: worked out here with Math.sin etc. from what the page shows, then rounded
+    case '4.04 calcRatio': {
+      const m = words.match(/find (sin|cos|tan) (\d+)°, correct to 4 decimal places/)!
+      const r = (Number(m[2]) * Math.PI) / 180
+      const v = m[1] === 'sin' ? Math.sin(r) : m[1] === 'cos' ? Math.cos(r) : Math.tan(r)
+      return { text: v.toFixed(4) }
+    }
+    case '4.05 calcSide':
+    case '4.06 calcSide':
+    case '4.06 calcDiv': {
+      if (!/correct to 1 decimal place/.test(words)) ctx.fail('the rounding is not stated')
+      const { labels, mark, drawn } = tri()
+      const a = Number(mark.replace('°', ''))
+      if (Math.abs(drawn - a) > 0.5) ctx.fail(`the ${a}° angle is drawn as ${drawn.toFixed(1)}°`)
+      const x = (Object.keys(labels) as Role[]).find((r) => labels[r] === 'x')!
+      const known = (Object.keys(labels) as Role[]).find((r) => labels[r] !== 'x')!
+      const k = Number(labels[known])
+      // lengths from the angle: hyp = 1, opp = sin a, adj = cos a; x is in proportion to the known side
+      const r = (a * Math.PI) / 180
+      const len: Record<Role, number> = { hyp: 1, opp: Math.sin(r), adj: Math.cos(r) }
+      const v = (k * len[x]) / len[known]
+      if (kind.endsWith('calcDiv') !== (x === 'hyp' || (x === 'adj' && known === 'opp'))) ctx.fail('x is not where this kind puts it')
+      if (Math.abs(((v * 10) % 1) - 0.5) < 0.01) ctx.fail('too close to a rounding boundary')
+      return { text: v.toFixed(1) }
+    }
+    case '4.07 calcAngle': {
+      if (!/nearest degree/.test(words)) ctx.fail('the rounding is not stated')
+      const { labels, drawn } = tri()
+      const n = (s?: string) => (s === undefined ? undefined : Number(s))
+      const [o, ad, h] = [n(labels.opp), n(labels.adj), n(labels.hyp)]
+      // the angle from whichever two sides are given, by the cosine of the angle in a right triangle
+      const th = (Math.atan2(o ?? Math.sqrt(h! ** 2 - ad! ** 2), ad ?? Math.sqrt(h! ** 2 - o! ** 2)) * 180) / Math.PI
+      if (Math.abs(drawn - th) > 0.5) ctx.fail(`θ = ${th.toFixed(1)}° is drawn as ${drawn.toFixed(1)}°`)
+      return { text: `${Math.round(th)}°` }
+    }
     case '4.07 angle': {
       const { labels, drawn } = tri()
       fitsDrawing(labels, drawn)

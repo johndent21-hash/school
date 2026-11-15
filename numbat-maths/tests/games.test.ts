@@ -13,7 +13,7 @@
 // Usage: npx tsx tests/games.test.ts        (N questions of each kind, default 400)
 import { setSeed } from '../src/lib/maths/rand'
 import { ALL_GAME_SETS, GAME_BOOKS, findGame, gameChapters } from '../src/content/games/index'
-import { buildChapterGame, buildGame, buildRevisionGame, gameCheck, GAME_LENGTHS } from '../src/lib/game/build'
+import { buildChapterGame, buildGame, buildRevisionGame, gameCheck, GAME_LENGTHS, hasCalc, playable } from '../src/lib/game/build'
 import { buildSheet, defaultStyle, marksFor, minutesFor, sections, sheetHtml, totalMarks, type SheetSpec } from '../src/lib/game/sheet'
 import { dig, ECHIDNA, LEAP_MAX, LEAP_MIN, places, RAID } from '../src/lib/game/luck'
 import type { GameQuestion, GameSet } from '../src/lib/game/types'
@@ -622,13 +622,18 @@ for (const set of ALL_GAME_SETS) {
 
 const key = (q: GameQuestion) => q.prompt + '|' + (q.diagram ?? '') + '|' + q.options[q.correct]
 for (const set of ALL_GAME_SETS) {
+  // calculator kinds: never in the default game; with calculators allowed, every kind (head and calculator) is asked
+  for (const calc of hasCalc([set]) ? [false, true] : [false])
   for (const count of GAME_LENGTHS) {
+    const kinds = playable(set, calc)
     for (let seed = 1; seed <= 40; seed++) {
-      const game = buildGame(set, seed * 7717, count)
+      const game = buildGame(set, seed * 7717, count, calc)
       if (game.length !== count) fail(set.exercise, `a ${count}-question game has ${game.length} questions`)
       if (new Set(game.map((g) => key(g.q))).size !== count) fail(set.exercise, `a ${count}-question game repeats a question (seed ${seed * 7717})`)
-      if (gameCheck(game) !== gameCheck(buildGame(set, seed * 7717, count))) fail(set.exercise, 'the same seed gave a different game')
-      if (count >= set.makers.length && new Set(game.map((g) => g.q.meta.t)).size !== set.makers.length) fail(set.exercise, 'a kind of question is missing from the game')
+      if (gameCheck(game) !== gameCheck(buildGame(set, seed * 7717, count, calc))) fail(set.exercise, 'the same seed gave a different game')
+      if (!calc && game.some((g) => g.calc || set.makers.find((m) => m.t === g.q.meta.t)?.calc)) fail(set.exercise, 'a calculator question in a game without calculators')
+      if (game.some((g) => !!g.calc !== !!set.makers.find((m) => m.t === g.q.meta.t)?.calc)) fail(set.exercise, 'a question is not marked as needing a calculator correctly')
+      if (count >= kinds.length && new Set(game.map((g) => g.q.meta.t)).size !== kinds.length) fail(set.exercise, 'a kind of question is missing from the game')
       // the first time round, the most basic kinds come first
       const firstPass = game.slice(0, Math.min(count, set.makers.length)).map((g) => set.makers.find((m) => m.t === g.q.meta.t)?.d ?? 1)
       if (firstPass.some((d, i) => i > 0 && d < firstPass[i - 1])) fail(set.exercise, 'harder kinds came before basic ones')

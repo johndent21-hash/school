@@ -14,7 +14,7 @@ import {
 } from '@/lib/game/sheet'
 import { setSeed } from '@/lib/maths/rand'
 import { pageHead } from '@/lib/meta'
-import { load, save } from '@/lib/storage'
+import { load, save as saveSetting } from '@/lib/storage'
 import { newSeed } from '@/lib/practice'
 import { useMounted } from '@/lib/use-mounted'
 
@@ -164,7 +164,7 @@ function Builder({ id, test }: { id?: string; test: boolean }) {
                 maxLength={80}
                 onChange={(e) => {
                   setSchool(e.target.value)
-                  save('numbat.school', e.target.value)
+                  saveSetting('numbat.school', e.target.value)
                 }}
               />
             </label>
@@ -346,7 +346,7 @@ function SetRow({ set, count, kinds, onCount, onKinds }: { set: GameSet; count: 
   // one sample question per kind, as its label (made only when the list is opened)
   const samples = useMemo(() => {
     if (!open) return []
-    return set.makers.map((m) => {
+    return set.makers.filter((m) => !m.calc).map((m) => {
       setSeed(5)
       return { t: m.t, d: m.d ?? 1, prompt: m.make().prompt.replace(/<div class="big">/g, ' <span>').replace(/<\/div>/g, '</span>') }
     })
@@ -372,7 +372,7 @@ function SetRow({ set, count, kinds, onCount, onKinds }: { set: GameSet; count: 
         </span>
       </div>
       <details ref={ref} onToggle={() => setOpen(!!ref.current?.open)}>
-        <summary className="text-sm text-muted-foreground">Kinds{kinds.length ? `: ${kinds.length} of ${set.makers.length}` : ''}</summary>
+        <summary className="text-sm text-muted-foreground">Kinds{kinds.length ? `: ${kinds.length} of ${set.makers.filter((m) => !m.calc).length}` : ''}</summary>
         <ul className="grid gap-1 py-1">
           {samples.map((s) => (
             <li key={s.t}>
@@ -381,7 +381,7 @@ function SetRow({ set, count, kinds, onCount, onKinds }: { set: GameSet; count: 
                   type="checkbox"
                   checked={kinds.length === 0 || kinds.includes(s.t)}
                   onChange={(e) => {
-                    const all = set.makers.map((m) => m.t)
+                    const all = set.makers.filter((m) => !m.calc).map((m) => m.t)
                     const now = kinds.length ? kinds : all
                     const next = e.target.checked ? [...now, s.t] : now.filter((k) => k !== s.t)
                     onKinds(next.length === all.length ? [] : next.length ? next : now)

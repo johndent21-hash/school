@@ -21,6 +21,10 @@ export interface BoardConfig {
   count: number
   secs: number
   teams: string[]
+  /** speed round: the first team to put a hand up answers; right digs, wrong is out for that question */
+  speed?: boolean
+  /** calculators allowed: calculator kinds are asked too */
+  calc?: boolean
 }
 
 /** ask: the question is up. reveal: the answer is showing and the teacher ticks the teams that were right.
@@ -46,6 +50,9 @@ export interface BoardState {
   rounds: Round[]
   /** the teams ticked so far for the question on the board */
   marked: number[]
+  /** speed round: the team answering now, and the teams already wrong on this question */
+  buzz?: number | null
+  out?: number[]
   savedAt: number
 }
 
@@ -57,6 +64,7 @@ export interface BoardSettings {
   teams: string[]
   count: number
   secs: number
+  speed?: boolean
 }
 
 const cleanName = (s: unknown, i: number) => (typeof s === 'string' && s.trim() ? s.trim().slice(0, 16) : TEAM_NAMES[i] ?? `Team ${i + 1}`)
@@ -69,6 +77,7 @@ export function loadSettings(): BoardSettings {
     teams: Array.from({ length: n }, (_, i) => cleanName(s.teams?.[i], i)),
     count: (GAME_LENGTHS as readonly number[]).includes(s.count as number) ? (s.count as number) : DEFAULT_LENGTH,
     secs: (TIMER_CHOICES as readonly number[]).includes(s.secs as number) ? (s.secs as number) : DEFAULT_SECS,
+    speed: s.speed === true,
   }
 }
 
@@ -77,11 +86,12 @@ export function saveSettings(s: BoardSettings) {
 }
 
 /** The questions of a game, rebuilt from its settings. Null if the game id isn't in this build. */
-export function gameItems(cfg: Pick<BoardConfig, 'game' | 'seed' | 'count'>): GameItem[] | null {
+export function gameItems(cfg: Pick<BoardConfig, 'game' | 'seed' | 'count' | 'calc'>): GameItem[] | null {
   const g = findGame(cfg.game)
   if (!g) return null
-  if (g.upTo) return buildRevisionGame(gameChapters(g), cfg.seed, cfg.count)
-  return g.set ? buildGame(g.set, cfg.seed, cfg.count) : buildChapterGame(g.chapter, cfg.seed, cfg.count)
+  const calc = !!cfg.calc
+  if (g.upTo) return buildRevisionGame(gameChapters(g), cfg.seed, cfg.count, calc)
+  return g.set ? buildGame(g.set, cfg.seed, cfg.count, calc) : buildChapterGame(g.chapter, cfg.seed, cfg.count, calc)
 }
 
 export function newBoard(cfg: BoardConfig, items: GameItem[]): BoardState {
@@ -109,8 +119,31 @@ export function clearBoard() {
 // ---------------------------------------------------------------- the steps of a round
 
 export function reveal(b: BoardState): BoardState {
-  return b.phase === 'ask' ? { ...b, phase: 'reveal', marked: [] } : b
+  return b.phase === 'ask' ? { ...b, phase: 'reveal', marked: [], buzz: null } : b
 }
+
+// ---------------------------------------------------------------- speed round
+
+/** A team put its hand up first: it answers now (not a team already wrong on this question). */
+export function buzzIn(b: BoardState, team: number): BoardState {
+  if (!b.cfg.speed || b.phase !== 'ask' || b.buzz != null || team < 0 || team >= b.cfg.teams.length || (b.out ?? []).includes(team)) return b
+  return { ...b, buzz: team }
+}
+
+/** The answering team was right: show the answer with that team ticked, ready to dig. */
+export function buzzRight(b: BoardState): BoardState {
+  if (b.phase !== 'ask' || b.buzz == null) return b
+  return { ...b, phase: 'reveal', marked: [b.buzz], buzz: null }
+}
+
+/** The answering team was wrong: it is out for this question and the others can put their hands up. */
+export function buzzWrong(b: BoardState): BoardState {
+  if (b.phase !== 'ask' || b.buzz == null) return b
+  return { ...b, out: [...(b.out ?? []), b.buzz], buzz: null }
+}
+
+/** every team has had a wrong answer on this question */
+export const allOut = (b: BoardState) => (b.out ?? []).length >= b.cfg.teams.length
 
 export function toggleTeam(b: BoardState, team: number): BoardState {
   if (b.phase !== 'reveal' || team < 0 || team >= b.cfg.teams.length) return b
@@ -137,7 +170,7 @@ export function undoDig(b: BoardState): BoardState {
 
 export function nextQuestion(b: BoardState, total: number): BoardState {
   if (b.phase !== 'dug') return b
-  return b.i + 1 >= total ? { ...b, phase: 'done' } : { ...b, i: b.i + 1, phase: 'ask', marked: [] }
+  return b.i + 1 >= total ? { ...b, phase: 'done' } : { ...b, i: b.i + 1, phase: 'ask', marked: [], buzz: null, out: [] }
 }
 
 /** The totals while a round's finds are being shown one at a time: `shown` finds have happened so far. */

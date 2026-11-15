@@ -87,3 +87,5 @@ export function numOpts(correct: number, wrong: number[], fmt: (x: number) => st
 }
 
 export const mk = (t: string, make: () => GameQuestion, d: 1 | 2 = 1): GameMaker => ({ t, make, d })
+/** a kind that needs a calculator (only in a game with calculators allowed) */
+export const mkCalc = (t: string, make: () => GameQuestion, d: 1 | 2 = 2): GameMaker => ({ t, make, d, calc: true })

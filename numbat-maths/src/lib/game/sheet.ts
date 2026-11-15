@@ -41,7 +41,9 @@ export function buildSheet(picks: SheetPick[], seed: number): SheetItem[] {
   const seen = new Set<string>()
   const out: SheetItem[] = []
   for (const p of picks) {
-    const makers = p.kinds.length ? p.set.makers.filter((m) => p.kinds.includes(m.t)) : p.set.makers
+    // calculator kinds are left out: the sheets say calculators are not needed
+    const base = p.set.makers.filter((m) => !m.calc)
+    const makers = p.kinds.length ? base.filter((m) => p.kinds.includes(m.t)) : base
     if (!makers.length) continue
     const order: GameMaker[] = []
     while (order.length < p.count) {

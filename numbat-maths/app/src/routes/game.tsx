@@ -9,7 +9,7 @@ import { findGame, gameChapters, gameTitle, type FoundGame } from '@/content/gam
 import {
   type BoardState, clearBoard, gameItems, loadBoard, loadSettings, MAX_TEAMS, MIN_TEAMS, newBoard, saveSettings, TEAM_NAMES, TIMER_CHOICES,
 } from '@/lib/board'
-import { GAME_LENGTHS } from '@/lib/game/build'
+import { GAME_LENGTHS, hasCalc } from '@/lib/game/build'
 import { pageHead } from '@/lib/meta'
 import { newSeed } from '@/lib/practice'
 import { cn } from '@/lib/utils'
@@ -43,8 +43,8 @@ function Game({ found, id, carryOn }: { found: FoundGame; id: string; carryOn: b
   const [run, setRun] = useState(0)
   const items = useMemo(() => (board ? gameItems(board.cfg) : null), [board])
 
-  const start = (cfg: { teams: string[]; count: number; secs: number; seed: number }) => {
-    saveSettings({ teams: cfg.teams, count: cfg.count, secs: cfg.secs })
+  const start = (cfg: StartCfg) => {
+    saveSettings({ teams: cfg.teams, count: cfg.count, secs: cfg.secs, speed: cfg.speed })
     const full = { game: id, ...cfg }
     const its = gameItems(full)
     if (!its) return
@@ -61,7 +61,7 @@ function Game({ found, id, carryOn }: { found: FoundGame; id: string; carryOn: b
         initial={board}
         title={title}
         onExit={() => void navigate({ to: '/games', search: { chapter: found.chapter.id } })}
-        onAgain={() => start({ teams: board.cfg.teams, count: board.cfg.count, secs: board.cfg.secs, seed: newSeed() })}
+        onAgain={() => start({ teams: board.cfg.teams, count: board.cfg.count, secs: board.cfg.secs, seed: newSeed(), speed: board.cfg.speed, calc: board.cfg.calc })}
       />
     )
 
@@ -84,6 +84,21 @@ function Game({ found, id, carryOn }: { found: FoundGame; id: string; carryOn: b
   )
 }
 
+type StartCfg = { teams: string[]; count: number; secs: number; seed: number; speed?: boolean; calc?: boolean }
+
+const HOW_TEAMS = [
+  'Put the class in teams. Each team needs a mini whiteboard or paper.',
+  'Every team answers every question, then holds up A, B, C or D when the time is up.',
+  'Show the answer and tick each team that got it right.',
+  'Each team that was right digs up a log: mostly termites, sometimes a surprise. Most termites at the end wins.',
+]
+const HOW_SPEED = [
+  'Put the class in teams. One person in each team answers for it.',
+  'When a team knows the answer, a hand goes up. Click that team (or press its number): it says A, B, C or D.',
+  'Right: the team digs up a log. Wrong: that team is out for this question and the clock starts again for the rest.',
+  'Nobody right? Show the answer and move on. Most termites at the end wins.',
+]
+
 function Setup({
   found,
   id,
@@ -99,14 +114,17 @@ function Setup({
   saved: BoardState | null
   onResume: () => void
   onDiscard: () => void
-  onStart: (cfg: { teams: string[]; count: number; secs: number; seed: number }) => void
+  onStart: (cfg: StartCfg) => void
 }) {
   const [settings] = useState(loadSettings)
+  const [speed, setSpeed] = useState(!!settings.speed)
+  const offerCalc = hasCalc(found.set ? [found.set] : found.upTo ? found.book.chapters.slice(0, found.upTo).flatMap((c) => c.sets) : found.chapter.sets)
+  const [calc, setCalc] = useState(false)
   const [teams, setTeams] = useState<string[]>(settings.teams)
   const [count, setCount] = useState(settings.count)
   const [secs, setSecs] = useState(settings.secs)
   const [seed, setSeed] = useState(newSeed)
-  const preview = useMemo(() => gameItems({ game: id, seed, count }) ?? [], [id, seed, count])
+  const preview = useMemo(() => gameItems({ game: id, seed, count, calc: offerCalc && calc }) ?? [], [id, seed, count, calc, offerCalc])
   const { chapter, set, upTo } = found
   const outcomes = set ? set.outcomes : [...new Set(gameChapters(found).flatMap((c) => c.outcomes))]
 
@@ -171,7 +189,7 @@ function Setup({
         className="grid gap-6 lg:grid-cols-[1.3fr_1fr]"
         onSubmit={(e) => {
           e.preventDefault()
-          onStart({ teams: names, count, secs, seed })
+          onStart({ teams: names, count, secs, seed, speed, calc: offerCalc && calc })
         }}
       >
         <section className="panel grid content-start gap-5 p-5" aria-labelledby="setup">
@@ -217,6 +235,40 @@ function Setup({
           </div>
 
           <fieldset className="grid gap-2">
+            <legend className="label">Game</legend>
+            <div className="tabs w-fit" role="radiogroup" aria-label="Kind of game">
+              <button type="button" role="radio" aria-checked={!speed} className={!speed ? 'active' : ''} onClick={() => setSpeed(false)}>
+                Every team answers
+              </button>
+              <button type="button" role="radio" aria-checked={speed} className={speed ? 'active' : ''} onClick={() => setSpeed(true)}>
+                Speed round
+              </button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {speed ? 'The first team to put a hand up answers. Right digs; wrong is out for that question.' : 'Every team writes an answer to every question.'}
+            </p>
+          </fieldset>
+
+          {offerCalc && (
+            <fieldset className="grid gap-2">
+              <legend className="label">Calculators</legend>
+              <div className="tabs w-fit" role="radiogroup" aria-label="Calculators">
+                <button type="button" role="radio" aria-checked={!calc} className={!calc ? 'active' : ''} onClick={() => setCalc(false)}>
+                  Not allowed
+                </button>
+                <button type="button" role="radio" aria-checked={calc} className={calc ? 'active' : ''} onClick={() => setCalc(true)}>
+                  Allowed
+                </button>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {calc
+                  ? 'Calculator questions (answers rounded) are mixed in and marked on the board. Check calculators are in degree mode.'
+                  : 'Every question can be done in the head.'}
+              </p>
+            </fieldset>
+          )}
+
+          <fieldset className="grid gap-2">
             <legend className="label">Questions</legend>
             <div className="tabs w-fit" role="radiogroup" aria-label="Number of questions">
               {GAME_LENGTHS.map((n) => (
@@ -251,19 +303,18 @@ function Setup({
             How to play
           </h2>
           <ol className="grid gap-3">
-            {[
-              'Put the class in teams. Each team needs a mini whiteboard or paper.',
-              'Every team answers every question, then holds up A, B, C or D when the time is up.',
-              'Show the answer and tick each team that got it right.',
-              'Each team that was right digs up a log: mostly termites, sometimes a surprise. Most termites at the end wins.',
-            ].map((s, k) => (
+            {(speed ? HOW_SPEED : HOW_TEAMS).map((s, k) => (
               <li key={k} className="flex gap-3">
                 <span className="tile-mark grid size-9 shrink-0 place-items-center rounded-lg bg-primary-soft font-bold text-primary">{k + 1}</span>
                 <p className="pt-1">{s}</p>
               </li>
             ))}
           </ol>
-          <p className="text-sm text-muted-foreground">Every question is one step and made to be done in the head. No calculators needed.</p>
+          <p className="text-sm text-muted-foreground">
+            {offerCalc && calc
+              ? 'Questions marked “Calculator” need one; the rest are done in the head.'
+              : 'Every question is one step and made to be done in the head. No calculators needed.'}
+          </p>
         </section>
       </form>
 
@@ -282,6 +333,7 @@ function Setup({
                 <div className="flex flex-wrap items-baseline gap-2">
                   <span className="font-display font-semibold">Q{k + 1}</span>
                   {!set && <span className="chip chip-book">Ex {it.set.exercise}</span>}
+                  {it.calc && <span className="chip">Calculator</span>}
                   <MathHtml inline html={it.q.prompt} />
                 </div>
                 {(it.q.diagram || it.q.note) && (
